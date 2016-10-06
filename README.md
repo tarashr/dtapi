@@ -9,21 +9,13 @@ Structure
 
 <ul>
     <li>config</li>
-    <li>node_module</li>
     <li>dist</li>
     <li>src
         <ul>
+        <li>Components</li>
         <li>app  ----------------------<i> //main app folder</i> 
                 <ul>
-                    <li>core 
-                        <ul>
-                            <li>core.module.ts</li> ------------------<i> //single use components in the CoreModule import it once (in the AppModule) when the app starts and never import it anywhere else. (e.g. NavComponent and SpinnerComponent).</i>
-                            <li>nav
-                                <ul> <li>nav.component.ts|html|sass|spec.ts</li> </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>container-components
+                   <li>container-components
                         <ul>
                             <li>faculty
                                 <ul>
