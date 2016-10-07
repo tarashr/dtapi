@@ -9,23 +9,13 @@ Structure
 
 <ul>
     <li>config</li>
-    <li>node_module</li>
     <li>dist</li>
     <li>src
         <ul>
+        <li>сomponents</li>
         <li>app  ----------------------<i> //main app folder</i> 
                 <ul>
-                    <li>core 
-                        <ul>
-                            <li>core.module.ts</li> ------------------<i> //single use components in the CoreModule import it once (in the AppModule) when the app starts and never import it anywhere else. (e.g. NavComponent and SpinnerComponent).</i>
-                            <li>nav
-                                <ul> <li>nav.component.ts|html|sass|spec.ts</li> </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>container-components
-                        <ul>
-                            <li>faculty
+                   <li>faculty
                                 <ul>
                                     <li>faculty.component.ts|html|sass|spec.ts</li>
                                     <li>faculty.module.ts  ------------------<i> // ???????</i></li>
@@ -39,9 +29,9 @@ Structure
                             </li>
                             <li>student</li>
                             <li> ... other</li>
-                        </ul>
-                    </li>
-                    <li>services
+                    <li>shared --------<i> // We want to make multiple instances of them and for these to be available everywhere</i>
+                        <ul>
+                            <li>services
                         <ul>
                             <li>login.service.ts</li>
                             <li> ... other</li>
@@ -55,12 +45,6 @@ Structure
                             <li>... other</li>
                         </ul>
                     </li>
-                    <li>shared --------<i> // We want to make multiple instances of them and for these to be available everywhere</i>
-                        <ul>
-                            <li>shared.module.ts </li>
-                            <li>init-caps.pipe.ts|spec.ts</li>
-                            <li>text-filter.component.ts|spec.ts</li>
-                            <li>text-filter.service.ts|spec.ts</li>
                         </ul>
                     </li>
                     <li>app.component.ts -------- <i>// Root component for the app (e.g. AppComponent)</i></li>
