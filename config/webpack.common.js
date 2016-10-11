@@ -13,7 +13,7 @@ module.exports = {
     resolve: {
         extensions: ['', '.js', '.ts'],
         //webpack will be search the all modules in node_modules
-        modulesDirectories: ['node_modules']
+        modulesDirectories: ['node_modules', 'src/assets/libs', 'src/assets/style']
     },
 
     module: {

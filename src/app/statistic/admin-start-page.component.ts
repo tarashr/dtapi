@@ -15,7 +15,6 @@ export class AdminStartPageComponent{
     ) { }
 
     ngOnInit() {
-
     }
 
     logout() {

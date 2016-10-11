@@ -3,8 +3,7 @@
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -16,18 +15,18 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">Статистика</a></li>
-                    <li><a href="#">Групи</a></li>
-                    <li class="active"><a href="#">Факультети<span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">Предмети</a></li>
-                    <li><a href="#">Спеціальності</a></li>
-                    <li><a href="#">Студенти</a></li>
-                    <li><a href="#">Адміністратори</a></li>
+                    <li ><a routerLink="admin">Статистика</a></li>
+                    <li><a href="../groups/index.html">Групи</a></li>
+                    <li ><a href="../facultet/faculty.html">Факультети<span class="sr-only">(current)</span></a></li>
+                    <li><a href="../subjects/index.html">Предмети</a></li>
+                    <li><a href="../Speciality/index.html">Спеціальності</a></li>
+                    <li><a routerLink="student">Студенти</a></li>
+                    <li><a routerLink="student">Адміністратори</a></li>
 
                 </ul>
                 <div class="nav navbar-nav navbar-right">
                     <a class="btn btn-danger btn-sm navbar-btn closeBtn" href="#" role="button"
-                       (click)="logout()">
+                    (click)="logout()">
                         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                     </a>
                 </div>
@@ -41,136 +40,15 @@
 </div>
 
 <div class="faculty-container">
-    <nav class="navbar navbar-default facultyNavbarDefault navbarDefault">
-        <div class="container-fluid">
-            <div class="navbar-text navbarText">Факультети</div>
-            <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
-                <div class="form-group inputSearch">
-                    <input type="text" class="form-control" placeholder="пошук">
-                </div>
-                <button type="button" class="btn btn-default">ПОШУК</button>
-            </form>
-            <form class="navbar-form navbar-right navbarForm">
-                <div class="form-group">
-                    <input type="image" class="form-control media767" src="plus.jpeg" alt=""
-                           title="створити новий факультет">
-                    <select class="form-control media767" name="count" id=""
-                            title="виберіть кількість факультетів на сторінці">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                    </select>
-                </div>
-            </form>
-            <!-- </div> -->
-        </div>
-    </nav>
-
-    <!-- <ol class="breadcrumb">
-        <li><a href="#">Home</a></li>
-        <li class="active">Faculty
-    </ol> -->
-
     <div class="container-fluid">
-        <ul class="list-group faculty_list">
-            <li class="list-group-item row">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">1</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Факультет економіки та менеджменту</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Факультет економіки та менеджменту (ФЕМ)</div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                    <a class="btn btn-success btn-sm faculty_btnsm" href="#" role="button">
-                        <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-                    </a>
-                    <a class="btn btn-primary btn-sm faculty_btnsm" href="#" role="button" data-toggle="modal"
-                       data-target="#myModal">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    </a>
-                    <a class="btn btn-danger btn-sm faculty_btnsm" href="#" role="button">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </a>
-                </div>
-            </li>
-            <li class="list-group-item row">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">2</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Факультет економіки та менеджменту</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Факультет економіки та менеджменту (ФЕМ)</div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                    <a class="btn btn-success btn-sm faculty_btnsm" href="#" role="button">
-                        <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-                    </a>
-                    <a class="btn btn-primary btn-sm faculty_btnsm" href="#" role="button" data-toggle="modal"
-                       data-target="#myModal">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    </a>
-                    <a class="btn btn-danger btn-sm faculty_btnsm" href="#" role="button">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </a>
-                </div>
-            </li>
-            <li class="list-group-item row">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">3</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Факультет економіки та менеджменту</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Факультет економіки та менеджменту (ФЕМ)</div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                    <a class="btn btn-success btn-sm faculty_btnsm" href="#" role="button">
-                        <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-                    </a>
-                    <a class="btn btn-primary btn-sm faculty_btnsm" href="#" role="button" data-toggle="modal"
-                       data-target="#myModal">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    </a>
-                    <a class="btn btn-danger btn-sm faculty_btnsm" href="#" role="button">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </a>
-                </div>
-            </li>
-            <li class="list-group-item row">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">4</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Факультет економіки та менеджменту</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Факультет економіки та менеджменту (ФЕМ)</div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                    <a class="btn btn-success btn-sm faculty_btnsm" href="#" role="button">
-                        <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-                    </a>
-                    <a class="btn btn-primary btn-sm faculty_btnsm" href="#" role="button" data-toggle="modal"
-                       data-target="#myModal">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    </a>
-                    <a class="btn btn-danger btn-sm faculty_btnsm" href="#" role="button">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </a>
-                </div>
-            </li>
+        <h3>Статистика системи</h3>
+        <ul class="list-group">
+            <li class="list-group-item">Зареєстровано факультетів<span class="badge">2</span></li>
+            <li class="list-group-item">Зареєстровано спеціальностей <span class="badge">5</span></li>
+            <li class="list-group-item">Зареєстровано груп <span class="badge">3</span></li>
+            <li class="list-group-item">Зареєстровано студентів <span class="badge">3</span></li>
+            <li class="list-group-item">Зареєстровано предметів <span class="badge">3</span></li>
+            <li class="list-group-item">Зареєстровано тестів <span class="badge">101</span></li>
         </ul>
     </div>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Редагувати дані факультету</h4>
-                </div>
-                <div class="modal-body modalBody">
-                    <div class="input-group inputGroup">
-                        <span class="input-group-addon modalSpan" id="basic-addon3">Назва факультету:</span>
-                        <input type="text" class="form-control modalInput" id="basic-url"
-                               aria-describedby="basic-addon3">
-                    </div>
-                    <div class="input-group inputGroup">
-                        <span class="input-group-addon modalSpan" id="basic-addon3">Опис факультету:</span>
-                        <input type="text" class="form-control modalInput" id="basic-url"
-                               aria-describedby="basic-addon3">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--теоретично візуалізацію пагінації має вставити ось цей компонент:
-    https://github.com/ng-bootstrap/ng-bootstrap/blob/master/src/pagination/pagination.ts
-    <ngb-pagination></ngb-pagination>-->
 </div>
