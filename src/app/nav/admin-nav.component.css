@@ -1,0 +1,12 @@
+.main-menu {
+    max-width: 1024px;
+    margin: 0px auto 0px auto;
+    padding: 10px;
+    min-width: 420px;
+    font-size: 12px;
+}
+
+.main-menu .mainMenuNavbar {
+    margin-bottom: 0;
+    min-width: 420px;
+}
