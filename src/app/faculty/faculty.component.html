@@ -1,0 +1,120 @@
+<div class="faculty-container">
+    <nav class="navbar navbar-default facultyNavbarDefault navbarDefault">
+        <div class="container-fluid">
+            <div class="navbar-text navbarText">Факультети</div>
+            <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
+                <div class="form-group inputSearch">
+                    <input type="text" class="form-control" placeholder="пошук">
+                </div>
+                <!--<button type="button" class="btn btn-default">ПОШУК</button>-->
+            </form>
+            <form class="navbar-form navbar-right navbarForm">
+                <div class="form-group">
+                    <a class="btn btn-success" role="button" title="створити новий факультет"
+                       data-toggle="modal" data-target="#myModal2">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+                    <select class="form-control media767" name="count" id=""
+                            title="виберіть кількість факультетів на сторінці">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                    </select>
+                </div>
+            </form>
+            <!-- </div> -->
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <ul class="list-group faculty_list">
+            <li class="list-group-item row  hidden-xs">
+                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">№</div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Назва факультету</div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Опис факультету</div>
+                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn"></div>
+            </li>
+            <li class="list-group-item row">
+                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">
+                    <span class="visible-xs-inline-block">№:</span>
+                    <span class="align-xs">1</span>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
+                    <span class="visible-xs-inline-block">Назва факультету:</span>
+                    <span class="align-xs">Факультет економіки та менеджменту</span>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
+                    <span class="visible-xs-inline-block">Опис факультету:</span>
+                    <span class="align-xs">Факультет де все економлять та менеджерять (ФЕМ)</span>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
+                    <a class="btn btn-success btn-sm faculty_btnsm" href="groupOfFaculty.html" role="button">
+                        <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                    </a>
+                    <a class="btn btn-primary btn-sm faculty_btnsm" href="#" role="button" data-toggle="modal"
+                       data-target="#myModal">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </a>
+                    <a class="btn btn-danger btn-sm faculty_btnsm" href="#" role="button">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </li>
+
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel2">Редагувати дані факультету</h4>
+                        </div>
+                        <div class="modal-body modalBody">
+                            <div class="input-group inputGroup">
+                                <span class="input-group-addon modalSpan" id="basic-addon">Назва факультету:</span>
+                                <input type="text" class="form-control modalInput" id="basic-url_"
+                                       aria-describedby="basic-addon3">
+                            </div>
+                            <div class="input-group inputGroup">
+                                <span class="input-group-addon modalSpan" id="basic-addon3">Опис факультету:</span>
+                                <input type="text" class="form-control modalInput" id="basic-url"
+                                       aria-describedby="basic-addon3">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Створити новий факультет</h4>
+                        </div>
+                        <div class="modal-body modalBody">
+                            <div class="input-group inputGroup">
+                                <span class="input-group-addon modalSpan" id="basic-addon4">Назва факультету:</span>
+                                <input type="text" class="form-control modalInput" id="basic-url_2"
+                                       aria-describedby="basic-addon3">
+                            </div>
+                            <div class="input-group inputGroup">
+                                <span class="input-group-addon modalSpan" id="basic-addon5">Опис факультету:</span>
+                                <input type="text" class="form-control modalInput" id="basic-url6"
+                                       aria-describedby="basic-addon3">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ul>
+    </div>
+</div>
