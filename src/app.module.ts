@@ -15,6 +15,7 @@ import { FacultyComponent } from "./app/faculty/faculty.component";
 
 import { SubjectService }          from './app/shared/services/subject.service';
 import { LoginService }        from './app/shared/services/login.service';
+import { CommonService }        from './app/shared/services/common.service';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import { LoginService }        from './app/shared/services/login.service';
     providers:[
         {provide: APP_BASE_HREF, useValue: '/'},
         SubjectService,
-        LoginService
+        LoginService,
+        CommonService
     ],
     bootstrap: [ AppComponent ]
 })

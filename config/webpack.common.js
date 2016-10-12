@@ -53,10 +53,10 @@ module.exports = {
             template: './src/index.html'
         }),
 
-        new ExtractTextPlugin('style.css', {allChunk: true}),
-
-        // new webpack.ProvidePlugin({
-        //     bootstrap: 'bootstrap'
-        // })
+        new webpack.ProvidePlugin({
+            jQuery: 'jquery',
+            $: 'jquery',
+            jquery: 'jquery'
+        })
     ]
 };

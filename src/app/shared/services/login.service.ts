@@ -28,9 +28,10 @@ export class LoginService {
             });
     }
 
-    logout() {
-        this._http.get(this.logoutUrl);
-        this._router.navigate(["/login"]);
+    logout():Promise<any> {
+       return this._http
+           .get(this.logoutUrl)
+           .toPromise();
     }
 
 }
