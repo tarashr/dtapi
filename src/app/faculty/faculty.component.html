@@ -6,16 +6,16 @@
                 <div class="form-group inputSearch">
                     <input type="text" class="form-control" placeholder="пошук">
                 </div>
-                <!--<button type="button" class="btn btn-default">ПОШУК</button>-->
             </form>
             <form class="navbar-form navbar-right navbarForm">
                 <div class="form-group">
-                    <a class="btn btn-success" role="button" title="створити новий факультет"
-                       data-toggle="modal" data-target="#myModal2">
+                    <a class="btn btn-success" role="button" title="створити новий факультет">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     </a>
                     <select class="form-control media767" name="count" id=""
-                            title="виберіть кількість факультетів на сторінці">
+                            title="виберіть кількість факультетів на сторінці"
+                            [(ngModel)]="limit"
+                            (input)="changeLimit()">
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
@@ -25,6 +25,7 @@
             <!-- </div> -->
         </div>
     </nav>
+
 
     <div class="container-fluid">
         <ul class="list-group faculty_list">
@@ -48,7 +49,8 @@
                     <span class="align-xs">{{faculty.faculty_description}}</span>
                 </div>
                 <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                    <a class="btn btn-success btn-sm faculty_btnsm" href="#" role="button">
+                    <a class="btn btn-success btn-sm faculty_btnsm" role="button"
+                    >
                         <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                     </a>
                     <a class="btn btn-primary btn-sm faculty_btnsm" role="button" data-toggle="modal"
@@ -61,61 +63,6 @@
                     </a>
                 </div>
             </li>
-
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel2">Редагувати дані факультету</h4>
-                        </div>
-                        <div class="modal-body modalBody">
-                            <div class="input-group inputGroup">
-                                <span class="input-group-addon modalSpan" id="basic-addon">Назва факультету:</span>
-                                <input type="text" class="form-control modalInput" id="basic-url_"
-                                       aria-describedby="basic-addon3">
-                            </div>
-                            <div class="input-group inputGroup">
-                                <span class="input-group-addon modalSpan" id="basic-addon3">Опис факультету:</span>
-                                <input type="text" class="form-control modalInput" id="basic-url"
-                                       aria-describedby="basic-addon3">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Створити новий факультет</h4>
-                        </div>
-                        <div class="modal-body modalBody">
-                            <div class="input-group inputGroup">
-                                <span class="input-group-addon modalSpan" id="basic-addon4">Назва факультету:</span>
-                                <input type="text" class="form-control modalInput" id="basic-url_2"
-                                       aria-describedby="basic-addon3">
-                            </div>
-                            <div class="input-group inputGroup">
-                                <span class="input-group-addon modalSpan" id="basic-addon5">Опис факультету:</span>
-                                <input type="text" class="form-control modalInput" id="basic-url6"
-                                       aria-describedby="basic-addon3">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </ul>
     </div>
 </div>

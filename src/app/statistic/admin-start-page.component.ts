@@ -10,17 +10,20 @@ import {LoginService} from "../shared/services/login.service";
     providers: [LoginService]
 })
 export class AdminStartPageComponent {
-    constructor(
-        private _loginService:LoginService,
-        private _router:Router
-    ) {
+    constructor(private _loginService:LoginService,
+                private _router:Router) {
     }
 
     ngOnInit() {
+        let userRole:string = localStorage.getItem("userRole");
+        if (!userRole && userRole != "admin") {
+            this._router.navigate(["/login"]);
+        }
     }
 
     logout() {
         this._loginService.logout();
+        localStorage.removeItem("userRole");
         this._router.navigate(["/login"]);
     }
 }
