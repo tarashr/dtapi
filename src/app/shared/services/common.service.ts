@@ -69,6 +69,10 @@ export class CommonService {
             .get(`${this.getRecordsUrlBase}${entity}/del/${id}`)
             .toPromise()
             .then((response:any)=>response.json())
+            .then(data => {
+                if (data.response==="ok")
+                {console.log(`${entity} with id ${id} was delete`)}
+            })
             .catch(this.handleError);
     }
 }

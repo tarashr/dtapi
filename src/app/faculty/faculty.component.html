@@ -48,14 +48,15 @@
                     <span class="align-xs">{{faculty.faculty_description}}</span>
                 </div>
                 <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                    <a class="btn btn-success btn-sm faculty_btnsm" href="groupOfFaculty.html" role="button">
+                    <a class="btn btn-success btn-sm faculty_btnsm" href="#" role="button">
                         <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                     </a>
                     <a class="btn btn-primary btn-sm faculty_btnsm" role="button" data-toggle="modal"
                        data-target="#myModal">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </a>
-                    <a class="btn btn-danger btn-sm faculty_btnsm" href="#" role="button">
+                    <a class="btn btn-danger btn-sm faculty_btnsm" role="button"
+                       (click)="delRecord(entity, faculty.faculty_id)">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>
                 </div>

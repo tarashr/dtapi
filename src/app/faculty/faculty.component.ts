@@ -10,7 +10,7 @@ import {CommonService} from "../shared/services/common.service";
 export class FacultyComponent implements OnInit {
 
     public faculties:Faculty[];
-    private entity:string = "faculty";
+    public entity:string = "faculty";
 
     constructor(private _commonService:CommonService) {
     }
@@ -18,6 +18,11 @@ export class FacultyComponent implements OnInit {
     getRecords():void {
         this._commonService.getRecords(this.entity)
             .then(data => this.faculties = data);
+    }
+
+    delRecord(entity:string, id:number) {
+        this._commonService.delRecord(entity, id);
+        this.getRecords();
     }
 
     ngOnInit() {
