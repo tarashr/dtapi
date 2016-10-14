@@ -56,7 +56,6 @@ export class FacultyComponent implements OnInit {
                 .then(data => this.faculties = data);
             this.offset += this.limit;
         }, 0);
-
     }
 
     ngOnInit() {
@@ -68,5 +67,10 @@ export class FacultyComponent implements OnInit {
         this._commonService.getCountRecords(this.entity)
             .then(data => this.countOfFaculties = data);
 
+    }
+
+    refreshData(data:string){
+        this.offset -= this.limit;
+        this.getRecordsRange();
     }
 }

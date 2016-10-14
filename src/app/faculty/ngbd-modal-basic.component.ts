@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 import {Faculty} from "../shared/classes/faculty";
@@ -18,6 +18,7 @@ export class NgbdModalBasic {
     @Input() title:string;
     @Input() facultyId:number;
     public entity:string = "faculty";
+    @Output() refreshData = new EventEmitter();
 
     constructor(private modalService:NgbModal,
                 private _commonService:CommonService) {
@@ -32,7 +33,11 @@ export class NgbdModalBasic {
         else if (this.activate === "edit") {
             let editedFaculty:Faculty = new Faculty(this.facultyName, this.facultyDescription);
             this._commonService.updateData(this.entity, this.facultyId, editedFaculty)
-                .then(response=> console.log(response));
+                .then(response=> {
+                    console.log(response);
+                    this.refreshData.emit("true");
+                });
+
         }
     }
 
@@ -45,8 +50,7 @@ export class NgbdModalBasic {
         });
     }
 
-    private
-    getDismissReason(reason:any):string {
+    private getDismissReason(reason:any):string {
         if (reason === ModalDismissReasons.ESC) {
             return 'by pressing ESC';
         } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {

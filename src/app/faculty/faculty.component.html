@@ -62,6 +62,7 @@
                             [facultyDescription]="faculty.faculty_description"
                             [facultyId]="faculty.faculty_id"
                             [activate]=edit
+                            (refreshData)="refreshData($event)"
                     ></ngbd-modal-basic>
                     <!--<a class="btn btn-primary btn-sm faculty_btnsm" role="button" data-toggle="modal"-->
                     <!--data-target="#myModal">-->
