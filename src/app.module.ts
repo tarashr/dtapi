@@ -1,27 +1,30 @@
-import { NgModule }      from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule }   from '@angular/forms';
-import { HttpModule }    from '@angular/http';
-import { APP_BASE_HREF } from '@angular/common';
-import { routing } from "./app.routing";
+import {NgModule}      from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule}   from '@angular/forms';
+import {HttpModule}    from '@angular/http';
+import {APP_BASE_HREF} from '@angular/common';
+import {NgbModule}     from '@ng-bootstrap/ng-bootstrap';
+import {routing}       from "./app.routing";
 
-import { AppComponent }  from './app/app.component';
-import { LoginComponent } from "./app/login/login.component";
-import { StartPageComponent } from "./app/studentpart/start-page.component";
-import { AdminStartPageComponent } from "./app/statistic/admin-start-page.component";
-import { SubjectComponent } from "./app/subjects/subject.component";
-import { FacultyComponent } from "./app/faculty/faculty.component";
+import {AppComponent}            from './app/app.component';
+import {LoginComponent}          from "./app/login/login.component";
+import {StartPageComponent}      from "./app/studentpart/start-page.component";
+import {AdminStartPageComponent} from "./app/statistic/admin-start-page.component";
+import {SubjectComponent}        from "./app/subjects/subject.component";
+import {FacultyComponent}        from "./app/faculty/faculty.component";
+import {NgbdModalBasic}        from "./app/faculty/ngbd-modal-basic.component";
 
 
-import { SubjectService }          from './app/shared/services/subject.service';
-import { LoginService }        from './app/shared/services/login.service';
-import { CommonService }        from './app/shared/services/common.service';
+import {SubjectService}      from './app/shared/services/subject.service';
+import {LoginService}        from './app/shared/services/login.service';
+import {CommonService}       from './app/shared/services/common.service';
 
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule,
         HttpModule,
+        NgbModule.forRoot(),
         routing
     ],
     declarations: [
@@ -30,14 +33,16 @@ import { CommonService }        from './app/shared/services/common.service';
         SubjectComponent,
         StartPageComponent,
         AdminStartPageComponent,
-        FacultyComponent
+        FacultyComponent,
+        NgbdModalBasic
     ],
-    providers:[
+    providers: [
         {provide: APP_BASE_HREF, useValue: '/'},
         SubjectService,
         LoginService,
         CommonService
     ],
-    bootstrap: [ AppComponent ]
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

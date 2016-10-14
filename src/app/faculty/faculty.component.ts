@@ -16,6 +16,18 @@ export class FacultyComponent implements OnInit {
     public limit:number = 5;
     private offset:number = 0;
 
+    //data for child NgbdModalBasic
+    public titleForNew = "Створити факультет";
+    public nameForNew:string = "";
+    public descriptionForNew:string = "";
+    public create = "create";
+    public titleForEdit = 'Редагувати дані факультету';
+    public nameForEdit:string;
+    public descriptionForEdit:string;
+    public idEdit:number;
+    public edit = "edit";
+    //end
+
     constructor(private _commonService:CommonService,
                 private _router:Router) {
     }
