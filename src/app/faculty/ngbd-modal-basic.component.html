@@ -23,12 +23,12 @@
     </div>
 </template>
 
-<div class="openModalBtn"  [ngSwitch]="activate">
-    <a *ngSwitchCase="'create'" class="btn btn-success" role="button" title="створити новий факультет"
+<div class="openModalBtn" [ngSwitch]="activate">
+    <a *ngSwitchCase="'create'" class="btn btn-success" role="button" title="Створити новий факультет"
        (click)="open(createWindow)">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
     </a>
-    <a *ngSwitchCase="'edit'" class="btn btn-primary btn-sm faculty_btnsm" role="button" title="редагувати факультет"
+    <a *ngSwitchCase="'edit'" class="btn btn-primary btn-sm faculty_btnsm" role="button" title="Редагувати дані факультету"
        (click)="open(createWindow)">
         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
     </a>

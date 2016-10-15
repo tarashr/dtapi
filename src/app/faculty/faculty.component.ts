@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {Faculty} from "../shared/classes/faculty";
 import {CommonService} from "../shared/services/common.service";
 
+
 @Component({
     templateUrl: 'faculty.component.html',
     styleUrls: ['faculty.component.css'],
@@ -15,6 +16,8 @@ export class FacultyComponent implements OnInit {
     public entity:string = "faculty";
     public limit:number = 5;
     private offset:number = 0;
+    private findResultFaculties:Faculty[];
+    public searchData:string = "";
 
     //data for child NgbdModalBasic
     public titleForNew = "Створити факультет";
@@ -56,6 +59,7 @@ export class FacultyComponent implements OnInit {
                 .then(data => this.faculties = data);
             this.offset += this.limit;
         }, 0);
+
     }
 
     ngOnInit() {
@@ -65,11 +69,42 @@ export class FacultyComponent implements OnInit {
         }
         this.getRecordsRange();
         this._commonService.getCountRecords(this.entity)
-            .then(data => this.countOfFaculties = data);
+            .then(data => this.countOfFaculties = data.numberOfRecords);
+    }
+
+    findEntity() {
+        setTimeout(()=> {
+            if (this.searchData.length ===1) return;
+            if (this.searchData.length ===0) {
+                this.offset=0;
+                this.getRecordsRange();
+                return;
+            }
+            this._commonService.getRecords(this.entity)
+                .then(data => {
+                    console.log('we are find faculties with: ', this.searchData);
+                    console.log('all faculies : ', data);
+                    this.findResultFaculties = data.filter((faculty)=> {
+                        if (faculty.faculty_name.toLowerCase().indexOf(this.searchData.toLowerCase()) === -1) {
+                            return false
+                        }
+                        else {
+                            return true
+                        }
+                    });
+                    this.faculties=this.findResultFaculties;
+                })
+                .catch(error=> {
+                    if (error.response === "Only logged users can work with entities") {
+                        this._router.navigate(["/login"])
+                    }
+                });
+
+        }, 0);
 
     }
 
-    refreshData(data:string){
+    refreshData(data:string) {
         this.offset -= this.limit;
         this.getRecordsRange();
     }

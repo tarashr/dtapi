@@ -71,8 +71,9 @@ export class CommonService {
             .toPromise()
             .then((response:any)=>response.json())
             .then(data => {
-                if (data.response==="ok")
-                {console.log(`${entity} with id ${id} was delete`)}
+                if (data.response === "ok") {
+                    console.log(`${entity} with id ${id} was delete`)
+                }
             })
             .catch(this.handleError);
     }

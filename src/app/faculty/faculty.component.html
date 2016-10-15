@@ -4,7 +4,10 @@
             <div class="navbar-text navbarText">Факультети</div>
             <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
                 <div class="form-group inputSearch">
-                    <input type="text" class="form-control" placeholder="знайти факультет">
+                    <input type="text" class="form-control" placeholder="знайти факультет" name="inputSearch"
+                           title="для пошуку введіть мінімум 2 символи"
+                           [(ngModel)]="searchData"
+                           (input)="findEntity()">
                 </div>
             </form>
             <form class="navbar-form navbar-right navbarForm">
@@ -22,7 +25,7 @@
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
-                        <option value="30">30</option>
+                        <option [ngValue]="countOfFaculties">Всі</option>
                     </select>
                 </div>
             </form>
@@ -34,14 +37,14 @@
     <div class="container-fluid">
         <ul class="list-group faculty_list">
             <li class="list-group-item row  hidden-xs">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">№</div>
+                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">ID</div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Назва факультету</div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Опис факультету</div>
                 <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn"></div>
             </li>
             <li class="list-group-item row" *ngFor="let faculty of faculties">
                 <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">
-                    <span class="visible-xs-inline-block">№:</span>
+                    <span class="visible-xs-inline-block">ID:</span>
                     <span class="align-xs">{{faculty.faculty_id}}</span>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
@@ -53,7 +56,7 @@
                     <span class="align-xs">{{faculty.faculty_description}}</span>
                 </div>
                 <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                    <a class="btn btn-success btn-sm faculty_btnsm" role="button">
+                    <a class="btn btn-success btn-sm faculty_btnsm" role="button" title="Переглянути групи факультету">
                         <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                     </a>
                     <ngbd-modal-basic
@@ -64,11 +67,7 @@
                             [activate]=edit
                             (refreshData)="refreshData($event)"
                     ></ngbd-modal-basic>
-                    <!--<a class="btn btn-primary btn-sm faculty_btnsm" role="button" data-toggle="modal"-->
-                    <!--data-target="#myModal">-->
-                    <!--<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>-->
-                    <!--</a>-->
-                    <a class="btn btn-danger btn-sm faculty_btnsm" role="button"
+                    <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити факультет"
                        (click)="delRecord(entity, faculty.faculty_id)">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>
