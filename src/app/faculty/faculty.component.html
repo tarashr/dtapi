@@ -21,7 +21,8 @@
                     <select class="form-control media767" name="count" id=""
                             title="виберіть кількість факультетів на сторінці"
                             [(ngModel)]="limit"
-                            (input)="changeLimit()">
+                            (input)="changeLimit()"
+                            [disabled]="searchData.length>0">
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
@@ -75,5 +76,18 @@
             </li>
         </ul>
     </div>
+    <ngb-pagination
+            [collectionSize]="countOfFaculties"
+            [(page)]="page"
+            [maxSize]="5"
+            [pageSize]="limit"
+            [rotate]="true"
+            [ellipses]="false"
+            [boundaryLinks]="true"
+            (pageChange)="pageChange($event)"
+            [hidden]="searchData.length>0">
+    </ngb-pagination>
+
 </div>
+
 <template ngbModalContainer></template>

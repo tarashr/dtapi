@@ -3,7 +3,6 @@ import {Router} from "@angular/router";
 import {Faculty} from "../shared/classes/faculty";
 import {CommonService} from "../shared/services/common.service";
 
-
 @Component({
     templateUrl: 'faculty.component.html',
     styleUrls: ['faculty.component.css'],
@@ -15,9 +14,10 @@ export class FacultyComponent implements OnInit {
     private countOfFaculties:number;
     public entity:string = "faculty";
     public limit:number = 5;
-    private offset:number = 0;
     private findResultFaculties:Faculty[];
     public searchData:string = "";
+    public page:number = 1;
+    private offset:number = (this.page - 1) * this.limit;
 
     //data for child NgbdModalBasic
     public titleForNew = "Створити факультет";
@@ -35,6 +35,20 @@ export class FacultyComponent implements OnInit {
                 private _router:Router) {
     }
 
+    ngOnInit() {
+        let userRole:string = localStorage.getItem("userRole");
+        if (!userRole && userRole != "admin") {
+            this._router.navigate(["/login"]);
+        }
+        this.getRecordsRange();
+        this.getCountRecords();
+    }
+
+    getCountRecords() {
+        this._commonService.getCountRecords(this.entity)
+            .then(data => this.countOfFaculties = data.numberOfRecords);
+    }
+
     getRecordsRange():void {
         this._commonService.getRecordsRange(this.entity, this.limit, this.offset)
             .then(data => this.faculties = data)
@@ -43,7 +57,6 @@ export class FacultyComponent implements OnInit {
                     this._router.navigate(["/login"])
                 }
             });
-        this.offset += this.limit;
     }
 
     delRecord(entity:string, id:number) {
@@ -54,36 +67,29 @@ export class FacultyComponent implements OnInit {
 
     changeLimit() {
         this.offset = 0;
+        this.page = 1;
         setTimeout(()=> {
             this._commonService.getRecordsRange(this.entity, this.limit, this.offset)
                 .then(data => this.faculties = data);
-            this.offset += this.limit;
         }, 0);
-
-    }
-
-    ngOnInit() {
-        let userRole:string = localStorage.getItem("userRole");
-        if (!userRole && userRole != "admin") {
-            this._router.navigate(["/login"]);
-        }
-        this.getRecordsRange();
-        this._commonService.getCountRecords(this.entity)
-            .then(data => this.countOfFaculties = data.numberOfRecords);
     }
 
     findEntity() {
         setTimeout(()=> {
-            if (this.searchData.length ===1) return;
-            if (this.searchData.length ===0) {
-                this.offset=0;
+            // if (this.searchData.length === 1) {
+            //     this.getCountRecords();
+            //     return;
+            // }
+            if (this.searchData.length === 0) {
+                this.offset = 0;
+                this.page = 1;
+                this.getCountRecords();
                 this.getRecordsRange();
                 return;
             }
+
             this._commonService.getRecords(this.entity)
                 .then(data => {
-                    console.log('we are find faculties with: ', this.searchData);
-                    console.log('all faculies : ', data);
                     this.findResultFaculties = data.filter((faculty)=> {
                         if (faculty.faculty_name.toLowerCase().indexOf(this.searchData.toLowerCase()) === -1) {
                             return false
@@ -92,7 +98,8 @@ export class FacultyComponent implements OnInit {
                             return true
                         }
                     });
-                    this.faculties=this.findResultFaculties;
+                    this.countOfFaculties = this.findResultFaculties.length;
+                    this.faculties = this.findResultFaculties;
                 })
                 .catch(error=> {
                     if (error.response === "Only logged users can work with entities") {
@@ -101,11 +108,16 @@ export class FacultyComponent implements OnInit {
                 });
 
         }, 0);
-
     }
 
     refreshData(data:string) {
         this.offset -= this.limit;
+        this.getRecordsRange();
+    }
+
+    pageChange(num:number) {
+        this.page = num;
+        this.offset = (this.page - 1) * this.limit;
         this.getRecordsRange();
     }
 }

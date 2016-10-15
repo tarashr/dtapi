@@ -5,7 +5,7 @@ import "rxjs/add/operator/toPromise";
 @Injectable()
 export class CommonService {
 
-    private getRecordsUrlBase:string = "http://dtapi.local/";
+    private hostUrlBase:string = "http://dtapi.local/";
 
     constructor(private _http:Http) {
     };
@@ -18,7 +18,7 @@ export class CommonService {
 
     getRecords(entity:string):Promise<any> {
         return this._http
-            .get(`${this.getRecordsUrlBase}${entity}/getRecords`)
+            .get(`${this.hostUrlBase}${entity}/getRecords`)
             .toPromise()
             .then((response:any)=>response.json())
             .catch(this.handleError);
@@ -27,7 +27,7 @@ export class CommonService {
 
     getRecordById(entity:string, id:number|string):Promise<any> {
         return this._http
-            .get(`${this.getRecordsUrlBase}${entity}/getRecords/${id}`)
+            .get(`${this.hostUrlBase}${entity}/getRecords/${id}`)
             .toPromise()
             .then((response:any)=>response.json())
             .catch(this.handleError);
@@ -35,7 +35,7 @@ export class CommonService {
 
     getRecordsRange(entity:string, limit:number, offset:number):Promise<any> {
         return this._http
-            .get(`${this.getRecordsUrlBase}${entity}/getRecordsRange/${limit}/${offset}`)
+            .get(`${this.hostUrlBase}${entity}/getRecordsRange/${limit}/${offset}`)
             .toPromise()
             .then((response:any)=>response.json())
             .catch(this.handleError);
@@ -43,7 +43,7 @@ export class CommonService {
 
     getCountRecords(entity:string):Promise<any> {
         return this._http
-            .get(`${this.getRecordsUrlBase}${entity}/countRecords`)
+            .get(`${this.hostUrlBase}${entity}/countRecords`)
             .toPromise()
             .then((response:any)=>response.json())
             .catch(this.handleError);
@@ -51,7 +51,7 @@ export class CommonService {
 
     insertData(entity:string, data:any):Promise<any> {
         return this._http
-            .post(`${this.getRecordsUrlBase}${entity}/insertData`, JSON.stringify(data))
+            .post(`${this.hostUrlBase}${entity}/insertData`, JSON.stringify(data))
             .toPromise()
             .then((response:any)=>response.json())
             .catch(this.handleError);
@@ -59,7 +59,7 @@ export class CommonService {
 
     updateData(entity:string, id:number, data:any):Promise<any> {
         return this._http
-            .post(`${this.getRecordsUrlBase}${entity}/update/${id}`, JSON.stringify(data))
+            .post(`${this.hostUrlBase}${entity}/update/${id}`, JSON.stringify(data))
             .toPromise()
             .then((response:any)=>response.json())
             .catch(this.handleError);
@@ -67,7 +67,7 @@ export class CommonService {
 
     delRecord(entity:string, id:number|string):Promise<any> {
         return this._http
-            .get(`${this.getRecordsUrlBase}${entity}/del/${id}`)
+            .get(`${this.hostUrlBase}${entity}/del/${id}`)
             .toPromise()
             .then((response:any)=>response.json())
             .then(data => {
@@ -77,4 +77,6 @@ export class CommonService {
             })
             .catch(this.handleError);
     }
+    
+    
 }
