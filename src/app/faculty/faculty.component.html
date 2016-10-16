@@ -1,0 +1,94 @@
+<div class="faculty-container">
+    <nav class="navbar navbar-default facultyNavbarDefault navbarDefault">
+        <div class="container-fluid">
+            <div class="navbar-text navbarText">Факультети</div>
+            <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
+                <div class="form-group inputSearch">
+                    <input type="text" class="form-control" placeholder="знайти факультет" name="inputSearch"
+                           title="для пошуку введіть мінімум 2 символи"
+                           [(ngModel)]="searchData"
+                           (input)="findEntity()">
+                </div>
+            </form>
+            <form class="navbar-form navbar-right navbarForm">
+                <div class="form-group">
+                    <ngbd-modal-basic
+                            [title]="titleForNew"
+                            [facultyName]="nameForNew"
+                            [facultyDescription]="descriptionForNew"
+                            [activate]="create"
+                    ></ngbd-modal-basic>
+                    <select class="form-control media767" name="count" id=""
+                            title="виберіть кількість факультетів на сторінці"
+                            [(ngModel)]="limit"
+                            (input)="changeLimit()"
+                            [disabled]="searchData.length>0">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option [ngValue]="countOfFaculties">Всі</option>
+                    </select>
+                </div>
+            </form>
+            <!-- </div> -->
+        </div>
+    </nav>
+
+
+    <div class="container-fluid">
+        <ul class="list-group faculty_list">
+            <li class="list-group-item row  hidden-xs">
+                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">№</div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Назва факультету</div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Опис факультету</div>
+                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn"></div>
+            </li>
+            <li class="list-group-item row"
+                *ngFor="let faculty of faculties; let i=index">
+                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">
+                    <span class="visible-xs-inline-block">№:</span>
+                    <span class="align-xs">{{i+1+(page-1)*limit}}</span>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
+                    <span class="visible-xs-inline-block">Назва факультету:</span>
+                    <span class="align-xs">{{faculty.faculty_name}}</span>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
+                    <span class="visible-xs-inline-block">Опис факультету:</span>
+                    <span class="align-xs">{{faculty.faculty_description}}</span>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
+                    <a class="btn btn-success btn-sm faculty_btnsm" role="button" title="Переглянути групи факультету">
+                        <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                    </a>
+                    <ngbd-modal-basic
+                            [title]="titleForEdit"
+                            [facultyName]="faculty.faculty_name"
+                            [facultyDescription]="faculty.faculty_description"
+                            [facultyId]="faculty.faculty_id"
+                            [activate]=edit
+                            (refreshData)="refreshData($event)"
+                    ></ngbd-modal-basic>
+                    <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити факультет"
+                       (click)="delRecord(entity, faculty.faculty_id)">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <ngb-pagination
+            [collectionSize]="countOfFaculties"
+            [(page)]="page"
+            [maxSize]="5"
+            [pageSize]="limit"
+            [rotate]="true"
+            [ellipses]="false"
+            [boundaryLinks]="true"
+            (pageChange)="pageChange($event)"
+            [hidden]="searchData.length>0 || countOfFaculties==='undefined'">
+    </ngb-pagination>
+
+</div>
+
+<template ngbModalContainer></template>

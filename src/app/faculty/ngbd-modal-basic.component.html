@@ -1,0 +1,36 @@
+<template #createWindow let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">{{title}}</h4>
+    </div>
+    <div class="modal-body modalBody">
+        <div class="input-group inputGroup">
+            <span class="input-group-addon modalSpan" id="basic-addon">Назва факультету:</span>
+            <input type="text" class="form-control modalInput" id="basic-url_" aria-describedby="basic-addon3"
+                   [(ngModel)]="facultyName">
+        </div>
+        <div class="input-group inputGroup">
+            <span class="input-group-addon modalSpan" id="basic-addon3">Опис факультету:</span>
+            <input type="text" class="form-control modalInput" id="basic-url" aria-describedby="basic-addon3"
+                   [(ngModel)]="facultyDescription">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="run();c('Create click')">Застосувати</button>
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Відмінити</button>
+    </div>
+</template>
+
+<div class="openModalBtn" [ngSwitch]="activate">
+    <a *ngSwitchCase="'create'" class="btn btn-success" role="button" title="Створити новий факультет"
+       (click)="open(createWindow)">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    </a>
+    <a *ngSwitchCase="'edit'" class="btn btn-primary btn-sm faculty_btnsm" role="button" title="Редагувати дані факультету"
+       (click)="open(createWindow)">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+    </a>
+</div>
+

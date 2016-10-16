@@ -1,0 +1,116 @@
+body {
+    border: 2px solid #e7e7e7;
+    max-width: 1044px;
+    padding: 10px;
+    margin: 10px auto;
+}
+
+.main-menu {
+    max-width: 1024px;
+    margin: 0px auto 10px auto;
+    padding: 10px;
+    min-width: 420px;
+    font-size: 12px;
+}
+
+.main-menu .mainMenuNavbar {
+    margin-bottom: 0;
+    min-width: 420px;
+}
+
+.subject-container {
+    max-width: 1024px;
+    margin: 5px auto 0px auto;
+    padding: 0px 10px 0 10px;
+    min-width: 412px;
+}
+
+.facultyNavbarFormLeft {
+    font-size: 12px;
+}
+
+.navbarDefault {
+    margin-bottom: 10px;
+}
+
+.modalBody {
+    background-color: #f9f9f9;
+}
+
+.inputGroup {
+    margin: 10px auto;
+}
+
+.modalSpan {
+    min-width: 180px;
+}
+.colxs12_btn{
+    text-align: center;
+}
+.faculty_list li:nth-child(2n){
+    background-color: #f9f9f9;
+}
+
+@media screen and (max-width: 767px) {
+    .navbarText {
+        width: 90px;
+        display: inline-block;
+        float: left;
+    }
+    .inputSearch {
+        width: 60%;
+        display: inline-block;
+    }
+    .navbarForm {
+        height: 53px;
+        display: inline-block;
+        margin: -1px -15px;
+        border: none;
+    }
+    .facultyNavbarFormLeft {
+        width: 330px;
+        margin-left: 0px;
+    }
+    .inputSearch input {
+        margin-bottom: -17px;
+        width: 180px;
+    }
+    .navbarForm button {
+        margin-bottom: 4px;
+    }
+    .media767 {
+        width: 46px;
+        display: inline-block;
+        margin: auto 5px;
+    }
+    .subject-container {
+        text-align: center;
+    }
+    .closeBtn {
+        margin-left: 25px;
+    }
+    input.media767 {
+        margin-bottom: -12px;
+        margin-left: 20px;
+    }
+    select.media767 {
+        width: 60px;
+        padding-left: 7px;
+    }
+    .tableStriped th {
+        text-align: center;
+    }
+    .colxs12 {
+        font-size: 180%;
+        text-align: left;
+    }
+    .colxs12_number{
+        font-size: 180%;
+    }
+    .faculty_btnsm {
+        margin: auto 10px;
+        width: 50px;
+        height: 50px;
+        line-height: 40px;
+    }
+}

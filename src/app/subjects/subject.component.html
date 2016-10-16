@@ -1,0 +1,66 @@
+<div class="subject-container">
+    <nav class="navbar navbar-default navbarDefault">
+        <div class="container-fluid">
+            <div class="navbar-text navbarText">Предмети</div>
+            <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
+                <div class="form-group inputSearch">
+                    <input type="text" class="form-control" placeholder="пошук">
+                </div>
+
+            </form>
+            <form class="navbar-form navbar-right navbarForm">
+                <div class="form-group">
+                    <a href="#" class="btn btn-success " type="submit" data-toggle="modal" role="button"
+                       title="створити новий предмет">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+                    <select class="form-control media767" name="count" id=""
+                            title="виберіть кількість предметів на сторінці">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                    </select>
+                </div>
+            </form>
+            <!-- </div> -->
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <ul class="list-group faculty_list">
+
+            <li class="list-group-item row hidden-xs">
+                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number"><b>№</b></div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12"><b>Назва предмету</b></div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12"><b>Опис предмету</b></div>
+                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn"></div>
+            </li>
+
+            <li *ngFor="let subject of subjects" class="list-group-item row">
+                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number"><span
+                        class="hidden-md hidden-lg hidden-sm">№:</span>1
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12"><span class="hidden-md hidden-lg hidden-sm">Предмети:</span>{{subject.subject_name}}
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12"><span class="hidden-md hidden-lg hidden-sm">Опис предмету:</span>{{subject.subject_description}}
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
+                    <a class="btn btn-success btn-sm faculty_btnsm" href="#" role="button" title="Tести">
+                        <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                    </a>
+                    <a class="btn btn-success btn-sm faculty_btnsm" href="#" role="button"
+                       title="Розклад тестів">
+                        <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                    </a>
+                    <a class="btn btn-primary btn-sm faculty_btnsm" href="#" role="button" data-toggle="modal"
+                       data-target="#myModal" title="Редагувати предмет">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </a>
+                    <a class="btn btn-danger btn-sm faculty_btnsm" href="#" role="button" title="Видалити предмет">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
