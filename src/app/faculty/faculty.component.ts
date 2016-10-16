@@ -17,7 +17,7 @@ export class FacultyComponent implements OnInit {
     private findResultFaculties:Faculty[];
     public searchData:string = "";
     public page:number = 1;
-    private offset:number = (this.page - 1) * this.limit;
+    private offset:number = 0;
 
     //data for child NgbdModalBasic
     public titleForNew = "Створити факультет";
@@ -36,12 +36,12 @@ export class FacultyComponent implements OnInit {
     }
 
     ngOnInit() {
-        let userRole:string = localStorage.getItem("userRole");
+        let userRole:string = sessionStorage.getItem("userRole");
         if (!userRole && userRole != "admin") {
             this._router.navigate(["/login"]);
         }
+        this.countOfFaculties = Number(localStorage.getItem(this.entity));
         this.getRecordsRange();
-        this.getCountRecords();
     }
 
     getCountRecords() {
@@ -49,7 +49,7 @@ export class FacultyComponent implements OnInit {
             .then(data => this.countOfFaculties = data.numberOfRecords);
     }
 
-    getRecordsRange():void {
+    getRecordsRange() {
         this._commonService.getRecordsRange(this.entity, this.limit, this.offset)
             .then(data => this.faculties = data)
             .catch(error=> {
@@ -60,7 +60,7 @@ export class FacultyComponent implements OnInit {
     }
 
     delRecord(entity:string, id:number) {
-        this.offset -= this.limit;
+        this.offset = (this.page - 1) * this.limit;
         this._commonService.delRecord(entity, id)
             .then(()=>this.getRecordsRange());
     }
@@ -76,10 +76,6 @@ export class FacultyComponent implements OnInit {
 
     findEntity() {
         setTimeout(()=> {
-            // if (this.searchData.length === 1) {
-            //     this.getCountRecords();
-            //     return;
-            // }
             if (this.searchData.length === 0) {
                 this.offset = 0;
                 this.page = 1;
@@ -91,6 +87,7 @@ export class FacultyComponent implements OnInit {
             this._commonService.getRecords(this.entity)
                 .then(data => {
                     this.findResultFaculties = data.filter((faculty)=> {
+                        // return ~faculty.faculty_name.toLowerCase().indexOf(this.searchData.toLowerCase());
                         if (faculty.faculty_name.toLowerCase().indexOf(this.searchData.toLowerCase()) === -1) {
                             return false
                         }
@@ -98,6 +95,7 @@ export class FacultyComponent implements OnInit {
                             return true
                         }
                     });
+                    this.page = 1;
                     this.countOfFaculties = this.findResultFaculties.length;
                     this.faculties = this.findResultFaculties;
                 })
@@ -111,7 +109,7 @@ export class FacultyComponent implements OnInit {
     }
 
     refreshData(data:string) {
-        this.offset -= this.limit;
+        this.offset = (this.page - 1) * this.limit;
         this.getRecordsRange();
     }
 

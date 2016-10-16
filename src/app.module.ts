@@ -10,6 +10,7 @@ import {AppComponent}            from './app/app.component';
 import {LoginComponent}          from "./app/login/login.component";
 import {StartPageComponent}      from "./app/studentpart/start-page.component";
 import {AdminStartPageComponent} from "./app/statistic/admin-start-page.component";
+import {StatisticComponent} from "./app/statistic/statistic.component";
 import {SubjectComponent}        from "./app/subjects/subject.component";
 import {FacultyComponent}        from "./app/faculty/faculty.component";
 import {NgbdModalBasic}        from "./app/faculty/ngbd-modal-basic.component";
@@ -34,7 +35,8 @@ import {CommonService}       from './app/shared/services/common.service';
         StartPageComponent,
         AdminStartPageComponent,
         FacultyComponent,
-        NgbdModalBasic
+        NgbdModalBasic,
+        StatisticComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},

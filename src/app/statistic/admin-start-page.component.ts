@@ -15,7 +15,7 @@ export class AdminStartPageComponent {
     }
 
     ngOnInit() {
-        let userRole:string = localStorage.getItem("userRole");
+        let userRole:string = sessionStorage.getItem("userRole");
         if (!userRole && userRole != "admin") {
             this._router.navigate(["/login"]);
         }
@@ -23,7 +23,8 @@ export class AdminStartPageComponent {
 
     logout() {
         this._loginService.logout();
-        localStorage.removeItem("userRole");
+        localStorage.clear();
+        sessionStorage.clear();
         this._router.navigate(["/login"]);
     }
 }

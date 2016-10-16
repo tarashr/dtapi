@@ -24,10 +24,10 @@ export class LoginComponent {
         this._loginService.login(this.user)
             .then((response:any)=> {
                 if (response.roles && (response.roles[1] === "student")) {
-                    localStorage.setItem("userRole", response.roles[1]);
+                    sessionStorage.setItem("userRole", response.roles[1]);
                     this._router.navigate(["/student"]);
                 } else if (response.roles && (response.roles[1] === "admin")) {
-                    localStorage.setItem("userRole", response.roles[1]);
+                    sessionStorage.setItem("userRole", response.roles[1]);
                     this._router.navigate(["/admin"]);
                 } else {
                     this.loginMessage = true;

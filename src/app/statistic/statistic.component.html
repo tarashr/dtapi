@@ -1,0 +1,10 @@
+<div class="faculty-container">
+    <div class="container-fluid">
+        <h3>Статистика системи</h3>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let entity of entities">
+                Зареєстровано {{entity.nameForIteration}}<span class="badge">{{entity.count}}</span>
+            </li>
+        </ul>
+    </div>
+</div>
