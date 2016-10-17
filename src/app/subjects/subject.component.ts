@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { Subject }   from '../shared/classes/subject'
-
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import { OnInit } from '@angular/core';
+import '../shared/rxjs-operators';
 
-import { SubjectService }  from '../shared/services/subject.service'
+import { Subject }   from '../shared/classes/subject';
+import { SubjectService }  from '../shared/services/subject.service';
 
 @Component({
     selector: 'subject-container',
@@ -12,16 +12,26 @@ import { SubjectService }  from '../shared/services/subject.service'
 })
 
 export class SubjectComponent implements OnInit {
-    subjects: Subject[];
 
-    constructor(private subjectService: SubjectService) { }
+    public subjects:Subject[];
+    errorMessage:string;
+    pageTittle:string = 'Предмети';
 
-    getSubjects(): void {
-        this.subjectService.getSubjects().then(subjects => this.subjects = subjects);
+    constructor(
+        private subjectService: SubjectService
+    ){}
+
+    ngOnInit():void {
+        this.getSubjects();
     }
 
-    ngOnInit(): void {
-        this.getSubjects();
+    /////methods///////
+    getSubjects():void {
+        this.subjectService.getSubjects()
+            .subscribe(
+                subjects => this.subjects = subjects,
+                error => this.errorMessage = <any>error
+            );
     }
 
 }

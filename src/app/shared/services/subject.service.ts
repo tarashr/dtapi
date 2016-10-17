@@ -1,27 +1,51 @@
-import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Headers, Http, Response} from '@angular/http';
+import {Observable} from 'rxjs/observable';
+import '../rxjs-operators';
 
-import 'rxjs/add/operator/toPromise';
-
-import { Subject }   from '../classes/subject'
+import {Subject}   from '../classes/subject'
+import *as url from '../constants_url';
 
 @Injectable()
 export class SubjectService {
 
-    private subjectUrl = 'http://dtapi.local/subject/getRecords';  // URL to web api
+    ////properties////
+    private headers = new Headers({'Content-Type': 'application/json'});
 
-    private handleError(error: any): Promise<any> {
-        console.error('An error occurred', error); // for demo purposes only
-        return Promise.reject(error.message || error);
+    constructor(private http:Http) {
     }
 
-    constructor(private http: Http) { }
+    private handleError(error:any) {
+        // In a real world app, we might use a remote logging infrastructure
+        // We'd also dig deeper into the error to get a better message
+        let errMsg = (error.message) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        console.error(errMsg); // log to console instead
+        return Observable.throw(errMsg);
+    }
 
-    getSubjects(): Promise<Subject[]> {
-        return this.http.get(this.subjectUrl)
-            .toPromise()
-            .then(response => response.json() as Subject[])
+    public getSubjects(): Observable<Subject[]> {
+        return this.http
+            .get(url.getSubjectsUrl)
+            .map((res: Response) => res.json())
+            .do((response) => console.log(JSON.stringify(response)))
             .catch(this.handleError);
     }
 
+    // public deleteSubject(id: number):Observable<any> {
+    //     return this.http.delete(`${url.delSubjectUrl}/${id}`, {headers: this.headers})
+    //         .catch(this.handleError);
+    // }
+
+    // public updateSubject(subject, subject_id):Observable<any> {
+    //     return this.http.post(`${url.editSubjectUrl}/${subject_id}`, JSON.stringify(subject), {headers: this.headers})
+    //         .map((res:Response) => res.json())
+    //         .catch(this.handleError);
+    // }
+
+    // public createSubject(subject):Observable<Subject[]> {
+    //     return this.http.post(`${url.addSubjectUrl}`, JSON.stringify(subject), {headers: this.headers})
+    //         .map((res:Response) => res.json())
+    //         .catch(this.handleError);
+    // }
 }
