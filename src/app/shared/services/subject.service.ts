@@ -37,11 +37,11 @@ export class SubjectService {
             .catch(this.handleError);
     }
 
-    // public updateSubject(subject, subject_id):Observable<any> {
-    //     return this.http.post(`${url.editSubjectUrl}/${subject_id}`, JSON.stringify(subject), {headers: this.headers})
-    //         .map((res:Response) => res.json())
-    //         .catch(this.handleError);
-    // }
+    public updateSubject(subject, subject_id): Observable<any> {
+        return this.http.post(`${url.editSubjectUrl}/${subject_id}`, JSON.stringify(subject), {headers: this.headers})
+            .map((res: Response) => res.json())
+            .catch(this.handleError);
+    }
 
     public createSubject(subject): Observable<Subject[]> {
         return this.http.post(`${url.addSubjectUrl}`, JSON.stringify(subject), {headers: this.headers})

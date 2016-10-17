@@ -57,10 +57,12 @@
                         <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                     </a>
 
-                    <button class="btn btn-primary btn-sm faculty_btnsm"
-                            title="Редагувати предмет">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    </button>
+                    <template ngbModalContainer></template>
+                    <edit-subject
+                            [subjects] = "subjects"
+                            [subject_id] = "subject.subject_id"
+                            (getSubjectsRequest) = "getSubjects($event)">
+                    </edit-subject>
 
                     <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити предмет"
                        (click)="deleteSubject(subject)">
