@@ -32,10 +32,10 @@ export class SubjectService {
             .catch(this.handleError);
     }
 
-    // public deleteSubject(id: number):Observable<any> {
-    //     return this.http.delete(`${url.delSubjectUrl}/${id}`, {headers: this.headers})
-    //         .catch(this.handleError);
-    // }
+    public deleteSubject(id: number):Observable<any> {
+         return this.http.delete(`${url.delSubjectUrl}/${id}`, {headers: this.headers})
+             .catch(this.handleError);
+    }
 
     // public updateSubject(subject, subject_id):Observable<any> {
     //     return this.http.post(`${url.editSubjectUrl}/${subject_id}`, JSON.stringify(subject), {headers: this.headers})

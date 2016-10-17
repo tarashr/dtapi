@@ -34,4 +34,18 @@ export class SubjectComponent implements OnInit {
             );
     }
 
+    deleteSubject(subject: Subject): void {
+        if (confirm('Should I delete subject')) {
+            this.subjectService
+                .deleteSubject(subject.subject_id)
+                .subscribe(
+                    data => {
+                        this.getSubjects();
+                        return true;
+                    },
+                    error => this.errorMessage = <any>error
+                );
+        }
+    }
+
 }
