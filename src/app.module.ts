@@ -12,6 +12,7 @@ import {StartPageComponent}      from "./app/studentpart/start-page.component";
 import {AdminStartPageComponent} from "./app/statistic/admin-start-page.component";
 import {StatisticComponent} from "./app/statistic/statistic.component";
 import {SubjectComponent}        from "./app/subjects/subject.component";
+import { AddSubjectComponent }  from './app/subjects/add_subject/add-subject.component';
 import {FacultyComponent}        from "./app/faculty/faculty.component";
 import {NgbdModalBasic}        from "./app/faculty/ngbd-modal-basic.component";
 
@@ -32,6 +33,7 @@ import {CommonService}       from './app/shared/services/common.service';
         AppComponent,
         LoginComponent,
         SubjectComponent,
+        AddSubjectComponent,
         StartPageComponent,
         AdminStartPageComponent,
         FacultyComponent,

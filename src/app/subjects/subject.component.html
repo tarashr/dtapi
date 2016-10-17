@@ -11,9 +11,11 @@
             <form class="navbar-form navbar-right navbarForm">
                 <div class="form-group">
 
-                    <button class="btn btn-success " type="submit" data-toggle="modal" role="button"
-                            title="створити новий предмет">Додати
-                    </button>
+                    <template ngbModalContainer></template>
+                    <add-subject
+                            (getSubjectsRequest) = "getSubjects($event)"
+                            [subjects] = "subjects">
+                    </add-subject>
 
                     <select class="form-control media767" name="count" id=""
                             title="виберіть кількість предметів на сторінці">

@@ -1,0 +1,14 @@
+.modalBody {
+    background-color: #f9f9f9;
+}
+
+.inputGroup {
+    margin: 10px auto;
+}
+
+.modalSpan {
+    min-width: 150px;
+}
+.openModalBtn {
+    display: inline-block;
+}
