@@ -1,0 +1,19 @@
+﻿.info{
+	background-color:#f9f9f9;
+	border: 5px solid #fff;
+}
+
+.time{
+	color:#000;
+}
+.nom-qua{
+	margin-top:2px;
+	margin-bottom:2px;
+}
+
+@media (max-width: 767px) {
+.nom-qua{
+	margin:5px;
+}
+
+}
