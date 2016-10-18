@@ -10,8 +10,7 @@ class Entity {
 
 @Component({
     templateUrl: 'statistic.component.html',
-    styleUrls: ['statistic.component.css'],
-    providers: [CommonService]
+    styleUrls: ['statistic.component.css']
 })
 export class StatisticComponent implements OnInit {
 
@@ -59,7 +58,7 @@ export class StatisticComponent implements OnInit {
         }
         this.entities.forEach((entity)=>{
             this._commonService.getCountRecords(entity.name)
-                .then(data => {
+                .subscribe(data => {
                     entity.count = data.numberOfRecords;
                     localStorage.setItem(entity.name, (entity.count as string));
                 });

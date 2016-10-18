@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
-import  {Http} from "@angular/http";
-import "rxjs/add/operator/toPromise";
+import  {Http, Response} from "@angular/http";
+import {Observable}     from 'rxjs';
+// import "rxjs";
 
 @Injectable()
 export class CommonService {
@@ -10,73 +11,63 @@ export class CommonService {
     constructor(private _http:Http) {
     };
 
-    private handleError(error:any):Promise<any> {
-        console.error('An error occurred ', error.status); // for demo purposes only
-        return Promise.reject(error.message || error.json());
+    private handleError(error:any) {
+        let errMsg = (error.message) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        console.error(errMsg); // log to console instead
+        return Observable.throw(errMsg);
 
     }
 
-    getRecords(entity:string):Promise<any> {
+    getRecords(entity:string):Observable<any> {
         return this._http
             .get(`${this.hostUrlBase}${entity}/getRecords`)
-            .toPromise()
-            .then((response:any)=>response.json())
+            .map((response:Response)=>response.json())
             .catch(this.handleError);
 
     }
 
-    getRecordById(entity:string, id:number|string):Promise<any> {
+    getRecordById(entity:string, id:number|string):Observable<any> {
         return this._http
             .get(`${this.hostUrlBase}${entity}/getRecords/${id}`)
-            .toPromise()
-            .then((response:any)=>response.json())
+            .map((response:Response)=>response.json())
             .catch(this.handleError);
     }
 
-    getRecordsRange(entity:string, limit:number, offset:number):Promise<any> {
+    getRecordsRange(entity:string, limit:number, offset:number):Observable<any> {
         return this._http
             .get(`${this.hostUrlBase}${entity}/getRecordsRange/${limit}/${offset}`)
-            .toPromise()
-            .then((response:any)=>response.json())
+            .map((response:any)=>response.json())
             .catch(this.handleError);
     }
 
-    getCountRecords(entity:string):Promise<any> {
+    getCountRecords(entity:string):Observable<any> {
         return this._http
             .get(`${this.hostUrlBase}${entity}/countRecords`)
-            .toPromise()
-            .then((response:any)=>response.json())
+            .map((response:any)=>response.json())
             .catch(this.handleError);
     }
 
-    insertData(entity:string, data:any):Promise<any> {
+    insertData(entity:string, data:any):Observable<any> {
         return this._http
             .post(`${this.hostUrlBase}${entity}/insertData`, JSON.stringify(data))
-            .toPromise()
-            .then((response:any)=>response.json())
+            .map((response:any)=>response.json())
             .catch(this.handleError);
     }
 
-    updateData(entity:string, id:number, data:any):Promise<any> {
+    updateData(entity:string, id:number, data:any):Observable<any> {
         return this._http
             .post(`${this.hostUrlBase}${entity}/update/${id}`, JSON.stringify(data))
-            .toPromise()
-            .then((response:any)=>response.json())
+            .map((response:any)=>response.json())
             .catch(this.handleError);
     }
 
-    delRecord(entity:string, id:number|string):Promise<any> {
+    delRecord(entity:string, id:number|string):Observable<any> {
         return this._http
             .get(`${this.hostUrlBase}${entity}/del/${id}`)
-            .toPromise()
-            .then((response:any)=>response.json())
-            .then(data => {
-                if (data.response === "ok") {
-                    console.log(`${entity} with id ${id} was delete`)
-                }
-            })
+            .map((response:any)=>response.json())
             .catch(this.handleError);
     }
-    
-    
+
+
 }
