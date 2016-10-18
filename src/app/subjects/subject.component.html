@@ -59,8 +59,7 @@
 
                     <template ngbModalContainer></template>
                     <edit-subject
-                            [subjects] = "subjects"
-                            [subject_id] = "subject.subject_id"
+                            [subject] = "subject"
                             (getSubjectsRequest) = "getSubjects($event)">
                     </edit-subject>
 

@@ -14,9 +14,8 @@ import {Subject}   from '../../shared/classes/subject';
 export class EditSubjectComponent {
     closeResult: string;
     errorMessage: string;
-    subject = {};
-    @Input() subject_id:number;
-    @Input() subjects:Subject;
+
+    @Input() subject;
     @Output() getSubjectsRequest = new EventEmitter();
 
     Tittle: string = "Редагувати дані предмету";
@@ -26,7 +25,7 @@ export class EditSubjectComponent {
     ) {}
 
     getSubjects() {
-        this.getSubjectsRequest.emit(this.subjects);
+        this.getSubjectsRequest.emit(this.subject);
     }
 
     open(content) {
@@ -49,7 +48,7 @@ export class EditSubjectComponent {
 
     save():void {
         console.log(this.subject);
-        this.subjectService.updateSubject(this.subject, this.subject_id)
+        this.subjectService.updateSubject(this.subject, this.subject.subject_id)
             .subscribe(
                 () => {
                     this.getSubjects();
