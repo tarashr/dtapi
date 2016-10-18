@@ -6,6 +6,7 @@ import { LoginService } from "../shared/services/login.service";
 @Component({
     selector: 'start-page',
     templateUrl: 'start-page.component.html',
+	styleUrls: ['start-page.component.css'],
     providers: [LoginService]
 })
 
