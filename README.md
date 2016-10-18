@@ -13,23 +13,21 @@ Structure
     <li>src
         <ul>
         <li>сomponents</li>
-        <li>app  ----------------------<i> //main app folder</i> 
+        <li>app  
                 <ul>
                    <li>faculty
                                 <ul>
                                     <li>faculty.component.ts|html|sass|spec.ts</li>
-                                    <li>faculty.module.ts  ------------------<i> // ???????</i></li>
                                 </ul>
                             </li>
                             <li>subject
                                 <ul>
                                     <li>subject.component.ts|html|sass|spec.ts</li>
-                                    <li>subject.module.ts  --------------<i> // ???????</i></li>
                                 </ul>
                             </li>
                             <li>student</li>
                             <li> ... other</li>
-                    <li>shared --------<i> // We want to make multiple instances of them and for these to be available everywhere</i>
+                    <li>shared 
                         <ul>
                             <li>services
                         <ul>
@@ -37,7 +35,7 @@ Structure
                             <li> ... other</li>
                         </ul>
                     </li>
-                    <li>classes  --------------<i> // Here we'l define some feature of our class(e.g. student)</i>
+                    <li>classes  
                         <ul>
                             <li>subject.ts</li>
                             <li>faculty.ts</li>
@@ -47,24 +45,24 @@ Structure
                     </li>
                         </ul>
                     </li>
-                    <li>app.component.ts -------- <i>// Root component for the app (e.g. AppComponent)</i></li>
+                    <li>app.component.ts 
                     <li>app.component.html</li>
                     <li>app.component.sass</li>
                 </ul>
             </li>
             <li>assets
                 <ul>
-                    <li>img ---------------------<i>// Images and icons for your app</i></li>
+                    <li>img </li>
                     <li>fonts</li>
-                    <li>libs --------------------<i>// Third-party libraries</i></li>
-                    <li>sass  -------------------<i>// Mixins, variables etc. (SaSS files)</i></li>
+                    <li>libs</li>
+                    <li>sass</li>
                 </ul>
             </li>
             <li>app.module.ts</li>
             <li>vendor.ts</li>
             <li>app-routing.module.ts</li>
-            <li>main.ts  ----------------------  <i>// bootstrap here</i></li>
-            <li>index.html  -------------------  <i>// Starting page</i></li>   
+            <li>main.ts </li>
+            <li>index.html </li>   
         </ul>
     </li>
     <li>README.md</li>
@@ -141,3 +139,152 @@ Explanation
 > - **Avoid** importing the CoreModule anywhere except in the AppModule.
 
    
+Basic rules for working with GITHUB Ropositories
+================================================
+This section explains the basic rules of work on our common project using
+version control system GIT.
+
+----------
+
+#### Our repository on Github.com
+if069web
+rv_518Web
+
+----------
+
+This model envisages one central repository if069web.
+Each developer clones main repository * origin *.
+All members will take and send changes (* push & pull *) in the * origin *.
+Also, each developer will be able to pick up changes from other team members
+previously adding a remote repository
+
+```
+git remote add <namerepo> <url>
+
+```
+
+To remove the change from colleagues must enter the following command
+
+```
+git pull <namerepo> <branch>
+
+```
+
+The repository will contain two main branches
+
+ **master**
+>- main branch, the code in it will be in a state of production.
+        We must push change in it only after each demo.
+    
+ **develop**
+>- main branch for develop, will always contain the latest changes.
+
+
+----------
+
+#### Addition branch
+
+- functionalities branch (feature)
+- branch releases (demo)
+- branch hotfix (hotfix)
+
+Each branch has its own meaning and set of rules
+
+----------
+
+Functionalities branch (feature)
+--------------------------------
+
+>- are based on develop
+```
+    $ git checkout -b myfeature develop
+    Switched to a new branch "myfeature"
+```
+>- at the end of work on the functionality merge into develop
+```
+    $ git checkout develop
+    Switched to branch 'develop'
+    $ git merge --no-ff myfeature
+```
+>- after the branch must be removed
+   ```
+   $ git branch -d myfeature
+   Deleted branch myfeature (was 05e9557).
+   $ git push origin develop
+   ```
+>- we must name it - all but master, develop, release, hotfix
+
+----------
+ 
+ Branch releases (demo)
+-----------------------
+  
+ >- are based on develop
+ ```
+ $ git checkout -b demo-1 develop
+ Switched to a new branch "demo-1"
+```
+>- merge into develop and master
+>- name  - demo-*
+>- created at the time of readiness branch develop to the new demo
+>- after creating we must specify a new version of project
+ ```
+ $ git commit -a -m "Bumped version number to 1"
+  ```
+>- when the release branch is ready we merge it into master
+  ```
+ $ git checkout master
+ Switched to branch 'master'
+ $ git merge --no-ff demo-1
+ Merge made by recursive.
+ ```
+>- create tag 
+```
+$ git tag -a 1
+```
+>- to save change in fathes release we must merge it into branche develop 
+````
+$ git checkout develop
+Switched to branch 'develop'
+$ git merge --no-ff demo-1
+Merge made by recursive.
+````
+>-  at the end we delete branch
+````
+$ git branch -d demo-1
+Deleted branch demo-1 (was ff452fe).
+````
+
+----------
+
+Branch hotfix (hotfix)
+----------------------
+
+>- are based on master
+````
+$ git checkout -b hotfix-1.2.1 master
+Switched to a new branch "hotfix-1.2.1"
+````
+>- merge into develop and master
+>- name hotfix-*
+>- cens its existence is the work team of the branch development (develop) can safely continue
+   while someone is preparing a fix production version.
+>- after correcting merge it and create a master tag
+````
+$ git checkout master
+Switched to branch 'master'
+$ git merge --no-ff hotfix-1.2.1
+$ git tag -a 1.2.1
+````
+>- transfer the corrections into develop
+````
+$ git checkout develop
+Switched to branch 'develop'
+$ git merge --no-ff hotfix-1.2.1
+Merge made by recursive.
+````
+>- remove branch
+````
+$ git branch -d hotfix-1.2.1
+Deleted branch hotfix-1.2.1 (was abbe5d6).
+````
