@@ -10,7 +10,7 @@ export const addSubjectUrl:string = baseUrl + 'subject/insertData';
 export const editSubjectUrl:string = baseUrl + 'subject/update'; // + id of subject
 export const delSubjectUrl:string = baseUrl + 'subject/del'; // + id of subject
 
-export const getAdminUsersUrl:string = baseUrl + 'user/getRecords'; // + user id
-export const delAdminUserUrl:string = baseUrl + 'user/del'; // + user id
-export const editAdminUserUrl:string = baseUrl + 'user/update'; // + user id
-export const addAdminUserUrl:string = baseUrl + 'user/insertData';
+export const getAdminUsersUrl:string = baseUrl + 'AdminUser/getRecords'; // + user id
+export const delAdminUserUrl:string = baseUrl + 'AdminUser/del'; // + user id
+export const editAdminUserUrl:string = baseUrl + 'AdminUser/update'; // + user id
+export const addAdminUserUrl:string = baseUrl + 'AdminUser/insertData';

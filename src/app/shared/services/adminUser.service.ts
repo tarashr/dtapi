@@ -24,7 +24,6 @@ export class AdminUserService {
         return this.http
             .get(url.getAdminUsersUrl)
             .map((res: Response) => res.json())
-            .do((response) => console.log(JSON.stringify(response)))
             .catch(this.handleError);
     }
 

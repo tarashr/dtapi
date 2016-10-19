@@ -12,7 +12,7 @@
 
             <form class="navbar-form navbar-right navbarForm">
                 <div class="form-group">
-                    <a class="btn btn-success" role="button" title="створити новий факультет"
+                    <a class="btn btn-success" role="button" title=""
                        data-toggle="modal" data-target="#myModal2">
                         Додати
                     </a>
@@ -40,22 +40,23 @@
 
             <li *ngFor="let adminUser of adminUsers; let i = index" class="list-group-item row">
                 <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">
-                    <span class="hidden-md hidden-lg hidden-sm">№:</span>{{i+1}}
+                    {{i+1}}
                 </div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
-                    <span class="hidden-md hidden-lg hidden-sm">Ім'я:</span>{{adminUser.username}}
+                <div class="col-xs-12 col-sm-3 col-md-3 colxs12">
+                    {{adminUser.username}}
                 </div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
-                    <span class="hidden-md hidden-lg hidden-sm">Поштова скринька:</span>{{adminUser.email}}
+                <div class="col-xs-12 col-sm-2 col-md-2 colxs12">
+                    {{adminUser.last_login}}
                 </div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12"><span class="hidden-md hidden-lg hidden-sm">Логін</span>{{adminUser.last_login}}
+                <div class="col-xs-12 col-sm-3 col-md-3 colxs12">
+                    {{adminUser.email}}
                 </div>
                 <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                    <a class="btn btn-success btn-sm faculty_btnsm" href="#" role="button" title="Tести">
+                    <a class="btn btn-success btn-sm faculty_btnsm" href="#" role="button" title="">
                         <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
                     </a>
                     <a class="btn btn-success btn-sm faculty_btnsm" href="#" role="button"
-                       title="Розклад тестів">
+                       title="">
                         <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                     </a>
 
