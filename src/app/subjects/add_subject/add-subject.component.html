@@ -6,15 +6,30 @@
         <h4 class="modal-title">{{Tittle}}</h4>
     </div>
     <div class="modal-body">
-        <div class="input-group inputGroup">
-            <span class="input-group-addon modalSpan" id="basic-addon3">Назва предмету</span>
-            <input [(ngModel)]="subject.subject_name" type="text" class="form-control modalInput" id="basic-url" aria-describedby="basic-addon3">
-        </div>
-        <div class="input-group inputGroup">
-            <span class="input-group-addon modalSpan" id="basic-addon3">Опис предмету</span>
-            <input [(ngModel)]="subject.subject_description" type="text" class="form-control modalInput" id="basic-url" aria-describedby="basic-addon3">
-        </div>
+            <div class="input-group inputGroup">
+                <span class="input-group-addon modalSpan" id="basic-addon3">Назва предмету</span>
+                <input
+                        [(ngModel)]="subject.subject_name"
+                        type="text"
+                        class="form-control modalInput"
+                        id="basic-url"
+                        aria-describedby="basic-addon3"
+                        required
+                        pattern="[А-ЯA-Z]{1}([а-яa-z]|\s){2,32}">
+            </div>
+            <div class="input-group inputGroup">
+                <span class="input-group-addon modalSpan" id="basic-addon3">Опис предмету</span>
+                <input
+                        [(ngModel)]="subject.subject_description"
+                        type="text"
+                        class="form-control modalInput"
+                        id="basic-url"
+                        aria-describedby="basic-addon3"
+                        required
+                        pattern="[А-ЯA-Z]{1}([а-яa-z]|\s){2,32}">
+            </div>
     </div>
+
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Скасувати</button>
         <button type="button" class="btn btn-primary" (click)="createSubject(); c('Close click')">Додати</button>

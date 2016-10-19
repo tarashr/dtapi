@@ -13,15 +13,16 @@
 
                     <template ngbModalContainer></template>
                     <add-subject
-                            (getSubjectsRequest) = "getSubjects($event)"
-                            [subjects] = "subjects">
+                            (getSubjectsRequest)="getSubjects($event)"
+                            [subjects]="subjects">
                     </add-subject>
 
-                    <select class="form-control media767" name="count" id=""
+                    <select (change)="changeLimit()" class="form-control media767" name="count" id="s"
                             title="виберіть кількість предметів на сторінці">
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
+
                     </select>
                 </div>
             </form>
@@ -59,8 +60,8 @@
 
                     <template ngbModalContainer></template>
                     <edit-subject
-                            [subject] = "subject"
-                            (getSubjectsRequest) = "getSubjects($event)">
+                            [subject]="subject"
+                            (getSubjectsRequest)="getSubjects($event)">
                     </edit-subject>
 
                     <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити предмет"
@@ -70,5 +71,13 @@
                 </div>
             </li>
         </ul>
+        <ngb-pagination
+                [pageSize]="limit"
+                [collectionSize]="totalSubjects"
+                [(page)]="currentpage"
+                (pageChange)="pageChange($event)"
+                [maxSize]="maxSize">
+        </ngb-pagination>
+
     </div>
 </div>

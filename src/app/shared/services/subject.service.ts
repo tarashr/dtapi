@@ -48,4 +48,16 @@ export class SubjectService {
             .map((res: Response) => res.json())
             .catch(this.handleError);
     }
+
+    public getSubjectsRange(limit:number, offset:number): Observable<Subject[]> {
+        return this.http.get(`${url.getRangeOfSubjectsUrl}/${limit}/${offset}`)
+            .map(res => res.json())
+            .catch(this.handleError);
+    }
+
+    public getcoutSubjects(): Observable<any>{
+        return this.http.get(`${url.countSubjectsUrl}`)
+            .map((res: Response) => res.json())
+            .catch(this.handleError);
+    }
 }

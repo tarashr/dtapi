@@ -1,5 +1,6 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {NgbModal, ModalDismissReasons, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import {SubjectService}  from '../../shared/services/subject.service';
 import {Subject}   from '../../shared/classes/subject';
@@ -19,11 +20,18 @@ export class AddSubjectComponent {
     subject = {};
     @Input() subjects: Subject;
     @Output() getSubjectsRequest = new EventEmitter();
+    myForm: FormGroup;
 
     constructor(
         private modalService: NgbModal,
         private subjectService: SubjectService
-    ){}
+    ){
+        this.myForm = new FormGroup({
+            'subject_name': new FormControl(),
+            'subject_description': new FormControl()
+        });
+
+    }
 
     //this method was emited from parent component - subject.component.ts
     getSubjects() {
