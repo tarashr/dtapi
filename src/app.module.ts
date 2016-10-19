@@ -16,7 +16,7 @@ import { AddSubjectComponent }  from './app/subjects/add_subject/add-subject.com
 import { EditSubjectComponent } from './app/subjects/edit_subject/edit-subject.component'
 import {FacultyComponent}        from "./app/faculty/faculty.component";
 import {NgbdModalBasic}        from "./app/faculty/ngbd-modal-basic.component";
-
+import {AdminUserComponent} from "./app/admin_user/admin-user.component";
 
 import {SubjectService}      from './app/shared/services/subject.service';
 import {LoginService}        from './app/shared/services/login.service';
@@ -40,13 +40,15 @@ import {CommonService}       from './app/shared/services/common.service';
         AdminStartPageComponent,
         FacultyComponent,
         NgbdModalBasic,
-        StatisticComponent
+        StatisticComponent,
+        AdminUserComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},
         SubjectService,
         LoginService,
-        CommonService
+        CommonService,
+        HttpModule
     ],
     bootstrap: [AppComponent]
 })

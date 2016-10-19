@@ -1,0 +1,72 @@
+<div class="admin-container">
+    <div class="navbar navbar-default adminNavbarDefault">
+        <div class="container-fluid">
+
+            <div class="navbar-text navbarText">{{title}}</div>
+
+            <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
+                <div class="form-group inputSearch">
+                    <input type="text" class="form-control" placeholder="пошук">
+                </div>
+            </form>
+
+            <form class="navbar-form navbar-right navbarForm">
+                <div class="form-group">
+                    <a class="btn btn-success" role="button" title="створити новий факультет"
+                       data-toggle="modal" data-target="#myModal2">
+                        Додати
+                    </a>
+                    <select class="form-control media767" name="count" id=""
+                            title="кількість на сторінці">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <ul class="list-group admin_list">
+            <li class="list-group-item row">
+                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">ID</div>
+                <div class="col-xs-12 col-sm-3 col-md-3 colxs12">Ім'я</div>
+                <div class="col-xs-12 col-sm-2 col-md-2 colxs12">Логін</div>
+                <div class="col-xs-12 col-sm-3 col-md-3 colxs12">Поштова скринька</div>
+                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
+                </div>
+            </li>
+
+            <li *ngFor="let adminUser of adminUsers; let i = index" class="list-group-item row">
+                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">
+                    <span class="hidden-md hidden-lg hidden-sm">№:</span>{{i+1}}
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
+                    <span class="hidden-md hidden-lg hidden-sm">Ім'я:</span>{{adminUser.username}}
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
+                    <span class="hidden-md hidden-lg hidden-sm">Поштова скринька:</span>{{adminUser.email}}
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12"><span class="hidden-md hidden-lg hidden-sm">Логін</span>{{adminUser.last_login}}
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
+                    <a class="btn btn-success btn-sm faculty_btnsm" href="#" role="button" title="Tести">
+                        <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                    </a>
+                    <a class="btn btn-success btn-sm faculty_btnsm" href="#" role="button"
+                       title="Розклад тестів">
+                        <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                    </a>
+
+
+                    <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити предмет"
+                       (click)="deleteAdminUser(adminUser)">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
+                </div>
+
+            </li>
+        </ul>
+    </div>
+</div>

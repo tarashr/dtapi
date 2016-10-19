@@ -7,6 +7,7 @@ import {AdminStartPageComponent} from "./app/statistic/admin-start-page.componen
 import {SubjectComponent} from './app/subjects/subject.component';
 import {FacultyComponent} from './app/faculty/faculty.component';
 import {StatisticComponent} from "./app/statistic/statistic.component";
+import {AdminUserComponent} from "./app/admin_user/admin-user.component";
 
 const appRoutes:Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -18,6 +19,7 @@ const appRoutes:Routes = [
             {path: "statistic", component: StatisticComponent},
             {path: "subject", component: SubjectComponent},
             {path: "faculty", component: FacultyComponent},
+            {path: "adminUser", component: AdminUserComponent},
             {path: "**", redirectTo: "statistic", pathMatch: "full"}
         ]
     },
