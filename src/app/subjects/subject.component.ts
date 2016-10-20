@@ -2,10 +2,11 @@ import {Component, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrate
 import {OnInit} from '@angular/core';
 import '../shared/rxjs-operators';
 import {NgbPaginationConfig} from '@ng-bootstrap/ng-bootstrap';
-
+import {Router} from "@angular/router";
 import {Subject}   from '../shared/classes/subject';
 import {SubjectService}  from '../shared/services/subject.service';
-import {subscribeOn} from "rxjs/operator/subscribeOn";
+import {CommonService} from "../shared/services/common.service";
+
 
 @Component({
     selector: 'subject-container',
@@ -13,32 +14,37 @@ import {subscribeOn} from "rxjs/operator/subscribeOn";
     styleUrls: ['subject.component.css']
 })
 
-export class SubjectComponent implements OnInit, OnChanges {
+export class SubjectComponent implements OnInit {
 
-    public _pageCount = 0;
+    // public _pageCount = 0;
 
     public subjects: Subject[];
     public errorMessage: string;
     public pageTittle: string = 'Предмети';
     public limit: number = 5;
     public totalSubjects: number;
-    public currentpage: number = 0;
-    public pages: number[] = [];
+    public currentpage: number = 1;
+    // public pages: number[] = [];
     public offset: number = 0;
     public maxSize: number = 5;
+    // public options: number[] = [5, 10, 15];
 
-    pageChange(number) {
-    };
 
-    // @Output() pageChange = new EventEmitter<number>(true);
 
-    constructor(private subjectService: SubjectService) {
-    }
 
-    ngOnInit(): void {
+    constructor(
+        private subjectService: SubjectService,
+        private _router:Router
+    ) { }
+
+    ngOnInit() {
+        let userRole:string = sessionStorage.getItem("userRole");
+        if (!userRole && userRole != "admin") {
+            this._router.navigate(["/login"]);
+        }
+        this.totalSubjects = Number(localStorage.getItem('subjects'));
         this.getSubjectRange();
         this.getcountSubjects();
-
     }
 
     /////methods///////
@@ -88,70 +94,19 @@ export class SubjectComponent implements OnInit, OnChanges {
 
     }
 
-    // pageChange(number){
-    //
-    // }
-
     changeLimit() {
-        console.log(this.limit);
-        this.limit = 5 || 10 || 15;
+        this.offset = 0;
+        this.currentpage = 1;
+        setTimeout(()=> {
+            this.subjectService.getSubjectsRange(this.limit, this.offset)
+                .subscribe(data => this.subjects = data);
+        }, 0);
+    }
+
+    pageChange(num: number) {
+        this.currentpage = num;
+        this.offset = (this.currentpage - 1) * this.limit;
         this.getSubjectRange();
-    };
-
-    //Pagination
-
-    get pageCount(): number {
-        return this._pageCount;
-    };
-
-    selectPage(pageNumber: number): void {
-        this._setPageInRange(pageNumber);
-        this.ngOnChanges(null);
     }
-
-    ngOnChanges(changes: SimpleChanges): void {
-
-        this._pageCount = Math.ceil(this.totalSubjects / this.limit);
-
-        // fill-in model needed to render pages
-        this.pages.length = 0;
-        for (let i = 1; i <= this._pageCount; i++) {
-            this.pages.push(i);
-        }
-
-        // set page within 1..max range
-        this._setPageInRange(this.currentpage);
-
-    }
-
-    private _applyPagination(): [number, number] {
-        let page = Math.ceil(this.currentpage / this.maxSize) - 1;
-        let start = page * this.maxSize;
-        let end = start + this.maxSize;
-
-        return [start, end];
-    }
-
-    private _setPageInRange(newPageNo) {
-        const prevPageNo = this.currentpage;
-        this.currentpage = this.getValueInRange(newPageNo, this._pageCount, 1);
-
-        if (this.currentpage !== prevPageNo) {
-            this.pageChange(this.currentpage);
-            // this.offset = this.currentpage * this.limit;
-            // this.getSubjectRange();
-          this.pageChange(this.currentpage)
-            {
-                this.offset = this.currentpage * this.limit;
-                this.getSubjectRange();
-            }
-        }
-    }
-
-    private getValueInRange(value: number, max: number, min = 0): number {
-        return Math.max(Math.min(value, max), min);
-    }
-
 }
-
 
