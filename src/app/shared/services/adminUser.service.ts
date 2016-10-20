@@ -27,8 +27,8 @@ export class AdminUserService {
             .catch(this.handleError);
     }
 
-    public deleteAdminUser(id: number): Observable<any> {
-        return this.http.delete(`${url.delAdminUserUrl}/${id}`, {headers: this.headers})
+    public deleteAdminUser(user_id: number): Observable<any> {
+        return this.http.delete(`${url.delAdminUserUrl}/${user_id}`, {headers: this.headers})
             .catch(this.handleError)
     }
 
