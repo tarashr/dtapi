@@ -16,7 +16,7 @@ export class FacultyComponent implements OnInit {
     private findResultFaculties:Faculty[];
     public searchData:string = "";
     public page:number = 1;
-    private offset:number = 0;
+    public offset:number = 1;
 
     //data for child NgbdModalBasic
     public titleForNew = "Створити факультет";
@@ -116,6 +116,7 @@ export class FacultyComponent implements OnInit {
     }
 
     pageChange(num:number) {
+        console.log('in faculty');
         this.page = num;
         this.offset = (this.page - 1) * this.limit;
         this.getRecordsRange();

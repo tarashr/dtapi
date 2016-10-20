@@ -1,0 +1,22 @@
+
+<template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Підтвердіть видалення</h4>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="modal-footer modal_button">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Remove</button>
+            <button type="button" class="btn btn-primary">Cancel</button>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+        <button type="button" class="btn btn-primary" (click)="removeSubject(); c('Close click')">Додати</button>
+    </div>
+</template>

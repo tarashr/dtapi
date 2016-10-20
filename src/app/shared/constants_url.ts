@@ -9,3 +9,6 @@ export const countSubjectsUrl:string = baseUrl + 'subject/countRecords';
 export const addSubjectUrl:string = baseUrl + 'subject/insertData';
 export const editSubjectUrl:string = baseUrl + 'subject/update'; // + id of subject
 export const delSubjectUrl:string = baseUrl + 'subject/del'; // + id of subject
+export const getGroupUrl:string=baseUrl+'group/getRecords';
+export const countGroupsUrl:string = baseUrl + 'group/countRecords';
+export const getRangeOfGroupUrl:string = baseUrl + 'group/getRecordsRange';

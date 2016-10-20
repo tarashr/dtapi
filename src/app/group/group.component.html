@@ -1,0 +1,117 @@
+<div class="group-container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="row header_nav"><h4>Групи</h4></div>
+            <div class="row menu_p_bottom">
+                <div class=" col-sm-4 col-md-2">
+                    <input type="text" class="form-control" placeholder="пошук">
+                </div>
+                <div class=" col-xs-12 col-sm-4 col-md-4">
+                    <select class="form-control select">
+                        <option disabled selected>Виберіть факультет</option>
+                        <option>ФАКН</option>
+                        <option>Нафтогазопроводи</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-xs-12 col-sm-4 col-md-4">
+                    <select class="form-control select">
+                        <option disabled selected>Виберіть спеціальність</option>
+                        <option>Системи та мережі</option>
+                        <option>Автоматизація управління</option>
+                        <option>Автоматизація виробництва</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12 settings">
+
+                    <input type="image" class="form-control add" src="plus.jpeg" alt="" title="створити новий факультет">
+
+                    <select class=" form-control " name="count" id=""
+                            title="виберіть кількість факультетів на сторінці"
+                            [(ngModel)]="limit"
+                            (input)="changeLimit()">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option [ngValue]="countOfGroup">{{countOfGroup}}</option>
+                    </select>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+    <div class="row container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li class="active">Group</li>
+        </ol>
+    </div>
+
+
+    <div class="container-fluid">
+        <ul class="list-group faculty_list">
+            <li class="list-group-item row table_header">
+                <div class="col-xs-2 col-sm-1 col-md-1 ">№</div>
+                <div class="col-xs-3 col-sm-2 col-md-2 ">Назва</div>
+                <div class="col-xs-3 col-sm-2 col-md-3 ">Факультет</div>
+                <div class="col-xs-4 col-sm-3 col-md-3 ">Спеціальність</div>
+                <div class="col-xs-12 col-sm-4 col-md-3 ">
+
+
+
+
+                </div>
+            </li>
+
+            <li class="list-group-item row" *ngFor="let group of groups; let i=index">
+                <div class="col-xs-2 col-sm-1 col-md-1 col-esm"><span class="table_header_sm">Номер</span>{{i+1+(page-1)*limit}}</div>
+                <div class="col-xs-3 col-sm-2 col-md-2 col-esm"><span class="table_header_sm">Назва</span>{{group.group_name}}</div>
+                <div class="col-xs-3 col-sm-2 col-md-3 col-esm"><span class="table_header_sm">Факультет</span>{{group.faculty_id}}</div>
+                <div class="col-xs-4 col-sm-3 col-md-3 col-esm"><span class="table_header_sm">Спеціальність</span>{{group.speciality_id}}</div>
+                <div class="col-xs-12 col-sm-4 col-md-3 button_xs ">
+
+                    <div class="glyph">
+                        <a class="btn btn-success btn-sm" href="list_of_tests.html" role="button" title="Результати">
+                            <span class="glyphicon glyphicon-stats" aria-hidden="true" ></span>
+
+                        </a>
+                        <a class="btn btn-success btn-sm" href="list_of_students.html" role="button" title="Переглянути студентів">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true" ></span>
+
+                        </a>
+                        <a class="btn btn-success btn-sm" href="#" role="button" title="Розклад">
+                            <span class="glyphicon glyphicon-th" aria-hidden="true" ></span>
+                        </a>
+                        <a class="btn btn-primary btn-sm" href="#" role="button" title="Редагувати" data-toggle="modal" data-target="#editGroup">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span>
+                        </a>
+                        <a class="btn btn-danger btn-sm" href="#" role="button" title="Видалити" data-toggle="modal" data-target="#removeGroup">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true" ></span>
+                        </a>
+                    </div>
+
+
+                </div>
+            </li>
+
+
+
+
+        </ul>
+    </div>
+    <ngb-pagination   [collectionSize]="countOfGroup"
+                      [pageSize]="limit"
+                      [(page)]="page"
+                      [maxSize]="5"
+                      [rotate]="true"
+                      [ellipses]="false"
+                      [boundaryLinks]="true"
+                      (pageChange)="pageChange($event)">
+
+    </ngb-pagination>
+
+
+
+   </div>
