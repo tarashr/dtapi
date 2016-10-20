@@ -21,7 +21,7 @@ export class SubjectComponent implements OnInit {
     public pageTittle: string = 'Предмети';
     public limit: number = 5;
     public totalSubjects: number;
-    public currentpage: number = 1;
+    public currentPage: number = 1;
     public offset: number = 0;
     public maxSize: number = 5;
 
@@ -36,7 +36,7 @@ export class SubjectComponent implements OnInit {
             this._router.navigate(["/login"]);
         }
         this.totalSubjects = Number(localStorage.getItem('subjects'));
-        this.getSubjectRange();
+        this.getSubjectsRange();
         this.getcountSubjects();
     }
 
@@ -55,7 +55,7 @@ export class SubjectComponent implements OnInit {
                 .deleteSubject(subject.subject_id)
                 .subscribe(
                     data => {
-                        this.getSubjectRange();
+                        this.getSubjectsRange();
                         return true;
                     },
                     error => this.errorMessage = <any>error
@@ -75,7 +75,7 @@ export class SubjectComponent implements OnInit {
             );
     }
 
-    getSubjectRange(): void {
+    getSubjectsRange(): void {
         this.subjectService.getSubjectsRange(this.limit, this.offset)
             .subscribe(
                 res => {
@@ -86,19 +86,18 @@ export class SubjectComponent implements OnInit {
             );
     }
 
-    changeLimit() {
+    changeLimit($event) {
+        console.log($event.currentTarget.value);
+        this.limit = $event.currentTarget.value;
         this.offset = 0;
-        this.currentpage = 1;
-        setTimeout(()=> {
-            this.subjectService.getSubjectsRange(this.limit, this.offset)
-                .subscribe(data => this.subjects = data);
-        }, 0);
+        this.currentPage = 1;
+        this.getSubjectsRange();
     }
 
     pageChange(num: number) {
-        this.currentpage = num;
-        this.offset = (this.currentpage - 1) * this.limit;
-        this.getSubjectRange();
+        this.currentPage = num;
+        this.offset = (this.currentPage - 1) * this.limit;
+        this.getSubjectsRange();
     }
 }
 

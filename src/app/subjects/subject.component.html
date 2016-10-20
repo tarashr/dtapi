@@ -18,13 +18,12 @@
                     </add-subject>
 
                     <select class="form-control media767" name="count" id=""
-                            title="виберіть кількість факультетів на сторінці"
-                            [(ngModel)]="limit"
-                            (change)="changeLimit()">
-                            <option value="5">5</option>
+                            title="Вкажіть скількість предметів відображати на сторінці"
+                            (change)="changeLimit($event)">
+                        <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
-                        <option [ngValue]="totalSubjects">Всі</option>
+                        <option [value]="totalSubjects">Всі</option>
                     </select>
                 </div>
             </form>
@@ -45,7 +44,7 @@
             <li *ngFor="let subject of subjects; let i = index" class="list-group-item row">
                 <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">
                     <span class="visible-xs-inline-block">№:</span>
-                    <span class="align-xs">{{i+1+(currentpage-1)*limit}}</span>
+                    <span class="align-xs">{{i+1+(currentPage-1)*limit}}</span>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12"><span
                         class="hidden-md hidden-lg hidden-sm">Предмети:</span>{{subject.subject_name}}
@@ -65,7 +64,7 @@
                     <edit-subject
                             [subject]="subject"
                             (getSubjectsRequest)="getSubjects($event)"
-                            (getSubjectsRange) = "getSubjectRange($event)">
+                            (getSubjectsRange)="getSubjectsRange($event)">
                     </edit-subject>
 
                     <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити предмет"
@@ -78,7 +77,7 @@
         <ngb-pagination
                 [pageSize]="limit"
                 [collectionSize]="totalSubjects"
-                [(page)]="currentpage"
+                [(page)]="currentPage"
                 (pageChange)="pageChange($event)"
                 [maxSize]="maxSize">
         </ngb-pagination>
