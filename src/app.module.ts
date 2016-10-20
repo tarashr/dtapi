@@ -16,12 +16,13 @@ import { AddSubjectComponent }  from './app/subjects/add_subject/add-subject.com
 import { EditSubjectComponent } from './app/subjects/edit_subject/edit-subject.component'
 import {FacultyComponent}        from "./app/faculty/faculty.component";
 import {NgbdModalBasic}        from "./app/faculty/ngbd-modal-basic.component";
+import {GroupComponent}        from './app/group/group.component';
 
 
 import {SubjectService}      from './app/shared/services/subject.service';
 import {LoginService}        from './app/shared/services/login.service';
 import {CommonService}       from './app/shared/services/common.service';
-
+import {GroupService}        from './app/shared/services/group.service'
 @NgModule({
     imports: [
         BrowserModule,
@@ -40,13 +41,15 @@ import {CommonService}       from './app/shared/services/common.service';
         AdminStartPageComponent,
         FacultyComponent,
         NgbdModalBasic,
-        StatisticComponent
+        StatisticComponent,
+        GroupComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},
         SubjectService,
         LoginService,
-        CommonService
+        CommonService,
+        GroupService
     ],
     bootstrap: [AppComponent]
 })

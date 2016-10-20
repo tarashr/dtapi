@@ -6,8 +6,7 @@ import {LoginService} from "../shared/services/login.service";
 @Component({
     selector: "admin-start",
     templateUrl: "admin-start-page.component.html",
-    styleUrls: ["admin-start-page.component.css"],
-    providers: [LoginService]
+    styleUrls: ["admin-start-page.component.css"]
 })
 export class AdminStartPageComponent {
     constructor(private _loginService:LoginService,
