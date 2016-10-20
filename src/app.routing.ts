@@ -8,6 +8,7 @@ import {SubjectComponent} from './app/subjects/subject.component';
 import {FacultyComponent} from './app/faculty/faculty.component';
 import {StatisticComponent} from "./app/statistic/statistic.component";
 import {GroupComponent} from './app/group/group.component';
+import {StudentComponent} from "./app/student/student.component";
 
 const appRoutes:Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -19,7 +20,8 @@ const appRoutes:Routes = [
             {path: "statistic", component: StatisticComponent},
             {path: "subject", component: SubjectComponent},
             {path: "faculty", component: FacultyComponent},
-            {path:"group", component:GroupComponent},
+            {path: "group", component:GroupComponent},
+            {path: "student", component: StudentComponent},
             {path: "**", redirectTo: "statistic", pathMatch: "full"}
         ]
     },

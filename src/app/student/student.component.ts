@@ -6,7 +6,7 @@ import {CommonService} from "../shared/services/common.service";
 @Component({
     templateUrl: 'student.component.html',
     styleUrls: ['student.component.css'],
-    providers: [CommonService]
+    /*providers: [CommonService]*/
 })
 export class StudentComponent implements OnInit {
 
@@ -32,35 +32,48 @@ export class StudentComponent implements OnInit {
         this.getRecordsRange();
     }
 
+
     getCountRecords() {
         this._commonService.getCountRecords(this.entity)
-            .then(data => this.countOfStudents = data.numberOfRecords);
+            .subscribe(
+                data => this.countOfStudents = data.numberOfRecords,
+                error=>console.log(error)
+            );
     }
+
 
     getRecordsRange() {
         this._commonService.getRecordsRange(this.entity, this.limit, this.offset)
-            .then(data => this.students = data)
-            .catch(error=> {
-                if (error.response === "Only logged users can work with entities") {
-                    this._router.navigate(["/login"])
-                }
-            });
+            .subscribe(
+                data => this.students = data,
+                error=> {
+                    if (error.response === "Only logged users can work with entities") {
+                        this._router.navigate(["/login"])
+                    }
+                })
+
     }
+
 
     delRecord(entity:string, id:number) {
         this.offset = (this.page - 1) * this.limit;
         this._commonService.delRecord(entity, id)
-            .then(()=>this.getRecordsRange());
+            .subscribe(()=>this.getRecordsRange());
     }
+
+
 
     changeLimit() {
         this.offset = 0;
         this.page = 1;
         setTimeout(()=> {
             this._commonService.getRecordsRange(this.entity, this.limit, this.offset)
-                .then(data => this.students = data);
+                .subscribe(data => this.students = data);
         }, 0);
     }
+
+
+
 
     findEntity() {
         setTimeout(()=> {
@@ -73,7 +86,7 @@ export class StudentComponent implements OnInit {
             }
 
             this._commonService.getRecords(this.entity)
-                .then(data => {
+                .subscribe(data => {
                     this.findResultStudents = data.filter((student)=> {
                         // return ~student.student_name.toLowerCase().indexOf(this.searchData.toLowerCase());
                         if (student.student_name.toLowerCase().indexOf(this.searchData.toLowerCase()) === -1) {
@@ -86,8 +99,7 @@ export class StudentComponent implements OnInit {
                     this.page = 1;
                     this.countOfStudents = this.findResultStudents.length;
                     this.students = this.findResultStudents;
-                })
-                .catch(error=> {
+                },error=> {
                     if (error.response === "Only logged users can work with entities") {
                         this._router.navigate(["/login"])
                     }
@@ -95,6 +107,7 @@ export class StudentComponent implements OnInit {
 
         }, 0);
     }
+
 
     refreshData(data:string) {
         this.offset = (this.page - 1) * this.limit;
