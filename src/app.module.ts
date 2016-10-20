@@ -21,7 +21,6 @@ import {AdminUserComponent} from "./app/admin_user/admin-user.component";
 import {SubjectService}      from './app/shared/services/subject.service';
 import {LoginService}        from './app/shared/services/login.service';
 import {CommonService}       from './app/shared/services/common.service';
-import {AdminUserService}       from './app/shared/services/adminUser.service';
 
 
 @NgModule({
@@ -50,8 +49,7 @@ import {AdminUserService}       from './app/shared/services/adminUser.service';
         SubjectService,
         LoginService,
         CommonService,
-        HttpModule,
-        AdminUserService
+        HttpModule
     ],
     bootstrap: [AppComponent]
 })

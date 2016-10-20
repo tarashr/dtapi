@@ -2,7 +2,7 @@ import {Component,OnInit} from '@angular/core';
 import '../shared/rxjs-operators';
 
 import {User} from '../shared/classes/user';
-import {AdminUserService} from '../shared/services/adminUser.service'
+import {CommonService} from "../shared/services/common.service";
 
 @Component({
     templateUrl: 'admin-user.component.html',
@@ -11,32 +11,30 @@ import {AdminUserService} from '../shared/services/adminUser.service'
 export class AdminUserComponent implements OnInit {
 
     title: string = 'Адміністратори';
+    public entity: string = 'AdminUser';
     public adminUsers: User[];
     errorMessage: string;
-
-    constructor(private adminUserService: AdminUserService){}
+    
+    constructor(private adminUserService: CommonService){}
 
     ngOnInit(): void {
-        this.getAdminUsers();
+        this.getRecords();
     }
 
-    getAdminUsers():void {
-        this.adminUserService.getAdminUsers()
+    getRecords():void {
+        this.adminUserService.getRecords(this.entity)
             .subscribe(
                 adminUsers => this.adminUsers = adminUsers,
                 error => this.errorMessage = <any>error
             );
     }
 
-    deleteAdminUser(adminUser: User): void {
+    deleteAdminUser(entity:string, id:number) : void {
         if (confirm('Видалити адміністратора?')) {
             this.adminUserService
-                .deleteAdminUser(adminUser.user_id)
+                .delRecord(entity, id)
                 .subscribe(
-                    data => {
-                        this.getAdminUsers();
-                        return true;
-                    },
+                    ()=>this.getRecords(),
                     error => this.errorMessage = <any>error
                 );
         }
