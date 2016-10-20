@@ -62,7 +62,7 @@ export class AddSubjectComponent {
         this.subjectService.createSubject(this.subject)
             .subscribe(
                 (response) => {
-                    this.getSubjects();
+                    // this.getSubjects();
                     console.log(response);
                     this.subject = {};
                 },

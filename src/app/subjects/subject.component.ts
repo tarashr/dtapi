@@ -16,21 +16,14 @@ import {CommonService} from "../shared/services/common.service";
 
 export class SubjectComponent implements OnInit {
 
-    // public _pageCount = 0;
-
     public subjects: Subject[];
     public errorMessage: string;
     public pageTittle: string = 'Предмети';
     public limit: number = 5;
     public totalSubjects: number;
     public currentpage: number = 1;
-    // public pages: number[] = [];
     public offset: number = 0;
     public maxSize: number = 5;
-    // public options: number[] = [5, 10, 15];
-
-
-
 
     constructor(
         private subjectService: SubjectService,
@@ -62,7 +55,7 @@ export class SubjectComponent implements OnInit {
                 .deleteSubject(subject.subject_id)
                 .subscribe(
                     data => {
-                        this.getSubjects();
+                        this.getSubjectRange();
                         return true;
                     },
                     error => this.errorMessage = <any>error
@@ -91,7 +84,6 @@ export class SubjectComponent implements OnInit {
                 },
                 error => this.errorMessage = <any>error
             );
-
     }
 
     changeLimit() {

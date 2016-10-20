@@ -64,7 +64,8 @@
                     <template ngbModalContainer></template>
                     <edit-subject
                             [subject]="subject"
-                            (getSubjectsRequest)="getSubjects($event)">
+                            (getSubjectsRequest)="getSubjects($event)"
+                            (getSubjectsRange) = "getSubjectRange($event)">
                     </edit-subject>
 
                     <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити предмет"

@@ -18,16 +18,13 @@ export class EditSubjectComponent {
 
     @Input() subject;
     @Output() getSubjectsRequest = new EventEmitter();
+    @Output() getSubjectsRange = new EventEmitter();
 
     Tittle: string = "Редагувати дані предмету";
     constructor(
         private modalService: NgbModal,
         private subjectService: SubjectService
     ) {}
-
-    getSubjects() {
-        this.getSubjectsRequest.emit(this.subject);
-    }
 
     open(content) {
         this.modalService.open(content).result.then((result) => {
@@ -52,7 +49,7 @@ export class EditSubjectComponent {
         this.subjectService.updateSubject(this.subject, this.subject.subject_id)
             .subscribe(
                 () => {
-                    this.getSubjects();
+                    this.getSubjectsRange.emit(this.subject);
                     this.subject = {};
                 },
                 error => this.errorMessage = <any>error
