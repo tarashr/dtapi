@@ -24,6 +24,7 @@ export class SubjectComponent implements OnInit {
     public currentPage: number = 1;
     public offset: number = 0;
     public maxSize: number = 5;
+    public searchCriteria:string;
 
     constructor(
         private subjectService: SubjectService,
@@ -99,5 +100,24 @@ export class SubjectComponent implements OnInit {
         this.offset = (this.currentPage - 1) * this.limit;
         this.getSubjectsRange();
     }
+
+    // getCriteria($event){
+    //     this.searchCriteria = $event.currentTarget.value;
+    //
+    // }
+
+    getSubjectsBySearch($event):void {
+        this.searchCriteria = $event.currentTarget.value;
+        this.subjectService.getSubjectsbySearch(this.searchCriteria)
+            .subscribe(
+                res => {
+                    this.subjects = res;
+                    console.log(this.subjects);
+                },
+                error => this.errorMessage = <any>error
+            )
+
+    }
+
 }
 

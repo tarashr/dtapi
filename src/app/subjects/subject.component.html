@@ -4,7 +4,7 @@
             <div class="navbar-text navbarText">{{pageTittle}}</div>
             <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
                 <div class="form-group inputSearch">
-                    <input type="text" class="form-control" placeholder="пошук">
+                    <input (input)="getSubjectsBySearch($event)"   type="text" class="form-control" placeholder="пошук">
                 </div>
 
             </form>

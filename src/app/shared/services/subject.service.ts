@@ -60,4 +60,10 @@ export class SubjectService {
             .map((res: Response) => res.json())
             .catch(this.handleError);
     }
+
+    public getSubjectsbySearch(criteria):Observable<any>{
+        return this.http.get(`${url.getSubjectsBySearchUrl}/${criteria}`)
+            .map(res => res.json())
+            .catch(this.handleError);
+    }
 }

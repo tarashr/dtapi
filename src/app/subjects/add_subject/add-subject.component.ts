@@ -50,13 +50,14 @@ export class AddSubjectComponent {
         console.log(this.subject);
         this.subjectService.createSubject(this.subject)
             .subscribe(
-                (response) => {
+                response => {
                     this.getSubjectsRange.emit(this.subjects);
                     console.log(response);
                     this.subject = {};
                 },
-                error => this.errorMessage = <any>error
-            );
+                error => this.errorMessage = <any>error,
+            )
+
     }
 
 }
