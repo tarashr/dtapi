@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http, Response} from '@angular/http';
+import {Http, Response} from '@angular/http';
 import {Observable} from 'rxjs';
 import '../rxjs-operators';
 
@@ -13,26 +13,28 @@ constructor( private http:Http){}
 
 
     private handleError(error: any) {
-        // In a real world app, we might use a remote logging infrastructure
-        // We'd also dig deeper into the error to get a better message
-        let errMsg = (error.message) ? error.message :
+            let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         console.error(errMsg); // log to console instead
         return Observable.throw(errMsg);
     }
 
-    public getGroups(): Observable<Group[]>{
+
+    public getCountRecords():Observable<any>{
         return this.http
-            .get(url.getGroupUrl)
-            .map((res: Response) => res.json())
+            .get(url.countGroupsUrl)
+            .map((res:Response)=>res.json())
+            .do((response) => {console.log(JSON.stringify(response));})
+            .catch(this.handleError);
+}
+
+    getRecordsRange(limit:number, offset:number):Observable<any> {
+        return this.http
+            .get(`${url.getRangeOfGroupUrl}/${limit}/${offset}`)
+            .map((data:Response)=>data.json())
             .do((response) => {console.log(JSON.stringify(response));})
             .catch(this.handleError);
     }
-    public getFacultyName(groups):Observable<any>{
-        return this.http
-            .get('http://dtapi.local/getRecords/${groups.faculty_id}')
-            .map((res:Response)=>res.json())
-            .catch(this.handleError);
-    }
+
 
 }

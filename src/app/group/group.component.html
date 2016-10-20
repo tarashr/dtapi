@@ -25,10 +25,13 @@
 
                     <input type="image" class="form-control add" src="plus.jpeg" alt="" title="створити новий факультет">
 
-                    <select class=" form-control " name="count" id="" title="виберіть кількість факультетів на сторінці">
+                    <select class=" form-control " name="count" id=""
+                            title="виберіть кількість факультетів на сторінці"
+                            [(ngModel)]="limit"
+                            (input)="changeLimit()">
                         <option value="5">5</option>
                         <option value="10">10</option>
-                        <option value="15">15</option>
+                        <option [ngValue]="countOfGroup">{{countOfGroup}}</option>
                     </select>
 
                 </div>
@@ -63,7 +66,7 @@
             </li>
 
             <li class="list-group-item row" *ngFor="let group of groups; let i=index">
-                <div class="col-xs-2 col-sm-1 col-md-1 col-esm"><span class="table_header_sm">Номер</span>{{i+1}}</div>
+                <div class="col-xs-2 col-sm-1 col-md-1 col-esm"><span class="table_header_sm">Номер</span>{{i+1+(page-1)*limit}}</div>
                 <div class="col-xs-3 col-sm-2 col-md-2 col-esm"><span class="table_header_sm">Назва</span>{{group.group_name}}</div>
                 <div class="col-xs-3 col-sm-2 col-md-3 col-esm"><span class="table_header_sm">Факультет</span>{{group.faculty_id}}</div>
                 <div class="col-xs-4 col-sm-3 col-md-3 col-esm"><span class="table_header_sm">Спеціальність</span>{{group.speciality_id}}</div>
@@ -98,7 +101,16 @@
 
         </ul>
     </div>
+    <ngb-pagination   [collectionSize]="countOfGroup"
+                      [pageSize]="limit"
+                      [(page)]="page"
+                      [maxSize]="5"
+                      [rotate]="true"
+                      [ellipses]="false"
+                      [boundaryLinks]="true"
+                      (pageChange)="pageChange($event)">
 
+    </ngb-pagination>
 
 
 
