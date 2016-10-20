@@ -9,6 +9,7 @@ import {LoginService} from "../shared/services/login.service";
     styleUrls: ["admin-start-page.component.css"]
 })
 export class AdminStartPageComponent {
+        
     constructor(private _loginService:LoginService,
                 private _router:Router) {
     }
@@ -22,8 +23,5 @@ export class AdminStartPageComponent {
 
     logout() {
         this._loginService.logout();
-        localStorage.clear();
-        sessionStorage.clear();
-        this._router.navigate(["/login"]);
     }
 }

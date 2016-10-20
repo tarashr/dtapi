@@ -5,7 +5,7 @@
     "start": "webpack --config config/webpack.dev.js --progress --profile --bail",
     "test": "karma start",
     "postinstall": "typings install",
-    "prestart": "npm install",
+    "prebuild": "npm install",
     "typings": "typings",
     "build": "webpack --config config/webpack.prod.js --progress --profile --bail"
   },

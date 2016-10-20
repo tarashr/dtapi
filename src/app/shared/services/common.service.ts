@@ -1,12 +1,13 @@
-import {Injectable} from "@angular/core";
-import  {Http, Response} from "@angular/http";
-import {Observable}     from 'rxjs';
-// import "rxjs";
+import {Injectable}      from "@angular/core";
+import {Http, Response}  from "@angular/http";
+import {Observable}      from 'rxjs/Observable';
+import {baseUrl}         from "../constants_url.ts";
+import {EntityManagerBody} from "../classes/entity-manager-body";
 
 @Injectable()
 export class CommonService {
 
-    private hostUrlBase:string = "http://dtapi.local/";
+    private hostUrlBase:string = baseUrl;
 
     constructor(private _http:Http) {
     };
@@ -16,7 +17,6 @@ export class CommonService {
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         console.error(errMsg); // log to console instead
         return Observable.throw(errMsg);
-
     }
 
     getRecords(entity:string):Observable<any> {
@@ -24,7 +24,6 @@ export class CommonService {
             .get(`${this.hostUrlBase}${entity}/getRecords`)
             .map((response:Response)=>response.json())
             .catch(this.handleError);
-
     }
 
     getRecordById(entity:string, id:number|string):Observable<any> {
@@ -69,5 +68,24 @@ export class CommonService {
             .catch(this.handleError);
     }
 
+    getEntityValues(data:EntityManagerBody):Observable<any> {
+        return this._http
+            .post(`${this.hostUrlBase}EntityManager/getEntityValues`, JSON.stringify(data))
+            .map((response:any)=>response.json())
+            .catch(this.handleError);
+    }
 
+    getGroupsByFaculty(faculty_id:number):Observable<any> {
+        return this._http
+            .get(`${this.hostUrlBase}group/getGroupsByFaculty/${faculty_id}`)
+            .map((response:any)=>response.json())
+            .catch(this.handleError);
+    }
+
+    getRecordsBySearch(entity:string, search:string){
+        return this._http
+            .get(`${this.hostUrlBase}${entity}/getRecordsBySearch/${search}`)
+            .map((response:any)=>response.json())
+            .catch(this.handleError);
+    }
 }

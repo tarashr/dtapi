@@ -6,16 +6,17 @@ import {APP_BASE_HREF} from '@angular/common';
 import {NgbModule}     from '@ng-bootstrap/ng-bootstrap';
 import {routing}       from "./app.routing";
 
-import {AppComponent}            from './app/app.component';
-import {LoginComponent}          from "./app/login/login.component";
-import {StartPageComponent}      from "./app/studentpart/start-page.component";
-import {AdminStartPageComponent} from "./app/statistic/admin-start-page.component";
-import {StatisticComponent} from "./app/statistic/statistic.component";
-import {SubjectComponent}        from "./app/subjects/subject.component";
-import { AddSubjectComponent }  from './app/subjects/add_subject/add-subject.component';
-import { EditSubjectComponent } from './app/subjects/edit_subject/edit-subject.component'
-import {FacultyComponent}        from "./app/faculty/faculty.component";
-import {NgbdModalBasic}        from "./app/faculty/ngbd-modal-basic.component";
+import {AppComponent}             from './app/app.component';
+import {LoginComponent}           from "./app/login/login.component";
+import {StartPageComponent}       from "./app/studentpart/start-page.component";
+import {AdminStartPageComponent}  from "./app/statistic/admin-start-page.component";
+import {StatisticComponent}       from "./app/statistic/statistic.component";
+import {SubjectComponent}         from "./app/subjects/subject.component";
+import {AddSubjectComponent}      from './app/subjects/add_subject/add-subject.component';
+import {EditSubjectComponent}     from './app/subjects/edit_subject/edit-subject.component'
+import {FacultyComponent}         from "./app/faculty/faculty.component";
+import {GroupsOfFacultyComponent} from "./app/faculty/groups/groups-of-faculty.component"
+import {NgbdModalBasic}           from "./app/faculty/ngbd-modal-basic.component";
 
 
 import {SubjectService}      from './app/shared/services/subject.service';
@@ -40,13 +41,14 @@ import {CommonService}       from './app/shared/services/common.service';
         AdminStartPageComponent,
         FacultyComponent,
         NgbdModalBasic,
-        StatisticComponent
+        StatisticComponent,
+        GroupsOfFacultyComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},
         SubjectService,
         LoginService,
-        CommonService
+        CommonService,
     ],
     bootstrap: [AppComponent]
 })

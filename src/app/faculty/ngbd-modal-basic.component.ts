@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {Faculty} from "../shared/classes/faculty";
 import {CommonService} from "../shared/services/common.service";
@@ -10,7 +10,7 @@ import {CommonService} from "../shared/services/common.service";
     styleUrls: ['./ngbd-modal-basic.component.css']
 })
 export class NgbdModalBasic {
-    closeResult:string;
+
     @Input() facultyName:string;
     @Input() facultyDescription:string;
     @Input() activate:string;
@@ -45,4 +45,5 @@ export class NgbdModalBasic {
     open(content) {
         this.modalService.open(content);
     }
+
 }

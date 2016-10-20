@@ -5,8 +5,8 @@
             <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
                 <div class="form-group inputSearch">
                     <input type="text" class="form-control" placeholder="знайти факультет" name="inputSearch"
-                           title="для пошуку введіть мінімум 2 символи"
-                           [(ngModel)]="searchData"
+                           title="введіть дані для пошуку"
+                           [(ngModel)]="search"
                            (input)="findEntity()">
                 </div>
             </form>
@@ -22,7 +22,7 @@
                             title="виберіть кількість факультетів на сторінці"
                             [(ngModel)]="limit"
                             (input)="changeLimit()"
-                            [disabled]="searchData.length>0">
+                            [disabled]="search.length>0">
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
@@ -58,7 +58,8 @@
                     <span class="align-xs">{{faculty.faculty_description}}</span>
                 </div>
                 <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                    <a class="btn btn-success btn-sm faculty_btnsm" role="button" title="Переглянути групи факультету">
+                    <a class="btn btn-success btn-sm faculty_btnsm" role="button" title="Переглянути групи факультету"
+                        [routerLink]="[faculty.faculty_id, 'groups']">
                         <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                     </a>
                     <ngbd-modal-basic
@@ -86,7 +87,7 @@
             [ellipses]="false"
             [boundaryLinks]="true"
             (pageChange)="pageChange($event)"
-            [hidden]="searchData.length>0 || countOfFaculties==='undefined'">
+            [hidden]="search.length>0 || countOfFaculties==='undefined'">
     </ngb-pagination>
 
 </div>

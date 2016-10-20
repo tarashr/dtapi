@@ -1,5 +1,5 @@
 
-const baseUrl:string = 'http://dtapi.local/';
+export const baseUrl:string = 'http://dtapi.local/';
 
 //CRUD Action which entity
 export const getSubjectsUrl:string = baseUrl + 'subject/getRecords';
