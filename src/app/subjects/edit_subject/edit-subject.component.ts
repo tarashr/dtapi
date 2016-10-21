@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import {SubjectService}  from '../../shared/services/subject.service';
 import {Subject}   from '../../shared/classes/subject';
@@ -14,20 +15,16 @@ import {Subject}   from '../../shared/classes/subject';
 export class EditSubjectComponent {
     closeResult: string;
     errorMessage: string;
-    subject = {};
-    @Input() subject_id:number;
-    @Input() subjects:Subject;
+
+    @Input() subject;
     @Output() getSubjectsRequest = new EventEmitter();
+    @Output() getSubjectsRange = new EventEmitter();
 
     Tittle: string = "Редагувати дані предмету";
     constructor(
         private modalService: NgbModal,
         private subjectService: SubjectService
     ) {}
-
-    getSubjects() {
-        this.getSubjectsRequest.emit(this.subjects);
-    }
 
     open(content) {
         this.modalService.open(content).result.then((result) => {
@@ -49,10 +46,10 @@ export class EditSubjectComponent {
 
     save():void {
         console.log(this.subject);
-        this.subjectService.updateSubject(this.subject, this.subject_id)
+        this.subjectService.updateSubject(this.subject, this.subject.subject_id)
             .subscribe(
                 () => {
-                    this.getSubjects();
+                    this.getSubjectsRange.emit(this.subject);
                     this.subject = {};
                 },
                 error => this.errorMessage = <any>error

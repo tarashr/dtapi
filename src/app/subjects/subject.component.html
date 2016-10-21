@@ -4,7 +4,7 @@
             <div class="navbar-text navbarText">{{pageTittle}}</div>
             <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
                 <div class="form-group inputSearch">
-                    <input type="text" class="form-control" placeholder="пошук">
+                    <input (input)="getSubjectsBySearch($event)"   type="text" class="form-control" placeholder="пошук">
                 </div>
 
             </form>
@@ -13,15 +13,17 @@
 
                     <template ngbModalContainer></template>
                     <add-subject
-                            (getSubjectsRequest) = "getSubjects($event)"
-                            [subjects] = "subjects">
+                            (getSubjectsRequest)="getSubjects($event)"
+                            [subjects]="subjects">
                     </add-subject>
 
                     <select class="form-control media767" name="count" id=""
-                            title="виберіть кількість предметів на сторінці">
+                            title="Вкажіть скількість предметів відображати на сторінці"
+                            (change)="changeLimit($event)">
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
+                        <option [value]="totalSubjects">Всі</option>
                     </select>
                 </div>
             </form>
@@ -40,8 +42,9 @@
             </li>
 
             <li *ngFor="let subject of subjects; let i = index" class="list-group-item row">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number"><span
-                        class="hidden-md hidden-lg hidden-sm">№:</span>{{i+1}}
+                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">
+                    <span class="visible-xs-inline-block">№:</span>
+                    <span class="align-xs">{{i+1+(currentPage-1)*limit}}</span>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12"><span
                         class="hidden-md hidden-lg hidden-sm">Предмети:</span>{{subject.subject_name}}
@@ -59,9 +62,9 @@
 
                     <template ngbModalContainer></template>
                     <edit-subject
-                            [subjects] = "subjects"
-                            [subject_id] = "subject.subject_id"
-                            (getSubjectsRequest) = "getSubjects($event)">
+                            [subject]="subject"
+                            (getSubjectsRequest)="getSubjects($event)"
+                            (getSubjectsRange)="getSubjectsRange($event)">
                     </edit-subject>
 
                     <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити предмет"
@@ -71,5 +74,13 @@
                 </div>
             </li>
         </ul>
+        <ngb-pagination
+                [pageSize]="limit"
+                [collectionSize]="totalSubjects"
+                [(page)]="currentPage"
+                (pageChange)="pageChange($event)"
+                [maxSize]="maxSize">
+        </ngb-pagination>
+
     </div>
 </div>

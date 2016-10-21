@@ -8,10 +8,9 @@ import {SubjectComponent} from './app/subjects/subject.component';
 import {FacultyComponent} from './app/faculty/faculty.component';
 import {GroupsOfFacultyComponent} from './app/faculty/groups/groups-of-faculty.component';
 import {StatisticComponent} from "./app/statistic/statistic.component";
-
 import {GroupComponent} from './app/group/group.component';
+import {AdminUserComponent} from "./app/admin_user/admin-user.component";
 import {SpecialityComponent} from "./app/speciality/speciality.component";
-
 import {AdminUserComponent} from "./app/admin_user/admin-user.component";
 import {StudentComponent} from "./app/student/student.component";
 
@@ -28,9 +27,8 @@ const appRoutes:Routes = [
             {path: "subject", component: SubjectComponent},
             {path: "speciality", component: SpecialityComponent},
             {path: "faculty", component: FacultyComponent},
+            {path: "adminUser", component: AdminUserComponent},
             {path: "faculty/:id/groups", component: GroupsOfFacultyComponent},
-            {path: "group", component: GroupComponent},
-
             {path: "adminUser", component: AdminUserComponent},
             {path: "group", component:GroupComponent},
             {path: "student", component: StudentComponent},

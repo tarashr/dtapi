@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {NgbModal, ModalDismissReasons, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 import {SubjectService}  from '../../shared/services/subject.service';
 import {Subject}   from '../../shared/classes/subject';
@@ -19,16 +19,13 @@ export class AddSubjectComponent {
     subject = {};
     @Input() subjects: Subject;
     @Output() getSubjectsRequest = new EventEmitter();
+    @Output() getSubjectsRange = new EventEmitter();
+
 
     constructor(
         private modalService: NgbModal,
         private subjectService: SubjectService
     ){}
-
-    //this method was emited from parent component - subject.component.ts
-    getSubjects() {
-        this.getSubjectsRequest.emit(this.subjects);
-    }
 
     //this method opens the modal window
     open(content) {
@@ -53,13 +50,14 @@ export class AddSubjectComponent {
         console.log(this.subject);
         this.subjectService.createSubject(this.subject)
             .subscribe(
-                (response) => {
-                    this.getSubjects();
+                response => {
+                    this.getSubjectsRange.emit(this.subjects);
                     console.log(response);
                     this.subject = {};
                 },
-                error => this.errorMessage = <any>error
-            );
+                error => this.errorMessage = <any>error,
+            )
+
     }
 
 }
