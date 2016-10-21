@@ -40,7 +40,6 @@ export class SubjectComponent implements OnInit {
         this.getcountSubjects();
     }
 
-    /////methods///////
     getSubjects(): void {
         this.subjectService.getSubjects()
             .subscribe(

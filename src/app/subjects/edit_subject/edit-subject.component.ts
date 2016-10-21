@@ -16,7 +16,9 @@ export class EditSubjectComponent {
     closeResult: string;
     errorMessage: string;
 
-    @Input() subject;
+    @Input()  subjectName;
+    @Input()  subjectDescription;
+    @Input()  subjectId;
     @Output() getSubjectsRequest = new EventEmitter();
     @Output() getSubjectsRange = new EventEmitter();
 
@@ -45,12 +47,11 @@ export class EditSubjectComponent {
     }
 
     save():void {
-        console.log(this.subject);
-        this.subjectService.updateSubject(this.subject, this.subject.subject_id)
+        let editedSubject:Subject = new Subject(this.subjectName, this.subjectDescription);
+        this.subjectService.updateSubject(editedSubject, this.subjectId)
             .subscribe(
                 () => {
-                    this.getSubjectsRange.emit(this.subject);
-                    this.subject = {};
+                    this.getSubjectsRange.emit(editedSubject);
                 },
                 error => this.errorMessage = <any>error
             )

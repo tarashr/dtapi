@@ -23,7 +23,7 @@
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
-                        <option [value]="totalSubjects">Всі</option>
+                        <option [ngValue]="totalSubjects">Всі</option>
                     </select>
                 </div>
             </form>
@@ -62,7 +62,9 @@
 
                     <template ngbModalContainer></template>
                     <edit-subject
-                            [subject]="subject"
+                            [subjectName]="subject.subject_name"
+                            [subjectDescription]="subject.subject_description"
+                            [subjectId]="subject.subject_id"
                             (getSubjectsRequest)="getSubjects($event)"
                             (getSubjectsRange)="getSubjectsRange($event)">
                     </edit-subject>
