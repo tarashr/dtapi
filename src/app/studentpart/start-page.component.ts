@@ -13,8 +13,8 @@ import { LoginService } from "../shared/services/login.service";
 export class StartPageComponent implements OnInit{
 		
 	public user={
-		student_surname:"",
-		student_name:"",
+		student_surname:"loading...",
+		student_name:"loading...",
 		group_id:""
 	};
 	
@@ -45,6 +45,19 @@ export class StartPageComponent implements OnInit{
             this._router.navigate(["/login"]);
         }
 		
+		this.getStudentProfile(userId);
+		console.log(this.userGroup);
+    }
+	
+
+    logout() {
+		this._loginService.logout();
+		localStorage.clear();
+        sessionStorage.clear();
+        this._router.navigate(["/login"]);
+    }
+	
+	getStudentProfile(userId:number){
 		this._commonService.getRecordById("Student", userId)
 			.subscribe(data=>{	
 					this.user=data[0];
@@ -59,23 +72,6 @@ export class StartPageComponent implements OnInit{
 							
 							})
 					});
-		
-		
-		
-		
-			
-			
-	
-    }
-	
-
-    logout() {
-		
-        this._loginService.logout();
-		localStorage.clear();
-        sessionStorage.clear();
-        this._router.navigate(["/login"]);
-    }
-	
+	}
 
 }
