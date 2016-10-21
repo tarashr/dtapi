@@ -34,6 +34,7 @@ constructor( private http:Http){}
         return this.http
             .get(`${url.getRangeOfGroupUrl}/${limit}/${offset}`)
             .map((data:Response)=>data.json())
+            .do((response) => {console.log(JSON.stringify(response));})
             .catch(this.handleError);
     }
     getFaculty(facultyId:any):Observable<any>{
