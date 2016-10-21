@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {Group} from '../shared/classes/group';
+import {Faculty} from '../shared/classes/faculty';
+import {Speciality} from '../shared/classes/speciality';
 import {GroupService} from '../shared/services/group.service';
 @Component({
     selector:'group-container',
@@ -15,11 +17,18 @@ export class GroupComponent implements OnInit{
     public limit:number=5;
     public offset:number = 0;
     public page:number=1;
+    public facultyId=[];
+    public specialityId=[];
+    public faculty:Faculty[];
+    public speciality:Speciality[];
+    public specialityName=[];
     constructor(private groupService:GroupService, private router:Router){}
 ngOnInit(){
     this.countOfGroup = Number(localStorage.getItem('group'));
-    this.getRecordsRange()
+    this.getRecordsRange();
+
 }
+
 
 getCountRecords():void{
     this.groupService.getCountRecords()
@@ -31,22 +40,64 @@ getCountRecords():void{
         this.offset = 0;
         this.page = 1;
         setTimeout(()=> {
-            this.groupService.getRecordsRange(this.limit, this.offset)
-                .subscribe(data => this.groups = data,
-                    error=>this.errorMessage = <any>error);
+            this.getRecordsRange()
+
         },0);
 }
     getRecordsRange() {
-        console.log('first time',this.offset);
+
         this.groupService.getRecordsRange( this.limit, this.offset)
-            .subscribe(data => this.groups = data,
+            .subscribe(data => {this.groups = data;
+                    console.log(this.groups);
+                for(let i=0;i<data.length;i++){
+                                this.facultyId[i]=data[i].faculty_id;
+                                 this.specialityId[i]=data[i].speciality_id;
+                                 };this.getFaculty();
+
+
+                                                             },
                        error=> {
                       if (error.response === "Only logged users can work with entities") {
                         this.router.navigate(["/login"])}
                        });
+            }
+
+    getFaculty(){
+        this.groupService.getFaculty(this.facultyId)
+            .subscribe(data=>{this.faculty=data;
+                              console.log(this.faculty);
+                for(let i=0;i<this.groups.length;i++){
+                    for(let j=0;j<this.faculty.length;j++) {
+                        if (this.groups[i].faculty_id === this.faculty[j].faculty_id){
+                            this.groups[i].faculty_name=this.faculty[j].faculty_name;
+                        }
+                            }
+                }
+                             },
+            error=> {
+            if (error.response === "Only logged users can work with entities") {
+                this.router.navigate(["/login"])}
+        });
 
     }
+    getSpeciality(){
+        this.groupService.getSpeciality(this.specialityId)
+            .subscribe(data=>{this.faculty=data;
+                    console.log(this.faculty);
+                    for(let i=0;i<this.groups.length;i++){
+                        for(let j=0;j<this.faculty.length;j++) {
+                            if (this.groups[i].faculty_id === this.faculty[j].faculty_id){
+                                this.groups[i].faculty_name=this.faculty[j].faculty_name;
+                            }
+                        }
+                    }
+                },
+                error=> {
+                    if (error.response === "Only logged users can work with entities") {
+                        this.router.navigate(["/login"])}
+                });
 
+    }
 
       pageChange(num:number)
       {
