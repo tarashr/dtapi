@@ -51,13 +51,13 @@ import {GroupService} from './app/shared/services/group.service';
         NgbdModalBasic,
         StatisticComponent,
         GroupComponent,
-        AdminUserComponent
+        AdminUserComponent,
         SpecialityComponent,
         GroupsOfFacultyComponent,
         AdminUserComponent,
 
         GroupComponent,
-        StudentComponent,
+        StudentComponent
 
     ],
     providers: [
