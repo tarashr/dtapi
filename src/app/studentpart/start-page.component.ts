@@ -11,12 +11,20 @@ import { LoginService } from "../shared/services/login.service";
 })
 
 export class StartPageComponent implements OnInit{
-	
-	public entity:string = "student";
+		
 	public user={
-		student_surname:"3",
-		student_name:"3"
+		student_surname:"",
+		student_name:"",
+		group_id:""
 	};
+	
+	public userGroup = {
+		speciality_id:"",
+		faculty_id:""
+	};
+	
+	public userFaculty = {};
+	public userSpeciality = {};
 	
     constructor(
         private _loginService: LoginService,
@@ -36,14 +44,30 @@ export class StartPageComponent implements OnInit{
 		if (!userRole && userRole != "student") {
             this._router.navigate(["/login"]);
         }
-		this.getRecordsById(this.entity, userId);
+		
+		this._commonService.getRecordById("Student", userId)
+			.subscribe(data=>{	
+					this.user=data[0];
+					this._commonService.getRecordById("Group", this.user.group_id)
+						.subscribe(data_grup=>{
+							this.userGroup=data_grup[0];
+								this._commonService.getRecordById("Faculty", this.userGroup.faculty_id)
+								.subscribe(data_facult=>this.userFaculty=data_facult[0]);
+
+								this._commonService.getRecordById("Speciality", this.userGroup.speciality_id)
+								.subscribe(data_speciality=>this.userSpeciality=data_speciality[0]);	
+							
+							})
+					});
+		
+		
+		
+		
+			
+			
+	
     }
 	
-	getRecordsById(entity:string, id:number){
-	console.log(this.user);
-        this._commonService.getRecordById(entity, id)
-			.subscribe(data=>{this.user=data[0]; console.log(this.user)});
-	}
 
     logout() {
 		

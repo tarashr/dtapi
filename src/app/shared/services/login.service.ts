@@ -1,8 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
-import  {Headers, Http, Response} from "@angular/http";
-import {Observable}     from 'rxjs';
-// import "rxjs";
+import {Headers, Http, Response} from "@angular/http";
+import {Observable} from 'rxjs/Observable';
 
 import {User} from "../classes/user";
 
@@ -32,9 +31,13 @@ export class LoginService {
             .catch(this.handleError)
     };
 
-    logout():Observable<any> {
-        return this._http
+    logout() {
+        this._http
             .get(this.logoutUrl)
+            .subscribe();
+        localStorage.clear();
+        sessionStorage.clear();
+        this._router.navigate(["/login"]);
     }
 
 }
