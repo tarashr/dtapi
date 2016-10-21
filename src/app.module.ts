@@ -30,7 +30,7 @@ import {LoginService}        from './app/shared/services/login.service';
 import {CommonService}       from './app/shared/services/common.service';
 import {GroupService}        from './app/shared/services/group.service'
 import {SpecialityService}       from './app/shared/services/speciality.service';
-import {GroupService}        from './app/shared/services/group.service';
+
 
 
 @NgModule({

@@ -53,9 +53,7 @@ getCountRecords():void{
                                 this.facultyId[i]=data[i].faculty_id;
                                  this.specialityId[i]=data[i].speciality_id;
                                  };this.getFaculty();
-
-
-                                                             },
+                                   this.getSpeciality();   },
                        error=> {
                       if (error.response === "Only logged users can work with entities") {
                         this.router.navigate(["/login"])}
@@ -82,12 +80,12 @@ getCountRecords():void{
     }
     getSpeciality(){
         this.groupService.getSpeciality(this.specialityId)
-            .subscribe(data=>{this.faculty=data;
-                    console.log(this.faculty);
+            .subscribe(data=>{this.speciality=data;
+                    console.log(this.speciality);
                     for(let i=0;i<this.groups.length;i++){
-                        for(let j=0;j<this.faculty.length;j++) {
-                            if (this.groups[i].faculty_id === this.faculty[j].faculty_id){
-                                this.groups[i].faculty_name=this.faculty[j].faculty_name;
+                        for(let j=0;j<this.speciality.length;j++) {
+                            if (this.groups[i].speciality_id === this.speciality[j].speciality_id){
+                                this.groups[i].speciality_name=this.speciality[j].speciality_name;
                             }
                         }
                     }
