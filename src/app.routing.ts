@@ -13,6 +13,7 @@ import {GroupComponent} from './app/group/group.component';
 import {SpecialityComponent} from "./app/speciality/speciality.component";
 
 import {AdminUserComponent} from "./app/admin_user/admin-user.component";
+import {StudentComponent} from "./app/student/student.component";
 
 
 const appRoutes:Routes = [
@@ -27,12 +28,12 @@ const appRoutes:Routes = [
             {path: "subject", component: SubjectComponent},
             {path: "speciality", component: SpecialityComponent},
             {path: "faculty", component: FacultyComponent},
-
             {path: "faculty/:id/groups", component: GroupsOfFacultyComponent},
             {path: "group", component: GroupComponent},
 
             {path: "adminUser", component: AdminUserComponent},
-
+            {path: "group", component:GroupComponent},
+            {path: "student", component: StudentComponent},
             {path: "**", redirectTo: "statistic", pathMatch: "full"}
         ]
     },
