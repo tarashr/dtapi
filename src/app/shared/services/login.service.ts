@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
-import  {Headers, Http} from "@angular/http";
-import "rxjs/add/operator/toPromise";
+import {Headers, Http, Response} from "@angular/http";
+import {Observable} from 'rxjs/Observable';
 
 import {User} from "../classes/user";
 
@@ -17,21 +17,27 @@ export class LoginService {
                 private _http:Http) {
     };
 
-    login(user:User):Promise<any> {
-        return this._http
-            .post(this.loginUrl, JSON.stringify(user), {headers: this._headers})
-            .toPromise()
-            .then((response:any)=>response.json())
-            .catch((error:any)=> {
-                console.error("!!!login error: ", error);
-                return Promise.reject(error.json() || error.message);
-            });
+    private handleError(error:any) {
+        let errMsg = (error.message) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        console.error(errMsg); // log to console instead
+        return Observable.throw(errMsg);
     }
 
-    logout():Promise<any> {
-       return this._http
-           .get(this.logoutUrl)
-           .toPromise();
+    login(user:User):Observable<any> {
+        return this._http
+            .post(this.loginUrl, JSON.stringify(user), {headers: this._headers})
+            .map((response:Response)=>response.json())
+            .catch(this.handleError)
+    };
+
+    logout() {
+        this._http
+            .get(this.logoutUrl)
+            .subscribe();
+        localStorage.clear();
+        sessionStorage.clear();
+        this._router.navigate(["/login"]);
     }
 
 }

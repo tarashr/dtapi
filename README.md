@@ -146,12 +146,6 @@ version control system GIT.
 
 ----------
 
-#### Our repository on Github.com
-if069web
-rv_518Web
-
-----------
-
 This model envisages one central repository if069web.
 Each developer clones main repository * origin *.
 All members will take and send changes (* push & pull *) in the * origin *.

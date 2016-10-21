@@ -1,5 +1,5 @@
 
-const baseUrl:string = 'http://dtapi.local/';
+export const baseUrl:string = 'http://dtapi.local/';
 
 //CRUD Action which entity
 export const getSubjectsUrl:string = baseUrl + 'subject/getRecords';
@@ -12,4 +12,8 @@ export const delSubjectUrl:string = baseUrl + 'subject/del'; // + id of subject
 export const getGroupUrl:string=baseUrl+'group/getRecords';
 export const countGroupsUrl:string = baseUrl + 'group/countRecords';
 export const getRangeOfGroupUrl:string = baseUrl + 'group/getRecordsRange';
+
 export const getEntityValues:string = baseUrl + 'EntityManager/getEntityValues';
+
+export const getSpecialityUrl:string=baseUrl+'speciality/getRecords';
+
