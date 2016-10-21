@@ -36,8 +36,7 @@ export class SubjectComponent implements OnInit {
         if (!userRole && userRole != "admin") {
             this._router.navigate(["/login"]);
         }
-        this.totalSubjects = Number(localStorage.getItem('subjects'));
-        this.getSubjectsRange();
+
         this.getcountSubjects();
     }
 
@@ -68,9 +67,9 @@ export class SubjectComponent implements OnInit {
         this.subjectService.getcoutSubjects()
             .subscribe(
                 res => {
-                    res = +res.numberOfRecords;
-                    this.totalSubjects = res;
+                    this.totalSubjects = +res.numberOfRecords;
                     console.log(this.totalSubjects);
+                    this.getSubjectsRange();
                 },
                 error => this.errorMessage = <any>error
             );
@@ -96,15 +95,11 @@ export class SubjectComponent implements OnInit {
     }
 
     pageChange(num: number) {
+        if (!num){num = 1}
         this.currentPage = num;
         this.offset = (this.currentPage - 1) * this.limit;
         this.getSubjectsRange();
     }
-
-    // getCriteria($event){
-    //     this.searchCriteria = $event.currentTarget.value;
-    //
-    // }
 
     getSubjectsBySearch($event):void {
         this.searchCriteria = $event.currentTarget.value;

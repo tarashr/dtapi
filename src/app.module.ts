@@ -18,11 +18,14 @@ import {FacultyComponent}        from "./app/faculty/faculty.component";
 import {NgbdModalBasic}        from "./app/faculty/ngbd-modal-basic.component";
 import {GroupComponent}        from './app/group/group.component';
 
+import {AdminUserComponent} from "./app/admin_user/admin-user.component";
 
 import {SubjectService}      from './app/shared/services/subject.service';
 import {LoginService}        from './app/shared/services/login.service';
 import {CommonService}       from './app/shared/services/common.service';
 import {GroupService}        from './app/shared/services/group.service'
+
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -42,14 +45,16 @@ import {GroupService}        from './app/shared/services/group.service'
         FacultyComponent,
         NgbdModalBasic,
         StatisticComponent,
-        GroupComponent
+        GroupComponent,
+        AdminUserComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},
         SubjectService,
         LoginService,
         CommonService,
-        GroupService
+        GroupService,
+        HttpModule
     ],
     bootstrap: [AppComponent]
 })
