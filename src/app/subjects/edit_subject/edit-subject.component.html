@@ -30,12 +30,12 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Скасувати</button>
-        <button type="button" class="btn btn-primary" (click)="save()">Зберегти зміни</button>
+        <button type="button" class="btn btn-default" (click)="c('Close click'); close()">Скасувати</button>
+        <button type="button" class="btn btn-default" (click)="save(); c('Close click')">Зберегти зміни</button>
     </div>
 </template>
 
-<button class="btn btn-primary btn-sm faculty_btnsm"
+<button class="btn btn-default btn-sm faculty_btnsm"
         (click)="open(content)" title="Редагувати предмет">
     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 </button>

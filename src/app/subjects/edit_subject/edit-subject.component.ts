@@ -1,6 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import {SubjectService}  from '../../shared/services/subject.service';
 import {Subject}   from '../../shared/classes/subject';
@@ -13,20 +12,21 @@ import {Subject}   from '../../shared/classes/subject';
 })
 
 export class EditSubjectComponent {
+    Tittle: string = "Редагувати дані предмету";
     closeResult: string;
     errorMessage: string;
 
-    @Input()  subjectName;
-    @Input()  subjectDescription;
-    @Input()  subjectId;
-    @Output() getSubjectsRequest = new EventEmitter();
-    @Output() getSubjectsRange = new EventEmitter();
+    @Input() subject: Subject;
+    @Input() subjectName;
+    @Input() subjectDescription;
+    @Input() subjectId;
+    @Output() refreshData = new EventEmitter();
+    @Output() getcountSubjects = new EventEmitter();
 
-    Tittle: string = "Редагувати дані предмету";
-    constructor(
-        private modalService: NgbModal,
-        private subjectService: SubjectService
-    ) {}
+    constructor(private modalService: NgbModal,
+                private subjectService: SubjectService) {
+    }
+
 
     open(content) {
         this.modalService.open(content).result.then((result) => {
@@ -42,19 +42,28 @@ export class EditSubjectComponent {
         } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
             return 'by clicking on a backdrop';
         } else {
-            return  `with: ${reason}`;
+            return `with: ${reason}`;
         }
     }
 
-    save():void {
-        let editedSubject:Subject = new Subject(this.subjectName, this.subjectDescription);
+    save(): void {
+        let editedSubject: Subject = new Subject(this.subjectName, this.subjectDescription);
         this.subjectService.updateSubject(editedSubject, this.subjectId)
             .subscribe(
-                () => {
-                    this.getSubjectsRange.emit(editedSubject);
+                (res) => {
+                    this.subject.subject_name = res[0].subject_name;
+                    this.subject.subject_description = res[0].subject_description;
+
                 },
                 error => this.errorMessage = <any>error
             )
     }
 
+    close() {
+        this.subjectName = this.subject.subject_name;
+        this.subjectDescription = this.subject.subject_description;
+
+    }
+
 }
+

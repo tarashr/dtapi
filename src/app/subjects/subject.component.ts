@@ -1,12 +1,9 @@
-import {Component, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrategy, SimpleChanges} from '@angular/core';
+import {Component} from '@angular/core';
 import {OnInit} from '@angular/core';
 import '../shared/rxjs-operators';
-import {NgbPaginationConfig} from '@ng-bootstrap/ng-bootstrap';
 import {Router} from "@angular/router";
 import {Subject}   from '../shared/classes/subject';
 import {SubjectService}  from '../shared/services/subject.service';
-import {CommonService} from "../shared/services/common.service";
-
 
 @Component({
     selector: 'subject-container',
@@ -54,7 +51,7 @@ export class SubjectComponent implements OnInit {
                 .deleteSubject(subject.subject_id)
                 .subscribe(
                     data => {
-                        this.getSubjectsRange();
+                        this.refreshData(data);
                         return true;
                     },
                     error => this.errorMessage = <any>error
@@ -63,11 +60,10 @@ export class SubjectComponent implements OnInit {
     }
 
     getcountSubjects() {
-        this.subjectService.getcoutSubjects()
+        this.subjectService.getcountSubjects()
             .subscribe(
                 res => {
                     this.totalSubjects = +res.numberOfRecords;
-                    console.log(this.totalSubjects);
                     this.getSubjectsRange();
                 },
                 error => this.errorMessage = <any>error
@@ -79,7 +75,6 @@ export class SubjectComponent implements OnInit {
             .subscribe(
                 res => {
                     this.subjects = res;
-                    console.log(this.subjects);
                 },
                 error => this.errorMessage = <any>error
             );
@@ -113,5 +108,14 @@ export class SubjectComponent implements OnInit {
 
     }
 
+    refreshData(data:string) {
+        if (this.subjects.length === 1) {
+            this.offset = (this.currentPage - 2) * this.limit;
+            this.currentPage -= 1;
+        }  else if (this.subjects.length > 1 ) {
+            this.offset = (this.currentPage - 1) * this.limit;
+        }
+        this.getcountSubjects();
+    }
 }
 

@@ -16,10 +16,10 @@ export class AddSubjectComponent {
     Tittle: string = "Додати новий предмет";
     closeResult: string;
     errorMessage: string;
-    subject = {};
-    @Input() subjects: Subject;
+    @Input() subjectName;
+    @Input() subjectDescription;
     @Output() getSubjectsRequest = new EventEmitter();
-    @Output() getSubjectsRange = new EventEmitter();
+    @Output() refreshData = new EventEmitter();
 
 
     constructor(
@@ -27,7 +27,6 @@ export class AddSubjectComponent {
         private subjectService: SubjectService
     ){}
 
-    //this method opens the modal window
     open(content) {
         this.modalService.open(content).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
@@ -47,17 +46,19 @@ export class AddSubjectComponent {
     }
 
     createSubject(): void {
-        console.log(this.subject);
-        this.subjectService.createSubject(this.subject)
+        let newSubject = new Subject(this.subjectName, this.subjectDescription);
+        this.subjectService.createSubject(newSubject)
             .subscribe(
                 response => {
-                    this.getSubjectsRange.emit(this.subjects);
-                    console.log(response);
-                    this.subject = {};
+                    this.refreshData.emit("true");
                 },
                 error => this.errorMessage = <any>error,
             )
+    }
 
+    close(){
+        this.subjectName = "";
+        this.subjectDescription = "";
     }
 
 }
