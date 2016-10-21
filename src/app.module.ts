@@ -53,7 +53,7 @@ import {GroupService}        from './app/shared/services/group.service';
         SubjectService,
         LoginService,
         CommonService,
-        GroupService,
+        GroupService
     ],
     bootstrap: [AppComponent]
 })
