@@ -8,6 +8,8 @@ import *as url from '../constants_url';
 
 @Injectable()
 	export class SpecialityService {
+
+        private headers = new Headers({'Content-Type': 'application/json'});
 		constructor( private http:Http){}
 
 
@@ -25,4 +27,10 @@ import *as url from '../constants_url';
             .do((response) => {console.log(JSON.stringify(response));})
             .catch(this.handleError);
     }
+
+     public deleteSpeciality(id: number): Observable<Speciality[]> {
+        return this.http.delete(`${url.delSpecialityUrl}/${id}`, {headers: this.headers})
+            .catch(this.handleError);
+    }
+
    }
