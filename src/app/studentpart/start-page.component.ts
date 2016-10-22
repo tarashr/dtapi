@@ -48,30 +48,30 @@ export class StartPageComponent implements OnInit{
 		this.getStudentProfile(userId);
 		console.log(this.userGroup);
     }
-	
 
-    logout() {
+
+	logout() {
 		this._loginService.logout();
 		localStorage.clear();
-        sessionStorage.clear();
-        this._router.navigate(["/login"]);
-    }
-	
-	getStudentProfile(userId:number){
-		this._commonService.getRecordById("Student", userId)
-			.subscribe(data=>{	
-					this.user=data[0];
-					this._commonService.getRecordById("Group", this.user.group_id)
-						.subscribe(data_grup=>{
-							this.userGroup=data_grup[0];
-								this._commonService.getRecordById("Faculty", this.userGroup.faculty_id)
-								.subscribe(data_facult=>this.userFaculty=data_facult[0]);
+		sessionStorage.clear();
+		this._router.navigate(["/login"]);
+	}
 
-								this._commonService.getRecordById("Speciality", this.userGroup.speciality_id)
-								.subscribe(data_speciality=>this.userSpeciality=data_speciality[0]);	
-							
-							})
-					});
+	getStudentProfile(userId: number) {
+		this._commonService.getRecordById("Student", userId)
+			.subscribe(data=> {
+				this.user = data[0];
+				this._commonService.getRecordById("Group", this.user.group_id)
+					.subscribe(data_grup=> {
+						this.userGroup = data_grup[0];
+						this._commonService.getRecordById("Faculty", this.userGroup.faculty_id)
+							.subscribe(data_facult=>this.userFaculty = data_facult[0]);
+
+						this._commonService.getRecordById("Speciality", this.userGroup.speciality_id)
+							.subscribe(data_speciality=>this.userSpeciality = data_speciality[0]);
+
+					})
+			});
 	}
 
 }
