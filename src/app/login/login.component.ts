@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {Router} from "@angular/router";
 
-import {User} from "./../shared/classes/user";
+import {User} from "../shared/classes/user";
 import {LoginService} from "./../shared/services/login.service";
 
 @Component({
@@ -34,7 +34,6 @@ export class LoginComponent {
                     }
                 },
                 (error:any)=> {
-                    console.log("$$$ " + error.response);
                     if (error.response === "Invalid login or password") {
                         this.loginMessage = true;
                     }

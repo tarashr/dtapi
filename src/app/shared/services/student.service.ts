@@ -40,31 +40,12 @@ export class SubjectService {
     public updateSubject(subject, subject_id): Observable<any> {
         return this.http.post(`${url.editSubjectUrl}/${subject_id}`, JSON.stringify(subject), {headers: this.headers})
             .map((res: Response) => res.json())
-            .do((res) => console.log(res))
             .catch(this.handleError);
     }
 
     public createSubject(subject): Observable<Subject[]> {
         return this.http.post(`${url.addSubjectUrl}`, JSON.stringify(subject), {headers: this.headers})
             .map((res: Response) => res.json())
-            .catch(this.handleError);
-    }
-
-    public getSubjectsRange(limit: number, offset: number): Observable<Subject[]> {
-        return this.http.get(`${url.getRangeOfSubjectsUrl}/${limit}/${offset}`)
-            .map(res => res.json())
-            .catch(this.handleError);
-    }
-
-    public getcountSubjects(): Observable<any> {
-        return this.http.get(`${url.countSubjectsUrl}`)
-            .map((res: Response) => res.json())
-            .catch(this.handleError);
-    }
-
-    public getSubjectsbySearch(criteria): Observable<any> {
-        return this.http.get(`${url.getSubjectsBySearchUrl}/${criteria}`)
-            .map(res => res.json())
             .catch(this.handleError);
     }
 }
