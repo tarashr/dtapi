@@ -16,7 +16,7 @@ export class FacultyComponent implements OnInit {
     private findResultFaculties:Faculty[];
     public search:string = "";
     public page:number = 1;
-    public offset:number = 1;
+    public offset:number = 0;
 
     //data for child NgbdModalBasic
     public titleForNew = "Створити факультет";
@@ -35,11 +35,7 @@ export class FacultyComponent implements OnInit {
     }
 
     ngOnInit() {
-        let userRole:string = sessionStorage.getItem("userRole");
-        if (!userRole && userRole != "admin") {
-            this._router.navigate(["/login"]);
-        }
-            this.getCountRecords();
+        this.getCountRecords();
     }
 
     getCountRecords() {
@@ -49,7 +45,7 @@ export class FacultyComponent implements OnInit {
                     this.countOfFaculties = +data.numberOfRecords;
                     this.getRecordsRange();
                 },
-                error=>console.log(error)
+                error=>console.log("error: ", error)
             );
     }
 
@@ -57,11 +53,7 @@ export class FacultyComponent implements OnInit {
         this._commonService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                 data => this.faculties = data,
-                error=> {
-                    if (error.response === "Only logged users can work with entities") {
-                        this._router.navigate(["/login"])
-                    }
-                })
+                error=> console.log("error: ", error))
     }
 
     delRecord(entity:string, id:number) {
@@ -70,36 +62,32 @@ export class FacultyComponent implements OnInit {
             .subscribe(()=>this.refreshData("true"));
     }
 
-    changeLimit() {
+    changeLimit($event) {
+        this.limit = $event.target.value;
+        console.log(this.limit);
         this.offset = 0;
         this.page = 1;
-        setTimeout(()=>this.getRecordsRange(), 0);
+        this.getRecordsRange();
     }
 
-    findEntity() {
-        setTimeout(()=> {
-            if (this.search.length === 0) {
-                this.offset = 0;
+    findEntity($event) {
+        this.search = $event.target.value;
+        if (this.search.length === 0) {
+            this.offset = 0;
+            this.page = 1;
+            this.getCountRecords();
+            return;
+        }
+
+        this._commonService.getRecordsBySearch(this.entity, this.search)
+            .subscribe(data => {
+                if (data.response == "no records") {
+                    this.faculties = [];
+                    return;
+                }
                 this.page = 1;
-                this.getCountRecords();
-                // this.getRecordsRange();
-                return;
-            }
-
-            this._commonService.getRecordsBySearch(this.entity, this.search)
-                .subscribe(data => {
-                    if (data.response=="no records") {
-                        this.faculties=[];
-                        return;}
-                    this.page = 1;
-
-                    this.faculties = data;
-                }, error=> {
-                    if (error.response === "Only logged users can work with entities") {
-                        this._router.navigate(["/login"])
-                    }
-                })
-        }, 0);
+                this.faculties = data;
+            }, error=>console.log("error: ", error));
     }
 
     refreshData(data:string) {
@@ -121,7 +109,10 @@ export class FacultyComponent implements OnInit {
     }
 
     pageChange(num:number) {
-        if (!num) num = 1;
+        if (!num) {
+            this.page = 1;
+            return;
+        }        
         this.page = num;
         this.offset = (this.page - 1) * this.limit;
         this.getRecordsRange();

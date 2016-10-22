@@ -19,17 +19,18 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary"
-                (click)="run();facultyName='';facultyDescription='';c()">Застосувати</button>
+                (click)="run();facultyName='';facultyDescription='';c()">Виконати
+        </button>
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Відмінити</button>
     </div>
 </template>
 
 <div class="openModalBtn" [ngSwitch]="activate">
-    <a *ngSwitchCase="'create'" class="btn btn-success" role="button" title="Створити новий факультет"
-       (click)="open(createWindow)">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    <a *ngSwitchCase="'create'" class="btn btn-default" role="button" title="Створити новий факультет"
+       (click)="open(createWindow)">Додати
     </a>
-    <a *ngSwitchCase="'edit'" class="btn btn-primary btn-sm faculty_btnsm" role="button" title="Редагувати дані факультету"
+    <a *ngSwitchCase="'edit'" class="btn btn-default btn-sm faculty_btnsm" role="button"
+       title="Редагувати дані факультету"
        (click)="open(createWindow)">
         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
     </a>

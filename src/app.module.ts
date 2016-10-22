@@ -9,20 +9,20 @@ import {routing}       from "./app.routing";
 import {AppComponent}            from './app/app.component';
 import {LoginComponent}          from "./app/login/login.component";
 import {StartPageComponent}      from "./app/studentpart/start-page.component";
-import {AdminStartPageComponent} from "./app/statistic/admin-start-page.component";
+import {AdminStartPageComponent} from "./app/admin-start/admin-start-page.component.ts";
 import {StatisticComponent} from "./app/statistic/statistic.component";
 import {SubjectComponent}        from "./app/subjects/subject.component";
 import {AddeditSubjectComponent}  from './app/subjects/addedit_subject/addedit-subject.component';
 import {FacultyComponent}        from "./app/faculty/faculty.component";
 import {NgbdModalBasic}        from "./app/faculty/ngbd-modal-basic.component";
-
 import {GroupComponent}        from './app/group/group.component';
 import {SpecialityComponent}        from "./app/speciality/speciality.component";
 import {GroupsOfFacultyComponent} from "./app/faculty/groups/groups-of-faculty.component"
-
 import {AdminUserComponent} from "./app/admin_user/admin-user.component";
 import {StudentComponent}        from "./app/student/student.component";
 
+import {AuthGuardAdminService} from './app/shared/services/auth-guard-admin.service.ts';
+import {AuthGuardStudentService} from './app/shared/services/auth-guard-student.service.ts';
 import {SubjectService}      from './app/shared/services/subject.service';
 import {LoginService}        from './app/shared/services/login.service';
 import {CommonService}       from './app/shared/services/common.service';
@@ -47,14 +47,11 @@ import {GroupService} from './app/shared/services/group.service';
         FacultyComponent,
         NgbdModalBasic,
         StatisticComponent,
-        GroupComponent,
-        AdminUserComponent,
         SpecialityComponent,
         GroupsOfFacultyComponent,
         AdminUserComponent,
         GroupComponent,
         StudentComponent
-
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},
@@ -63,7 +60,9 @@ import {GroupService} from './app/shared/services/group.service';
         CommonService,
         GroupService,
         SpecialityService,
-        HttpModule
+        HttpModule,
+        AuthGuardAdminService,
+        AuthGuardStudentService
     ],
     bootstrap: [AppComponent]
 })

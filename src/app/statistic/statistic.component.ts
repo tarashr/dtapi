@@ -13,32 +13,32 @@ export class StatisticComponent implements OnInit {
     public entities:StatisticData[] = [
         {
             name: "faculty",
-            count: 0,
+            count: "-",
             nameForIteration: "факультетів"
         },
         {
             name: "speciality",
-            count: 0,
+            count: "-",
             nameForIteration: "спеціальностей"
         },
         {
             name: "group",
-            count: 0,
+            count: "-",
             nameForIteration: "груп"
         },
         {
             name: "student",
-            count: 0,
+            count: "-",
             nameForIteration: "студентів"
         },
         {
             name: "subject",
-            count: 0,
+            count: "-",
             nameForIteration: "предметів"
         },
         {
             name: "test",
-            count: 0,
+            count: "-",
             nameForIteration: "тестів"
         }
     ];
@@ -48,17 +48,13 @@ export class StatisticComponent implements OnInit {
     }
 
     ngOnInit() {
-        let userRole:string = sessionStorage.getItem("userRole");
-        if (!userRole && userRole != "admin") {
-            this._router.navigate(["/login"]);
-        } else {
-            this.entities.forEach((entity)=> {
-                this._commonService.getCountRecords(entity.name)
-                    .subscribe(data => {
-                        entity.count = data.numberOfRecords;
-                        localStorage.setItem(entity.name, (entity.count as string));
-                    });
-            });
-        }
+        this.entities.forEach((entity)=> {
+            this._commonService.getCountRecords(entity.name)
+                .subscribe(data => {
+                    entity.count = data.numberOfRecords;
+                    localStorage.setItem(entity.name, (entity.count as string));
+                });
+        });
+
     }
 }

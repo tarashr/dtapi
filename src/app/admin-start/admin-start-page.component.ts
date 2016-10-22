@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 
-import {LoginService} from "../shared/services/login.service";
+import {LoginService} from "../shared/services/login.service.ts";
 
 @Component({
     selector: "admin-start",
@@ -15,10 +15,6 @@ export class AdminStartPageComponent {
     }
 
     ngOnInit() {
-        let userRole:string = sessionStorage.getItem("userRole");
-        if (!userRole && userRole != "admin") {
-            this._router.navigate(["/login"]);
-        }
     }
 
     logout() {

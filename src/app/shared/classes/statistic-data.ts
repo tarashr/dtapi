@@ -1,5 +1,5 @@
 export class StatisticData {
     name:string;
-    count:any;
+    count:number|string;
     nameForIteration:string;
 }
