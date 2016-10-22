@@ -12,8 +12,7 @@ import {StartPageComponent}      from "./app/studentpart/start-page.component";
 import {AdminStartPageComponent} from "./app/statistic/admin-start-page.component";
 import {StatisticComponent} from "./app/statistic/statistic.component";
 import {SubjectComponent}        from "./app/subjects/subject.component";
-import {AddSubjectComponent}  from './app/subjects/add_subject/add-subject.component';
-import {EditSubjectComponent} from './app/subjects/edit_subject/edit-subject.component'
+import {AddeditSubjectComponent}  from './app/subjects/addedit_subject/addedit-subject.component';
 import {FacultyComponent}        from "./app/faculty/faculty.component";
 import {NgbdModalBasic}        from "./app/faculty/ngbd-modal-basic.component";
 
@@ -23,7 +22,6 @@ import {GroupsOfFacultyComponent} from "./app/faculty/groups/groups-of-faculty.c
 
 import {AdminUserComponent} from "./app/admin_user/admin-user.component";
 import {StudentComponent}        from "./app/student/student.component";
-
 
 import {SubjectService}      from './app/shared/services/subject.service';
 import {LoginService}        from './app/shared/services/login.service';
@@ -43,8 +41,7 @@ import {GroupService} from './app/shared/services/group.service';
         AppComponent,
         LoginComponent,
         SubjectComponent,
-        AddSubjectComponent,
-        EditSubjectComponent,
+        AddeditSubjectComponent,
         StartPageComponent,
         AdminStartPageComponent,
         FacultyComponent,
@@ -55,7 +52,6 @@ import {GroupService} from './app/shared/services/group.service';
         SpecialityComponent,
         GroupsOfFacultyComponent,
         AdminUserComponent,
-
         GroupComponent,
         StudentComponent
 

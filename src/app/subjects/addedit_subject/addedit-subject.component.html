@@ -5,7 +5,7 @@
         </button>
         <h4 class="modal-title">{{Tittle}}</h4>
     </div>
-    <div class="modal-body">
+    <div class="modal-body modalBody">
         <div class="input-group inputGroup">
             <span class="input-group-addon modalSpan" id="basic-addon3">Назва предмету</span>
             <input
@@ -15,7 +15,7 @@
                     id="basic-url"
                     aria-describedby="basic-addon3"
                     required
-                    pattern="[А-ЯA-Z]([а-яa-z]|\s){2,32}">
+                    pattern="^[А-ЯA-Z]{1}([а-яa-z]|\s){2,32}&">
         </div>
         <div class="input-group inputGroup">
             <span class="input-group-addon modalSpan" id="basic-addon3">Опис предмету</span>
@@ -26,16 +26,22 @@
                     id="basic-url"
                     aria-describedby="basic-addon3"
                     required
-                    pattern="[А-ЯA-Z]([а-яa-z]|\s){2,32}">
+                    pattern="[А-ЯA-Z]{1}([а-яa-z]|\s){2,32}">
         </div>
     </div>
+
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="c('Close click'); close()">Скасувати</button>
-        <button type="button" class="btn btn-default" (click)="save(); c('Close click')">Зберегти зміни</button>
+        <button type="button" class="btn btn-default" (click)="c('Close click'); close()">Відмінити</button>
+        <button type="button" class="btn btn-default" (click)="activate(); c('Close click'); close()">Застосувати</button>
     </div>
 </template>
 
-<button class="btn btn-default btn-sm faculty_btnsm"
-        (click)="open(content)" title="Редагувати предмет">
-    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-</button>
+<div class="openModalBtn" [ngSwitch]="action">
+    <button *ngSwitchCase = "'create'" class="btn btn-success " type="submit" data-toggle="modal" role="button" (click)="open(content)"
+            title="створити новий предмет">Додати
+    </button>
+    <button *ngSwitchCase = "'edit'" class="btn btn-default btn-sm faculty_btnsm"
+            (click)="open(content)" title="Редагувати предмет">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+    </button>
+</div>

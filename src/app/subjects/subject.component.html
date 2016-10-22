@@ -11,11 +11,10 @@
             <form class="navbar-form navbar-right navbarForm">
                 <div class="form-group">
 
-                    <template ngbModalContainer></template>
-                    <add-subject
-                            (getSubjectsRequest)="getSubjects($event)"
+                    <addedit-subject
+                            [action] = "create"
                             (refreshData) = "refreshData($event)">
-                    </add-subject>
+                    </addedit-subject>
 
                     <select class="form-control media767" name="count" id=""
                             title="Вкажіть скількість предметів відображати на сторінці"
@@ -60,16 +59,16 @@
                         <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                     </a>
 
-                    <template ngbModalContainer></template>
-                    <edit-subject
+                    <addedit-subject
                             [subject] = "subject"
                             [subjectName]="subject.subject_name"
                             [subjectDescription]="subject.subject_description"
                             [subjectId]="subject.subject_id"
+                            [action] = "edit"
                             (getSubjectsRequest)="getSubjects($event)"
                             (refreshData) = "refreshData($event)"
                             (getcountSubjects) = "getcountSubjects($event)">
-                    </edit-subject>
+                    </addedit-subject>
 
                     <a class="btn btn-default btn-sm faculty_btnsm" role="button" title="Видалити предмет"
                        (click)="deleteSubject(subject)">
@@ -88,3 +87,5 @@
 
     </div>
 </div>
+
+<template ngbModalContainer></template>

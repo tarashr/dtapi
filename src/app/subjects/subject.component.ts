@@ -22,6 +22,8 @@ export class SubjectComponent implements OnInit {
     public offset: number = 0;
     public maxSize: number = 5;
     public searchCriteria:string;
+    public create = "create";
+    public edit = "edit";
 
     constructor(
         private subjectService: SubjectService,
