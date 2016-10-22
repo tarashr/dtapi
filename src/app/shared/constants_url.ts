@@ -14,4 +14,5 @@ export const countGroupsUrl:string = baseUrl + 'group/countRecords';
 export const getRangeOfGroupUrl:string = baseUrl + 'group/getRecordsRange';
 export const getSubjectsBySearchUrl:string = baseUrl + 'subject/getRecordsBySearch/'; // + criteria
 export const getSpecialityUrl:string=baseUrl+'speciality/getRecords';
+export const delSpecialityUrl:string = baseUrl + 'speciality/del';
 
