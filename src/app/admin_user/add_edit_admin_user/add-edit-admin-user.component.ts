@@ -1,0 +1,68 @@
+import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
+import {User} from '../../shared/classes/user';
+import {CommonService} from "../../shared/services/common.service";
+
+@Component({
+    selector: 'add-edit-admin-user',
+    templateUrl: './add-edit-admin-user.component.html',
+    styleUrls: ['add-edit-admin-user.component.css']
+})
+export class AddEditAdminUserComponent {
+
+    title: string = 'Додати адміністратора';
+    entity: string = 'AdminUser';
+    errorMessage: string;
+
+    @Input() adminUser: User;
+    @Input() username: string;
+    @Input() password: string;
+    @Input() id: number;
+    @Input() email: string;
+    @Input() action: string;
+    @Output() refreshData = new EventEmitter();
+
+    constructor(private modalService: NgbModal,
+                private adminUserService: CommonService) {
+    }
+
+    open(content) {
+        this.modalService.open(content);
+    }
+
+    activate(): void {
+        if (this.action = 'create') {
+            let newAdminUser = new User(this.username, this.password, this.email);
+            this.adminUserService.insertData(this.entity, newAdminUser)
+                .subscribe(response => {
+                        this.refreshData.emit('true');
+                });
+        } else if (this.action === "edit") {
+            let editedAdminUser: User = new User(this.username, this.email, this.password);
+            this.adminUserService.updateData(this.entity, this.id, editedAdminUser)
+                .subscribe(
+                    (res) => {
+                        this.adminUser.username = res[0].username;
+                        this.adminUser.email = res[0].email;
+                        this.adminUser.password = res[0].password;
+                    },
+                    error => this.errorMessage = <any>error
+                );
+        }
+
+    }
+
+    close() {
+        if(this.action === "create") {
+            this.username = "";
+            this.email = "";
+            this.password = "";
+        } else if(this.action === "edit"){
+            this.username = this.adminUser.username;
+            this.email = this.adminUser.email;
+            this.password = this.adminUser.password;
+        }
+    }
+
+}
