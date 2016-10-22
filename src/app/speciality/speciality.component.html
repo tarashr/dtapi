@@ -46,15 +46,15 @@
                     <span class="align-xs">{{speciality.speciality_name}}</span>
                 </div>
                  <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                    <a class="btn btn-success btn-sm faculty_btnsm" role="button" title="Перехід на групи з спеціальнністю">
+                    <a class="btn btn-default btn-sm faculty_btnsm" role="button" title="Перехід на групи з спеціальнністю">
                         <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
                     </a>
 
-                    <a class="btn btn-success btn-sm faculty_btnsm" role="button" title="Редагувати спеціальність">
+                    <a class="btn btn-default btn-sm faculty_btnsm" role="button" title="Редагувати спеціальність">
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                     </a>
 
-                    <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити спеціальність">
+                    <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити спеціальність" (click)="deleteSpeciality(speciality)">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>
                 </div>

@@ -10,6 +10,8 @@ export class SpecialityComponent implements OnInit{
 public specialities:Speciality[];
 public errorMessage:string;
     constructor(private specialityService:SpecialityService){}
+
+    
 ngOnInit(){
     this.getSpeciality();
 }
@@ -20,6 +22,18 @@ getSpeciality():void{
             error => this.errorMessage = <any>error
         );
    }
-
+deleteSpeciality(speciality: Speciality): void {
+        if (confirm('Should I delete speciality')) {
+            this.specialityService
+                .deleteSpeciality(speciality.speciality_id)
+                .subscribe(
+                    data => {
+                        this.getSpeciality();
+                        return true;
+                    },
+                    error => this.errorMessage = <any>error
+                );
+        }
+    }
 
 }
