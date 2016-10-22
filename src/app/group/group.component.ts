@@ -53,7 +53,8 @@ getCountRecords():void{
                                 this.facultyId[i]=data[i].faculty_id;
                                  this.specialityId[i]=data[i].speciality_id;
                                  };this.getFaculty();
-                                   this.getSpeciality();   },
+                                   this.getSpeciality();
+                }        ,
                        error=> {
                       if (error.response === "Only logged users can work with entities") {
                         this.router.navigate(["/login"])}
