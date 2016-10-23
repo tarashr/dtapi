@@ -22,19 +22,19 @@ export class LoginComponent {
     onSubmit():void {
         this._loginService.login(this.user)
             .subscribe((response:any)=> {
-                    if (response.roles && (response.roles[1] === "student")) {
+                    if (response.roles[1] === "student") {
                         sessionStorage.setItem("userRole", response.roles[1]);
-						sessionStorage.setItem("userId", response.id);
+                        sessionStorage.setItem("userId", response.id);
                         this._router.navigate(["/student"]);
-                    } else if (response.roles && (response.roles[1] === "admin")) {
+                    } else if (response.roles[1] === "admin") {
                         sessionStorage.setItem("userRole", response.roles[1]);
                         this._router.navigate(["/admin"]);
                     } else {
                         this.loginMessage = true;
                     }
                 },
-                (error:any)=> {
-                    if (error.response === "Invalid login or password") {
+                (error:any)=> {                    
+                    if (error === "400 - Bad Request") {
                         this.loginMessage = true;
                     }
                 })

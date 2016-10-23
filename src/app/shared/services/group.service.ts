@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import '../rxjs-operators';
 
 import {Group}   from '../classes/group'
-import *as url from '../constants_url';
+import *as url from '../constants';
 
 
 @Injectable()

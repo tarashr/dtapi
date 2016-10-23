@@ -2,14 +2,15 @@ import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
 import {Headers, Http, Response} from "@angular/http";
 import {Observable} from 'rxjs/Observable';
-
 import {User} from "../classes/user";
+import {loginUrl} from "../constants";
+import {logoutUrl} from "../constants";
 
 @Injectable()
 export class LoginService {
 
-    private loginUrl:string = "http://dtapi.local/login/index";
-    private logoutUrl:string = "http://dtapi.local/login/logout";
+    private loginUrl:string = loginUrl;
+    private logoutUrl:string = logoutUrl;
 
     private _headers = new Headers({"content-type": "application/json"});
 
@@ -17,10 +18,9 @@ export class LoginService {
                 private _http:Http) {
     };
 
-    private handleError(error:any) {
+    private handleError(error:any):Observable<any> {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-        console.error(errMsg); // log to console instead
         return Observable.throw(errMsg);
     }
 
@@ -31,12 +31,13 @@ export class LoginService {
             .catch(this.handleError)
     };
 
-    logout() {
+    logout():void {
         this._http
             .get(this.logoutUrl)
             .subscribe();
         localStorage.clear();
-        sessionStorage.clear();
+        sessionStorage.removeItem("userRole");
+        sessionStorage.removeItem("userId");
         this._router.navigate(["/login"]);
     }
 

@@ -1,5 +1,8 @@
 
 export const baseUrl:string = 'http://dtapi.local/';
+//AUTH action
+export const loginUrl:string = baseUrl + "login/index";
+export const logoutUrl:string = baseUrl + "login/logout";
 
 //CRUD Action which entity
 export const getSubjectsUrl:string = baseUrl + 'subject/getRecords';
@@ -16,3 +19,36 @@ export const getSubjectsBySearchUrl:string = baseUrl + 'subject/getRecordsBySear
 export const getSpecialityUrl:string=baseUrl+'speciality/getRecords';
 export const delSpecialityUrl:string = baseUrl + 'speciality/del';
 
+//Array of entities for statistic page
+export const entities:any[] = [
+    {
+        name: "faculty",
+        count: "...",
+        nameForIteration: "факультетів"
+    },
+    {
+        name: "speciality",
+        count: "...",
+        nameForIteration: "спеціальностей"
+    },
+    {
+        name: "group",
+        count: "...",
+        nameForIteration: "груп"
+    },
+    {
+        name: "student",
+        count: "...",
+        nameForIteration: "студентів"
+    },
+    {
+        name: "subject",
+        count: "...",
+        nameForIteration: "предметів"
+    },
+    {
+        name: "test",
+        count: "...",
+        nameForIteration: "тестів"
+    }
+];

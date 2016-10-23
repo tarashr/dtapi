@@ -2,7 +2,7 @@ import {Injectable}      from "@angular/core";
 import {Router} from "@angular/router";
 import {Http, Response}  from "@angular/http";
 import {Observable}      from 'rxjs/Observable';
-import {baseUrl}         from "../constants_url.ts";
+import {baseUrl}         from "../constants.ts";
 import {EntityManagerBody} from "../classes/entity-manager-body";
 
 @Injectable()
@@ -11,16 +11,18 @@ export class CommonService {
     private hostUrlBase:string = baseUrl;
 
     constructor(private _http:Http,
-    private router:Router) {
+                private router:Router) {
     };
 
-    private handleError(error:any) {
+    private handleError = (error:any)=> {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-        console.error(errMsg);
-        if(error.status=="403") this.router.navigate(['/login']);
+        if (error.status == "403") {
+            sessionStorage.removeItem("userRole");
+            this.router.navigate(['/login'])
+        }
         return Observable.throw(errMsg);
-    }
+    };
 
     getRecords(entity:string):Observable<any> {
         return this._http
@@ -85,7 +87,7 @@ export class CommonService {
             .catch(this.handleError);
     }
 
-    getRecordsBySearch(entity:string, search:string){
+    getRecordsBySearch(entity:string, search:string) {
         return this._http
             .get(`${this.hostUrlBase}${entity}/getRecordsBySearch/${search}`)
             .map((response:any)=>response.json())

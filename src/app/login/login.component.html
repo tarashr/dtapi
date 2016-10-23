@@ -1,4 +1,5 @@
 <div class="logincontainer">
+    <div class="loginMessage" *ngIf="loginMessage">Wrong password or username</div>
     <form class="loginform" (ngSubmit)="onSubmit()">
         <div class="form-group">
             <label for="login">Login</label>
@@ -16,5 +17,5 @@
         </div>
         <button type="submit" class="btn btn-default submit-btn">Submit</button>
     </form>
-    <div *ngIf="loginMessage">Wrong password or username</div>
+
 </div>
