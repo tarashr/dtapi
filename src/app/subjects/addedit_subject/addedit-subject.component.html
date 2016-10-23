@@ -3,7 +3,7 @@
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title">{{Tittle}}</h4>
+        <h4 class="modal-title">{{tittle}}</h4>
     </div>
     <div class="modal-body modalBody">
         <div class="input-group inputGroup">
@@ -15,7 +15,8 @@
                     id="basic-url"
                     aria-describedby="basic-addon3"
                     required
-                    pattern="^[А-ЯA-Z]{1}([а-яa-z]|\s){2,32}&">
+                    pattern="^[А-ЯA-Z]{1}([а-яa-z]|\s){2,32}&"
+                    placeholder="введіть назву предмету">
         </div>
         <div class="input-group inputGroup">
             <span class="input-group-addon modalSpan" id="basic-addon3">Опис предмету</span>
@@ -26,7 +27,8 @@
                     id="basic-url"
                     aria-describedby="basic-addon3"
                     required
-                    pattern="[А-ЯA-Z]{1}([а-яa-z]|\s){2,32}">
+                    pattern="[А-ЯA-Z]{1}([а-яa-z]|\s){2,32}"
+                    placeholder="введіть опис предмету">
         </div>
     </div>
 
@@ -37,11 +39,11 @@
 </template>
 
 <div class="openModalBtn" [ngSwitch]="action">
-    <button *ngSwitchCase = "'create'" class="btn btn-success " type="submit" data-toggle="modal" role="button" (click)="open(content)"
-            title="створити новий предмет">Додати
+    <button *ngSwitchCase = "'create'" class="btn btn-default " type="submit" data-toggle="modal" role="button" (click)="open(content)"
+            title="Створити новий предмет">Додати
     </button>
     <button *ngSwitchCase = "'edit'" class="btn btn-default btn-sm faculty_btnsm"
-            (click)="open(content)" title="Редагувати предмет">
+            (click)="open(content)" title="Редагувати дані предмету">
         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
     </button>
 </div>
