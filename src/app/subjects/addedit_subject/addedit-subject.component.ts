@@ -16,6 +16,7 @@ export class AddeditSubjectComponent {
     closeResult: string;
     errorMessage: string;
 
+    @Input() tittle:string;
     @Input() action: string;
     @Input() subject: Subject;
     @Input() subjectName:string;

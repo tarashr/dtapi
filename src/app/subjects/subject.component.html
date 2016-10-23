@@ -4,7 +4,7 @@
             <div class="navbar-text navbarText">{{pageTittle}}</div>
             <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
                 <div class="form-group inputSearch">
-                    <input (input)="getSubjectsBySearch($event)"   type="text" class="form-control" placeholder="пошук">
+                    <input (input)="searchForData($event)"   type="text" class="form-control" placeholder="пошук">
                 </div>
 
             </form>
@@ -12,11 +12,12 @@
                 <div class="form-group">
 
                     <addedit-subject
+                            [tittle]="titleForEdit"
                             [action] = "create"
                             (refreshData) = "refreshData($event)">
                     </addedit-subject>
 
-                    <select class="form-control media767" name="count" id=""
+                    <select class="form-control media767" name="count"  id="limit" [disabled] = "disabledForSearch"
                             title="Вкажіть скількість предметів відображати на сторінці"
                             (change)="changeLimit($event)">
                         <option value="5">5</option>
@@ -60,6 +61,7 @@
                     </a>
 
                     <addedit-subject
+                            [tittle]="titleForNew"
                             [subject] = "subject"
                             [subjectName]="subject.subject_name"
                             [subjectDescription]="subject.subject_description"
@@ -78,11 +80,13 @@
             </li>
         </ul>
         <ngb-pagination
+                [hidden] = "hiddenForSearch"
                 [pageSize]="limit"
                 [collectionSize]="totalSubjects"
                 [(page)]="currentPage"
                 (pageChange)="pageChange($event)"
-                [maxSize]="maxSize">
+                [maxSize]="maxSize"
+                [ellipses]="true">
         </ngb-pagination>
 
     </div>
