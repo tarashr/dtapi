@@ -2,12 +2,11 @@
   "name": "dt069",
   "version": "1.0.0",
   "scripts": {
-    "start": "webpack --config config/webpack.dev.js --progress --profile --bail",
+    "start": "rimraf dist && webpack --config config/webpack.dev.js --progress --profile --bail",
     "test": "karma start",
     "postinstall": "typings install",
-    "prebuild": "npm install",
     "typings": "typings",
-    "build": "webpack --config config/webpack.prod.js --progress --profile --bail"
+    "build": "rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail"
   },
   "license": "ISC",
   "dependencies": {

@@ -12,4 +12,4 @@ import 'rxjs';
 import "jquery";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-import "./assets/style/style.css"
+// import "./assets/style/style.css"
