@@ -1,3 +1,19 @@
 html, body {
     height: 100%;
 }
+.entity-container {
+    max-width: 1024px;
+    margin: 0px auto 0px auto;
+    padding: 10px 10px 0 10px;
+    min-width: 412px;
+}
+
+.entity_list li:first-child {
+    font-weight: bold;
+}
+.entity_list li:nth-child(2n) {
+    background-color: #f9f9f9;
+}
+.entity_list li:not(:first-child):hover {
+    background-color: #e7e7e7;
+}
