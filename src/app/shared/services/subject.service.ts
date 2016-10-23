@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import '../rxjs-operators';
 
 import {Subject}   from '../classes/subject'
-import *as url from '../constants_url';
+import *as url from '../constants';
 
 @Injectable()
 export class SubjectService {
