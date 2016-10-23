@@ -52,7 +52,7 @@ export class SubjectComponent implements OnInit {
     }
 
     deleteSubject(subject: Subject): void {
-        if (confirm('Should I delete subject')) {
+        if (confirm('Підтвердіть видалення предмету')) {
             this.subjectService
                 .deleteSubject(subject.subject_id)
                 .subscribe(

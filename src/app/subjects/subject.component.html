@@ -1,4 +1,4 @@
-<div class="subject-container">
+<div class="entity-container">
     <nav class="navbar navbar-default navbarDefault">
         <div class="container-fluid">
             <div class="navbar-text navbarText">{{pageTittle}}</div>
@@ -32,7 +32,7 @@
     </nav>
 
     <div class="container-fluid">
-        <ul class="list-group faculty_list">
+        <ul class="list-group entity_list">
 
             <li class="list-group-item row hidden-xs">
                 <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number"><b>№</b></div>
@@ -86,7 +86,8 @@
                 [(page)]="currentPage"
                 (pageChange)="pageChange($event)"
                 [maxSize]="maxSize"
-                [ellipses]="true">
+                [ellipses]="true"
+                [boundaryLinks] = true>
         </ngb-pagination>
 
     </div>

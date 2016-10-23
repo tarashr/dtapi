@@ -18,11 +18,15 @@ body {
     min-width: 420px;
 }
 
-.subject-container {
+.entity-container {
     max-width: 1024px;
     margin: 5px auto 0px auto;
     padding: 0px 10px 0 10px;
     min-width: 412px;
+}
+
+.block {
+    display: inline-block;
 }
 
 .facultyNavbarFormLeft {
@@ -47,8 +51,14 @@ body {
 .colxs12_btn{
     text-align: center;
 }
-.faculty_list li:nth-child(2n){
+.entity_list li:first-child {
+    font-weight: bold;
+}
+.entity_list li:nth-child(2n) {
     background-color: #f9f9f9;
+}
+.entity_list li:not(:first-child):hover {
+    background-color: #e7e7e7;
 }
 
 @media screen and (max-width: 767px) {
