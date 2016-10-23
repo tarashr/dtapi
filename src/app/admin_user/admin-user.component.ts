@@ -14,6 +14,8 @@ export class AdminUserComponent implements OnInit {
     public entity: string = 'AdminUser';
     public adminUsers: User[];
     errorMessage: string;
+    public create = "create";
+    public edit = "edit";
     
     constructor(private adminUserService: CommonService){}
 

@@ -1,0 +1,58 @@
+<template #content let-c="close" let-d="dismiss">
+
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">{{title}}</h4>
+    </div>
+
+    <div class="modal-body modalBody">
+        <div class="input-group inputGroup">
+            <span class="input-group-addon modalSpan">Ім'я:</span>
+            <input
+                    [(ngModel)]="username"
+                    type="text"
+                    class="form-control modalInput"
+                    required>
+        </div>
+        <div class="input-group inputGroup">
+            <span class="input-group-addon modalSpan">Поштова скринька:</span>
+            <input
+                    [(ngModel)]="email"
+                    type="text"
+                    class="form-control modalInput"
+                    required>
+        </div>
+        <div class="input-group inputGroup">
+            <span class="input-group-addon modalSpan">Пароль:</span>
+            <input
+                    [(ngModel)]="password"
+                    type="password"
+                    class="form-control modalInput"
+                    required>
+        </div>
+        <div class="input-group inputGroup">
+            <span class="input-group-addon modalSpan">Повторіть пароль:</span>
+            <input
+                    [(ngModel)]="passwordConfirm"
+                    type="password"
+                    class="form-control modalInput"
+                    required>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="activate(); c('Close click'); close()">Застосувати</button>
+        <button type="button" class="btn btn-default" (click)="c('Close click')">Відміна</button>
+    </div>
+</template>
+
+
+<div class="openModalBtn" [ngSwitch]="action">
+    <button *ngSwitchCase="'create'" class="btn btn-default" (click)="open(content)">Додати</button>
+    <button *ngSwitchCase = "'edit'" class="btn btn-default btn-sm"
+            (click)="open(content)" title="Редагувати">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+    </button>
+</div>
