@@ -1,10 +1,10 @@
-<div class="admin-container">
-    <div class="navbar navbar-default adminNavbarDefault">
+<div class="entity-container">
+    <div class="navbar navbar-default ">
         <div class="container-fluid">
 
             <div class="navbar-text navbarText">{{title}}</div>
 
-            <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
+            <form class="navbar-form navbar-left  navbarForm">
                 <div class="form-group inputSearch">
                     <input type="text" class="form-control" placeholder="пошук">
                 </div>
@@ -24,8 +24,8 @@
     </div>
 
     <div class="container-fluid">
-        <ul class="list-group admin_list">
-            <li class="list-group-item row">
+        <ul class="list-group entity_list">
+            <li class="list-group-item row hidden-xs">
                 <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">№</div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Ім'я</div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Поштова скринька</div>
@@ -35,13 +35,16 @@
 
             <li *ngFor="let adminUser of adminUsers; let i = index" class="list-group-item row">
                 <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">
-                    {{i+1}}
+                    <span class="visible-xs-inline-block">№:</span>
+                    <span class="align-xs">{{i+1}}</span>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
-                    {{adminUser.username}}
+                    <span class="visible-xs-inline-block">Ім'я:</span>
+                    <span class="align-xs">{{adminUser.username}}</span>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
-                    {{adminUser.email}}
+                    <span class="visible-xs-inline-block">Поштова скринька:</span>
+                    <span class="align-xs">{{adminUser.email}}</span>
                 </div>
                 <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
                     <add-edit-admin-user
@@ -52,7 +55,7 @@
                             [email]="adminUser.email"
                             (refreshData) = "getRecords()">
                     </add-edit-admin-user>
-                    <a class="btn btn-default btn-sm faculty_btnsm" role="button"
+                    <a class="btn btn-default btn-sm " role="button"
                        title="Видалити" (click)="deleteAdminUser(entity, adminUser.id)">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>
