@@ -1,4 +1,4 @@
-<div class="faculty-container">
+<div class="entity-container">
     <nav class="navbar navbar-default facultyNavbarDefault navbarDefault">
         <div class="container-fluid">
             <div class="navbar-text navbarText">Факультети</div>
@@ -35,7 +35,7 @@
 
 
     <div class="container-fluid">
-        <ul class="list-group faculty_list">
+        <ul class="list-group entity_list">
             <li class="list-group-item row  hidden-xs">
                 <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">№</div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Назва факультету</div>
@@ -86,7 +86,7 @@
             [ellipses]="false"
             [boundaryLinks]="true"
             (pageChange)="pageChange($event)"
-            [hidden]="search.length>0 || countOfFaculties==='undefined'">
+            [hidden]="search.length>0 || countOfFaculties==='undefined' || limit>=countOfFaculties">
     </ngb-pagination>
 
 </div>
