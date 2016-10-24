@@ -4,21 +4,18 @@
             <div class="navbar-text navbarText">{{pageTittle}}</div>
             <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
                 <div class="form-group inputSearch">
-                    <input (input)="searchForData($event)"   type="text" class="form-control" placeholder="пошук">
+                    <input (input)="searchForData($event)" type="text" class="form-control" placeholder="пошук">
                 </div>
-
             </form>
             <form class="navbar-form navbar-right navbarForm">
                 <div class="form-group">
-
                     <addedit-subject
-                            [tittle]="titleForEdit"
+                            [tittle]="titleForNew"
                             [action] = "create"
                             (refreshData) = "refreshData($event)">
                     </addedit-subject>
-
-                    <select class="form-control media767" name="count"  id="limit" [disabled] = "disabledForSearch"
-                            title="Вкажіть скількість предметів відображати на сторінці"
+                    <select class="form-control media767" [disabled] = "!!searchCriteria"
+                            title="Вкажіть cкільки предметів відображати на сторінці"
                             (change)="changeLimit($event)">
                         <option value="5">5</option>
                         <option value="10">10</option>
@@ -27,20 +24,16 @@
                     </select>
                 </div>
             </form>
-            <!-- </div> -->
         </div>
     </nav>
-
     <div class="container-fluid">
         <ul class="list-group entity_list">
-
             <li class="list-group-item row hidden-xs">
                 <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number"><b>№</b></div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12"><b>Назва предмету</b></div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12"><b>Опис предмету</b></div>
                 <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn"></div>
             </li>
-
             <li *ngFor="let subject of subjects; let i = index" class="list-group-item row">
                 <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">
                     <span class="visible-xs-inline-block">№:</span>
@@ -59,20 +52,16 @@
                        title="Розклад тестів">
                         <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                     </a>
-
                     <addedit-subject
-                            [tittle]="titleForNew"
+                            [tittle]="titleForEdit"
                             [subject] = "subject"
                             [subjectName]="subject.subject_name"
                             [subjectDescription]="subject.subject_description"
                             [subjectId]="subject.subject_id"
                             [action] = "edit"
-                            (getSubjectsRequest)="getSubjects($event)"
-                            (refreshData) = "refreshData($event)"
-                            (getcountSubjects) = "getcountSubjects($event)">
+                            (refreshData) = "refreshData($event)">
                     </addedit-subject>
-
-                    <a class="btn btn-default btn-sm faculty_btnsm" role="button" title="Видалити предмет"
+                    <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити предмет"
                        (click)="deleteSubject(subject)">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>
@@ -80,7 +69,7 @@
             </li>
         </ul>
         <ngb-pagination
-                [hidden] = "hiddenForSearch"
+                [hidden] = "!!searchCriteria || limit >= totalSubjects"
                 [pageSize]="limit"
                 [collectionSize]="totalSubjects"
                 [(page)]="currentPage"
@@ -89,8 +78,6 @@
                 [ellipses]="true"
                 [boundaryLinks] = true>
         </ngb-pagination>
-
     </div>
 </div>
-
 <template ngbModalContainer></template>

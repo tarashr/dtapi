@@ -15,7 +15,13 @@ export const delSubjectUrl:string = baseUrl + 'subject/del'; // + id of subject
 export const getGroupUrl:string=baseUrl+'group/getRecords';
 export const countGroupsUrl:string = baseUrl + 'group/countRecords';
 export const getRangeOfGroupUrl:string = baseUrl + 'group/getRecordsRange';
+
+
+export const getEntityValues:string = baseUrl + 'EntityManager/getEntityValues';
+
+
 export const getSubjectsBySearchUrl:string = baseUrl + 'subject/getRecordsBySearch/'; // + criteria
+
 export const getSpecialityUrl:string=baseUrl+'speciality/getRecords';
 export const delSpecialityUrl:string = baseUrl + 'speciality/del';
 
