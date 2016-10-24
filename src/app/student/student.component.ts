@@ -6,7 +6,6 @@ import {CommonService} from "../shared/services/common.service";
 @Component({
     templateUrl: 'student.component.html',
     styleUrls: ['student.component.css'],
-    /*providers: [CommonService]*/
 })
 export class StudentComponent implements OnInit {
 
@@ -15,7 +14,7 @@ export class StudentComponent implements OnInit {
     public entity:string = "student";
     public limit:number = 5;
     private findResultStudents:Student[];
-    public searchData:string = "";
+    public search:string = "";
     public page:number = 1;
     private offset:number = 0;
 
@@ -23,98 +22,94 @@ export class StudentComponent implements OnInit {
                 private _router:Router) {
     }
 
+    /*ngOnInit() {
+        this.getCountRecords();
+    }*/
+
     ngOnInit() {
-        let userRole:string = sessionStorage.getItem("userRole");
+        let userRole: string = sessionStorage.getItem("userRole");
         if (!userRole && userRole != "admin") {
             this._router.navigate(["/login"]);
         }
-        this.countOfStudents = Number(localStorage.getItem(this.entity));
-        this.getRecordsRange();
-    }
 
+        this.getCountRecords();
+    }
 
     getCountRecords() {
         this._commonService.getCountRecords(this.entity)
             .subscribe(
-                data => this.countOfStudents = data.numberOfRecords,
-                error=>console.log(error)
+                data => {
+                    this.countOfStudents = +data.numberOfRecords;
+                    this.getRecordsRange();
+                },
+                error=>console.log("error: ", error)
             );
     }
-
 
     getRecordsRange() {
         this._commonService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                 data => this.students = data,
-                error=> {
-                    if (error.response === "Only logged users can work with entities") {
-                        this._router.navigate(["/login"])
-                    }
-                })
-
+                error=> console.log("error: ", error))
     }
-
 
     delRecord(entity:string, id:number) {
         this.offset = (this.page - 1) * this.limit;
         this._commonService.delRecord(entity, id)
-            .subscribe(()=>this.getRecordsRange());
+            .subscribe(()=>this.refreshData("true"));
     }
 
-
-
-    changeLimit() {
+    changeLimit($event) {
+        this.limit = $event.target.value;
+        console.log(this.limit);
         this.offset = 0;
         this.page = 1;
-        setTimeout(()=> {
-            this._commonService.getRecordsRange(this.entity, this.limit, this.offset)
-                .subscribe(data => this.students = data);
-        }, 0);
-    }
-
-
-
-
-    findEntity() {
-        setTimeout(()=> {
-            if (this.searchData.length === 0) {
-                this.offset = 0;
-                this.page = 1;
-                this.getCountRecords();
-                this.getRecordsRange();
-                return;
-            }
-
-            this._commonService.getRecords(this.entity)
-                .subscribe(data => {
-                    this.findResultStudents = data.filter((student)=> {
-                        // return ~student.student_name.toLowerCase().indexOf(this.searchData.toLowerCase());
-                        if (student.student_name.toLowerCase().indexOf(this.searchData.toLowerCase()) === -1) {
-                            return false
-                        }
-                        else {
-                            return true
-                        }
-                    });
-                    this.page = 1;
-                    this.countOfStudents = this.findResultStudents.length;
-                    this.students = this.findResultStudents;
-                },error=> {
-                    if (error.response === "Only logged users can work with entities") {
-                        this._router.navigate(["/login"])
-                    }
-                });
-
-        }, 0);
-    }
-
-
-    refreshData(data:string) {
-        this.offset = (this.page - 1) * this.limit;
         this.getRecordsRange();
     }
 
+    findEntity($event) {
+        this.search = $event.target.value;
+        if (this.search.length === 0) {
+            this.offset = 0;
+            this.page = 1;
+            this.getCountRecords();
+            return;
+        }
+
+        this._commonService.getRecordsBySearch(this.entity, this.search)
+            .subscribe(data => {
+                if (data.response == "no records") {
+                    this.students = [];
+                    return;
+                }
+                this.page = 1;
+                this.students = data;
+            }, error=>console.log("error: ", error));
+    }
+
+    refreshData(data:string) {
+        if (this.students.length === 1) {
+            this.offset = (this.page - 2) * this.limit;
+            this.page -= 1;
+        } else if (this.students.length > 1) {
+            this.offset = (this.page - 1) * this.limit;
+        }
+
+        this._commonService.getCountRecords(this.entity)
+            .subscribe(
+                data => {
+                    this.countOfStudents = +data.numberOfRecords;
+                    this.getRecordsRange();
+                },
+                error=>console.log(error)
+            );
+    }
+
     pageChange(num:number) {
+        if (!num) {
+            this.page = 1;
+            return;
+        }
         this.page = num;
         this.offset = (this.page - 1) * this.limit;
         this.getRecordsRange();

@@ -1,13 +1,12 @@
-<div class="student-container">
+<div class="entity-container">
     <nav class="navbar navbar-default facultyNavbarDefault navbarDefault">
         <div class="container-fluid">
             <div class="navbar-text navbarText">Студенти</div>
             <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
                 <div class="form-group inputSearch">
-                    <input type="text" class="form-control" placeholder="знайти студента" name="inputSearch"
-                           title="для пошуку введіть мінімум 2 символи"
-                           [(ngModel)]="searchData"
-                           (input)="findEntity()">
+                    <input type="text" class="form-control" placeholder="пошук" name="inputSearch"
+                           title="введіть дані для пошуку"
+                           (input)="findEntity($event)">
                 </div>
             </form>
             <form class="navbar-form navbar-right navbarForm">
@@ -15,13 +14,12 @@
                     <a class="btn btn-default" role="button" title="Добавити нового студента">Додати</a>
                     <select class="form-control media767" name="count" id=""
                             title="виберіть кількість студентів на сторінці"
-                            [(ngModel)]="limit"
-                            (input)="changeLimit()"
-                            [disabled]="searchData.length>0">
+                            (input)="changeLimit($event)"
+                            [disabled]="search.length>0">
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
-                        <option [ngValue]="countOfStudents">Всі</option>
+                        <option [value]="countOfStudents">Всі</option>
                     </select>
                 </div>
             </form>
@@ -31,7 +29,7 @@
 
 
     <div class="container-fluid">
-        <ul class="list-group faculty_list">
+        <ul class="list-group entity_list">
             <li class="list-group-item row  hidden-xs">
                 <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">№</div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12">ПІБ</div>

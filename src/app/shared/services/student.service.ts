@@ -24,6 +24,16 @@ export class SubjectService {
         return Observable.throw(errMsg);
     }
 
+    private handleError = (error:any)=> {
+        let errMsg = (error.message) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        if (error.status == "403") {
+            sessionStorage.removeItem("userRole");
+            this.router.navigate(['/login'])
+        }
+        return Observable.throw(errMsg);
+    };
+
     public getSubjects(): Observable<Subject[]> {
         return this.http
             .get(url.getSubjectsUrl)
