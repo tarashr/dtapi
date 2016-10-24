@@ -78,7 +78,7 @@
             [ellipses]="false"
             [boundaryLinks]="true"
             (pageChange)="pageChange($event)"
-            [hidden]="searchData.length>0 || countOfStudents==='undefined'">
+            [hidden]="searchData.length>0 || countOfStudents==='undefined' || limit>=countOfStudents">
     </ngb-pagination>
 
 </div>
