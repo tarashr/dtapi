@@ -37,8 +37,7 @@ getCountRecords():void{
         },0);
 }
     getRecordsRange() {
-        console.log('first time',this.offset);
-        this.groupService.getRecordsRange( this.limit, this.offset)
+         this.groupService.getRecordsRange( this.limit, this.offset)
             .subscribe(data => this.groups = data,
                        error=> {
                       if (error.response === "Only logged users can work with entities") {
