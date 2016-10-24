@@ -1,15 +1,15 @@
 <div class="entity-container">
-    <nav class="navbar navbar-default facultyNavbarDefault navbarDefault">
+    <nav class="navbar navbar-default">
         <div class="container-fluid">
-            <div class="navbar-text navbarText">Факультети</div>
-            <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
+            <div class="navbar-text ">Факультети</div>
+            <form class="navbar-form navbar-left ">
                 <div class="form-group inputSearch">
                     <input type="text" class="form-control" placeholder="пошук" name="inputSearch"
                            title="введіть дані для пошуку"
                            (input)="findEntity($event)">
                 </div>
             </form>
-            <form class="navbar-form navbar-right navbarForm">
+            <form class="navbar-form navbar-right">
                 <div class="form-group">
                     <ngbd-modal-basic
                             [title]="titleForNew"
@@ -18,7 +18,7 @@
                             [activate]="create"
                             (refreshData)="refreshData($event)"
                     ></ngbd-modal-basic>
-                    <select class="form-control media767" name="count" id=""
+                    <select class="form-control" name="count" id=""
                             title="виберіть кількість факультетів на сторінці"
                             (input)="changeLimit($event)"
                             [disabled]="search.length>0">
@@ -37,27 +37,27 @@
     <div class="container-fluid">
         <ul class="list-group entity_list">
             <li class="list-group-item row  hidden-xs">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">№</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Назва факультету</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Опис факультету</div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn"></div>
+                <div class="col-xs-12 col-sm-1 col-md-1 ">№</div>
+                <div class="col-xs-12 col-sm-4 col-md-4 ">Назва факультету</div>
+                <div class="col-xs-12 col-sm-4 col-md-4 ">Опис факультету</div>
+                <div class="col-xs-12 col-sm-3 col-md-3 "></div>
             </li>
             <li class="list-group-item row"
                 *ngFor="let faculty of faculties; let i=index">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">
+                <div class="col-xs-12 col-sm-1 col-md-1 ">
                     <span class="visible-xs-inline-block">№:</span>
                     <span class="align-xs">{{i+1+(page-1)*limit}}</span>
                 </div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
+                <div class="col-xs-12 col-sm-4 col-md-4 ">
                     <span class="visible-xs-inline-block">Назва факультету:</span>
                     <span class="align-xs">{{faculty.faculty_name}}</span>
                 </div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
+                <div class="col-xs-12 col-sm-4 col-md-4 ">
                     <span class="visible-xs-inline-block">Опис факультету:</span>
                     <span class="align-xs">{{faculty.faculty_description}}</span>
                 </div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                    <a class="btn btn-default btn-sm faculty_btnsm" role="button" title="Переглянути групи факультету"
+                <div class="col-xs-12 col-sm-3 col-md-3 ">
+                    <a class="btn btn-default btn-sm " role="button" title="Переглянути групи факультету"
                         [routerLink]="[faculty.faculty_id, 'groups']">
                         <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                     </a>
@@ -69,7 +69,7 @@
                             [activate]=edit
                             (refreshData)="refreshData($event)"
                     ></ngbd-modal-basic>
-                    <a class="btn btn-default btn-sm faculty_btnsm" role="button" title="Видалити факультет"
+                    <a class="btn btn-danger btn-sm " role="button" title="Видалити факультет"
                        (click)="delRecord(entity, faculty.faculty_id)">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>
@@ -86,7 +86,7 @@
             [ellipses]="false"
             [boundaryLinks]="true"
             (pageChange)="pageChange($event)"
-            [hidden]="search.length>0 || countOfFaculties==='undefined' || limit>=countOfFaculties">
+            [hidden]="search.length || countOfFaculties==undefined || limit>=countOfFaculties">
     </ngb-pagination>
 
 </div>

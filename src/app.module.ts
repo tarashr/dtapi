@@ -20,9 +20,9 @@ import {SpecialityComponent}        from "./app/speciality/speciality.component"
 import {GroupsOfFacultyComponent} from "./app/faculty/groups/groups-of-faculty.component"
 import {AdminUserComponent} from "./app/admin_user/admin-user.component";
 import {StudentComponent}        from "./app/student/student.component";
+import {AuthAdminGuard} from './app/shared/services/auth-admin.guard.ts';
+import {AuthStudentGuard} from './app/shared/services/auth-student.guard.ts';
 import {AddEditAdminUserComponent} from "./app/admin_user/add_edit_admin_user/add-edit-admin-user.component";
-import {AuthGuardAdminService} from './app/shared/services/auth-guard-admin.service.ts';
-import {AuthGuardStudentService} from './app/shared/services/auth-guard-student.service.ts';
 import {SubjectService}      from './app/shared/services/subject.service';
 import {LoginService}        from './app/shared/services/login.service';
 import {CommonService}       from './app/shared/services/common.service';
@@ -50,7 +50,6 @@ import {GroupService} from './app/shared/services/group.service';
         StatisticComponent,
         GroupComponent,
         AdminUserComponent,
-
         AddEditAdminUserComponent,
         SpecialityComponent,
         GroupsOfFacultyComponent,
@@ -64,8 +63,8 @@ import {GroupService} from './app/shared/services/group.service';
         GroupService,
         SpecialityService,
         HttpModule,
-        AuthGuardAdminService,
-        AuthGuardStudentService
+        AuthAdminGuard,
+        AuthStudentGuard
     ],
     bootstrap: [AppComponent]
 })
