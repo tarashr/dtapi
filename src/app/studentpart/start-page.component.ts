@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
-import {CommonService} from "../shared/services/common.service";
+import { CommonService } from "../shared/services/common.service";
 import { LoginService } from "../shared/services/login.service";
+
 
 @Component({
     selector: 'start-page',
     templateUrl: 'start-page.component.html',
 	styleUrls: ['start-page.component.css'],
     providers: [LoginService]
+
 })
 
 export class StartPageComponent implements OnInit{
