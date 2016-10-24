@@ -7,9 +7,8 @@ import {SubjectService}  from '../shared/services/subject.service';
 
 @Component({
     selector: 'subject-container',
-    templateUrl: 'subject.component.html',
-    styleUrls: ['subject.component.css']
-})
+    templateUrl: 'subject.component.html'
+    })
 
 export class SubjectComponent implements OnInit {
 
@@ -26,9 +25,7 @@ export class SubjectComponent implements OnInit {
     public edit = "edit";
     public titleForEdit = "Редагувати дані предмету";
     public titleForNew = "Створити новий предмет";
-    public hiddenForSearch = false;
-    public disabledForSearch:any = 0;
-
+    // public hiddenForSearch:boolean = !!this.searchCriteria;
 
     constructor(private subjectService: SubjectService,
                 private _router: Router) {
@@ -39,7 +36,6 @@ export class SubjectComponent implements OnInit {
         if (!userRole && userRole != "admin") {
             this._router.navigate(["/login"]);
         }
-
         this.getcountSubjects();
     }
 
@@ -118,13 +114,9 @@ export class SubjectComponent implements OnInit {
     searchForData($event) {
         this.searchCriteria = $event.currentTarget.value;
         if (this.searchCriteria) {
-            this.hiddenForSearch = true;
-            this.disabledForSearch = "disabled";
             this.getSubjectsBySearch();
         }
         else if(!this.searchCriteria) {
-            this.hiddenForSearch = false;
-            this.disabledForSearch = 0;
             this.getcountSubjects();
         }
     }

@@ -50,8 +50,7 @@ export class AddEditAdminUserComponent {
                 this.adminUserService.updateData(this.entity, this.id, editedAdminUser)
                     .subscribe(
                         response => {
-                            console.log(response);
-                            this.refreshData.emit('true');
+                            this.refreshData.emit("true");
                         },
                         error => this.errorMessage = <any>error
                     );
