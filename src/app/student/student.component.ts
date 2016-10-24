@@ -22,10 +22,6 @@ export class StudentComponent implements OnInit {
                 private _router:Router) {
     }
 
-    /*ngOnInit() {
-        this.getCountRecords();
-    }*/
-
     ngOnInit() {
         let userRole: string = sessionStorage.getItem("userRole");
         if (!userRole && userRole != "admin") {
