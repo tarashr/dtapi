@@ -14,7 +14,7 @@ import {Group}   from '../shared/classes/group';
 export class AddeditGroupComponent {
 
     errorMessage: string;
-    @Input() tittle:string;
+    @Input() title:string;
     @Input() action: string;
     @Input() groups: Group;
     @Input() facultyId;
