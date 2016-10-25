@@ -13,6 +13,7 @@ import {AdminStartPageComponent} from "./app/admin-start/admin-start-page.compon
 import {StatisticComponent} from "./app/statistic/statistic.component";
 import {SubjectComponent}        from "./app/subjects/subject.component";
 import {AddeditSubjectComponent}  from './app/subjects/addedit_subject/addedit-subject.component';
+import {AddeditGroupComponent}  from './app/group/addedit-group.component';
 import {FacultyComponent}        from "./app/faculty/faculty.component";
 import {NgbdModalBasic}        from "./app/faculty/ngbd-modal-basic.component";
 import {GroupComponent}        from './app/group/group.component';
@@ -29,6 +30,7 @@ import {LoginService}        from './app/shared/services/login.service';
 import {CommonService}       from './app/shared/services/common.service';
 import {SpecialityService}       from './app/shared/services/speciality.service';
 import {GroupService} from './app/shared/services/group.service';
+
 
 @NgModule({
     imports: [
@@ -53,7 +55,8 @@ import {GroupService} from './app/shared/services/group.service';
         AddEditAdminUserComponent,
         SpecialityComponent,
         GroupsOfFacultyComponent,
-        StudentComponent
+        StudentComponent,
+        AddeditGroupComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},
