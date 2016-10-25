@@ -5,9 +5,10 @@
     justify-content:center;
     align-items:  center;
     flex-direction: column;
+    background: url('./assets/img/background.jpg') center;
 }
-.loginform {
-
+.loginform label{
+    color: #fff;
 }
 .btn.btn-default.submit-btn {
     position:relative;
@@ -20,4 +21,5 @@
     top: 10%;
     font-size: 16px;
     font-weight: bold;
+    color: #ffffff;
 }
