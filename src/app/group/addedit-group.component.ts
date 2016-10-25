@@ -57,7 +57,9 @@ export class AddeditGroupComponent {
                 );
         }
         else if (this.action === "edit") {
-            this.GroupService.updateGroup(this.groupName, this.groupId)
+            let editGroup = new Group(this.groupName);
+            console.log(this.groupName);
+            this.GroupService.updateGroup(editGroup, this.groupId)
                 .subscribe(
                     (res) => {
                         this.groups.group_name = res[0].group_name;
