@@ -49,7 +49,7 @@ export class GroupComponent implements OnInit {
         if (!userRole && userRole != "admin") {
             this.router.navigate(["/login"]);
         }
-        // this.countOfGroup = Number(localStorage.getItem('group'));
+
         this.getCountRecords();
         this.getFacultys();
         this.getSpecialitys();
@@ -76,14 +76,6 @@ export class GroupComponent implements OnInit {
     }
 
     getRecordsRange() {
-        this.groupService.getRecordsRange(this.limit, this.offset)
-            .subscribe(data => this.groups = data,
-                error=> {
-                    if (error.response === "Only logged users can work with entities") {
-                        this.router.navigate(["/login"])
-                    }
-                });
-
         this.groupService.getRecordsRange(this.limit, this.offset)
             .subscribe(data => {
                     this.groups = data;

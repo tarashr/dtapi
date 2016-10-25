@@ -21,10 +21,11 @@
                     #name="ngModel"
                     pattern="[А-ЯA-Z]{1}([А-ЯA-Zа-яa-z]|\s){1,32}"
                     placeholder="введіть назву предмету">
-            <div [hidden]="name.valid || name.pristine"
-                 class="alert alert-danger">
-                Назва є обовязковою. Назва повинна починатися з великої літери.
-            </div>
+
+        </div>
+        <div [hidden]="name.valid || name.pristine"
+             class="alert alert-danger">
+            Назва є обовязковою. Назва повинна починатися з великої літери.
         </div>
         <div class="input-group inputGroup">
             <span class="input-group-addon modalSpan" id="basic-addon3">Опис предмету</span>
@@ -41,10 +42,10 @@
                     placeholder="введіть опис предмету">
 
         </div>
-        <!--<div [hidden]="description.valid || description.pristine"-->
-             <!--class="alert alert-danger">-->
-            <!--Опис є обовязковим. Опис повинен починатися з великої літери.-->
-        <!--</div>-->
+        <div [hidden]="description.valid || description.pristine"
+             class="alert alert-danger">
+            Опис є обовязковим. Опис повинен починатися з великої літери.
+        </div>
     </div>
 
     <div class="modal-footer">
