@@ -50,10 +50,12 @@ export class StudentComponent implements OnInit {
     }
 
     delRecord(entity:string, id:number) {
-        this.offset = (this.page - 1) * this.limit;
+        if (confirm("Підтвердіть видалення студента")){
+            this.offset = (this.page - 1) * this.limit;
         this._commonService.delRecord(entity, id)
             .subscribe(()=>this.refreshData("true"));
     }
+}
 
     changeLimit($event) {
         this.limit = $event.target.value;
