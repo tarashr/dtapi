@@ -1,7 +1,7 @@
 import {ModuleWithProviders} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {AuthGuardAdminService}  from "./app/shared/services/auth-guard-admin.service.ts";
-import {AuthGuardStudentService} from "./app/shared/services/auth-guard-student.service.ts";
+import {AuthAdminGuard}  from "./app/shared/services/auth-admin.guard.ts";
+import {AuthStudentGuard} from "./app/shared/services/auth-student.guard.ts";
 
 import {LoginComponent}     from './app/login/login.component';
 import {StartPageComponent}  from './app/studentpart/start-page.component';
@@ -18,11 +18,11 @@ import {StudentComponent} from "./app/student/student.component";
 const appRoutes:Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full'},
     {path: 'login', component: LoginComponent},
-    {path: 'student', component: StartPageComponent, canActivate: [AuthGuardStudentService],},
+    {path: 'student', component: StartPageComponent, canActivate: [AuthStudentGuard],},
     {
         path: "admin",
         component: AdminStartPageComponent,
-        canActivate: [AuthGuardAdminService],
+        canActivate: [AuthAdminGuard],
         children: [
             {path: "", redirectTo: "statistic"},
             {path: "statistic", component: StatisticComponent},

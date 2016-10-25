@@ -37,8 +37,8 @@ export class GroupComponent implements OnInit {
     public facultysId: number;
     public specialitysId: number;
     public students: Student[];
-    public specialitysName:string;
-    public facultysName:string;
+    public specialitysName: string;
+    public facultysName: string;
 
     constructor(private groupService: GroupService,
                 private router: Router) {
@@ -77,6 +77,14 @@ export class GroupComponent implements OnInit {
 
     getRecordsRange() {
         this.groupService.getRecordsRange(this.limit, this.offset)
+            .subscribe(data => this.groups = data,
+                error=> {
+                    if (error.response === "Only logged users can work with entities") {
+                        this.router.navigate(["/login"])
+                    }
+                });
+
+        this.groupService.getRecordsRange(this.limit, this.offset)
             .subscribe(data => {
                     this.groups = data;
                     console.log(this.groups);
@@ -84,6 +92,7 @@ export class GroupComponent implements OnInit {
                         this.facultyId[i] = data[i].faculty_id;
                         this.specialityId[i] = data[i].speciality_id;
                     }
+
                     this.getFaculty();
                     this.getSpeciality();
                 },
@@ -133,7 +142,6 @@ export class GroupComponent implements OnInit {
                         this.router.navigate(["/login"])
                     }
                 });
-
     }
 
     pageChange(num: number) {
@@ -213,10 +221,9 @@ export class GroupComponent implements OnInit {
 
     deleteGroup(group: Group): void {
         if (this.students.forEach((student)=> {
-                if(student.group_id == group.group_id) {
-                    return true;
-                }
-
+                    if (student.group_id == group.group_id) {
+                        return true;
+                    }
                 }
             )) {
             alert("Не можливо видалити групу в якій навчаються студенти")

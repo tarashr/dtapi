@@ -1,8 +1,8 @@
 <div class="faculty-container">
-    <nav class="navbar navbar-default facultyNavbarDefault navbarDefault">
+    <nav class="navbar navbar-default">
         <div class="container-fluid">
-            <div class="navbar-text navbarText">Групи ({{faculty.faculty_name}})</div>
-            <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
+            <div class="navbar-text ">Групи ({{faculty.faculty_name}})</div>
+            <form class="navbar-form navbar-left ">
                 <div class="form-group inputSearch">
                     <input type="text" class="form-control" placeholder="знайти групу" name="inputSearch"
                            title="введіть дані для пошуку"
@@ -10,7 +10,7 @@
                            (input)="findEntity()">
                 </div>
             </form>
-            <form class="navbar-form navbar-right navbarForm">
+            <form class="navbar-form navbar-right">
                 <div class="form-group">
                     <ngbd-modal-basic
                             [title]="titleForNew"
@@ -26,31 +26,31 @@
     <div class="container-fluid">
         <ul class="list-group faculty_list">
             <li class="list-group-item row hidden-xs">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">№</div>
-                <div class="col-xs-12 col-sm-2 col-md-2 colxs12">Назва групи</div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12">Факультет</div>
-                <div class="col-xs-12 col-sm-2 col-md-2 colxs12">Спеціальність</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12_btn"></div>
+                <div class="col-xs-12 col-sm-1 col-md-1 ">№</div>
+                <div class="col-xs-12 col-sm-2 col-md-2 ">Назва групи</div>
+                <div class="col-xs-12 col-sm-3 col-md-3 ">Факультет</div>
+                <div class="col-xs-12 col-sm-2 col-md-2 ">Спеціальність</div>
+                <div class="col-xs-12 col-sm-4 col-md-4 "></div>
             </li>
             <li class="list-group-item row" *ngFor="let group of groups; let i=index">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">{{i+1}}</div>
-                <div class="col-xs-12 col-sm-2 col-md-2 colxs12">{{group.group_name}}</div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12">{{faculty_id}}</div>
-                <div class="col-xs-12 col-sm-2 col-md-2 colxs12">{{group.speciality_id}}</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12_btn">
-                    <a class="btn btn-default btn-sm faculty_btnsm" href="#" role="button">
+                <div class="col-xs-12 col-sm-1 col-md-1 ">{{i+1}}</div>
+                <div class="col-xs-12 col-sm-2 col-md-2 ">{{group.group_name}}</div>
+                <div class="col-xs-12 col-sm-3 col-md-3 ">{{faculty_id}}</div>
+                <div class="col-xs-12 col-sm-2 col-md-2 ">{{group.speciality_id}}</div>
+                <div class="col-xs-12 col-sm-4 col-md-4 ">
+                    <a class="btn btn-default btn-sm " href="#" role="button">
                         <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                     </a>
-                    <a class="btn btn-default btn-sm faculty_btnsm" href="#" role="button">
+                    <a class="btn btn-default btn-sm " href="#" role="button">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                     </a>
-                    <a class="btn btn-default btn-sm faculty_btnsm" href="#" role="button">
+                    <a class="btn btn-default btn-sm " href="#" role="button">
                         <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
                     </a>
-                    <a class="btn btn-default btn-sm faculty_btnsm" href="#" role="button">
+                    <a class="btn btn-default btn-sm " href="#" role="button">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </a>
-                    <a class="btn btn-default btn-sm faculty_btnsm" href="#" role="button">
+                    <a class="btn btn-danger btn-sm " href="#" role="button">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>
                 </div>
