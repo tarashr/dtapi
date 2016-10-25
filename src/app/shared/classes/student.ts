@@ -1,4 +1,5 @@
 export class Student {
+    user_id:number;
     username: string;
     password: string;
     password_confirm: string;

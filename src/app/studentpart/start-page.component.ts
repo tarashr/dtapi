@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
-import {CommonService} from "../shared/services/common.service";
+import { CommonService } from "../shared/services/common.service";
 import { LoginService } from "../shared/services/login.service";
+
 
 @Component({
     selector: 'start-page',
     templateUrl: 'start-page.component.html',
 	styleUrls: ['start-page.component.css'],
     providers: [LoginService]
+
 })
 
 export class StartPageComponent implements OnInit{
@@ -52,9 +54,7 @@ export class StartPageComponent implements OnInit{
 
 	logout() {
 		this._loginService.logout();
-		localStorage.clear();
-		sessionStorage.clear();
-		this._router.navigate(["/login"]);
+
 	}
 
 	getStudentProfile(userId: number) {
@@ -62,13 +62,13 @@ export class StartPageComponent implements OnInit{
 			.subscribe(data=> {
 				this.user = data[0];
 				this._commonService.getRecordById("Group", this.user.group_id)
-					.subscribe(data_grup=> {
-						this.userGroup = data_grup[0];
+					.subscribe(dataGroup=> {
+						this.userGroup = dataGroup[0];
 						this._commonService.getRecordById("Faculty", this.userGroup.faculty_id)
-							.subscribe(data_facult=>this.userFaculty = data_facult[0]);
+							.subscribe(dataFaculty=>this.userFaculty = dataFaculty[0]);
 
 						this._commonService.getRecordById("Speciality", this.userGroup.speciality_id)
-							.subscribe(data_speciality=>this.userSpeciality = data_speciality[0]);
+							.subscribe(dataSpeciality=>this.userSpeciality = dataSpeciality[0]);
 
 					})
 			});

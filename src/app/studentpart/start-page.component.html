@@ -1,85 +1,141 @@
 <div class="container">
-		<div class="row">
-			<div class="col-xs-12 col-md-8 info">
+    <div class="row">
+        <div class="col-xs-12 col-md-8 info">
 
-			<ngb-tabset>
-			  <ngb-tab title="Доступні">
-				<template ngbTabContent>
-					<h3 class="bg-success">Cписок доступних тестувань для групи "{{userGroup.group_name}}"</h3>
-						<ul>
-							<li> <a href="test-player.html">Предмет: <b>Асемблер</b> Назва тесту: <b>Основи</b><br>
-								Дата проведення: 2016-10-07</a></li>
-						</ul>
-				</template>
-			  </ngb-tab>
-			  <ngb-tab>
-				<template ngbTabTitle><b>Заплановані</b></template>
-				<template ngbTabContent>
-			 <h3 class="bg-warning">Cписок тестувань які плануються для групи "{{userGroup.group_name}}"</h3>
-				<ul>
-					<li> <b>Предмет: Вища математика</b> Дата проведення: 2016-10-10</li>
-					<li> <b>Предмет: Нища математика</b> Дата проведення: 2016-10-10</li>
-				</ul>
-				</template>
-			  </ngb-tab>
-			  <ngb-tab title="Пройдені">
-				<template ngbTabContent>
-				  <h3 class="bg-warning">Результати тестувань</h3>
-					<ul class="list-group">
-						<li class="list-group-item row bg-warning hidden-xs">
+            <ngb-tabset>
+                <ngb-tab>
+                    <template ngbTabTitle><b>Доступні</b></template>
+                    <template ngbTabContent>
+                        <h3>Cписок доступних тестувань для групи "{{userGroup.group_name}}"</h3>
 
-							<div class=" col-md-3 text-center"><b>Назва тесту</b></div>
-							<div class=" col-md-2 text-center"><b>Дата проведення</b></div>
-							<div class=" col-md-3 text-center"><b>Результат</b></div>
-							<div class=" col-md-2 text-center"><b>Час початку</b></div>
-							<div class=" col-md-2 text-center"><b>Час закінчення</b></div>
-						</li>
-						<li class="list-group-item row">
 
-							<div class=" col-md-3 text-center">Basic level</div>
-							<div class=" col-md-2 text-center">2016-09-22</div>
-							<div class=" col-md-3 text-center"><b>8 із 22 балів</b></div>
-							<div class=" col-md-2 text-center">20:34:54</div>
-							<div class=" col-md-2 text-center">20:35:34</div>
-						</li>
-						<li class="list-group-item row">
+                            <div class="row">
+                                <div class="col-xs-9">
+                                    Предмет: <b>Асемблер</b> Назва тесту: <b>Основи</b><br>
+                                    Дата проведення: 2016-10-26
+                                </div>
+                                <div class="col-xs-3">
+                                    <button class="btn btn-default text-right" role="button">
+									<span aria-hidden="true" class="glyphicon glyphicon glyphicon-play">
+										Тестуватися
+									</span>
+                                    </button>
+                                </div>
+                            </div>
+                        <hr>
+                            <div class="row">
+                            <div class="col-xs-9">
+                                Предмет: <b>Асемблер</b> Назва тесту: <b>Елементарний рівень</b><br>
+                                Дата проведення: 2016-10-26
+                            </div>
+                            <div class="col-xs-3">
+                                <button class="btn btn-default text-right" role="button">
+									<span aria-hidden="true" class="glyphicon glyphicon glyphicon-play">
+										Тестуватися
+									</span>
+                                </button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-xs-9">
+                                Предмет: <b>Асемблер</b> Назва тесту: <b>Середній рівень</b><br>
+                                Дата проведення: 2016-10-26
+                            </div>
+                            <div class="col-xs-3">
+                                <button class="btn btn-default text-right" role="button">
+									<span aria-hidden="true" class="glyphicon glyphicon glyphicon-play">
+										Тестуватися
+									</span>
+                                </button>
+                            </div>
+                        </div>
 
-							<div class=" col-md-3 text-center">Basic level</div>
-							<div class=" col-md-2 text-center">2016-09-22</div>
-							<div class=" col-md-3 text-center"><b>8 із 22 балів</b></div>
-							<div class=" col-md-2 text-center">20:34:54</div>
-							<div class=" col-md-2 text-center">20:35:34</div>
-						</li>
-						<li class="list-group-item row">
+                    </template>
+                </ngb-tab>
+                <ngb-tab>
+                    <template ngbTabTitle>Заплановані</template>
+                    <template ngbTabContent>
+                        <h3>Cписок тестувань які плануються для групи "{{userGroup.group_name}}"</h3>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                Предмет: <b>Асемблер</b> Назва тесту: <b>Середній рівень</b><br>
+                                Дата проведення: 2016-10-26
+                            </div>
+                            <br><hr>
+                            <div class="col-xs-12">
+                                Предмет: <b>Асемблер</b> Назва тесту: <b>Середній рівень</b><br>
+                                Дата проведення: 2016-10-26
+                            </div>
+                        </div>
+                    </template>
+                </ngb-tab>
+                <ngb-tab title="Пройдені">
+                    <template ngbTabContent>
+                        <h3>Результати тестувань</h3>
+                        <div class="container-fluid">
+                            <ul class="list-group entity_list">
+                                <li class="list-group-item row bg-warning hidden-xs">
 
-							<div class=" col-md-3 text-center">Basic level</div>
-							<div class=" col-md-2 text-center">2016-09-22</div>
-							<div class=" col-md-3 text-center"><b>8 із 22 балів</b></div>
-							<div class=" col-md-2 text-center">20:34:54</div>
-							<div class=" col-md-2 text-center">20:35:34</div>
-						</li>
+                                    <div class=" col-md-3 text-center"><b>Назва тесту</b></div>
+                                    <div class=" col-md-2 text-center"><b>Дата проведення</b></div>
+                                    <div class=" col-md-3 text-center"><b>Результат</b></div>
+                                    <div class=" col-md-2 text-center"><b>Час початку</b></div>
+                                    <div class=" col-md-2 text-center"><b>Час закінчення</b></div>
+                                </li>
+                                <li class="list-group-item row">
 
-					</ul>
-				</template>
-			  </ngb-tab>
-			</ngb-tabset>
-		</div>
+                                    <div class=" col-md-3 text-center">Basic level</div>
+                                    <div class=" col-md-2 text-center">2016-09-22</div>
+                                    <div class=" col-md-3 text-center"><b>8 із 22 балів</b></div>
+                                    <div class=" col-md-2 text-center">20:34:54</div>
+                                    <div class=" col-md-2 text-center">20:35:34</div>
+                                </li>
+                                <li class="list-group-item row">
 
-			<div class="col-xs-12 col-md-4 info text-center">
-				<h3>Профайл студента</h3>
-				<img src="../../assets/img/profile.png" class="img-responsive img-circle center-block" alt="">
-				<h4>	{{user.student_surname+" "+user.student_name}} </h4>
-                <p class="text-left"><b>Факультет:</b> {{userFaculty.faculty_name+" ("+userGroup.faculty_id+")"}}</p>
-				<p class="text-left"><b>Спеціальність:</b> {{userSpeciality.speciality_name +" ("+userGroup.speciality_id+")"}}</p>
-				<p class="text-left"><b>Група (id):</b>  
-					{{userGroup.group_name+" ("+user.group_id+")"}}
-				
-				</p>
-				<p class="text-left"><b>№ залікової книжки:</b> {{user.gradebook_id}}</p>
-				
-				<button class="btn btn-default btn-lg" role="button" (click)="logout()"> Вихід </button>
+                                    <div class=" col-md-3 text-center">Basic level</div>
+                                    <div class=" col-md-2 text-center">2016-09-22</div>
+                                    <div class=" col-md-3 text-center"><b>8 із 22 балів</b></div>
+                                    <div class=" col-md-2 text-center">20:34:54</div>
+                                    <div class=" col-md-2 text-center">20:35:34</div>
+                                </li>
+                                <li class="list-group-item row">
 
-				<br><br>
-			</div>
-		</div>
-	</div>
+                                    <div class=" col-md-3 text-center">Basic level</div>
+                                    <div class=" col-md-2 text-center">2016-09-22</div>
+                                    <div class=" col-md-3 text-center"><b>8 із 22 балів</b></div>
+                                    <div class=" col-md-2 text-center">20:34:54</div>
+                                    <div class=" col-md-2 text-center">20:35:34</div>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </template>
+                </ngb-tab>
+            </ngb-tabset>
+        </div>
+
+        <div class="col-xs-12 col-md-4 info text-center">
+            <h3>Профайл студента</h3>
+            <img src="../../assets/img/profile.png" class="img-responsive img-circle center-block" alt="">
+            <h4> {{user.student_surname+" "+user.student_name}} </h4>
+            <p class="text-left"><b>Факультет:</b> {{userFaculty.faculty_name}}</p>
+            <p class="text-left"><b>Спеціальність:</b> {{userSpeciality.speciality_name}}</p>
+            <p class="text-left"><b>Група (id):</b>
+                {{userGroup.group_name}}
+
+            </p>
+            <p class="text-left"><b>№ залікової книжки:</b> {{user.gradebook_id}}</p>
+
+
+            <button class="btn btn-default btn-lg" role="button" (click)="logout()">
+					<span aria-hidden="true" class="glyphicon glyphicon-log-out">
+						Вихід
+					</span>
+            </button>
+
+            <br><br>
+        </div>
+    </div>
+</div>
