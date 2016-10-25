@@ -12,6 +12,7 @@
     border-radius: 4px;
     margin-bottom: 15px;
     background-color: #F8F8F8;
+    text-align: center;
 }
 
 .student-datas{
@@ -59,4 +60,9 @@ label {
     margin: 0 auto 0 auto;
     text-align: center;
     alignment: ce;
+}
+
+.buttonCreateRefresh{
+    margin: auto;
+    text-align: center;
 }
