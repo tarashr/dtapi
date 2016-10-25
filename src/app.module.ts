@@ -29,6 +29,7 @@ import {LoginService}        from './app/shared/services/login.service';
 import {CommonService}       from './app/shared/services/common.service';
 import {SpecialityService}       from './app/shared/services/speciality.service';
 import {GroupService} from './app/shared/services/group.service';
+import {StudentNewProfileComponent} from "./app/student/student-new-profile.component";
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import {GroupService} from './app/shared/services/group.service';
         SpecialityComponent,
         GroupsOfFacultyComponent,
         AddeditGroupComponent,
-        StudentComponent
+        StudentComponent,
+        StudentNewProfileComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},

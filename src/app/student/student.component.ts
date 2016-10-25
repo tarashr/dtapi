@@ -1,7 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute, Params} from "@angular/router";
 import {Student} from "../shared/classes/student";
+import {Group} from "../shared/classes/group";
 import {CommonService} from "../shared/services/common.service";
+import {EntityManagerBody} from "../shared/classes/entity-manager-body";
+import {StudentService} from "../shared/services/student.service";
+import {Observable} from 'rxjs';
+import '../shared/rxjs-operators';
 
 @Component({
     templateUrl: 'student.component.html',
@@ -12,11 +17,19 @@ export class StudentComponent implements OnInit {
     public students:Student[];
     private countOfStudents:number;
     public entity:string = "student";
+    public groupEntity:string = "group";
     public limit:number = 5;
     private findResultStudents:Student[];
     public search:string = "";
     public page:number = 1;
     private offset:number = 0;
+    public groups:Group[]=[];
+
+    /*constructor(private _commonService:CommonService,
+                private _router:Router,
+                private route:ActivatedRoute,
+                public studentService: StudentService) {
+    }*/
 
     constructor(private _commonService:CommonService,
                 private _router:Router) {
@@ -112,4 +125,15 @@ export class StudentComponent implements OnInit {
         this.offset = (this.page - 1) * this.limit;
         this.getRecordsRange();
     }
+
+   /*getEntityValues(data:EntityManagerBody, entityArray:any[]) {
+        this.studentService.getEntityValues(data)
+            .subscribe(data => entityArray = data,
+                error=> {
+                    if (error.response === "Only logged users can work with entities") {
+                        this._router.navigate(["/login"])
+                    }
+                })
+
+    }*/
 }

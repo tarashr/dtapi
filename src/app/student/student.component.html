@@ -11,7 +11,8 @@
             </form>
             <form class="navbar-form navbar-right navbarForm">
                 <div class="form-group">
-                    <a class="btn btn-default" role="button" title="Добавити нового студента">Додати</a>
+                    <a class="btn btn-default" role="button" title="Добавити нового студента"
+                       [routerLink]="['../student-new-profile']">Додати</a>
                     <select class="form-control media767" name="count" id=""
                             title="виберіть кількість студентів на сторінці"
                             (input)="changeLimit($event)"
