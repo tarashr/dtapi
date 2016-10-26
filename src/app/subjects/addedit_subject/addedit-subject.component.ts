@@ -1,9 +1,8 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
-import {SubjectService}  from '../../shared/services/subject.service';
 import {Subject}   from '../../shared/classes/subject';
-
+import { CRUDService } from '../../shared/services/crud.service';
 
 @Component({
     selector: 'addedit-subject',
@@ -12,9 +11,8 @@ import {Subject}   from '../../shared/classes/subject';
 })
 
 export class AddeditSubjectComponent {
-    Tittle: string = "Додати новий предмет";
-    closeResult: string;
-    errorMessage: string;
+    public errorMessage: string;
+    public entity: string = "subject";
 
     @Input() tittle:string;
     @Input() action: string;
@@ -22,14 +20,11 @@ export class AddeditSubjectComponent {
     @Input() subjectName:string;
     @Input() subjectDescription:string;
     @Input() subjectId:number;
-    @Output() getSubjectsRequest = new EventEmitter();
     @Output() refreshData = new EventEmitter();
-    @Output() getcountSubjects = new EventEmitter();
-
 
     constructor(private modalService: NgbModal,
-                private subjectService: SubjectService) {
-    }
+                private crudService: CRUDService
+    ) {}
 
     open(content) {
         this.modalService.open(content);
@@ -48,7 +43,7 @@ export class AddeditSubjectComponent {
     activate(): void {
         if (this.action === "create") {
             let newSubject = new Subject(this.subjectName, this.subjectDescription);
-            this.subjectService.createSubject(newSubject)
+            this.crudService.insertData(this.entity, newSubject)
                 .subscribe(
                     response => {
                         this.refreshData.emit("true");
@@ -59,7 +54,7 @@ export class AddeditSubjectComponent {
                 );
         } else if (this.action === "edit") {
             let editedSubject: Subject = new Subject(this.subjectName, this.subjectDescription);
-            this.subjectService.updateSubject(editedSubject, this.subjectId)
+            this.crudService.updateData(this.entity, this.subjectId, editedSubject)
                 .subscribe(
                     (res) => {
                         this.subject.subject_name = res[0].subject_name;

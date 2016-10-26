@@ -2,7 +2,7 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {User} from '../../shared/classes/user';
-import {CommonService} from "../../shared/services/common.service";
+import {CRUDService} from "../../shared/services/crud.service";
 
 @Component({
     selector: 'add-edit-admin-user',
@@ -25,7 +25,7 @@ export class AddEditAdminUserComponent {
     @Output() refreshData = new EventEmitter();
 
     constructor(private modalService: NgbModal,
-                private adminUserService: CommonService) {
+                private adminUserService: CRUDService) {
     }
 
     open(content) {

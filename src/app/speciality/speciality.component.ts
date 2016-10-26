@@ -23,7 +23,7 @@ getSpeciality():void{
         );
    }
 deleteSpeciality(speciality: Speciality): void {
-        if (confirm('Should I delete speciality')) {
+        if (confirm('Should I delete specialityById')) {
             this.specialityService
                 .deleteSpeciality(speciality.speciality_id)
                 .subscribe(

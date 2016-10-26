@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {Faculty} from "../shared/classes/faculty";
-import {CommonService} from "../shared/services/common.service";
+import {CRUDService} from "../shared/services/crud.service";
 
 @Component({
     templateUrl: 'faculty.component.html',
@@ -11,7 +11,7 @@ export class FacultyComponent implements OnInit {
 
     public faculties:Faculty[];
     private countOfFaculties:number;
-    public entity:string = "faculty";
+    public entity:string = "facultyById";
     public limit:number = 5;
     private findResultFaculties:Faculty[];
     public search:string = "";
@@ -30,7 +30,7 @@ export class FacultyComponent implements OnInit {
     public edit = "edit";
     //end
 
-    constructor(private _commonService:CommonService,
+    constructor(private _commonService:CRUDService,
                 private _router:Router) {
     }
 

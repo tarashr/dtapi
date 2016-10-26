@@ -1,9 +1,8 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
-import {GroupService}  from '../shared/services/group.service';
 import {Group}   from '../shared/classes/group';
-
+import { CRUDService } from '../shared/services/crud.service';
 
 @Component({
     selector: 'addedit-group',
@@ -13,7 +12,9 @@ import {Group}   from '../shared/classes/group';
 
 export class AddeditGroupComponent {
 
-    errorMessage: string;
+    public errorMessage: string;
+    public entity:string = "group";
+
     @Input() title:string;
     @Input() action: string;
     @Input() groups: Group;
@@ -26,8 +27,8 @@ export class AddeditGroupComponent {
     @Output() refreshData = new EventEmitter();
 
     constructor(private modalService: NgbModal,
-                private GroupService: GroupService) {
-    }
+                private crudService: CRUDService
+    ) {}
 
     open(content) {
         this.modalService.open(content);
@@ -47,7 +48,7 @@ export class AddeditGroupComponent {
         if (this.action === "create") {
             let newGroup = new Group(this.groupName, this.facultyId, this.specialityId);
             console.log(newGroup);
-            this.GroupService.createGroup(newGroup)
+            this.crudService.insertData(this.entity, newGroup)
                 .subscribe(
                     response => {
                         this.refreshData.emit("true");
@@ -58,7 +59,7 @@ export class AddeditGroupComponent {
         }
         else if (this.action === "edit") {
             let editGroup = new Group(this.groupName);
-            this.GroupService.updateGroup(editGroup, this.groupId)
+            this.crudService.updateData(this.entity,this.groupId, editGroup)
                 .subscribe(
                     (res) => {
                         this.groups.group_name = res[0].group_name;

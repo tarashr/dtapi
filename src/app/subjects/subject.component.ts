@@ -3,7 +3,7 @@ import {OnInit} from '@angular/core';
 import '../shared/rxjs-operators';
 import {Router} from "@angular/router";
 import {Subject}   from '../shared/classes/subject';
-import {SubjectService}  from '../shared/services/subject.service';
+import {CRUDService}  from '../shared/services/crud.service';
 
 @Component({
     selector: 'subject-container',
@@ -12,45 +12,40 @@ import {SubjectService}  from '../shared/services/subject.service';
 
 export class SubjectComponent implements OnInit {
 
+    //common variables
+    public pageTittle: string = "Предмети";
+    public entity:string = "subject";
     public subjects: Subject[];
     public errorMessage: string;
-    public pageTittle: string = "Предмети";
+
+    //variables for pagination
     public limit: number = 5;
     public totalSubjects: number;
     public currentPage: number = 1;
     public offset: number = 0;
     public maxSize: number = 5;
+
+    //variables for search
     public searchCriteria: string;
+
+    //varibles for addedit
     public create = "create";
     public edit = "edit";
     public titleForEdit = "Редагувати дані предмету";
     public titleForNew = "Створити новий предмет";
-    // public hiddenForSearch:boolean = !!this.searchCriteria;
 
-    constructor(private subjectService: SubjectService,
-                private _router: Router) {
-    }
+    constructor(
+        private crudService: CRUDService
+    ) {}
 
     ngOnInit() {
-        let userRole: string = sessionStorage.getItem("userRole");
-        if (!userRole && userRole != "admin") {
-            this._router.navigate(["/login"]);
-        }
-        this.getcountSubjects();
-    }
-
-    getSubjects(): void {
-        this.subjectService.getSubjects()
-            .subscribe(
-                subjects => this.subjects = subjects,
-                error => this.errorMessage = <any>error
-            );
+        this.getCountSubjects();
     }
 
     deleteSubject(subject: Subject): void {
         if (confirm('Підтвердіть видалення предмету')) {
-            this.subjectService
-                .deleteSubject(subject.subject_id)
+            this.crudService
+                .delRecord(this.entity, subject.subject_id)
                 .subscribe(
                     data => {
                         this.refreshData(data);
@@ -61,8 +56,8 @@ export class SubjectComponent implements OnInit {
         }
     }
 
-    getcountSubjects() {
-        this.subjectService.getcountSubjects()
+    getCountSubjects() {
+        this.crudService.getCountRecords(this.entity)
             .subscribe(
                 res => {
                     this.totalSubjects = +res.numberOfRecords;
@@ -73,7 +68,7 @@ export class SubjectComponent implements OnInit {
     }
 
     getSubjectsRange(): void {
-        this.subjectService.getSubjectsRange(this.limit, this.offset)
+        this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                 res => {
                     this.subjects = res;
@@ -92,7 +87,8 @@ export class SubjectComponent implements OnInit {
 
     pageChange(num: number) {
         if (!num) {
-            num = 1
+            this.currentPage = 1;
+            return;
         }
         this.currentPage = num;
         this.offset = (this.currentPage - 1) * this.limit;
@@ -100,12 +96,11 @@ export class SubjectComponent implements OnInit {
     }
 
     getSubjectsBySearch(): void {
-        this.subjectService.getSubjectsbySearch(this.searchCriteria)
+        this.crudService.getRecordsBySearch(this.entity, this.searchCriteria)
             .subscribe(
                 res => {
                     if(res.response === "no records") this.subjects = [];
                     if(res.length) this.subjects = res;
-                    console.log(this.subjects);
                 },
                 error => this.errorMessage = <any>error
             )
@@ -116,8 +111,8 @@ export class SubjectComponent implements OnInit {
         if (this.searchCriteria) {
             this.getSubjectsBySearch();
         }
-        else if(!this.searchCriteria) {
-            this.getcountSubjects();
+        else if (!this.searchCriteria) {
+            this.getCountSubjects();
         }
     }
 
@@ -128,9 +123,8 @@ export class SubjectComponent implements OnInit {
         } else if (this.subjects.length > 1) {
             this.offset = (this.currentPage - 1) * this.limit;
         }
-        this.getcountSubjects();
+        this.getCountSubjects();
     }
-
 
 }
 

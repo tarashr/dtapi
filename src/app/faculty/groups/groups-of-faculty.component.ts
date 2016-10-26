@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, Params} from "@angular/router";
-import {CommonService} from "../../shared/services/common.service";
+import {CRUDService} from "../../shared/services/crud.service";
 import {Group} from "../../shared/classes/group";
 import {Faculty} from "../../shared/classes/faculty";
 import {Speciality} from "../../shared/classes/speciality";
@@ -14,7 +14,7 @@ export class GroupsOfFacultyComponent implements OnInit {
 
     public groups:Group[]=[];
     public entity:string = "group";
-    public facultyString:string = "faculty";
+    public facultyString:string = "facultyById";
     public faculty:Faculty = new Faculty("", "");
     public faculty_id:number;
     public speciality:Speciality[];
@@ -40,7 +40,7 @@ export class GroupsOfFacultyComponent implements OnInit {
 
     constructor(private _router:Router,
                 private route:ActivatedRoute,
-                private _commonService:CommonService) {
+                private _commonService:CRUDService) {
     }
 
     ngOnInit() {
@@ -67,7 +67,7 @@ export class GroupsOfFacultyComponent implements OnInit {
         this._commonService.getRecordById(entity, id)
             .subscribe(data => {
                     this.faculty = data[0];
-                    console.log('faculty: ', this.faculty)
+                    console.log('facultyById: ', this.faculty)
                 },
                 error=> {
                     if (error.response === "Only logged users can work with entities") {
