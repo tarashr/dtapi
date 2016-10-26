@@ -14,6 +14,8 @@ import {GroupComponent} from './app/group/group.component';
 import {AdminUserComponent} from "./app/admin_user/admin-user.component";
 import {SpecialityComponent} from "./app/speciality/speciality.component";
 import {StudentComponent} from "./app/student/student.component";
+import {StudentNewProfileComponent} from "./app/student/student-new-profile.component";
+import {StudentProfileComponent} from "./app/student/student-profile.component";
 
 const appRoutes:Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -33,6 +35,8 @@ const appRoutes:Routes = [
             {path: "faculty/:id/groups", component: GroupsOfFacultyComponent},
             {path: "adminUser", component: AdminUserComponent},
             {path: "student", component: StudentComponent},
+            {path: "student-new-profile", component: StudentNewProfileComponent},
+            {path: "student-profile", component: StudentProfileComponent},
             {path: "**", redirectTo: "statistic", pathMatch: "full"}
         ]
     },

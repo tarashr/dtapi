@@ -11,7 +11,8 @@
             </form>
             <form class="navbar-form navbar-right navbarForm">
                 <div class="form-group">
-                    <a class="btn btn-default" role="button" title="Добавити нового студента">Додати</a>
+                    <a class="btn btn-default" role="button" title="Добавити нового студента"
+                       [routerLink]="['../student-new-profile']">Додати</a>
                     <select class="form-control media767" name="count" id=""
                             title="виберіть кількість студентів на сторінці"
                             (input)="changeLimit($event)"
@@ -56,7 +57,8 @@
                     <span class="align-xs">{{student.group_id}}</span>
                 </div>
                 <div class="col-xs-12 col-sm-2 col-md-2 colxs12_btn">
-                    <a class="btn btn-default btn-sm faculty_btnsm" role="button" title="Профіль студента">
+                    <a class="btn btn-default btn-sm faculty_btnsm" role="button" title="Профіль студента"
+                       [routerLink]="['../student-profile']">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                     </a>
                     <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити студента"

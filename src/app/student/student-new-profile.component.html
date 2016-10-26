@@ -1,8 +1,8 @@
-<div class="student-container">
-    <div class="student-profile-title">РЕДАГУВАННЯ ПРОФІЛЮ</div>
+<div class="entity-container">
+    <div class="student-profile-title">ПРОФІЛЬ НОВОГО СТУДЕНТА</div>
     <div class="student-datas row">
         <div class="student-foto col-xs-12 col-sm-3 col-md-3">
-            <img class="img-responsive img-circle" src="img/profile.png" alt="">
+            <!--*<img class="img-responsive img-circle" src="img/profile.png" alt="">-->
             <input class="inputStudentData" type="file">
         </div>
         <div class="student-data1 col-xs-12 col-sm-4 col-md-4">
@@ -17,67 +17,10 @@
             <div><label for="gradebook_id">№ залікової книжки:</label><input id="gradebook_id" class="inputStudentData"></div>
             <div><label for="email">Електронна адреса:</label><input id="email" class="inputStudentData"></div>
         </div>
-        <input class="button-save-student-profile" type="button" value="Зберегти дані">
-        <input class="button-refresh-datas"type="button" value="Очистити дані">
-    </div>
-
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="active"><a href="#tab1" data-toggle="tab">Доступні</a></li>
-        <li><a href="#tab2" data-toggle="tab">Заплановані</a></li>
-        <li><a href="#tab3" data-toggle="tab">Пройдені</a></li>
-    </ul>
-
-    <div class="tab-content">
-        <div class="tab-pane fade in active" id="tab1">
-            <h3>Cписок доступних тестувань для групи "ПК-00-01"</h3>
-            <ul>
-                <li>Предмет: Асемблер Назва тесту: Основи. Дата проведення: 2016-10-24</li>
-                <li>Предмет: Асемблер Назва тесту: Елементарний рівень. Дата проведення: 2016-10-24</li>
-            </ul>
-        </div>
-        <div class="tab-pane fade" id="tab2">
-            <h3>Список тестувань які плануються для групи "ПК-00-01"</h3>
-            <ul>
-                <li>Предмет: Асемблер Назва тесту: Основи. Дата проведення: 2016-10-24</li>
-                <li>Предмет: Асемблер Назва тесту: Елементарний рівень. Дата проведення: 2016-10-24</li>
-                <li>Предмет: Асемблер Назва тесту: Елементарний рівень. Дата проведення: 2016-10-24</li>
-            </ul>
-        </div>
-        <div class="tab-pane fade" id="tab3">
-            <h3 class="bg-warning">Результати тестувань</h3>
-            <ul class="list-group">
-                <li class="list-group-item row bg-warning hidden-xs">
-                    <div class=" col-md-3 text-center">
-                        <b>Назва тесту</b>
-                    </div>
-                    <div class=" col-md-2 text-center">
-                        <b>Дата проведення</b>
-                    </div>
-                    <div class=" col-md-3 text-center">
-                        <b>Результат</b>
-                    </div>
-                    <div class=" col-md-2 text-center">
-                        <b>Час початку</b>
-                    </div>
-                    <div class=" col-md-2 text-center">
-                        <b>Час закінчення</b>
-                    </div>
-                </li>
-                <li class="list-group-item row">
-                    <div class=" col-md-3 text-center">Basic level</div>
-                    <div class=" col-md-2 text-center">2016-10-22</div>
-                    <div class=" col-md-3 text-center"><b>12 із 22 балів</b></div>
-                    <div class=" col-md-2 text-center">20:34:54</div>
-                    <div class=" col-md-2 text-center">20:35:34</div>
-                </li>
-                <li class="list-group-item row">
-                    <div class=" col-md-3 text-center">Elementary level</div>
-                    <div class=" col-md-2 text-center">2016-10-22</div>
-                    <div class=" col-md-3 text-center"><b>8 із 22 балів</b></div>
-                    <div class=" col-md-2 text-center">20:34:54</div>
-                    <div class=" col-md-2 text-center">20:35:34</div>
-                </li>
-            </ul>
+        <div class="buttonCreateRefresh">
+            <input class="button-save-student-profile" type="button" value="Зберегти дані">
+            <input class="button-refresh-datas" type="button" value="Очистити дані">
         </div>
     </div>
+
 </div>

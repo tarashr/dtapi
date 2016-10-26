@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute, Params} from "@angular/router";
 import {Student} from "../shared/classes/student";
 import {CommonService} from "../shared/services/common.service";
 
 @Component({
     templateUrl: 'student-new-profile.component.html',
     styleUrls: ['student-new-profile.component.css'],
-    /*providers: [CommonService]*/
 })
 export class StudentNewProfileComponent implements OnInit {
 
@@ -19,11 +18,19 @@ export class StudentNewProfileComponent implements OnInit {
     public page:number = 1;
     private offset:number = 0;
 
-    constructor(private _commonService:CommonService,
-                private _router:Router) {
+    constructor(private _router:Router,
+                private route:ActivatedRoute,
+                private _commonService:CommonService) {
     }
 
     ngOnInit() {
+        let userRole: string = sessionStorage.getItem("userRole");
+        if (!userRole && userRole != "admin") {
+            this._router.navigate(["/login"]);
+        }
+    }
+
+    /*ngOnInit() {
         let userRole:string = sessionStorage.getItem("userRole");
         if (!userRole && userRole != "admin") {
             this._router.navigate(["/login"]);
@@ -31,7 +38,7 @@ export class StudentNewProfileComponent implements OnInit {
         this.countOfStudents = Number(localStorage.getItem(this.entity));
         this.getRecordsRange();
     }
-
+/*
     getCountRecords() {
         this._commonService.getCountRecords(this.entity)
             .subscribe(
@@ -109,5 +116,5 @@ export class StudentNewProfileComponent implements OnInit {
         this.page = num;
         this.offset = (this.page - 1) * this.limit;
         this.getRecordsRange();
-    }
+    }*/
 }
