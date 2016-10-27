@@ -7,13 +7,13 @@
                     <input (input)="searchForData($event)" type="text" class="form-control" placeholder="пошук">
                 </div>
                 <div class=" col-xs-12 col-sm-4 col-md-4">
-                    <select class="form-control select" (change)="getNameOfFaculty($event)">
+                    <select class="form-control select" (change)="getGrouByFacultyName($event)">
                         <option selected>Виберіть факультет</option>
                         <option *ngFor = "let faculty of faculties">{{faculty.faculty_name}}</option>
                     </select>
                 </div>
                 <div class="col-xs-12 col-xs-12 col-sm-4 col-md-4">
-                    <select class="form-control select" (change)="getNameOfSpeciality($event)">
+                    <select class="form-control select" (change)="getGroupBySpecialityName($event)">
                         <option selected>Виберіть спеціальність</option>
                         <option *ngFor = "let speciality of specialities" >{{speciality.speciality_name}}</option>
                     </select>
@@ -21,10 +21,10 @@
                 <div class="col-md-2 col-sm-12 col-xs-12 settings">
                     <addedit-group
                             [action] = "create"
-                            [facultyId]="facultyId"
-                            [specialityId]="specialityId"
                             (refreshData) = "refreshData($event)"
-                            [title]="titleForNew">
+                            [title]="titleForNew"
+                            [faculties]="faculties"
+                            [specialities]="specialities">
                     </addedit-group>
                     <select class=" form-control " name="count"
                             title="виберіть кількість груп на сторінці"
@@ -74,8 +74,6 @@
                                 [groups] = "group"
                                 [groupName]="group.group_name"
                                 [groupId]="group.group_id"
-                                [facultyName]="facultyName"
-                                [specialityName]="specialityName"
                                 [action] = "edit"
                                 (refreshData) = "refreshData($event)">
                         </addedit-group>
