@@ -7,23 +7,23 @@ import {SpecialityService} from '../shared/services/speciality.service';
     styleUrls:['speciality.component.css']
 })
 export class SpecialityComponent implements OnInit{
-public specialities:Speciality[];
-public errorMessage:string;
+    public specialities:Speciality[];
+    public errorMessage:string;
     constructor(private specialityService:SpecialityService){}
 
-    
-ngOnInit(){
-    this.getSpeciality();
-}
-getSpeciality():void{
-    this.specialityService.getSpecialities()
-        .subscribe(
-            specialities => {this.specialities = specialities},
-            error => this.errorMessage = <any>error
-        );
-   }
-deleteSpeciality(speciality: Speciality): void {
-        if (confirm('Should I delete specialityById')) {
+
+    ngOnInit(){
+        this.getSpeciality();
+    }
+    getSpeciality():void{
+        this.specialityService.getSpecialities()
+            .subscribe(
+                specialities => {this.specialities = specialities},
+                error => this.errorMessage = <any>error
+            );
+    }
+    deleteSpeciality(speciality: Speciality): void {
+        if (confirm('Should I delete speciality')) {
             this.specialityService
                 .deleteSpeciality(speciality.speciality_id)
                 .subscribe(

@@ -11,7 +11,7 @@ export class FacultyComponent implements OnInit {
 
     public faculties:Faculty[];
     private countOfFaculties:number;
-    public entity:string = "facultyById";
+    public entity:string = "faculty";
     public limit:number = 5;
     private findResultFaculties:Faculty[];
     public search:string = "";
@@ -30,7 +30,7 @@ export class FacultyComponent implements OnInit {
     public edit = "edit";
     //end
 
-    constructor(private _commonService:CRUDService,
+    constructor(private _crudService:CRUDService,
                 private _router:Router) {
     }
 
@@ -39,7 +39,7 @@ export class FacultyComponent implements OnInit {
     }
 
     getCountRecords() {
-        this._commonService.getCountRecords(this.entity)
+        this._crudService.getCountRecords(this.entity)
             .subscribe(
                 data => {
                     this.countOfFaculties = +data.numberOfRecords;
@@ -50,7 +50,7 @@ export class FacultyComponent implements OnInit {
     }
 
     getRecordsRange() {
-        this._commonService.getRecordsRange(this.entity, this.limit, this.offset)
+        this._crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                 data => this.faculties = data,
                 error=> console.log("error: ", error))
@@ -58,7 +58,7 @@ export class FacultyComponent implements OnInit {
 
     delRecord(entity:string, id:number) {
         this.offset = (this.page - 1) * this.limit;
-        this._commonService.delRecord(entity, id)
+        this._crudService.delRecord(entity, id)
             .subscribe(()=>this.refreshData("true"));
     }
 
@@ -79,7 +79,7 @@ export class FacultyComponent implements OnInit {
             return;
         }
 
-        this._commonService.getRecordsBySearch(this.entity, this.search)
+        this._crudService.getRecordsBySearch(this.entity, this.search)
             .subscribe(data => {
                 if (data.response == "no records") {
                     this.faculties = [];
@@ -98,7 +98,7 @@ export class FacultyComponent implements OnInit {
             this.offset = (this.page - 1) * this.limit;
         }
 
-        this._commonService.getCountRecords(this.entity)
+        this._crudService.getCountRecords(this.entity)
             .subscribe(
                 data => {
                     this.countOfFaculties = +data.numberOfRecords;
@@ -112,7 +112,7 @@ export class FacultyComponent implements OnInit {
         if (!num) {
             this.page = 1;
             return;
-        }        
+        }
         this.page = num;
         this.offset = (this.page - 1) * this.limit;
         this.getRecordsRange();

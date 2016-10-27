@@ -64,6 +64,7 @@ export class GroupComponent implements OnInit {
         this.getFaculties();
         this.getSpecialities();
         this.getStudents();
+        this.getGroup();
     }
 
     getCountGroups(): void {
@@ -84,15 +85,23 @@ export class GroupComponent implements OnInit {
         this.getGroupsRange();
     }
 
+    getGroup() {
+        this.crudService.getCountRecords(this.entity)
+            .subscribe(
+                data => console.log(data)
+            )
+    }
+
     getGroupsRange() {
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(data => {
                     this.groups = data;
                     console.log(this.groups);
                     for (let i = 0; i < data.length; i++) {
-                        this.facultiesId[i] = data[i].faculty_id;
-                        this.specialitiesId[i] = data[i].speciality_id;
+                        this.facultiesId[i] = +data[i].faculty_id;
+                        this.specialitiesId[i] = +data[i].speciality_id;
                     }
+                    console.log(this.facultiesId);
                     this.getFacultyById();
                     this.getSpecialityById();
                 },
@@ -112,7 +121,6 @@ export class GroupComponent implements OnInit {
         this.crudService.getEntityValues(data)
             .subscribe(data=> {
                     this.facultyById = data;
-                    console.log(this.facultyById);
                     for (let i = 0; i < this.groups.length; i++) {
                         for (let j = 0; j < this.facultyById.length; j++) {
                             if (this.groups[i].faculty_id === this.facultyById[j].faculty_id) {
