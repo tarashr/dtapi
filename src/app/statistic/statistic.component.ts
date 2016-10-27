@@ -12,13 +12,13 @@ export class StatisticComponent implements OnInit {
 
     public entities:StatisticData[] = entities;
 
-    constructor(private _commonService:CRUDService,
+    constructor(private _crudService:CRUDService,
                 private _router:Router) {
     }
 
     ngOnInit() {
         this.entities.forEach((entity)=> {
-            this._commonService.getCountRecords(entity.name)
+            this._crudService.getCountRecords(entity.name)
                 .subscribe(data => {
                     entity.count = data.numberOfRecords;
                     localStorage.setItem(entity.name, (entity.count as string));

@@ -3,7 +3,7 @@ import {Router} from "@angular/router";
 import '../shared/rxjs-operators';
 
 import {User} from '../shared/classes/user';
-import {CRUDService} from "../shared/services/crud.service";
+import {CRUDService} from "../shared/services/crud.service.ts";
 
 @Component({
     templateUrl: 'admin-user.component.html',

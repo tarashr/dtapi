@@ -18,27 +18,35 @@ export class LoginService {
                 private _http:Http) {
     };
 
-    private handleError(error:any):Observable<any> {
+    private handleError = (error:any):Observable<any>=> {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         return Observable.throw(errMsg);
-    }
+    };
+
+    private success = (response:Response)=>response.json();
+
+    private successLogout = (response:Response)=> {
+        if (response.status == 200) {
+            sessionStorage.removeItem("userRole");
+            sessionStorage.removeItem("userId");
+            this._router.navigate(["/login"]);
+        } else {
+            console.log("User has not been logout")
+        }
+    };
 
     login(user:User):Observable<any> {
         return this._http
             .post(this.loginUrl, JSON.stringify(user), {headers: this._headers})
-            .map((response:Response)=>response.json())
+            .map(this.success)
             .catch(this.handleError)
     };
 
     logout():void {
         this._http
             .get(this.logoutUrl)
-            .subscribe();
-        localStorage.clear();
-        sessionStorage.removeItem("userRole");
-        sessionStorage.removeItem("userId");
-        this._router.navigate(["/login"]);
+            .subscribe(this.successLogout);
     }
 
 }

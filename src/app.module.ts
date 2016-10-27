@@ -15,10 +15,8 @@ import {SubjectComponent}        from "./app/subjects/subject.component";
 import {AddeditSubjectComponent}  from './app/subjects/addedit_subject/addedit-subject.component';
 import {AddeditGroupComponent}  from './app/group/addedit-group.component';
 import {FacultyComponent}        from "./app/faculty/faculty.component";
-import {NgbdModalBasic}        from "./app/faculty/ngbd-modal-basic.component";
 import {GroupComponent}        from './app/group/group.component';
 import {SpecialityComponent}        from "./app/speciality/speciality.component";
-import {GroupsOfFacultyComponent} from "./app/faculty/groups/groups-of-faculty.component"
 import {AdminUserComponent} from "./app/admin_user/admin-user.component";
 import {StudentComponent}        from "./app/student/student.component";
 import {AuthAdminGuard} from './app/shared/services/auth-admin.guard.ts';
@@ -31,6 +29,7 @@ import { SubjectService } from './app/shared/services/subject.service';
 import { GroupService } from './app/shared/services/group.service';
 import {StudentNewProfileComponent} from "./app/student/student-new-profile.component";
 import {StudentProfileComponent} from "./app/student/student-profile.component";
+import {AddEditModalComponent} from "./app/shared/components/addeditmodal/add-edit-modal.component"
 
 
 @NgModule({
@@ -49,17 +48,16 @@ import {StudentProfileComponent} from "./app/student/student-profile.component";
         StartPageComponent,
         AdminStartPageComponent,
         FacultyComponent,
-        NgbdModalBasic,
         StatisticComponent,
         GroupComponent,
         AdminUserComponent,
         AddEditAdminUserComponent,
         SpecialityComponent,
-        GroupsOfFacultyComponent,
         AddeditGroupComponent,
         StudentComponent,
         StudentNewProfileComponent,
-        StudentProfileComponent
+        StudentProfileComponent,
+        AddEditModalComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},

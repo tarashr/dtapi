@@ -8,7 +8,6 @@ import {StartPageComponent}  from './app/studentpart/start-page.component';
 import {AdminStartPageComponent} from "./app/admin-start/admin-start-page.component.ts";
 import {SubjectComponent} from './app/subjects/subject.component';
 import {FacultyComponent} from './app/faculty/faculty.component';
-import {GroupsOfFacultyComponent} from './app/faculty/groups/groups-of-faculty.component';
 import {StatisticComponent} from "./app/statistic/statistic.component";
 import {GroupComponent} from './app/group/group.component';
 import {AdminUserComponent} from "./app/admin_user/admin-user.component";
@@ -32,7 +31,7 @@ const appRoutes:Routes = [
             {path: "speciality", component: SpecialityComponent},
             {path: "faculty", component: FacultyComponent},
             {path: "group", component: GroupComponent},
-            {path: "faculty/:id/groups", component: GroupsOfFacultyComponent},
+            {path: "faculty/:id/groups", component: GroupComponent},
             {path: "adminUser", component: AdminUserComponent},
             {path: "student", component: StudentComponent},
             {path: "student-new-profile", component: StudentNewProfileComponent},
