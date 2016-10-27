@@ -15,6 +15,7 @@ import {
     refreshData
 } from "../shared/constants"
 
+
 @Component({
     templateUrl: 'faculty.component.html',
     styleUrls: ['faculty.component.css']
@@ -32,6 +33,7 @@ export class FacultyComponent implements OnInit {
     public search:string = "";
     public page:number = 1;
     public offset:number = 0;
+
 
     constructor(private crudService:CRUDService,
                 private _router:Router) {
@@ -66,5 +68,4 @@ export class FacultyComponent implements OnInit {
                 });
         }
     }
-    
 }

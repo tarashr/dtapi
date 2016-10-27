@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
-import { CRUDService } from "../shared/services/crud.service.ts";
+import { CRUDService } from "../shared/services/crud.service";
 import { LoginService } from "../shared/services/login.service";
 
 

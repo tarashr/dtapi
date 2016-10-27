@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import {Student} from "../shared/classes/student";
-import {CRUDService} from "../shared/services/crud.service.ts";
+import {CRUDService} from "../shared/services/crud.service";
 
 @Component({
     templateUrl: 'student-new-profile.component.html',

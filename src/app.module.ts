@@ -22,11 +22,11 @@ import {StudentComponent}        from "./app/student/student.component";
 import {AuthAdminGuard} from './app/shared/services/auth-admin.guard.ts';
 import {AuthStudentGuard} from './app/shared/services/auth-student.guard.ts';
 import {AddEditAdminUserComponent} from "./app/admin_user/add_edit_admin_user/add-edit-admin-user.component";
-import {SubjectService}      from './app/shared/services/subject.service';
 import {LoginService}        from './app/shared/services/login.service';
-import {CRUDService}       from './app/shared/services/crud.service.ts';
+import {CRUDService}       from './app/shared/services/crud.service';
 import {SpecialityService}       from './app/shared/services/speciality.service';
-import {GroupService} from './app/shared/services/group.service';
+import { SubjectService } from './app/shared/services/subject.service';
+import { GroupService } from './app/shared/services/group.service';
 import {StudentNewProfileComponent} from "./app/student/student-new-profile.component";
 import {StudentProfileComponent} from "./app/student/student-profile.component";
 import {AddEditModalComponent} from "./app/shared/components/addeditmodal/add-edit-modal.component"
@@ -61,11 +61,11 @@ import {AddEditModalComponent} from "./app/shared/components/addeditmodal/add-ed
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},
-        SubjectService,
         LoginService,
         CRUDService,
-        GroupService,
         SpecialityService,
+        SubjectService,
+        GroupService,
         HttpModule,
         AuthAdminGuard,
         AuthStudentGuard

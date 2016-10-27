@@ -4,8 +4,9 @@ import {Router} from '@angular/router';
 import {Group} from '../shared/classes/group';
 import {Faculty} from '../shared/classes/faculty';
 import {Speciality} from '../shared/classes/speciality';
-import {GroupService} from '../shared/services/group.service';
 import {Student} from "../shared/classes/student";
+import {CRUDService}  from '../shared/services/crud.service';
+import {EntityManagerBody} from "../shared/classes/entity-manager-body";
 
 @Component({
     selector: 'group-container',
@@ -15,56 +16,84 @@ import {Student} from "../shared/classes/student";
 
 export class GroupComponent implements OnInit {
 
-    public group: Group[];
+    //common variables
+    public entity:string = "group";
+    public entityFaculty:string = "faculty";
+    public entitySpeciality:string = "speciality";
+    public entityStudent:string = "student";
     public groups: Group[];
     public errorMessage: string;
+
+    //variables for displey
+    public facultiesId: number[] = [];
+    public specialitiesId: number[] = [];
+    public facultyById: Faculty[];
+    public specialityById: Speciality[];
+
+    //variables for pagination
     public countOfGroup: number;
     public limit: number = 5;
     public offset: number = 0;
     public page: number = 1;
-    public facultyId = [];
-    public specialityId = [];
-    public faculty: Faculty[];
-    public facultys: Faculty[];
-    public speciality: Speciality[];
-    public specialitys: Speciality[];
-    public specialityName = [];
+
+    //variables for search
     public searchCriteria: string;
+
+    //variables for addedit action
     public create = "create";
     public edit = "edit";
     public titleForEdit = "Редагувати дані групи";
     public titleForNew = "Створити нову групу";
-    public facultysId: number;
-    public specialitysId: number;
-    public students: Student[];
-    public specialitysName: string;
-    public facultysName: string;
+    public facultyId: number;
+    public specialityId: number;
+    public specialityName: string;
+    public facultyName: string;
+    public faculties: Faculty[];
+    public specialities: Speciality[];
 
-    constructor(private groupService: GroupService,
-                private router: Router) {
-    }
+    //variables for delete group
+    public students: Student[];
+
+    constructor(
+        private router: Router,
+        private crudService:CRUDService
+    ) {}
 
     ngOnInit() {
-        let userRole: string = sessionStorage.getItem("userRole");
-        if (!userRole && userRole != "admin") {
-            this.router.navigate(["/login"]);
-        }
-
-        this.getCountRecords();
-        this.getFacultys();
-        this.getSpecialitys();
+        this.getCountGroups();
+        this.getFaculties();
+        this.getSpecialities();
         this.getStudents();
-        this.getGroup();
     }
 
-    getCountRecords(): void {
-        this.groupService.getCountRecords()
+    //the mothods used for pagination
+    getCountGroups(): void {
+        this.crudService.getCountRecords(this.entity)
             .subscribe(res=> {
                     this.countOfGroup = +res.numberOfRecords;
-                    this.getRecordsRange();
+                    this.getGroupsRange();
                 },
                 error=>this.errorMessage = <any>error
             );
+    }
+
+    getGroupsRange() {
+        this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
+            .subscribe(data => {
+                    this.groups = data;
+                    for (let i = 0; i < data.length; i++) {
+                        this.facultiesId[i] = data[i].faculty_id;
+                        this.specialitiesId[i] = data[i].speciality_id;
+                    }
+                    console.log(this.facultiesId);
+                    this.getFacultyById();
+                    this.getSpecialityById();
+                },
+                error=> {
+                    if (error.response === "Only logged users can work with entities") {
+                        this.router.navigate(["/login"])
+                    }
+                });
     }
 
     changeLimit($event): void {
@@ -72,78 +101,61 @@ export class GroupComponent implements OnInit {
         this.limit = $event.currentTarget.value;
         this.offset = 0;
         this.page = 1;
-        this.getRecordsRange();
-    }
-
-    getRecordsRange() {
-        this.groupService.getRecordsRange(this.limit, this.offset)
-            .subscribe(data => {
-                    this.groups = data;
-                    console.log(this.groups);
-                    for (let i = 0; i < data.length; i++) {
-                        this.facultyId[i] = data[i].faculty_id;
-                        this.specialityId[i] = data[i].speciality_id;
-                    }
-
-                    this.getFaculty();
-                    this.getSpeciality();
-                },
-                error=> {
-                    if (error.response === "Only logged users can work with entities") {
-                        this.router.navigate(["/login"])
-                    }
-                });
-    }
-
-    getFaculty() {
-        this.groupService.getFaculty(this.facultyId)
-            .subscribe(data=> {
-                    this.faculty = data;
-                    console.log(this.faculty);
-                    for (let i = 0; i < this.groups.length; i++) {
-                        for (let j = 0; j < this.faculty.length; j++) {
-                            if (this.groups[i].faculty_id === this.faculty[j].faculty_id) {
-                                this.groups[i].faculty_name = this.faculty[j].faculty_name;
-                            }
-                        }
-                    }
-                },
-                error=> {
-                    if (error.response === "Only logged users can work with entities") {
-                        this.router.navigate(["/login"])
-                    }
-                });
-
-    }
-
-    getSpeciality() {
-        this.groupService.getSpeciality(this.specialityId)
-            .subscribe(data=> {
-                    this.speciality = data;
-                    console.log(this.speciality);
-                    for (let i = 0; i < this.groups.length; i++) {
-                        for (let j = 0; j < this.speciality.length; j++) {
-                            if (this.groups[i].speciality_id === this.speciality[j].speciality_id) {
-                                this.groups[i].speciality_name = this.speciality[j].speciality_name;
-                            }
-                        }
-                    }
-                },
-                error=> {
-                    if (error.response === "Only logged users can work with entities") {
-                        this.router.navigate(["/login"])
-                    }
-                });
+        this.getGroupsRange();
     }
 
     pageChange(num: number) {
         if (!num) {
-            num = 1
+            this.page = 1;
+            return;
         }
         this.page = num;
         this.offset = (this.page - 1) * this.limit;
-        this.getRecordsRange();
+        this.getGroupsRange();
     }
+    //the end
+
+    getFacultyById() {
+        let data = new EntityManagerBody("Faculty", this.facultiesId);
+        this.crudService.getEntityValues(data)
+            .subscribe(data=> {
+                    this.facultyById = data;
+                    for (let i = 0; i < this.groups.length; i++) {
+                        for (let j = 0; j < this.facultyById.length; j++) {
+                            if (this.groups[i].faculty_id === this.facultyById[j].faculty_id) {
+                                this.groups[i].faculty_name = this.facultyById[j].faculty_name;
+                            }
+                        }
+                    }
+                },
+                error=> {
+                    if (error.response === "Only logged users can work with entities") {
+                        this.router.navigate(["/login"])
+                    }
+                });
+
+    }
+
+    getSpecialityById() {
+        let data = new EntityManagerBody("Speciality", this.specialitiesId);
+        this.crudService.getEntityValues(data)
+            .subscribe(data=> {
+                    this.specialityById = data;
+                    for (let i = 0; i < this.groups.length; i++) {
+                        for (let j = 0; j < this.specialityById.length; j++) {
+                            if (this.groups[i].speciality_id === this.specialityById[j].speciality_id) {
+                                this.groups[i].speciality_name = this.specialityById[j].speciality_name;
+                            }
+                        }
+                    }
+                },
+                error=> {
+                    if (error.response === "Only logged users can work with entities") {
+                        this.router.navigate(["/login"])
+                    }
+                });
+    }
+
 
     refreshData(data: string) {
         if (this.groups.length === 1) {
@@ -152,50 +164,52 @@ export class GroupComponent implements OnInit {
         } else if (this.groups.length > 1) {
             this.offset = (this.page - 1) * this.limit;
         }
-        this.getCountRecords();
+        this.getCountGroups();
     }
 
-    getFacultys(): void {
-        this.groupService.getFacultys()
+    getFaculties(): void {
+        this.crudService.getRecords(this.entityFaculty)
             .subscribe(
-                facultys => this.facultys = facultys,
+                faculties => this.faculties = faculties,
                 error => this.errorMessage = <any>error
             );
     }
 
-    getSpecialitys(): void {
-        this.groupService.getSpecialitys()
+    getSpecialities(): void {
+        this.crudService.getRecords(this.entitySpeciality)
             .subscribe(
-                specialitys => this.specialitys = specialitys,
+                specialities => this.specialities = specialities,
                 error => this.errorMessage = <any>error
             );
     }
 
+    //methods for addedit action
     getNameOfFaculty($event) {
-        this.facultysName = $event.currentTarget.value;
-        this.facultys.forEach((item)=> {
-            if (item.faculty_name == this.facultysName) {
-                this.facultysId = item.faculty_id;
+        this.facultyName = $event.currentTarget.value;
+        this.faculties.forEach((item)=> {
+            if (item.faculty_name == this.facultyName) {
+                this.facultyId = item.faculty_id;
             }
         })
     }
 
     getNameOfSpeciality($event) {
-        this.specialitysName = $event.currentTarget.value;
-        this.specialitys.forEach((item)=> {
-            if (item.speciality_name == this.specialitysName) {
-                this.specialitysId = item.speciality_id;
+        this.specialityName = $event.currentTarget.value;
+        this.specialities.forEach((item)=> {
+            if (item.speciality_name == this.specialityName) {
+                this.specialityId = item.speciality_id;
             }
         })
     }
+    //the end
 
+    //the methods for search
     getGroupsBySearch(): void {
-        this.groupService.getGroupsBySearch(this.searchCriteria)
+        this.crudService.getRecordsBySearch(this.entity, this.searchCriteria)
             .subscribe(
                 res => {
                     if (res.response === "no records") this.groups = [];
                     if (res.length) this.groups = res;
-                    console.log(this.groups);
                 },
                 error => this.errorMessage = <any>error
             )
@@ -207,22 +221,15 @@ export class GroupComponent implements OnInit {
             this.getGroupsBySearch();
         }
         else if (!this.searchCriteria) {
-            this.getCountRecords();
+            this.getCountGroups();
         }
     }
+    //the end
 
-    deleteGroup(group: Group): void {
-        if (this.students.forEach((student)=> {
-                    if (student.group_id == group.group_id) {
-                        return true;
-                    }
-                }
-            )) {
-            alert("Не можливо видалити групу в якій навчаються студенти")
-        } else {
+    deleteGroup(group): void {
             if (confirm('Підтвердіть видалення групи')) {
-                this.groupService
-                    .deleteGroup(group.group_id)
+                this.crudService
+                    .delRecord(this.entity, group.group_id)
                     .subscribe(
                         data => {
                             this.refreshData(data);
@@ -230,23 +237,15 @@ export class GroupComponent implements OnInit {
                         },
                         error => this.errorMessage = <any>error
                     );
-            }
+
         }
     }
 
-
+    //the methods for check after delete group
     getStudents(): void {
-        this.groupService.getStudents()
+        this.crudService.getRecords(this.entityStudent)
             .subscribe(
                 data => this.students = data,
-                error => this.errorMessage = <any>error
-            );
-    }
-
-    getGroup(): void {
-        this.groupService.getAllGroup()
-            .subscribe(
-                data => this.group = data,
                 error => this.errorMessage = <any>error
             );
     }

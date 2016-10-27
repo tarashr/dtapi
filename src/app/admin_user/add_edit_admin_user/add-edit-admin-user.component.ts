@@ -2,7 +2,7 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {User} from '../../shared/classes/user';
-import {CRUDService} from "../../shared/services/crud.service.ts";
+import {CRUDService} from "../../shared/services/crud.service";
 
 @Component({
     selector: 'add-edit-admin-user',

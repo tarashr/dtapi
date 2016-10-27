@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import {Student} from "../shared/classes/student";
 import {Group} from "../shared/classes/group";
-import {CRUDService} from "../shared/services/crud.service.ts";
+import {CRUDService} from "../shared/services/crud.service";
 import {EntityManagerBody} from "../shared/classes/entity-manager-body";
 import {StudentService} from "../shared/services/student.service";
 import {Observable} from 'rxjs';
