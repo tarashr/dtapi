@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {Faculty} from "../shared/classes/faculty";
-import {CommonService} from "../shared/services/common.service";
+import {CRUDService} from "../shared/services/crud.service.ts";
 import {configAddFaculty, configEditFaculty, maxSize} from "../shared/constants"
 
 @Component({
@@ -23,7 +23,7 @@ export class FacultyComponent implements OnInit {
     public page:number = 1;
     public offset:number = 0;
 
-    constructor(private _commonService:CommonService,
+    constructor(private _commonService:CRUDService,
                 private _router:Router) {
     }
 

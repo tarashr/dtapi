@@ -3,7 +3,7 @@ import {Router} from "@angular/router";
 import '../shared/rxjs-operators';
 
 import {User} from '../shared/classes/user';
-import {CommonService} from "../shared/services/common.service";
+import {CRUDService} from "../shared/services/crud.service.ts";
 
 @Component({
     templateUrl: 'admin-user.component.html',
@@ -23,7 +23,7 @@ export class AdminUserComponent implements OnInit {
     public offset:number = 0;
     public maxSize: number = 5;
     
-    constructor(private adminUserService: CommonService,
+    constructor(private adminUserService: CRUDService,
                 private _router: Router){}
 
     ngOnInit(): void {

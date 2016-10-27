@@ -15,10 +15,8 @@ import {SubjectComponent}        from "./app/subjects/subject.component";
 import {AddeditSubjectComponent}  from './app/subjects/addedit_subject/addedit-subject.component';
 import {AddeditGroupComponent}  from './app/group/addedit-group.component';
 import {FacultyComponent}        from "./app/faculty/faculty.component";
-import {NgbdModalBasic}        from "./app/faculty/ngbd-modal-basic.component";
 import {GroupComponent}        from './app/group/group.component';
 import {SpecialityComponent}        from "./app/speciality/speciality.component";
-import {GroupsOfFacultyComponent} from "./app/faculty/groups/groups-of-faculty.component"
 import {AdminUserComponent} from "./app/admin_user/admin-user.component";
 import {StudentComponent}        from "./app/student/student.component";
 import {AuthAdminGuard} from './app/shared/services/auth-admin.guard.ts';
@@ -26,7 +24,7 @@ import {AuthStudentGuard} from './app/shared/services/auth-student.guard.ts';
 import {AddEditAdminUserComponent} from "./app/admin_user/add_edit_admin_user/add-edit-admin-user.component";
 import {SubjectService}      from './app/shared/services/subject.service';
 import {LoginService}        from './app/shared/services/login.service';
-import {CommonService}       from './app/shared/services/common.service';
+import {CRUDService}       from './app/shared/services/crud.service.ts';
 import {SpecialityService}       from './app/shared/services/speciality.service';
 import {GroupService} from './app/shared/services/group.service';
 import {StudentNewProfileComponent} from "./app/student/student-new-profile.component";
@@ -50,13 +48,11 @@ import {AddEditModalComponent} from "./app/shared/components/addeditmodal/add-ed
         StartPageComponent,
         AdminStartPageComponent,
         FacultyComponent,
-        NgbdModalBasic,
         StatisticComponent,
         GroupComponent,
         AdminUserComponent,
         AddEditAdminUserComponent,
         SpecialityComponent,
-        GroupsOfFacultyComponent,
         AddeditGroupComponent,
         StudentComponent,
         StudentNewProfileComponent,
@@ -67,7 +63,7 @@ import {AddEditModalComponent} from "./app/shared/components/addeditmodal/add-ed
         {provide: APP_BASE_HREF, useValue: '/'},
         SubjectService,
         LoginService,
-        CommonService,
+        CRUDService,
         GroupService,
         SpecialityService,
         HttpModule,

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CommonService} from "../shared/services/common.service";
+import {CRUDService} from "../shared/services/crud.service.ts";
 import {Router} from "@angular/router";
 import {StatisticData} from "../shared/classes/statistic-data";
 import {entities} from "../shared/constants";
@@ -12,7 +12,7 @@ export class StatisticComponent implements OnInit {
 
     public entities:StatisticData[] = entities;
 
-    constructor(private _commonService:CommonService,
+    constructor(private _commonService:CRUDService,
                 private _router:Router) {
     }
 

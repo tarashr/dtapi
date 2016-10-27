@@ -6,7 +6,7 @@ import {baseUrl}         from "../constants.ts";
 import {EntityManagerBody} from "../classes/entity-manager-body";
 
 @Injectable()
-export class CommonService {
+export class CRUDService {
 
     private hostUrlBase:string = baseUrl;
 

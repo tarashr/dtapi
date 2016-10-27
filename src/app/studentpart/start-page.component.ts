@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
-import { CommonService } from "../shared/services/common.service";
+import { CRUDService } from "../shared/services/crud.service.ts";
 import { LoginService } from "../shared/services/login.service";
 
 
@@ -31,7 +31,7 @@ export class StartPageComponent implements OnInit{
     constructor(
         private _loginService: LoginService,
         private _router: Router,
-		private _commonService:CommonService
+		private _commonService:CRUDService
     ) { }
 
     private success(response:any){

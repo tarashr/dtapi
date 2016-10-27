@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import {Student} from "../shared/classes/student";
-import {CommonService} from "../shared/services/common.service";
+import {CRUDService} from "../shared/services/crud.service.ts";
 
 @Component({
     templateUrl: 'student-profile.component.html',
@@ -20,7 +20,7 @@ export class StudentProfileComponent implements OnInit {
 
     constructor(private _router:Router,
                 private route:ActivatedRoute,
-                private _commonService:CommonService) {
+                private _commonService:CRUDService) {
     }
 
     ngOnInit() {
