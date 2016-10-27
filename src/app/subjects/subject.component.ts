@@ -23,7 +23,7 @@ export class SubjectComponent implements OnInit {
     public totalSubjects: number;
     public currentPage: number = 1;
     public offset: number = 0;
-    public maxSize: number = 1;
+    public maxSize: number = 5;
 
     //variables for search
     public searchCriteria: string;

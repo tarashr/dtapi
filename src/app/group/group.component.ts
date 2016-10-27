@@ -64,9 +64,9 @@ export class GroupComponent implements OnInit {
         this.getFaculties();
         this.getSpecialities();
         this.getStudents();
-        this.getGroup();
     }
 
+    //the mothods used for pagination
     getCountGroups(): void {
         this.crudService.getCountRecords(this.entity)
             .subscribe(res=> {
@@ -77,29 +77,13 @@ export class GroupComponent implements OnInit {
             );
     }
 
-    changeLimit($event): void {
-        console.log($event.currentTarget.value);
-        this.limit = $event.currentTarget.value;
-        this.offset = 0;
-        this.page = 1;
-        this.getGroupsRange();
-    }
-
-    getGroup() {
-        this.crudService.getCountRecords(this.entity)
-            .subscribe(
-                data => console.log(data)
-            )
-    }
-
     getGroupsRange() {
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(data => {
                     this.groups = data;
-                    console.log(this.groups);
                     for (let i = 0; i < data.length; i++) {
-                        this.facultiesId[i] = +data[i].faculty_id;
-                        this.specialitiesId[i] = +data[i].speciality_id;
+                        this.facultiesId[i] = data[i].faculty_id;
+                        this.specialitiesId[i] = data[i].speciality_id;
                     }
                     console.log(this.facultiesId);
                     this.getFacultyById();
@@ -112,12 +96,27 @@ export class GroupComponent implements OnInit {
                 });
     }
 
+    changeLimit($event): void {
+        console.log($event.currentTarget.value);
+        this.limit = $event.currentTarget.value;
+        this.offset = 0;
+        this.page = 1;
+        this.getGroupsRange();
+    }
+
+    pageChange(num: number) {
+        if (!num) {
+            this.page = 1;
+            return;
+        }
+        this.page = num;
+        this.offset = (this.page - 1) * this.limit;
+        this.getGroupsRange();
+    }
+    //the end
+
     getFacultyById() {
-        // let data = {
-        //     entity: this.entityFaculty,
-        //     ids: this.facultiesId
-        // };
-        let data = new EntityManagerBody(this.entityFaculty, this.facultiesId);
+        let data = new EntityManagerBody("Faculty", this.facultiesId);
         this.crudService.getEntityValues(data)
             .subscribe(data=> {
                     this.facultyById = data;
@@ -138,11 +137,10 @@ export class GroupComponent implements OnInit {
     }
 
     getSpecialityById() {
-        let data = new EntityManagerBody(this.entitySpeciality, this.specialitiesId);
+        let data = new EntityManagerBody("Speciality", this.specialitiesId);
         this.crudService.getEntityValues(data)
             .subscribe(data=> {
                     this.specialityById = data;
-                    console.log(this.specialityById);
                     for (let i = 0; i < this.groups.length; i++) {
                         for (let j = 0; j < this.specialityById.length; j++) {
                             if (this.groups[i].speciality_id === this.specialityById[j].speciality_id) {
@@ -158,15 +156,6 @@ export class GroupComponent implements OnInit {
                 });
     }
 
-    pageChange(num: number) {
-        if (!num) {
-            this.page = 1;
-            return;
-        }
-        this.page = num;
-        this.offset = (this.page - 1) * this.limit;
-        this.getGroupsRange();
-    }
 
     refreshData(data: string) {
         if (this.groups.length === 1) {
@@ -194,6 +183,7 @@ export class GroupComponent implements OnInit {
             );
     }
 
+    //methods for addedit action
     getNameOfFaculty($event) {
         this.facultyName = $event.currentTarget.value;
         this.faculties.forEach((item)=> {
@@ -211,7 +201,9 @@ export class GroupComponent implements OnInit {
             }
         })
     }
+    //the end
 
+    //the methods for search
     getGroupsBySearch(): void {
         this.crudService.getRecordsBySearch(this.entity, this.searchCriteria)
             .subscribe(
@@ -232,6 +224,7 @@ export class GroupComponent implements OnInit {
             this.getCountGroups();
         }
     }
+    //the end
 
     deleteGroup(group): void {
             if (confirm('Підтвердіть видалення групи')) {
@@ -248,6 +241,7 @@ export class GroupComponent implements OnInit {
         }
     }
 
+    //the methods for check after delete group
     getStudents(): void {
         this.crudService.getRecords(this.entityStudent)
             .subscribe(

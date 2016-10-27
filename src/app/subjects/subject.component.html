@@ -69,6 +69,7 @@
             </li>
         </ul>
         <ngb-pagination
+                *ngIf="totalSubjects"
                 [hidden] = "!!searchCriteria || limit >= totalSubjects"
                 [pageSize]="limit"
                 [collectionSize]="totalSubjects"

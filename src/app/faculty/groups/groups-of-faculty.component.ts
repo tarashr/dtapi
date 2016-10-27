@@ -14,7 +14,7 @@ export class GroupsOfFacultyComponent implements OnInit {
 
     public groups:Group[]=[];
     public entity:string = "group";
-    public facultyString:string = "facultyById";
+    public facultyString:string = "faculty";
     public faculty:Faculty = new Faculty("", "");
     public faculty_id:number;
     public speciality:Speciality[];

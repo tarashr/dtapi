@@ -23,7 +23,7 @@ export class SpecialityComponent implements OnInit{
             );
     }
     deleteSpeciality(speciality: Speciality): void {
-        if (confirm('Should I delete speciality')) {
+        if (confirm('Справді видалити')) {
             this.specialityService
                 .deleteSpeciality(speciality.speciality_id)
                 .subscribe(

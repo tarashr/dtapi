@@ -17,11 +17,11 @@ export const countGroupsUrl:string = baseUrl + 'group/countRecords';
 export const getRangeOfGroupUrl:string = baseUrl + 'group/getRecordsRange';
 export const getEntityValues:string = baseUrl + 'EntityManager/getEntityValues';
 export const getSubjectsBySearchUrl:string = baseUrl + 'subject/getRecordsBySearch/'; // + criteria
-export const getSpecialityUrl:string=baseUrl+'specialityById/getRecords';
-export const delSpecialityUrl:string = baseUrl + 'specialityById/del';
+export const getSpecialityUrl:string=baseUrl+'speciality/getRecords';
+export const delSpecialityUrl:string = baseUrl + 'speciality/del';
 export const addGroupUrl:string = baseUrl + 'group/insertData';
 export const getFacultysUrl:string = baseUrl + 'faculty/getRecords';
-export const getSpecialitysUrl:string = baseUrl + 'specialityById/getRecords';
+export const getSpecialitysUrl:string = baseUrl + 'speciality/getRecords';
 export const getGroupsBySearchUrl:string = baseUrl + 'group/getRecordsBySearch/'; // + criteria
 export const delGroupUrl:string = baseUrl + 'group/del'; // + id of subject
 export const getStudentsUrl:string = baseUrl + 'student/getRecords';
@@ -30,12 +30,12 @@ export const editGroupUrl:string = baseUrl + 'group/update'; // + id of subject
 //Array of entities for statistic page
 export const entities:any[] = [
     {
-        name: "facultyById",
+        name: "faculty",
         count: "...",
         nameForIteration: "факультетів"
     },
     {
-        name: "specialityById",
+        name: "speciality",
         count: "...",
         nameForIteration: "спеціальностей"
     },
