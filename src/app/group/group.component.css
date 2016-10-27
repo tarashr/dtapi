@@ -1,0 +1,158 @@
+*{
+    box-sizing: border-box;
+}
+body {
+    border: 2px solid #e7e7e7;
+    max-width: 1044px;
+    padding: 10px;
+    margin: 10px auto;
+}
+.group-container {
+    max-width: 1024px;
+    margin: 20px auto;
+    padding: 10px;
+    min-width: 412px;
+}
+li.row div.col-xs-3 {
+    line-height: 30px;
+}
+.settings{
+    text-align: right;
+    vertical-align: middle;}
+.menu_p_bottom{
+    padding-bottom: 10px;
+}
+
+.modal_button{
+    text-align: center;
+}
+.settings select{
+    text-align: right;
+    float: right;
+    display: block;
+    width: auto;
+    padding-top: 0;
+    margin-top: 5px;
+}
+.header_nav{
+    padding-left: 10px;
+}
+.breadcrumb{
+    background-color: white;
+    margin-bottom:10px;
+    float: left;
+}
+.navbar-default {
+    margin-bottom: 10px;
+}
+
+.add{
+    width: auto;
+    display: inline-block;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+.back{
+    margin: 10px;
+    float: right;
+    width: auto;
+}
+.table_header{
+    font-weight: bold;
+}
+
+.faculty-container {
+    text-align: center;
+}
+.faculty_list li:nth-child(2n-1){
+    background-color: #f9f9f9;
+}
+.table_header_sm{
+    display: none;
+}
+@media screen and (max-width: 767px){
+    button{
+        width:25%;
+    }
+    .inputSearch {
+        width:60%;
+        display: inline-block;
+
+    }
+
+
+    .button_xs{
+        border-top: 1px solid #ddd;
+        padding-top: 5px;
+    }
+    .add {
+        width: 46px;
+        display: inline-block;
+        margin-top: 5px;
+
+
+    }
+
+
+
+    input.media767 {
+        margin-bottom: -12px;
+    }
+    select.media767 {
+        width: 60px;
+        padding-left: 7px;
+    }
+    .breadcrumb {
+        display: none;
+    }
+
+}
+
+@media screen and (max-width: 500px){
+    .table_header_sm{
+        display: inline-block;
+        width: 150px;
+        background-color: #f9f9f9;
+        float: left;
+        font-weight: bold;
+        text-align: left;
+    }
+    .table_header{
+        display: none;
+    }
+    .col-esm{
+        width: 100%;
+        text-align: left;
+    }
+
+
+}
+.select{
+    margin-right: 20px;
+    padding:5px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+input[placeholder='пошук']{
+    margin-right: 20px;
+    margin-top: 5px;
+}
+.glyph{
+    float: right;
+}
+.table-vert-center{
+    vertical-align: middle;
+}
+.main-menu {
+    max-width: 1024px;
+    margin: 0px auto 10px auto;
+    padding: 10px;
+    min-width: 420px;
+    font-size: 12px;
+}
+
+.main-menu .mainMenuNavbar {
+    margin-bottom: 0;
+    min-width: 420px;
+}

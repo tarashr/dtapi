@@ -225,16 +225,7 @@ export class GroupComponent implements OnInit {
         }
     }
 
-    deleteGroup(group:Group): void {
-        // group = this.groups;
-        if (this.students.forEach((student)=> {
-                    if (student.group_id == group.group_id) {
-                        return true;
-                    }
-                }
-            )) {
-            alert("Не можливо видалити групу в якій навчаються студенти");
-        } else {
+    deleteGroup(group): void {
             if (confirm('Підтвердіть видалення групи')) {
                 this.crudService
                     .delRecord(this.entity, group.group_id)
@@ -245,7 +236,7 @@ export class GroupComponent implements OnInit {
                         },
                         error => this.errorMessage = <any>error
                     );
-            }
+
         }
     }
 
