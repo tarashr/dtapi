@@ -12,16 +12,19 @@ import {CRUDService} from "../shared/services/crud.service.ts";
 export class AdminUserComponent implements OnInit {
 
     public title: string = 'Адміністратори';
+    public createTitle = 'Додати адміністратора';
+    public editTitle = 'Редагувати дані адміністратора';
     public entity: string = 'AdminUser';
     public adminUsers: User[];
     public errorMessage: string;
     private countOfAdminUsers:number;
-    public create = "create";
-    public edit = "edit";
+    public create = 'create';
+    public edit = 'edit';
     public limit:number = 5;
     public currentPage:number = 1;
     public offset:number = 0;
     public maxSize: number = 5;
+
     
     constructor(private adminUserService: CRUDService,
                 private _router: Router){}

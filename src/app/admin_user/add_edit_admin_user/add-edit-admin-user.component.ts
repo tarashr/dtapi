@@ -11,11 +11,13 @@ import {CRUDService} from "../../shared/services/crud.service";
 })
 export class AddEditAdminUserComponent {
 
-    title: string = 'Додати адміністратора';
-    entity: string = 'AdminUser';
-    errorMessage: string;
-    passwordConfirm: string;
 
+    public entity: string = 'AdminUser';
+    public errorMessage: string;
+    public passwordError: boolean = true;
+    public passwordConfirm: string;
+
+    @Input() title: string;
     @Input() action: string;
     @Input() adminUser: User;
     @Input() username: string;
@@ -32,34 +34,29 @@ export class AddEditAdminUserComponent {
         this.modalService.open(content);
     }
 
+
+    validatePassword(): void {
+
+    }
+
     activate(): void {
+        alert(this.password);
         if (this.action === 'create') {
-            if (this.password === this.passwordConfirm) {
-                let newAdminUser = new User(this.username, this.password, this.email);
-                this.adminUserService.insertData(this.entity, newAdminUser)
-                    .subscribe(response => {
-                        this.refreshData.emit('true');
-                    });
-            } else {
-                alert("Введені паролі не збігаються, будь ласка спробуйте ще раз");
-            }
-
+            let newAdminUser = new User(this.username, this.password, this.email);
+            this.adminUserService.insertData(this.entity, newAdminUser)
+                .subscribe(response => {
+                    this.refreshData.emit('true');
+                });
         } else if (this.action === "edit") {
-            if (this.password === this.passwordConfirm) {
-                let editedAdminUser: User = new User(this.username, this.password, this.email);
-                this.adminUserService.updateData(this.entity, this.id, editedAdminUser)
-                    .subscribe(
-                        response => {
-                            this.refreshData.emit("true");
-                        },
-                        error => this.errorMessage = <any>error
-                    );
-            } else {
-                alert("Введені паролі не збігаються, будь ласка спробуйте ще раз");
-            }
-
+            let editedAdminUser: User = new User(this.username, this.password, this.email);
+            this.adminUserService.updateData(this.entity, this.id, editedAdminUser)
+                .subscribe(
+                    response => {
+                        this.refreshData.emit("true");
+                    },
+                    error => this.errorMessage = <any>error
+                );
         }
-
     }
 
     close() {
