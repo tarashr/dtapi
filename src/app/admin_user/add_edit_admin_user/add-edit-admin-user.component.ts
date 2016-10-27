@@ -12,10 +12,10 @@ import {CommonService} from "../../shared/services/common.service";
 export class AddEditAdminUserComponent {
 
 
-    entity: string = 'AdminUser';
-    errorMessage: string;
-    passwordError: boolean = true;
-    passwordConfirm: string;
+    public entity: string = 'AdminUser';
+    public errorMessage: string;
+    public passwordError: boolean = true;
+    public passwordConfirm: string;
 
     @Input() title: string;
     @Input() action: string;
