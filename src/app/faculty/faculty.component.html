@@ -11,13 +11,10 @@
             </form>
             <form class="navbar-form navbar-right">
                 <div class="form-group">
-                    <ngbd-modal-basic
-                            [title]="titleForNew"
-                            [facultyName]="nameForNew"
-                            [facultyDescription]="descriptionForNew"
-                            [activate]="create"
-                            (refreshData)="refreshData($event)"
-                    ></ngbd-modal-basic>
+                    <add-edit-modal
+                            [config]="configAdd"
+                            (activate)="activate($event)"
+                    ></add-edit-modal>
                     <select class="form-control" name="count" id=""
                             title="виберіть кількість факультетів на сторінці"
                             (input)="changeLimit($event)"
@@ -61,14 +58,13 @@
                         [routerLink]="[faculty.faculty_id, 'groups']">
                         <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                     </a>
-                    <ngbd-modal-basic
-                            [title]="titleForEdit"
-                            [facultyName]="faculty.faculty_name"
-                            [facultyDescription]="faculty.faculty_description"
-                            [facultyId]="faculty.faculty_id"
-                            [activate]=edit
-                            (refreshData)="refreshData($event)"
-                    ></ngbd-modal-basic>
+                    <add-edit-modal
+                            [name]="faculty.faculty_name"
+                            [description]="faculty.faculty_description"
+                            [id]="faculty.faculty_id"
+                            [config]="configEdit"
+                            (activate)="activate($event)"
+                    ></add-edit-modal>
                     <a class="btn btn-danger btn-sm " role="button" title="Видалити факультет"
                        (click)="delRecord(entity, faculty.faculty_id)">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -80,13 +76,13 @@
     <ngb-pagination
             [collectionSize]="countOfFaculties"
             [(page)]="page"
-            [maxSize]="5"
+            [maxSize]="paginationSize"
             [pageSize]="limit"
             [rotate]="true"
-            [ellipses]="false"
+            [ellipses]="true"
             [boundaryLinks]="true"
             (pageChange)="pageChange($event)"
-            [hidden]="search.length || countOfFaculties==undefined || limit>=countOfFaculties">
+            [hidden]="search.length || !countOfFaculties || limit>=countOfFaculties">
     </ngb-pagination>
 
 </div>

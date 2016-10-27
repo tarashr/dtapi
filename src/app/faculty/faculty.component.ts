@@ -2,12 +2,17 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {Faculty} from "../shared/classes/faculty";
 import {CommonService} from "../shared/services/common.service";
+import {configAddFaculty, configEditFaculty, maxSize} from "../shared/constants"
 
 @Component({
     templateUrl: 'faculty.component.html',
     styleUrls: ['faculty.component.css']
 })
 export class FacultyComponent implements OnInit {
+
+    public configAdd = configAddFaculty;
+    public configEdit = configEditFaculty;
+    public paginationSize = maxSize;
 
     public faculties:Faculty[];
     private countOfFaculties:number;
@@ -18,24 +23,31 @@ export class FacultyComponent implements OnInit {
     public page:number = 1;
     public offset:number = 0;
 
-    //data for child NgbdModalBasic
-    public titleForNew = "Створити факультет";
-    public nameForNew:string = "";
-    public descriptionForNew:string = "";
-    public create = "create";
-    public titleForEdit = 'Редагувати дані факультету';
-    public nameForEdit:string;
-    public descriptionForEdit:string;
-    public idEdit:number;
-    public edit = "edit";
-    //end
-
     constructor(private _commonService:CommonService,
                 private _router:Router) {
     }
 
     ngOnInit() {
         this.getCountRecords();
+        console.log("maxSize ", this.paginationSize)
+    }
+
+    activate(data:any) {
+        if (data.action === "create") {
+            let newFaculty:Faculty = new Faculty(data.list[0].value, data.list[1].value);
+            this._commonService.insertData(this.entity, newFaculty)
+                .subscribe(response=> {
+                    console.log(response);
+                    this.refreshData(data.action);
+                });
+        } else if (data.action === "edit") {
+            let editedFaculty:Faculty = new Faculty(data.list[0].value, data.list[1].value);
+            this._commonService.updateData(this.entity, data.id, editedFaculty)
+                .subscribe(response=> {
+                    console.log(response);
+                    this.refreshData(data.action);
+                });
+        }
     }
 
     getCountRecords() {
@@ -59,7 +71,7 @@ export class FacultyComponent implements OnInit {
     delRecord(entity:string, id:number) {
         this.offset = (this.page - 1) * this.limit;
         this._commonService.delRecord(entity, id)
-            .subscribe(()=>this.refreshData("true"));
+            .subscribe(()=>this.refreshData("delete"));
     }
 
     changeLimit($event) {
@@ -90,8 +102,9 @@ export class FacultyComponent implements OnInit {
             }, error=>console.log("error: ", error));
     }
 
-    refreshData(data:string) {
-        if (this.faculties.length === 1) {
+    refreshData(action:string) {
+
+        if (action === "delete" && this.faculties.length === 1 && this.countOfFaculties > 1) {
             this.offset = (this.page - 2) * this.limit;
             this.page -= 1;
         } else if (this.faculties.length > 1) {
@@ -112,7 +125,7 @@ export class FacultyComponent implements OnInit {
         if (!num) {
             this.page = 1;
             return;
-        }        
+        }
         this.page = num;
         this.offset = (this.page - 1) * this.limit;
         this.getRecordsRange();

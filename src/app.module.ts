@@ -31,6 +31,7 @@ import {SpecialityService}       from './app/shared/services/speciality.service'
 import {GroupService} from './app/shared/services/group.service';
 import {StudentNewProfileComponent} from "./app/student/student-new-profile.component";
 import {StudentProfileComponent} from "./app/student/student-profile.component";
+import {AddEditModalComponent} from "./app/shared/components/addeditmodal/add-edit-modal.component"
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import {StudentProfileComponent} from "./app/student/student-profile.component";
         AddeditGroupComponent,
         StudentComponent,
         StudentNewProfileComponent,
-        StudentProfileComponent
+        StudentProfileComponent,
+        AddEditModalComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},
