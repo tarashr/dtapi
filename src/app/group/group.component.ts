@@ -25,8 +25,8 @@ export class GroupComponent implements OnInit {
     public errorMessage: string;
 
     //variables for displey
-    public facultiesId = [];
-    public specialitiesId = [];
+    public facultiesId: number[] = [];
+    public specialitiesId: number[] = [];
     public facultyById: Faculty[];
     public specialityById: Speciality[];
 
@@ -93,7 +93,6 @@ export class GroupComponent implements OnInit {
                         this.facultiesId[i] = data[i].faculty_id;
                         this.specialitiesId[i] = data[i].speciality_id;
                     }
-
                     this.getFacultyById();
                     this.getSpecialityById();
                 },
@@ -105,6 +104,10 @@ export class GroupComponent implements OnInit {
     }
 
     getFacultyById() {
+        // let data = {
+        //     entity: this.entityFaculty,
+        //     ids: this.facultiesId
+        // };
         let data = new EntityManagerBody(this.entityFaculty, this.facultiesId);
         this.crudService.getEntityValues(data)
             .subscribe(data=> {

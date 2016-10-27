@@ -27,6 +27,8 @@ import {AddEditAdminUserComponent} from "./app/admin_user/add_edit_admin_user/ad
 import {LoginService}        from './app/shared/services/login.service';
 import {CRUDService}       from './app/shared/services/crud.service';
 import {SpecialityService}       from './app/shared/services/speciality.service';
+import { SubjectService } from './app/shared/services/subject.service';
+import { GroupService } from './app/shared/services/group.service';
 import {StudentNewProfileComponent} from "./app/student/student-new-profile.component";
 import {StudentProfileComponent} from "./app/student/student-profile.component";
 
@@ -64,6 +66,8 @@ import {StudentProfileComponent} from "./app/student/student-profile.component";
         LoginService,
         CRUDService,
         SpecialityService,
+        SubjectService,
+        GroupService,
         HttpModule,
         AuthAdminGuard,
         AuthStudentGuard
