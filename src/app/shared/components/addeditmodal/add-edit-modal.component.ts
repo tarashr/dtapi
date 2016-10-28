@@ -47,6 +47,7 @@ export class AddEditModalComponent implements OnInit {
                 item.value = this.code
             }
         });
+
         this.modalService.open(content);
     }
 

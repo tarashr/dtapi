@@ -4,6 +4,7 @@ import '../shared/rxjs-operators';
 
 import {Speciality} from '../shared/classes/speciality';
 import {CRUDService} from "../shared/services/crud.service";
+import { configAddSpeciality, configEditSpeciality } from '../shared/constants';
 
 
 @Component({
@@ -13,18 +14,18 @@ import {CRUDService} from "../shared/services/crud.service";
 export class SpecialityComponent implements OnInit{
 
     public title: string = "Спеціальності";
-    public createTitle = "Додати спеціальність";
-    public editTitle = "Редагувати спеціальність";
     public entity: string = "speciality";
     private countOfSpecialities: number;
     public specialities: Speciality[];
     public errorMessage: string;
-    public create = "create";
-    public edit = "edit";
     public limit: number = 5;
     public currentPage: number = 1;
     public offset: number = 0;
     public maxSize: number = 5;
+
+    //varibles for addedit
+    public configAddSpeciality = configAddSpeciality;
+    public configEditSpeciality = configEditSpeciality;
 
     constructor(private crudService: CRUDService,
                 private _router: Router) {}
@@ -93,6 +94,28 @@ export class SpecialityComponent implements OnInit{
                 error=>console.log(error)
             );
 
+    }
+
+    activate(data:any) {
+        if (data.action === "create") {
+            let newSpeciality: Speciality = new Speciality(data.list[0].value, data.list[1].value);
+            this.crudService.insertData(this.entity, newSpeciality)
+                .subscribe(
+                    response => {
+                        this.refreshData(data.action);
+                    },
+                    error => this.errorMessage = <any>error,
+                );
+        } else if (data.action === "edit") {
+            let editedSpeciality: Speciality = new Speciality(data.list[0].value, data.list[1].value);
+            this.crudService.updateData(this.entity, data.id, editedSpeciality)
+                .subscribe(
+                    (res) => {
+                        this.refreshData(data.action);
+                    },
+                    error => this.errorMessage = <any>error
+                );
+        }
     }
 
 }

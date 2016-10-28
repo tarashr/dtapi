@@ -9,6 +9,10 @@
             </form>
             <form class="navbar-form navbar-right navbarForm">
                 <div class="form-group">
+                    <add-edit-modal
+                            [config]="configAddSpeciality"
+                            (activate)="activate($event)">
+                    </add-edit-modal>
                     <select class="form-control" name="count" id=""
                             title="виберіть кількість записів на сторінці"
                             (input)="changeLimit($event)">
@@ -44,6 +48,13 @@
                     <span class="align-xs">{{speciality.speciality_name}}</span>
                 </div>
                 <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
+                    <add-edit-modal
+                            [name]="speciality.speciality_name"
+                            [code]="speciality.speciality_code"
+                            [id]="speciality.speciality_id"
+                            [config]="configEditSpeciality"
+                            (activate)="activate($event)">
+                    </add-edit-modal>
                     <a class="btn btn-danger btn-sm " role="button"
                        title="Видалити" (click)="delRecord(entity, speciality.speciality_id)">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
