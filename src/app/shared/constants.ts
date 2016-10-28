@@ -81,3 +81,83 @@ export const configEditFaculty = {
     action: "edit",
     labelBtn: "Редагувати"
 };
+// Functions
+
+export const changeLimit = function ($event:any):void {
+    this.limit = $event.target.value;
+    this.offset = 0;
+    this.page = 1;
+    this.getRecordsRange();
+};
+
+export const pageChange = function (num:number) {
+    if (!num) {
+        this.page = 1;
+        return;
+    }
+    this.page = num;
+    this.offset = (this.page - 1) * this.limit;
+    this.getRecordsRange();
+};
+
+export const getCountRecords = function () {
+    this.crudService.getCountRecords(this.entity)
+        .subscribe(
+            data => {
+                this.entityDataLength = +data.numberOfRecords;
+                this.getRecordsRange();
+            },
+            error=>console.log("error: ", error)
+        );
+};
+
+export const getRecordsRange = function () {
+    this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
+        .subscribe(
+            data => this.entityData = data,
+            error=> console.log("error: ", error))
+};
+
+export const delRecord = function (entity:string, id:number) {
+    this.offset = (this.page - 1) * this.limit;
+    this.crudService.delRecord(entity, id)
+        .subscribe(()=>this.refreshData("delete"));
+};
+
+export const findEntity = function($event) {
+    this.search = $event.target.value;
+    if (this.search.length === 0) {
+        this.offset = 0;
+        this.page = 1;
+        this.getCountRecords();
+        return;
+    }
+
+    this.crudService.getRecordsBySearch(this.entity, this.search)
+        .subscribe(data => {
+            if (data.response == "no records") {
+                this.entityData = [];
+                return;
+            }
+            this.page = 1;
+            this.entityData = data;
+        }, error=>console.log("error: ", error));
+};
+
+export const refreshData = function(action:string) {
+    if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
+        this.offset = (this.page - 2) * this.limit;
+        this.page -= 1;
+    } else if (this.entityData.length > 1) {
+        this.offset = (this.page - 1) * this.limit;
+    }
+
+    this.crudService.getCountRecords(this.entity)
+        .subscribe(
+            data => {
+                this.entityDataLength = +data.numberOfRecords;
+                this.getRecordsRange();
+            },
+            error=>console.log(error)
+        );
+}

@@ -2,7 +2,18 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {Faculty} from "../shared/classes/faculty";
 import {CRUDService} from "../shared/services/crud.service.ts";
-import {configAddFaculty, configEditFaculty, maxSize} from "../shared/constants"
+import {
+    configAddFaculty,
+    configEditFaculty,
+    maxSize,
+    changeLimit,
+    pageChange,
+    getCountRecords,
+    getRecordsRange,
+    delRecord,
+    findEntity,
+    refreshData
+} from "../shared/constants"
 
 
 @Component({
@@ -15,132 +26,46 @@ export class FacultyComponent implements OnInit {
     public configEdit = configEditFaculty;
     public paginationSize = maxSize;
 
-    public faculties:Faculty[];
-    private countOfFaculties:number;
+    public entityData:Faculty[];
+    private entityDataLength:number;
     public entity:string = "faculty";
     public limit:number = 5;
-    private findResultFaculties:Faculty[];
     public search:string = "";
     public page:number = 1;
     public offset:number = 0;
 
-    //data for child NgbdModalBasic
-    public titleForNew = "Створити факультет";
-    public nameForNew:string = "";
-    public descriptionForNew:string = "";
-    public create = "create";
-    public titleForEdit = 'Редагувати дані факультету';
-    public nameForEdit:string;
-    public descriptionForEdit:string;
-    public idEdit:number;
-    public edit = "edit";
-    //end
 
-    constructor(private _crudService:CRUDService,
+    constructor(private crudService:CRUDService,
                 private _router:Router) {
-    }
+    };
+
+    public changeLimit = changeLimit;
+    public pageChange = pageChange;
+    public getCountRecords = getCountRecords;
+    public getRecordsRange = getRecordsRange;
+    public delRecord = delRecord;
+    public findEntity = findEntity;
+    public refreshData = refreshData;
 
     ngOnInit() {
         this.getCountRecords();
-        console.log("maxSize ", this.paginationSize)
     }
 
     activate(data:any) {
         if (data.action === "create") {
             let newFaculty:Faculty = new Faculty(data.list[0].value, data.list[1].value);
-            this._crudService.insertData(this.entity, newFaculty)
+            this.crudService.insertData(this.entity, newFaculty)
                 .subscribe(response=> {
                     console.log(response);
                     this.refreshData(data.action);
                 });
         } else if (data.action === "edit") {
             let editedFaculty:Faculty = new Faculty(data.list[0].value, data.list[1].value);
-            this._crudService.updateData(this.entity, data.id, editedFaculty)
+            this.crudService.updateData(this.entity, data.id, editedFaculty)
                 .subscribe(response=> {
                     console.log(response);
                     this.refreshData(data.action);
                 });
         }
-    }
-
-    getCountRecords() {
-        this._crudService.getCountRecords(this.entity)
-            .subscribe(
-                data => {
-                    this.countOfFaculties = +data.numberOfRecords;
-                    this.getRecordsRange();
-                },
-                error=>console.log("error: ", error)
-            );
-    }
-
-    getRecordsRange() {
-        this._crudService.getRecordsRange(this.entity, this.limit, this.offset)
-            .subscribe(
-                data => this.faculties = data,
-                error=> console.log("error: ", error))
-    }
-
-    delRecord(entity:string, id:number) {
-        this.offset = (this.page - 1) * this.limit;
-        this._crudService.delRecord(entity, id)
-            .subscribe(()=>this.refreshData("delete"));
-    }
-
-    changeLimit($event) {
-        this.limit = $event.target.value;
-        console.log(this.limit);
-        this.offset = 0;
-        this.page = 1;
-        this.getRecordsRange();
-    }
-
-    findEntity($event) {
-        this.search = $event.target.value;
-        if (this.search.length === 0) {
-            this.offset = 0;
-            this.page = 1;
-            this.getCountRecords();
-            return;
-        }
-
-        this._crudService.getRecordsBySearch(this.entity, this.search)
-            .subscribe(data => {
-                if (data.response == "no records") {
-                    this.faculties = [];
-                    return;
-                }
-                this.page = 1;
-                this.faculties = data;
-            }, error=>console.log("error: ", error));
-    }
-
-    refreshData(action:string) {
-
-        if (action === "delete" && this.faculties.length === 1 && this.countOfFaculties > 1) {
-            this.offset = (this.page - 2) * this.limit;
-            this.page -= 1;
-        } else if (this.faculties.length > 1) {
-            this.offset = (this.page - 1) * this.limit;
-        }
-
-        this._crudService.getCountRecords(this.entity)
-            .subscribe(
-                data => {
-                    this.countOfFaculties = +data.numberOfRecords;
-                    this.getRecordsRange();
-                },
-                error=>console.log(error)
-            );
-    }
-
-    pageChange(num:number) {
-        if (!num) {
-            this.page = 1;
-            return;
-        }
-        this.page = num;
-        this.offset = (this.page - 1) * this.limit;
-        this.getRecordsRange();
     }
 }
