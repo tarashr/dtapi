@@ -19,9 +19,7 @@
                     pattern="[А-ЯA-Z]{1}([А-ЯA-Zа-яa-z]|\s){1,32}"
                     placeholder="введіть назву групи">
         </div>
-    </div>
-    <div class="modal-body" *ngIf = "action == create">
-        <div class="input-group inputGroup">
+        <div class="input-group inputGroup" *ngIf = "action == 'create'">
             <span class="input-group-addon modalSpan" id="basic-addon3">Факультет</span>
             <select
                     class="form-control select"
@@ -33,9 +31,7 @@
                 <option *ngFor = "let faculty of faculties">{{faculty.faculty_name}}</option>
             </select>
         </div>
-    </div>
-    <div class="modal-body" *ngIf = "action == create">
-        <div class="input-group inputGroup">
+        <div class="input-group inputGroup" *ngIf = "action == 'create'">
             <span class="input-group-addon modalSpan" id="basic-addon3">Спеціальність</span>
             <select
                     class="form-control select"

@@ -11,10 +11,10 @@
                 <div class="form-group">
                     <addedit-subject
                             [tittle]="titleForNew"
-                            [action] = "create"
-                            (refreshData) = "refreshData($event)">
+                            [action]="create"
+                            (refreshData)="refreshData($event)">
                     </addedit-subject>
-                    <select class="form-control media767" [disabled] = "!!searchCriteria"
+                    <select class="form-control" [disabled]="!!searchCriteria"
                             title="Вкажіть cкільки предметів відображати на сторінці"
                             (change)="changeLimit($event)">
                         <option value="5">5</option>
@@ -54,12 +54,12 @@
                     </a>
                     <addedit-subject
                             [tittle]="titleForEdit"
-                            [subject] = "subject"
+                            [subject]="subject"
                             [subjectName]="subject.subject_name"
                             [subjectDescription]="subject.subject_description"
                             [subjectId]="subject.subject_id"
-                            [action] = "edit"
-                            (refreshData) = "refreshData($event)">
+                            [action]="edit"
+                            (refreshData)="refreshData($event)">
                     </addedit-subject>
                     <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити предмет"
                        (click)="deleteSubject(subject)">
@@ -70,14 +70,14 @@
         </ul>
         <ngb-pagination
                 *ngIf="totalSubjects"
-                [hidden] = "!!searchCriteria || limit >= totalSubjects"
+                [hidden]="!!searchCriteria || limit >= totalSubjects"
                 [pageSize]="limit"
                 [collectionSize]="totalSubjects"
                 [(page)]="currentPage"
                 (pageChange)="pageChange($event)"
                 [maxSize]="maxSize"
                 [ellipses]="true"
-                [boundaryLinks] = true>
+                [boundaryLinks]=true>
         </ngb-pagination>
     </div>
 </div>
