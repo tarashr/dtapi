@@ -14,7 +14,7 @@ export class AddEditAdminUserComponent {
 
     public entity: string = 'AdminUser';
     public errorMessage: string;
-    public passwordError: boolean = true;
+    public oldPassword: string;
     public passwordConfirm: string;
 
     @Input() title: string;
@@ -35,12 +35,7 @@ export class AddEditAdminUserComponent {
     }
 
 
-    validatePassword(): void {
-
-    }
-
     activate(): void {
-        alert(this.password);
         if (this.action === 'create') {
             let newAdminUser = new User(this.username, this.password, this.email);
             this.adminUserService.insertData(this.entity, newAdminUser)
@@ -54,7 +49,7 @@ export class AddEditAdminUserComponent {
                     response => {
                         this.refreshData.emit("true");
                     },
-                    error => this.errorMessage = <any>error
+                    error => this.errorMessage = <any> error
                 );
         }
     }

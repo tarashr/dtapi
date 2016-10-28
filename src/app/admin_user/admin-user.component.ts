@@ -55,7 +55,6 @@ export class AdminUserComponent implements OnInit {
 
     changeLimit($event) {
         this.limit = $event.target.value;
-        console.log(this.limit);
         this.offset = 0;
         this.currentPage = 1;
         this.getRecordsRange();

@@ -7,7 +7,7 @@
     </div>
     <div class="modal-body modalBody">
         <div class="input-group inputGroup">
-            <span class="input-group-addon modalSpan">Ім'я:</span>
+            <span class="input-group-addon modalSpan">Логін:</span>
             <input
                     [(ngModel)]="username"
                     type="text"
@@ -19,6 +19,14 @@
             <input
                     [(ngModel)]="email"
                     type="text"
+                    class="form-control modalInput"
+                    required>
+        </div>
+        <div *ngIf="action === 'edit'" class="input-group inputGroup">
+            <span class="input-group-addon modalSpan">Старий пароль:</span>
+            <input
+                    [(ngModel)]="oldPassword"
+                    type="password"
                     class="form-control modalInput"
                     required>
         </div>
