@@ -44,10 +44,6 @@ export class GroupComponent implements OnInit {
     public edit = "edit";
     public titleForEdit = "Редагувати дані групи";
     public titleForNew = "Створити нову групу";
-    public facultyId: number;
-    public specialityId: number;
-    public specialityName: string;
-    public facultyName: string;
     public faculties: Faculty[];
     public specialities: Speciality[];
 
@@ -182,26 +178,6 @@ export class GroupComponent implements OnInit {
                 error => this.errorMessage = <any>error
             );
     }
-
-    //methods for addedit action
-    getNameOfFaculty($event) {
-        this.facultyName = $event.currentTarget.value;
-        this.faculties.forEach((item)=> {
-            if (item.faculty_name == this.facultyName) {
-                this.facultyId = item.faculty_id;
-            }
-        })
-    }
-
-    getNameOfSpeciality($event) {
-        this.specialityName = $event.currentTarget.value;
-        this.specialities.forEach((item)=> {
-            if (item.speciality_name == this.specialityName) {
-                this.specialityId = item.speciality_id;
-            }
-        })
-    }
-    //the end
 
     //the methods for search
     getGroupsBySearch(): void {

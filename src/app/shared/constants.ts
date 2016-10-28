@@ -72,6 +72,16 @@ export const configAddFaculty = {
     labelBtn: "Додати"
 };
 
+export const configAddSubject = {
+    title: "Створити предмет",
+    list: [
+        {name: "Назва предмету", value: "", title: "name"},
+        {name: "Опис предмету", value: "", title: "description"},
+    ],
+    action: "create",
+    labelBtn: "Додати"
+};
+
 export const configEditFaculty = {
     title: "Редагувати факультет",
     list: [
@@ -81,6 +91,17 @@ export const configEditFaculty = {
     action: "edit",
     labelBtn: "Редагувати"
 };
+
+export const configEditSubject = {
+    title: "Редагувати предмет",
+    list: [
+        {name: "Назва предмету", value: "", title: "name"},
+        {name: "Опис предмету", value: "", title: "description"},
+    ],
+    action: "edit",
+    labelBtn: "Редагувати"
+};
+
 // Functions
 
 export const changeLimit = function ($event:any):void {

@@ -9,12 +9,11 @@
             </form>
             <form class="navbar-form navbar-right navbarForm">
                 <div class="form-group">
-                    <addedit-subject
-                            [tittle]="titleForNew"
-                            [action] = "create"
-                            (refreshData) = "refreshData($event)">
-                    </addedit-subject>
-                    <select class="form-control media767" [disabled] = "!!searchCriteria"
+                    <add-edit-modal
+                            [config]="configAddSubject"
+                            (activate)="activate($event)">
+                    </add-edit-modal>
+                    <select class="form-control" [disabled]="!!searchCriteria"
                             title="Вкажіть cкільки предметів відображати на сторінці"
                             (change)="changeLimit($event)">
                         <option value="5">5</option>
@@ -52,15 +51,13 @@
                        title="Розклад тестів">
                         <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                     </a>
-                    <addedit-subject
-                            [tittle]="titleForEdit"
-                            [subject] = "subject"
-                            [subjectName]="subject.subject_name"
-                            [subjectDescription]="subject.subject_description"
-                            [subjectId]="subject.subject_id"
-                            [action] = "edit"
-                            (refreshData) = "refreshData($event)">
-                    </addedit-subject>
+                    <add-edit-modal
+                            [name]="subject.subject_name"
+                            [description]="subject.subject_description"
+                            [id]="subject.subject_id"
+                            [config]="configEditSubject"
+                            (activate)="activate($event)">
+                    </add-edit-modal>
                     <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити предмет"
                        (click)="deleteSubject(subject)">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -70,14 +67,14 @@
         </ul>
         <ngb-pagination
                 *ngIf="totalSubjects"
-                [hidden] = "!!searchCriteria || limit >= totalSubjects"
+                [hidden]="!!searchCriteria || limit >= totalSubjects"
                 [pageSize]="limit"
                 [collectionSize]="totalSubjects"
                 [(page)]="currentPage"
                 (pageChange)="pageChange($event)"
                 [maxSize]="maxSize"
                 [ellipses]="true"
-                [boundaryLinks] = true>
+                [boundaryLinks]=true>
         </ngb-pagination>
     </div>
 </div>
