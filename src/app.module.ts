@@ -23,7 +23,6 @@ import {AuthStudentGuard} from './app/shared/services/auth-student.guard.ts';
 import {AddEditAdminUserComponent} from "./app/admin_user/add_edit_admin_user/add-edit-admin-user.component";
 import {LoginService}        from './app/shared/services/login.service';
 import {CRUDService}       from './app/shared/services/crud.service';
-import {SpecialityService}       from './app/shared/services/speciality.service';
 import { SubjectService } from './app/shared/services/subject.service';
 import { GroupService } from './app/shared/services/group.service';
 import {StudentNewProfileComponent} from "./app/student/student-new-profile.component";
@@ -61,7 +60,6 @@ import {AddEditModalComponent} from "./app/shared/components/addeditmodal/add-ed
         {provide: APP_BASE_HREF, useValue: '/'},
         LoginService,
         CRUDService,
-        SpecialityService,
         SubjectService,
         GroupService,
         HttpModule,

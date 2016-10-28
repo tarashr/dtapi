@@ -11,31 +11,30 @@ import {CRUDService} from "../shared/services/crud.service.ts";
 })
 export class AdminUserComponent implements OnInit {
 
-    public title: string = 'Адміністратори';
-    public createTitle = 'Додати адміністратора';
-    public editTitle = 'Редагувати дані адміністратора';
-    public entity: string = 'AdminUser';
+    public title: string = "Адміністратори";
+    public createTitle = "Додати адміністратора";
+    public editTitle = "Редагувати дані адміністратора";
+    public entity: string = "AdminUser";
     public adminUsers: User[];
     public errorMessage: string;
     private countOfAdminUsers:number;
-    public create = 'create';
-    public edit = 'edit';
-    public limit:number = 5;
-    public currentPage:number = 1;
-    public offset:number = 0;
+    public create = "create";
+    public edit = "edit";
+    public limit: number = 5;
+    public currentPage: number = 1;
+    public offset: number = 0;
     public maxSize: number = 5;
 
     
-    constructor(private adminUserService: CRUDService,
-                private _router: Router){}
+    constructor(private crudService: CRUDService,
+                private _router: Router) {}
 
     ngOnInit(): void {
         this.getCountRecords();
     }
 
-
     getCountRecords() {
-        this.adminUserService.getCountRecords(this.entity)
+        this.crudService.getCountRecords(this.entity)
             .subscribe(
                 data => {
                     this.countOfAdminUsers = +data.numberOfRecords;
@@ -46,7 +45,7 @@ export class AdminUserComponent implements OnInit {
     }
 
     getRecordsRange() {
-        this.adminUserService.getRecordsRange(this.entity, this.limit, this.offset)
+        this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                 data => this.adminUsers = data,
                 error => this.errorMessage = <any>error
@@ -72,7 +71,7 @@ export class AdminUserComponent implements OnInit {
 
     delRecord(entity:string, id:number) {
         this.offset = (this.currentPage - 1) * this.limit;
-        this.adminUserService.delRecord(entity, id)
+        this.crudService.delRecord(entity, id)
             .subscribe(()=>this.refreshData("true"));
     }
 
@@ -84,7 +83,7 @@ export class AdminUserComponent implements OnInit {
             this.offset = (this.currentPage - 1) * this.limit;
         }
 
-        this.adminUserService.getCountRecords(this.entity)
+        this.crudService.getCountRecords(this.entity)
             .subscribe(
                 data => {
                     this.countOfAdminUsers = +data.numberOfRecords;

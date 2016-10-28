@@ -19,7 +19,7 @@ export class AddEditAdminUserComponent {
 
     @Input() title: string;
     @Input() action: string;
-    @Input() adminUser: User;
+    @Input() speciality: User;
     @Input() username: string;
     @Input() password: string;
     @Input() id: number;
@@ -61,8 +61,8 @@ export class AddEditAdminUserComponent {
             this.password = "";
             this.passwordConfirm = "";
         } else if(this.action === "edit"){
-            this.username = this.adminUser.username;
-            this.email = this.adminUser.email;
+            this.username = this.speciality.username;
+            this.email = this.speciality.email;
             this.password = "";
             this.passwordConfirm = "";
         }
