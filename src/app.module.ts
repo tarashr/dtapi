@@ -12,7 +12,6 @@ import {StartPageComponent}      from "./app/studentpart/start-page.component";
 import {AdminStartPageComponent} from "./app/admin-start/admin-start-page.component.ts";
 import {StatisticComponent} from "./app/statistic/statistic.component";
 import {SubjectComponent}        from "./app/subjects/subject.component";
-import {AddeditSubjectComponent}  from './app/subjects/addedit_subject/addedit-subject.component';
 import {AddeditGroupComponent}  from './app/group/addedit-group.component';
 import {FacultyComponent}        from "./app/faculty/faculty.component";
 import {GroupComponent}        from './app/group/group.component';
@@ -44,7 +43,6 @@ import {AddEditModalComponent} from "./app/shared/components/addeditmodal/add-ed
         AppComponent,
         LoginComponent,
         SubjectComponent,
-        AddeditSubjectComponent,
         StartPageComponent,
         AdminStartPageComponent,
         FacultyComponent,
