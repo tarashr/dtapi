@@ -8,12 +8,12 @@ html, body {
     min-width: 412px;
 }
 
-.entity_list li:first-child {
+.entity-list li:first-child {
     font-weight: bold;
 }
-.entity_list li:nth-child(2n) {
+.entity-list li:nth-child(2n) {
     background-color: #f9f9f9;
 }
-.entity_list li:not(:first-child):hover {
+.entity-list li:not(:first-child):hover {
     background-color: #e7e7e7;
 }

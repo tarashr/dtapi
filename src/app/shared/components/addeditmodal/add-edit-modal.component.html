@@ -7,9 +7,9 @@
         <h4 class="modal-title">{{data.title}}</h4>
     </div>
 
-    <div class="modal-body modalBody">
-        <div class="input-group inputGroup" *ngFor="let item of data.list">
-            <span class="input-group-addon modalSpan" >{{item.name}}:</span>
+    <div class="modal-body modal-body-add-edit">
+        <div class="input-group input-group-add-edit" *ngFor="let item of data.list">
+            <span class="input-group-addon modal-span">{{item.name}}:</span>
             <input type="text" class="form-control modalInput"
                    [(ngModel)]="item.value">
         </div>
@@ -22,12 +22,12 @@
     </div>
 </template>
 
-<div class="openModalBtn">
+<div class="open-modal-btn">
     <a *ngIf="data.action==='create'" class="btn btn-default" role="button" [title]="data.title"
        (click)="open(createWindow)">{{data.labelBtn}}
     </a>
     <a *ngIf="data.action==='edit'" class="btn btn-default btn-sm" role="button"
-       [title]="data.title"
+       [title]="data.title +': '+name"
        (click)="open(createWindow)">
         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
     </a>
