@@ -4,6 +4,7 @@ import '../shared/rxjs-operators';
 import {Router} from "@angular/router";
 import {Subject}   from '../shared/classes/subject';
 import {CRUDService}  from '../shared/services/crud.service';
+import { configAddSubject, configEditSubject } from '../shared/constants';
 
 @Component({
     selector: 'subject-container',
@@ -29,10 +30,8 @@ export class SubjectComponent implements OnInit {
     public searchCriteria: string;
 
     //varibles for addedit
-    public create = "create";
-    public edit = "edit";
-    public titleForEdit = "Редагувати дані предмету";
-    public titleForNew = "Створити новий предмет";
+    public configAddSubject = configAddSubject;
+    public configEditSubject = configEditSubject;
 
     constructor(
         private crudService: CRUDService
@@ -124,6 +123,28 @@ export class SubjectComponent implements OnInit {
             this.offset = (this.currentPage - 1) * this.limit;
         }
         this.getCountSubjects();
+    }
+
+    activate(data:any) {
+        if (data.action === "create") {
+            let newSubject:Subject = new Subject(data.list[0].value, data.list[1].value);
+            this.crudService.insertData(this.entity, newSubject)
+                .subscribe(
+                    response => {
+                        this.refreshData(data.action);
+                    },
+                    error => this.errorMessage = <any>error,
+                );
+        } else if (data.action === "edit") {
+            let editedSubject: Subject = new Subject(data.list[0].value, data.list[1].value);
+            this.crudService.updateData(this.entity, data.id, editedSubject)
+                .subscribe(
+                    (res) => {
+                        this.refreshData(data.action);
+                    },
+                    error => this.errorMessage = <any>error
+                );
+        }
     }
 
 }

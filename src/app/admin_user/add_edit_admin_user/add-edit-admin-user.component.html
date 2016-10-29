@@ -1,15 +1,13 @@
 <template #content let-c="close" let-d="dismiss">
-
     <div class="modal-header">
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
         <h4 class="modal-title">{{title}}</h4>
     </div>
-
     <div class="modal-body modalBody">
         <div class="input-group inputGroup">
-            <span class="input-group-addon modalSpan">Ім'я:</span>
+            <span class="input-group-addon modalSpan">Логін:</span>
             <input
                     [(ngModel)]="username"
                     type="text"
@@ -21,6 +19,14 @@
             <input
                     [(ngModel)]="email"
                     type="text"
+                    class="form-control modalInput"
+                    required>
+        </div>
+        <div *ngIf="action === 'edit'" class="input-group inputGroup">
+            <span class="input-group-addon modalSpan">Старий пароль:</span>
+            <input
+                    [(ngModel)]="oldPassword"
+                    type="password"
                     class="form-control modalInput"
                     required>
         </div>
@@ -40,10 +46,13 @@
                     class="form-control modalInput"
                     required>
         </div>
-
+        <div [hidden]="(passwordConfirm === password) || password == undefined || passwordConfirm == undefined"
+             class="alert alert-danger">
+            Введені паролі не співпадають. Будь ласка спробуйте ще раз
+        </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="activate(); c('Close click'); close()">Застосувати</button>
+        <button type="button" class="btn btn-default" [disabled]="passwordConfirm !== password" (click)="activate(); c('Close click'); close()">Застосувати</button>
         <button type="button" class="btn btn-default" (click)="c('Close click')">Відміна</button>
     </div>
 </template>

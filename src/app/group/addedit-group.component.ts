@@ -14,16 +14,18 @@ export class AddeditGroupComponent {
 
     public errorMessage: string;
     public entity:string = "group";
+    public facultyName:string;
+    public specialityName:string;
+    public facultyId;
+    public specialityId;
 
     @Input() title:string;
     @Input() action: string;
     @Input() groups: Group;
-    @Input() facultyId;
-    @Input() specialityId;
     @Input() groupName:string;
-    @Input() facultyName:string;
-    @Input() specialityName:string;
     @Input() groupId:number;
+    @Input() faculties;
+    @Input() specialities;
     @Output() refreshData = new EventEmitter();
 
     constructor(private modalService: NgbModal,
@@ -76,5 +78,25 @@ export class AddeditGroupComponent {
            this.groupName = this.groups.group_name;
         }
     }
+
+    //methods for addedit action
+    getIdFacultyByName($event) {
+        this.facultyName = $event.currentTarget.value;
+        this.faculties.forEach((item)=> {
+            if (item.faculty_name == this.facultyName) {
+                this.facultyId = item.faculty_id;
+            }
+        })
+    }
+
+    getIdSpecialityByName($event) {
+        this.specialityName = $event.currentTarget.value;
+        this.specialities.forEach((item)=> {
+            if (item.speciality_name == this.specialityName) {
+                this.specialityId = item.speciality_id;
+            }
+        })
+    }
+    //the end
 
 }

@@ -1,66 +1,77 @@
-<div class="spec-container">
-        <nav class="navbar navbar-default specNavbarDefault navbarDefault">
-            <div class="container-fluid">
-                <div class="navbar-text navbarText">Спеціальності</div>
-                <form class="navbar-form navbar-left sppecNavbarFormLeft navbarForm">
-                    <div class="form-group inputSearch">
-                        <input type="text" class="form-control" placeholder="Пошук">
-                    </div>
-                </form>
-                <form class="navbar-form navbar-right navbarForm">
-                    <div class="form-group">
-                         <a class="btn btn-default" role="button" title=""
-                       data-toggle="modal" data-target="#myModal2">
-                        Додати
-                    </a>
-                        <select class="form-control media767" name="count" id="" title="Вибрати кількість спеціальностей на сторінці">
-                      <option value="5">5</option>
-                      <option value="10">10</option>
-                      <option value="15">15</option>
-                  </select>
-                    </div>
-                </form>
-
-            </div>
-        </nav>
-  <div class="container-fluid entity_list">
-        <ul class="list-group">
-            <li class="list-group-item row  hidden-xs">
+<div class="entity-container">
+    <div class="navbar navbar-default ">
+        <div class="container-fluid">
+            <div class="navbar-text navbarText">{{title}}</div>
+            <form class="navbar-form navbar-left  navbarForm">
+                <div class="form-group inputSearch">
+                    <input type="text" class="form-control" placeholder="пошук">
+                </div>
+            </form>
+            <form class="navbar-form navbar-right navbarForm">
+                <div class="form-group">
+                    <add-edit-modal
+                            [config]="configAddSpeciality"
+                            (activate)="activate($event)">
+                    </add-edit-modal>
+                    <select class="form-control" name="count" id=""
+                            title="виберіть кількість записів на сторінці"
+                            (input)="changeLimit($event)">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option [value]="countOfSpecialities">Всі</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <ul class="list-group entity_list">
+            <li class="list-group-item row hidden-xs">
                 <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">№</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Номер спеціальності</div>
+                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Код спеціальності</div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Назва спеціальності</div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn"></div>
+                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
+                </div>
             </li>
-            <li class="list-group-item row"
-                *ngFor="let speciality of specialities; let i=index">
+            <li *ngFor="let speciality of specialities; let i = index" class="list-group-item row">
                 <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">
                     <span class="visible-xs-inline-block">№:</span>
-                    <span class="align-xs">{{i+1}}</span>
+                    <span class="align-xs">{{i+1+(currentPage-1)*limit}}</span>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
-                    <span class="visible-xs-inline-block">Код спеціальності:</span>
+                    <span class="visible-xs-inline-block">Логін:</span>
                     <span class="align-xs">{{speciality.speciality_code}}</span>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
-                    <span class="visible-xs-inline-block">Назва спеціальності:</span>
+                    <span class="visible-xs-inline-block">Поштова скринька:</span>
                     <span class="align-xs">{{speciality.speciality_name}}</span>
                 </div>
-                 <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                    <a class="btn btn-default btn-sm faculty_btnsm" role="button" title="Перехід на групи з спеціальнністю">
-                        <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
-                    </a>
-
-                    <a class="btn btn-default btn-sm faculty_btnsm" role="button" title="Редагувати спеціальність">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                    </a>
-
-                    <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити спеціальність" (click)="deleteSpeciality(speciality)">
+                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
+                    <add-edit-modal
+                            [name]="speciality.speciality_name"
+                            [code]="speciality.speciality_code"
+                            [id]="speciality.speciality_id"
+                            [config]="configEditSpeciality"
+                            (activate)="activate($event)">
+                    </add-edit-modal>
+                    <a class="btn btn-danger btn-sm " role="button"
+                       title="Видалити" (click)="delRecord(entity, speciality.speciality_id)">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>
+
                 </div>
             </li>
         </ul>
+        <ngb-pagination
+                [pageSize]="limit"
+                [collectionSize]="countOfSpecialities"
+                [(page)]="currentPage"
+                (pageChange)="pageChange($event)"
+                [maxSize]="maxSize"
+                [ellipses]="true"
+                [boundaryLinks]="true">
+        </ngb-pagination>
     </div>
-
-    </div>
-	
+</div>
+<template ngbModalContainer></template>
