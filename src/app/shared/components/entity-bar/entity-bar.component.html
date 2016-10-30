@@ -1,0 +1,31 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-text ">{{entityTitle}}</div>
+        <form class="navbar-form navbar-left">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="пошук" name="inputSearch"
+                       #inputSearch
+                       [title]="searchTitle"
+                       (input)="findEntity(inputSearch.value)">
+            </div>
+        </form>
+        <form class="navbar-form navbar-right">
+            <div class="form-group">
+                <add-edit-modal
+                        [config]="configAdd"
+                        (activate)="modal($event)"
+                ></add-edit-modal>
+                <select class="form-control" name="count"
+                        #select
+                        [title]="selectLimit"
+                        (input)="changeLimit(select.value)"
+                        [disabled]="inputSearch.value.length>0">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option [value]="entityDataLength">Всі</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</nav>

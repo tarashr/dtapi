@@ -6,15 +6,41 @@ import {
     configAddFaculty,
     configEditFaculty,
     maxSize,
-    changeLimit,
+    // changeLimit,
     pageChange,
     getCountRecords,
     getRecordsRange,
     delRecord,
-    findEntity,
+    // findEntity,
     refreshData
 } from "../shared/constants"
 
+export const changeLimit = function (limit:number):void {
+    this.limit = limit;
+    this.offset = 0;
+    this.page = 1;
+    this.getRecordsRange();
+};
+
+export const findEntity = function(search:string) {
+    this.search = search;
+    if (this.search.length === 0) {
+        this.offset = 0;
+        this.page = 1;
+        this.getCountRecords();
+        return;
+    }
+
+    this.crudService.getRecordsBySearch(this.entity, this.search)
+        .subscribe(data => {
+            if (data.response == "no records") {
+                this.entityData = [];
+                return;
+            }
+            this.page = 1;
+            this.entityData = data;
+        }, error=>console.log("error: ", error));
+};
 
 @Component({
     templateUrl: 'faculty.component.html',
@@ -27,10 +53,11 @@ export class FacultyComponent implements OnInit {
     public paginationSize = maxSize;
 
     //constants for view
-    public grupsOfFaculty:string = "Переглянути групи факультету";
+    public groupsOfFaculty:string = "Переглянути групи факультету";
     public deleteFaculty:string = "Видалити факультет";
     public selectLimit:string = "Виберіть кількість факультетів на сторінці";
-    public serchTitle:string = "Введіть дані для пошуку";
+    public searchTitle:string = "Введіть дані для пошуку";
+    public entityTitle:string = "Факультети";
     //
 
     public entityData:Faculty[];

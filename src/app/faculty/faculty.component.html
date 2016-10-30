@@ -1,33 +1,14 @@
 <div class="entity-container">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-text ">Факультети</div>
-            <form class="navbar-form navbar-left">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="пошук" name="inputSearch"
-                           [title]="serchTitle"
-                           (input)="findEntity($event)">
-                </div>
-            </form>
-            <form class="navbar-form navbar-right">
-                <div class="form-group">
-                    <add-edit-modal
-                            [config]="configAdd"
-                            (activate)="activate($event)"
-                    ></add-edit-modal>
-                    <select class="form-control" name="count"
-                            [title]="selectLimit"
-                            (input)="changeLimit($event)"
-                            [disabled]="search.length>0">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option [value]="entityDataLength">Всі</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-    </nav>
+    <entity-bar
+        [entityTitle]="entityTitle"
+        [searchTitle]="searchTitle"
+        [configAdd]="configAdd"
+        [selectLimit]="selectLimit"
+        [entityDataLength]="entityDataLength"
+        (activate)="activate($event)"
+        (searchRun)="findEntity($event)"
+        (selectRun)="changeLimit($event)">
+    </entity-bar>
 
     <div class="container-fluid">
         <ul class="list-group entity-list">
@@ -52,7 +33,7 @@
                     <span class="align-xs">{{faculty.faculty_description}}</span>
                 </div>
                 <div class="col-xs-12 col-md-3">
-                    <a class="btn btn-default btn-sm" [title]="grupsOfFaculty+': '+faculty.faculty_name"
+                    <a class="btn btn-default btn-sm" [title]="groupsOfFaculty+': '+faculty.faculty_name"
                        [routerLink]="[faculty.faculty_id, 'groups']">
                         <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
                     </a>
