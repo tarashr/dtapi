@@ -19,7 +19,7 @@ import {StudentProfileComponent} from "./app/student/student-profile.component";
 const appRoutes:Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full'},
     {path: 'login', component: LoginComponent},
-    {path: 'student', component: StartPageComponent, canActivate: [AuthStudentGuard],},
+    {path: 'student', component: StartPageComponent, canActivate: [AuthStudentGuard]},
     {
         path: "admin",
         component: AdminStartPageComponent,
