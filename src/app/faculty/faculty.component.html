@@ -13,26 +13,26 @@
     <div class="container-fluid">
         <ul class="list-group entity-list">
             <li class="list-group-item row  hidden-xs">
-                <div class="col-xs-12 col-md-1">№</div>
-                <div class="col-xs-12 col-md-4">Назва факультету</div>
-                <div class="col-xs-12 col-md-4">Опис факультету</div>
-                <div class="col-xs-12 col-md-3"></div>
+                <div class="col-xs-12 col-sm-1">№</div>
+                <div class="col-xs-12 col-sm-4">Назва факультету</div>
+                <div class="col-xs-12 col-sm-4">Опис факультету</div>
+                <div class="col-xs-12 col-sm-3"></div>
             </li>
             <li class="list-group-item row"
                 *ngFor="let faculty of entityData; let i=index">
-                <div class="col-xs-12 col-md-1">
+                <div class="col-xs-12 col-sm-1">
                     <span class="visible-xs-inline-block">№:</span>
                     <span class="align-xs">{{i+1+(page-1)*limit}}</span>
                 </div>
-                <div class="col-xs-12 col-md-4">
+                <div class="col-xs-12 col-sm-4">
                     <span class="visible-xs-inline-block">Назва факультету:</span>
                     <span class="align-xs">{{faculty.faculty_name}}</span>
                 </div>
-                <div class="col-xs-12 col-md-4">
+                <div class="col-xs-12 col-sm-4">
                     <span class="visible-xs-inline-block">Опис факультету:</span>
                     <span class="align-xs">{{faculty.faculty_description}}</span>
                 </div>
-                <div class="col-xs-12 col-md-3">
+                <div class="col-xs-12 col-sm-3">
                     <a class="btn btn-default btn-sm" [title]="groupsOfFaculty+': '+faculty.faculty_name"
                        [routerLink]="[faculty.faculty_id, 'groups']">
                         <span class="glyphicon glyphicon-th" aria-hidden="true"></span>

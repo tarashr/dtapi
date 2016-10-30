@@ -1,4 +1,9 @@
 import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {Subject} from 'rxjs';
+// import {Observable}  from 'rxjs';
+// import 'rxjs/add/operator/debounceTime';
+// import 'rxjs/add/operator/distinctUntilChanged';
 
 @Component({
     selector: 'entity-bar',
@@ -16,24 +21,38 @@ export class EntityBarComponent implements OnInit {
     @Output() searchRun = new EventEmitter();
     @Output() selectRun = new EventEmitter();
 
+    private search:string = "";
+    private searchTerms = new Subject();
+    public searchControl:FormControl = new FormControl();
+
     constructor() {
     }
 
+    find(term:string) {
+        this.searchTerms.next(term);
+    }
+
     ngOnInit() {
-
+        this.searchTerms
+            .debounceTime(500)
+            .distinctUntilChanged()
+            .subscribe(newValue => {
+                this.search = newValue;
+                this.findEntity()
+            });
     }
 
-    findEntity(search:string){
-        this.searchRun.emit(search);
+    findEntity() {
+        this.searchRun.emit(this.search);
     }
-    
+
     modal(data:any) {
         this.activate.emit(data);
     }
-    
-    changeLimit(limit:number){
+
+    changeLimit(limit:number) {
         this.selectRun.emit(limit);
     }
-    
+
 
 }
