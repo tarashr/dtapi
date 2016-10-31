@@ -29,7 +29,7 @@ import {StudentNewProfileComponent} from "./app/student/student-new-profile.comp
 import {StudentProfileComponent} from "./app/student/student-profile.component";
 import {AddEditModalComponent} from "./app/shared/components/addeditmodal/add-edit-modal.component"
 import {EntityBarComponent} from "./app/shared/components/entity-bar/entity-bar.component";
-
+import {TableComponent} from "./app/shared/components/table/table.component";
 
 @NgModule({
     imports: [
@@ -56,7 +56,8 @@ import {EntityBarComponent} from "./app/shared/components/entity-bar/entity-bar.
         StudentNewProfileComponent,
         StudentProfileComponent,
         AddEditModalComponent,
-        EntityBarComponent
+        EntityBarComponent,
+        TableComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},
