@@ -1,14 +1,15 @@
-.modalBody {
+.modal-body-add-edit {
     background-color: #f9f9f9;
 }
 
-.inputGroup {
+.input-group-add-edit {
     margin: 10px auto;
 }
 
-.modalSpan {
+.modal-span {
     min-width: 161px;
 }
-.openModalBtn {
+
+.open-modal-btn {
     display: inline-block;
 }

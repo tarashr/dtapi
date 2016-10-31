@@ -26,6 +26,13 @@ export class FacultyComponent implements OnInit {
     public configEdit = configEditFaculty;
     public paginationSize = maxSize;
 
+    //constants for view
+    public grupsOfFaculty:string = "Переглянути групи факультету";
+    public deleteFaculty:string = "Видалити факультет";
+    public selectLimit:string = "Виберіть кількість факультетів на сторінці";
+    public serchTitle:string = "Введіть дані для пошуку";
+    //
+
     public entityData:Faculty[];
     private entityDataLength:number;
     public entity:string = "faculty";
@@ -33,7 +40,6 @@ export class FacultyComponent implements OnInit {
     public search:string = "";
     public page:number = 1;
     public offset:number = 0;
-
 
     constructor(private crudService:CRUDService,
                 private _router:Router) {
