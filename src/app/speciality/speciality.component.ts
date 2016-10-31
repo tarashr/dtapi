@@ -4,7 +4,18 @@ import '../shared/rxjs-operators';
 
 import {Speciality} from '../shared/classes/speciality';
 import {CRUDService} from "../shared/services/crud.service";
-import { configAddSpeciality, configEditSpeciality } from '../shared/constants';
+import {
+    configAddSpeciality,
+    configEditSpeciality,
+    maxSize,
+    changeLimit,
+    pageChange,
+    getCountRecords,
+    getRecordsRange,
+    delRecord,
+    findEntity,
+    refreshData
+} from "../shared/constants"
 
 
 @Component({
@@ -15,15 +26,22 @@ export class SpecialityComponent implements OnInit{
 
     public title: string = "Спеціальності";
     public entity: string = "speciality";
-    private countOfSpecialities: number;
-    public specialities: Speciality[];
+    public entityDataLength: number;
     public errorMessage: string;
     public limit: number = 5;
-    public currentPage: number = 1;
+    public page: number = 1;
+    public search:string = "";
     public offset: number = 0;
-    public maxSize: number = 5;
+    public paginationSize = maxSize;
 
-    //varibles for addedit
+    public changeLimit = changeLimit;
+    public pageChange = pageChange;
+    public getCountRecords = getCountRecords;
+    public getRecordsRange = getRecordsRange;
+    public delRecord = delRecord;
+    public findEntity = findEntity;
+    public refreshData = refreshData;
+
     public configAddSpeciality = configAddSpeciality;
     public configEditSpeciality = configEditSpeciality;
 
@@ -35,66 +53,6 @@ export class SpecialityComponent implements OnInit{
         this.getCountRecords();
     }
 
-    getCountRecords() {
-        this.crudService.getCountRecords(this.entity)
-            .subscribe(
-                data => {
-                    this.countOfSpecialities = +data.numberOfRecords;
-                    this.getRecordsRange();
-                },
-                error=>console.log("error: ", error)
-            );
-    }
-
-    getRecordsRange() {
-        this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
-            .subscribe(
-                data => this.specialities = data,
-                error => this.errorMessage = <any>error
-            );
-    }
-
-    changeLimit($event) {
-        this.limit = $event.target.value;
-        this.offset = 0;
-        this.currentPage = 1;
-        this.getRecordsRange();
-    }
-
-    pageChange(num:number) {
-        if (!num) {
-            this.currentPage = 1;
-            return;
-        }
-        this.currentPage = num;
-        this.offset = (this.currentPage - 1) * this.limit;
-        this.getRecordsRange();
-    }
-
-    delRecord(entity:string, id:number) {
-        this.offset = (this.currentPage - 1) * this.limit;
-        this.crudService.delRecord(entity, id)
-            .subscribe(()=>this.refreshData("true"));
-    }
-
-    refreshData(data:string) {
-        if (this.specialities.length === 1) {
-            this.offset = (this.currentPage - 2) * this.limit;
-            this.currentPage -= 1;
-        } else if (this.specialities.length > 1) {
-            this.offset = (this.currentPage - 1) * this.limit;
-        }
-
-        this.crudService.getCountRecords(this.entity)
-            .subscribe(
-                data => {
-                    this.countOfSpecialities = +data.numberOfRecords;
-                    this.getRecordsRange();
-                },
-                error=>console.log(error)
-            );
-
-    }
 
     activate(data:any) {
         if (data.action === "create") {

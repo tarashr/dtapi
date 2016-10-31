@@ -34,7 +34,6 @@ export class AddEditAdminUserComponent {
         this.modalService.open(content);
     }
 
-
     activate(): void {
         if (this.action === 'create') {
             let newAdminUser = new User(this.username, this.password, this.email);
