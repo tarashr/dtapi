@@ -1,82 +1,32 @@
 <div class="entity-container">
-    <div class="navbar navbar-default ">
-        <div class="container-fluid">
-            <div class="navbar-text navbarText">{{title}}</div>
-            <form class="navbar-form navbar-left  navbarForm">
-                <div class="form-group inputSearch">
-                    <input type="text" class="form-control" placeholder="пошук" name="inputSearch"
-                           title="введіть дані для пошуку"
-                           (input)="findEntity($event)">
-                </div>
-            </form>
-            <form class="navbar-form navbar-right navbarForm">
-                <div class="form-group">
-                    <add-edit-modal
-                            [config]="configAddSpeciality"
-                            (activate)="activate($event)">
-                    </add-edit-modal>
-                    <select class="form-control" name="count" id=""
-                            title="виберіть кількість записів на сторінці"
-                            (input)="changeLimit($event)"
-                            [disabled]="search.length>0">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option [value]="entityDataLength">Всі</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <ul class="list-group entity_list">
-            <li class="list-group-item row hidden-xs">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">№</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Код спеціальності</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Назва спеціальності</div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                </div>
-            </li>
-            <li *ngFor="let speciality of entityData; let i = index" class="list-group-item row">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">
-                    <span class="visible-xs-inline-block">№:</span>
-                    <span class="align-xs">{{i+1+(page-1)*limit}}</span>
-                </div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
-                    <span class="visible-xs-inline-block">Логін:</span>
-                    <span class="align-xs">{{speciality.speciality_code}}</span>
-                </div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
-                    <span class="visible-xs-inline-block">Поштова скринька:</span>
-                    <span class="align-xs">{{speciality.speciality_name}}</span>
-                </div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                    <add-edit-modal
-                            [name]="speciality.speciality_name"
-                            [code]="speciality.speciality_code"
-                            [id]="speciality.speciality_id"
-                            [config]="configEditSpeciality"
-                            (activate)="activate($event)">
-                    </add-edit-modal>
-                    <a class="btn btn-danger btn-sm " role="button"
-                       title="Видалити" (click)="delRecord(entity, speciality.speciality_id)">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </a>
-
-                </div>
-            </li>
-        </ul>
-        <ngb-pagination *ngIf="entityDataLength"
-                        [collectionSize]="entityDataLength"
-                        [(page)]="page"
-                        [maxSize]="paginationSize"
-                        [pageSize]="limit"
-                        [rotate]="true"
-                        [ellipses]="true"
-                        [boundaryLinks]="true"
-                        (pageChange)="pageChange($event)"
-                        [hidden]="search.length || limit>=entityDataLength">
-        </ngb-pagination>
-    </div>
+    <entity-bar [entityTitle]="entityTitle"
+            [searchTitle]="searchTitle"
+            [configAdd]="configAdd"
+            [selectLimit]="selectLimit"
+            [entityDataLength]="entityDataLength"
+            (activate)="modalAdd($event)"
+            (searchRun)="findEntity($event)"
+            (selectRun)="changeLimit($event)">
+    </entity-bar>
+    <p>THIS IS entityData - {{entityData}} !!! </p>
+    <p>THIS IS headers - {{headers}} !!! </p>
+    <dt-table *ngIf="entityData.length>0"
+              [page]="page"
+              [limit]="limit"
+              [headers]="headers"
+              [tableData]="entityData"
+              (activate)="activate($event)">
+    </dt-table>
+    <ngb-pagination *ngIf="entityDataLength"
+                    [collectionSize]="entityDataLength"
+                    [(page)]="page"
+                    [maxSize]="paginationSize"
+                    [pageSize]="limit"
+                    [rotate]="true"
+                    [ellipses]="true"
+                    [boundaryLinks]="true"
+                    (pageChange)="pageChange($event)"
+                    [hidden]="search.length || limit>=entityDataLength">
+    </ngb-pagination>
 </div>
 <template ngbModalContainer></template>
