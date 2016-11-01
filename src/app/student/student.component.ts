@@ -1,139 +1,108 @@
 import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute, Params} from "@angular/router";
+import {Router} from "@angular/router";
 import {Student} from "../shared/classes/student";
 import {Group} from "../shared/classes/group";
-import {CRUDService} from "../shared/services/crud.service";
+import {CRUDService} from "../shared/services/crud.service.ts";
+import {StudentService} from "../shared/services/student.service.ts";
 import {EntityManagerBody} from "../shared/classes/entity-manager-body";
-import {StudentService} from "../shared/services/student.service";
+import {baseUrl, entities}         from "../shared/constants.ts";
 import {Observable} from 'rxjs';
 import '../shared/rxjs-operators';
+import {
+    maxSize,
+    changeLimit,
+    pageChange,
+    getCountRecords,
+    getRecordsRange,
+    delRecord,
+    findEntity,
+    refreshData
+} from "../shared/constants"
 
 @Component({
     templateUrl: 'student.component.html',
     styleUrls: ['student.component.css'],
 })
+
 export class StudentComponent implements OnInit {
 
-    public students:Student[];
-    private countOfStudents:number;
-    public entity:string = "student";
-    public groupEntity:string = "group";
-    public limit:number = 5;
-    private findResultStudents:Student[];
-    public search:string = "";
-    public page:number = 1;
-    private offset:number = 0;
-    public groups:Group[]=[];
+    public paginationSize = maxSize;
 
-    /*constructor(private _commonService:CRUDService,
-                private _router:Router,
-                private route:ActivatedRoute,
-                public studentService: StudentService) {
-    }*/
+    public entityData: Student[];
+    private entityDataLength: number;
+    public entity: string = "student";
+    public limit: number = 5;
+    public search: string = "";
+    public page: number = 1;
+    private offset: number = 0;
 
-    constructor(private _commonService:CRUDService,
+    public groupEntity: string = "Group";
+    public groups: Group[] = [];
+
+    constructor(private crudService:CRUDService,
                 private _router:Router) {
     }
 
-    ngOnInit() {
-        let userRole: string = sessionStorage.getItem("userRole");
-        if (!userRole && userRole != "admin") {
-            this._router.navigate(["/login"]);
-        }
+    public changeLimit = changeLimit;
+    public pageChange = pageChange;
+    /*public getCountRecords = getCountRecords;*/
+    /*public getRecordsRange = getRecordsRange;*/
+    public delRecord = delRecord;
+    public findEntity = findEntity;
+    public refreshData = refreshData;
+    public errorMessage: string;
 
+    ngOnInit() {
         this.getCountRecords();
     }
 
-    getCountRecords() {
-        this._commonService.getCountRecords(this.entity)
+    getRecordsRange () {
+    this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
+        .subscribe(
+            data => {
+                this.entityData = data;
+                this.getGroupName();
+            },
+            error=> console.log("error: ", error))
+    };
+
+    getCountRecords () {
+        this.crudService.getCountRecords(this.entity)
             .subscribe(
                 data => {
-                    this.countOfStudents = +data.numberOfRecords;
+                    this.entityDataLength = +data.numberOfRecords;
                     this.getRecordsRange();
                 },
                 error=>console.log("error: ", error)
             );
-    }
+    };
 
-    getRecordsRange() {
-        this._commonService.getRecordsRange(this.entity, this.limit, this.offset)
-            .subscribe(
-                data => this.students = data,
-                error=> console.log("error: ", error))
-    }
+    getGroupName(): void {
+        let groupId: number[] = [];
+        console.log("DataEntity : " + this.entityData);
+        let data = this.entityData;
+        console.log("Data : " + data);
 
-    delRecord(entity:string, id:number) {
-        if (confirm("Підтвердіть видалення студента")){
-            this.offset = (this.page - 1) * this.limit;
-        this._commonService.delRecord(entity, id)
-            .subscribe(()=>this.refreshData("true"));
-    }
-}
-
-    changeLimit($event) {
-        this.limit = $event.target.value;
-        console.log(this.limit);
-        this.offset = 0;
-        this.page = 1;
-        this.getRecordsRange();
-    }
-
-    findEntity($event) {
-        this.search = $event.target.value;
-        if (this.search.length === 0) {
-            this.offset = 0;
-            this.page = 1;
-            this.getCountRecords();
-            return;
+        for (let i in data) {
+            groupId.push(data[i].group_id);
         }
 
-        this._commonService.getRecordsBySearch(this.entity, this.search)
-            .subscribe(data => {
-                if (data.response == "no records") {
-                    this.students = [];
-                    return;
-                }
-                this.page = 1;
-                this.students = data;
-            }, error=>console.log("error: ", error));
-    }
+        console.log("GroupId : " + groupId);
+        console.log("Data2 : " + data);
 
-    refreshData(data:string) {
-        if (this.students.length === 1) {
-            this.offset = (this.page - 2) * this.limit;
-            this.page -= 1;
-        } else if (this.students.length > 1) {
-            this.offset = (this.page - 1) * this.limit;
-        }
-
-        this._commonService.getCountRecords(this.entity)
+        let dataEnt = new EntityManagerBody(this.groupEntity, groupId);
+        this.crudService.getEntityValues(dataEnt)
             .subscribe(
-                data => {
-                    this.countOfStudents = +data.numberOfRecords;
-                    this.getRecordsRange();
+                groups => {
+                    this.groups = groups;
+                    for (let j in this.entityData)
+                    for (let i in this.groups) {
+                        if (this.entityData[j].group_id == this.groups[i].group_id) {this.entityData[j].group_name = this.groups[i].group_name;}
+                    }
+                    console.log(this.entityData);
                 },
-                error=>console.log(error)
+                error => this.errorMessage = <any>error
             );
     }
 
-    pageChange(num:number) {
-        if (!num) {
-            this.page = 1;
-            return;
-        }
-        this.page = num;
-        this.offset = (this.page - 1) * this.limit;
-        this.getRecordsRange();
-    }
-
-   /*getEntityValues(data:EntityManagerBody, entityArray:any[]) {
-        this.studentService.getEntityValues(data)
-            .subscribe(data => entityArray = data,
-                error=> {
-                    if (error.response === "Only logged users can work with entities") {
-                        this._router.navigate(["/login"])
-                    }
-                })
-
-    }*/
 }

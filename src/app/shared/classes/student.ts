@@ -8,7 +8,8 @@ export class Student {
     student_surname: string;
     student_name: string;
     student_fname: string;
-    group_id: number | string;
+    group_id: number;
+    group_name?: string;
     plain_password: string;
 }
 
