@@ -1,20 +1,21 @@
 <div class="entity-container">
     <entity-bar
-        [entityTitle]="entityTitle"
-        [searchTitle]="searchTitle"
-        [configAdd]="configAdd"
-        [selectLimit]="selectLimit"
-        [entityDataLength]="entityDataLength"
-        (activate)="modalAdd($event)"
-        (searchRun)="findEntity($event)"
-        (selectRun)="changeLimit($event)">
+            [entityTitle]="entityTitle"
+            [searchTitle]="searchTitle"
+            [configAdd]="configAdd"
+            [selectLimit]="selectLimit"
+            [entityDataLength]="entityDataLength"
+            (activate)="modalAdd($event)"
+            (searchRun)="findEntity($event)"
+            (selectRun)="changeLimit($event)">
     </entity-bar>
     <dt-table *ngIf="entityData.length>0"
-            [page]="page"
-            [limit]="limit"
-            [headers]="headers"
-            [tableData]="entityData"
-            (activate)="activate($event)">
+              [page]="page"
+              [limit]="limit"
+              [headers]="headers"
+              [actions]="actions"
+              [tableData]="entityData"
+              (activate)="activate($event)">
     </dt-table>
     <ngb-pagination *ngIf="entityDataLength"
                     [collectionSize]="entityDataLength"

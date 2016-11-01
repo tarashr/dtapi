@@ -15,12 +15,40 @@ import {
     refreshData
 } from "../shared/constants"
 
-export const changeLimit = function (limit:number):void {
+export const changeLimit = function (limit: number): void {
     this.limit = limit;
     this.offset = 0;
     this.page = 1;
     this.getRecordsRange();
 };
+
+export const headers = [
+    {name: "№", style: "col-xs-12 col-sm-1"},
+    {name: "Назва факультету", style: "col-xs-12 col-sm-4"},
+    {name: "Опис Факультету", style: "col-xs-12 col-sm-4"},
+    {name: "", style: "col-xs-12 col-sm-3"}
+];
+
+export const actions = [
+    {
+        title: "Перейти до груп факультету",
+        action: "group",
+        style: "glyphicon glyphicon-th",
+        btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Редагувати факультет",
+        action: "edit",
+        style: "glyphicon glyphicon-edit",
+        btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Видалити факультет",
+        action: "delete",
+        style: "glyphicon glyphicon-trash",
+        btnStyle: "btn btn-danger btn-sm"
+    }
+];
 
 @Component({
     templateUrl: 'faculty.component.html',
@@ -31,10 +59,12 @@ export class FacultyComponent implements OnInit {
     public configAdd = configAddFaculty;
     public configEdit = configEditFaculty;
     public paginationSize = maxSize;
+    public headers: any = headers;
+    public actions: any = actions;
 
     //constants for view
-    public searchTitle:string = "Введіть дані для пошуку";
-    public entityTitle:string = "Факультети";
+    public searchTitle: string = "Введіть дані для пошуку";
+    public entityTitle: string = "Факультети";
     public selectLimit: string = "Виберіть кількість факультетів на сторінці";
     //
 
@@ -46,42 +76,6 @@ export class FacultyComponent implements OnInit {
     public page: number = 1;
     public offset: number = 0;
 
-    headers = [
-        {name: "№", style: "col-xs-12 col-sm-1"},
-        {name: "Назва факультету", style: "col-xs-12 col-sm-4"},
-        {name: "Опис Факультету", style: "col-xs-12 col-sm-4"},
-        {name: "", style: "col-xs-12 col-sm-3"}
-    ];
-
-    actions = [
-        {title: "Перейти до груп факультету", action: "group", style: "glyphicon glyphicon-th"},
-        {title: "Редагувати факультет", action: "edit", style: "glyphicon glyphicon-edit"},
-        {title: "Видалити факультет", action: "delete", style: "glyphicon glyphicon-trash"}
-    ];
-
-    // private tableData: any[] = [];
-
-    // tableData = [
-    //     {
-    //         entityColumns: ["Факультет економіки", "Факультет на якому вчаться економити"],
-    //         entity_id: 1,
-    //         actions: [
-    //             {title: "Перейти до груп факультету", action: "groups", style: "glyphicon glyphicon-th"},
-    //             {title: "Редагувати факультет", action: "edit", style: "glyphicon glyphicon-edit"},
-    //             {title: "Видалити факультет", action: "delete", style: "glyphicon glyphicon-trash"}
-    //         ]
-    //     },
-    //     {
-    //         entityColumns: ["Факультет математики", "Факультет на якому вчаться рахувати"],
-    //         entity_id: 2,
-    //         actions: [
-    //             {title: "Перейти до груп факультету", action: "groups", style: "glyphicon glyphicon-th"},
-    //             {title: "Редагувати факультет", action: "edit", style: "glyphicon glyphicon-edit"},
-    //             {title: "Видалити факультет", action: "delete", style: "glyphicon glyphicon-trash"}
-    //         ]
-    //     }
-    // ];
-
     constructor(private crudService: CRUDService,
                 private _router: Router) {
     };
@@ -89,10 +83,7 @@ export class FacultyComponent implements OnInit {
     public changeLimit = changeLimit;
     public pageChange = pageChange;
     public getCountRecords = getCountRecords;
-    // public getRecordsRange = getRecordsRange;
     public delRecord = delRecord;
-    // public findEntity = findEntity;
-    // public refreshData = refreshData;
 
     ngOnInit() {
         this.getCountRecords();
@@ -107,7 +98,6 @@ export class FacultyComponent implements OnInit {
                         let faculty: any = {};
                         faculty.entity_id = item.faculty_id;
                         faculty.entityColumns = [item.faculty_name, item.faculty_description];
-                        faculty.actions = this.actions;
                         tempArr.push(faculty);
                     });
                     this.entityData = tempArr;
@@ -164,14 +154,12 @@ export class FacultyComponent implements OnInit {
             let newFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
             this.crudService.insertData(this.entity, newFaculty)
                 .subscribe(response=> {
-                    console.log(response);
                     this.refreshData(data.action);
                 });
         } else if (data.action === "edit") {
             let editedFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
             this.crudService.updateData(this.entity, data.id, editedFaculty)
                 .subscribe(response=> {
-                    console.log(response);
                     this.refreshData(data.action);
                 });
         }

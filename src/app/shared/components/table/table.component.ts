@@ -9,6 +9,7 @@ export class TableComponent implements OnInit {
 
     @Input() tableData: any;
     @Input() headers: any;
+    @Input() actions: any;
     @Input() page: number;
     @Input() limit: number;
     @Output() activate = new EventEmitter();
@@ -20,8 +21,7 @@ export class TableComponent implements OnInit {
     }
 
     run(entityData: any, action: string) {
-        let actionData = Object.assign({}, entityData)
-        delete actionData.actions;
+        let actionData = Object.assign({}, entityData);
         entityData.action = action;
         this.activate.emit(entityData);
     }
