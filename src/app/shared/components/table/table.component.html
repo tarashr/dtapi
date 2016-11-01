@@ -1,3 +1,4 @@
+
 <div class="container-fluid">
     <ul class="list-group entity-list">
         <li class="list-group-item row  hidden-xs">
@@ -15,9 +16,9 @@
             </div>
             <div [ngClass]="headers[headers.length-1].style">
                 <a class="btn btn-default btn-sm"
-                   *ngFor="let button of entity.actions"
-                   [title]="button.title+': ' + entity.entityColumns[0]"
-                   (click)="run(entity, button.action)">
+                        *ngFor="let button of entity.actions"
+                        [title]="button.title+': ' + entity.entityColumns[0]"
+                        (click)="run(entity, button.action)">
                     <span [ngClass]="button.style"></span>
                 </a>
             </div>

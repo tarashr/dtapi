@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {CRUDService} from "../shared/services/crud.service";
-import {Router} from "@angular/router";
 import {StatisticData} from "../shared/classes/statistic-data";
 import {entities} from "../shared/constants";
 
@@ -13,8 +12,7 @@ export class StatisticComponent implements OnInit {
     public entities:StatisticData[] = entities;
 
 
-    constructor(private crudService:CRUDService,
-                private router:Router) {
+    constructor(private crudService:CRUDService) {
     }
 
     ngOnInit() {

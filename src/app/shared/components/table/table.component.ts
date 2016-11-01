@@ -25,5 +25,5 @@ export class TableComponent implements OnInit {
         entityData.action = action;
         this.activate.emit(entityData);
     }
-
 }
+
