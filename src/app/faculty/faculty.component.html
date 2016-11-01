@@ -1,88 +1,31 @@
 <div class="entity-container">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-text ">Факультети</div>
-            <form class="navbar-form navbar-left">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="пошук" name="inputSearch"
-                           [title]="serchTitle"
-                           (input)="findEntity($event)">
-                </div>
-            </form>
-            <form class="navbar-form navbar-right">
-                <div class="form-group">
-                    <add-edit-modal
-                            [config]="configAdd"
-                            (activate)="activate($event)"
-                    ></add-edit-modal>
-                    <select class="form-control" name="count"
-                            [title]="selectLimit"
-                            (input)="changeLimit($event)"
-                            [disabled]="search.length>0">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option [value]="entityDataLength">Всі</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-    </nav>
-
-    <div class="container-fluid">
-        <ul class="list-group entity-list">
-            <li class="list-group-item row  hidden-xs">
-                <div class="col-xs-12 col-md-1">№</div>
-                <div class="col-xs-12 col-md-4">Назва факультету</div>
-                <div class="col-xs-12 col-md-4">Опис факультету</div>
-                <div class="col-xs-12 col-md-3"></div>
-            </li>
-            <li class="list-group-item row"
-                *ngFor="let faculty of entityData; let i=index">
-                <div class="col-xs-12 col-md-1">
-                    <span class="visible-xs-inline-block">№:</span>
-                    <span class="align-xs">{{i+1+(page-1)*limit}}</span>
-                </div>
-                <div class="col-xs-12 col-md-4">
-                    <span class="visible-xs-inline-block">Назва факультету:</span>
-                    <span class="align-xs">{{faculty.faculty_name}}</span>
-                </div>
-                <div class="col-xs-12 col-md-4">
-                    <span class="visible-xs-inline-block">Опис факультету:</span>
-                    <span class="align-xs">{{faculty.faculty_description}}</span>
-                </div>
-                <div class="col-xs-12 col-md-3">
-                    <a class="btn btn-default btn-sm" [title]="grupsOfFaculty+': '+faculty.faculty_name"
-                       [routerLink]="[faculty.faculty_id, 'groups']">
-                        <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-                    </a>
-                    <add-edit-modal
-                            [name]="faculty.faculty_name"
-                            [description]="faculty.faculty_description"
-                            [id]="faculty.faculty_id"
-                            [config]="configEdit"
-                            (activate)="activate($event)"
-                    ></add-edit-modal>
-                    <a class="btn btn-danger btn-sm" [title]="deleteFaculty+': '+faculty.faculty_name"
-                       (click)="delRecord(entity, faculty.faculty_id)">
-                        <span class="glyphicon glyphicon-trash"></span>
-                    </a>
-                </div>
-            </li>
-        </ul>
-    </div>
+    <entity-bar
+        [entityTitle]="entityTitle"
+        [searchTitle]="searchTitle"
+        [configAdd]="configAdd"
+        [selectLimit]="selectLimit"
+        [entityDataLength]="entityDataLength"
+        (activate)="modalAdd($event)"
+        (searchRun)="findEntity($event)"
+        (selectRun)="changeLimit($event)">
+    </entity-bar>
+    <dt-table *ngIf="entityData.length>0"
+            [page]="page"
+            [limit]="limit"
+            [headers]="headers"
+            [tableData]="entityData"
+            (activate)="activate($event)">
+    </dt-table>
     <ngb-pagination *ngIf="entityDataLength"
-            [collectionSize]="entityDataLength"
-            [(page)]="page"
-            [maxSize]="paginationSize"
-            [pageSize]="limit"
-            [rotate]="true"
-            [ellipses]="true"
-            [boundaryLinks]="true"
-            (pageChange)="pageChange($event)"
-            [hidden]="search.length || limit>=entityDataLength">
+                    [collectionSize]="entityDataLength"
+                    [(page)]="page"
+                    [maxSize]="paginationSize"
+                    [pageSize]="limit"
+                    [rotate]="true"
+                    [ellipses]="true"
+                    [boundaryLinks]="true"
+                    (pageChange)="pageChange($event)"
+                    [hidden]="search.length || limit>=entityDataLength">
     </ngb-pagination>
 </div>
-
-
 <template ngbModalContainer></template>

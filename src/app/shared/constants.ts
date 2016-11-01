@@ -1,33 +1,33 @@
-export const baseUrl:string = 'http://dtapi.local/';
+export const baseUrl: string = 'http://dtapi.local/';
 //AUTH action
-export const loginUrl:string = baseUrl + "login/index";
-export const logoutUrl:string = baseUrl + "login/logout";
+export const loginUrl: string = baseUrl + "login/index";
+export const logoutUrl: string = baseUrl + "login/logout";
 
 //CRUD Action whith entity
-export const getSubjectsUrl:string = baseUrl + 'subject/getRecords';
-export const getSubjectUrl:string = baseUrl + 'subject/getRecords'; // + id of subject
-export const getRangeOfSubjectsUrl:string = baseUrl + 'subject/getRecordsRange';
-export const countSubjectsUrl:string = baseUrl + 'subject/countRecords';
-export const addSubjectUrl:string = baseUrl + 'subject/insertData';
-export const editSubjectUrl:string = baseUrl + 'subject/update'; // + id of subject
-export const delSubjectUrl:string = baseUrl + 'subject/del'; // + id of subject
-export const getGroupUrl:string = baseUrl + 'group/getRecords';
-export const countGroupsUrl:string = baseUrl + 'group/countRecords';
-export const getRangeOfGroupUrl:string = baseUrl + 'group/getRecordsRange';
-export const getEntityValues:string = baseUrl + 'EntityManager/getEntityValues';
-export const getSubjectsBySearchUrl:string = baseUrl + 'subject/getRecordsBySearch/'; // + criteria
-export const getSpecialityUrl:string = baseUrl + 'speciality/getRecords';
-export const delSpecialityUrl:string = baseUrl + 'speciality/del';
-export const addGroupUrl:string = baseUrl + 'group/insertData';
-export const getFacultysUrl:string = baseUrl + 'faculty/getRecords';
-export const getSpecialitysUrl:string = baseUrl + 'speciality/getRecords';
-export const getGroupsBySearchUrl:string = baseUrl + 'group/getRecordsBySearch/'; // + criteria
-export const delGroupUrl:string = baseUrl + 'group/del'; // + id of subject
-export const getStudentsUrl:string = baseUrl + 'student/getRecords';
-export const editGroupUrl:string = baseUrl + 'group/update'; // + id of subject
+export const getSubjectsUrl: string = baseUrl + 'subject/getRecords';
+export const getSubjectUrl: string = baseUrl + 'subject/getRecords'; // + id of subject
+export const getRangeOfSubjectsUrl: string = baseUrl + 'subject/getRecordsRange';
+export const countSubjectsUrl: string = baseUrl + 'subject/countRecords';
+export const addSubjectUrl: string = baseUrl + 'subject/insertData';
+export const editSubjectUrl: string = baseUrl + 'subject/update'; // + id of subject
+export const delSubjectUrl: string = baseUrl + 'subject/del'; // + id of subject
+export const getGroupUrl: string = baseUrl + 'group/getRecords';
+export const countGroupsUrl: string = baseUrl + 'group/countRecords';
+export const getRangeOfGroupUrl: string = baseUrl + 'group/getRecordsRange';
+export const getEntityValues: string = baseUrl + 'EntityManager/getEntityValues';
+export const getSubjectsBySearchUrl: string = baseUrl + 'subject/getRecordsBySearch/'; // + criteria
+export const getSpecialityUrl: string = baseUrl + 'speciality/getRecords';
+export const delSpecialityUrl: string = baseUrl + 'speciality/del';
+export const addGroupUrl: string = baseUrl + 'group/insertData';
+export const getFacultysUrl: string = baseUrl + 'faculty/getRecords';
+export const getSpecialitysUrl: string = baseUrl + 'speciality/getRecords';
+export const getGroupsBySearchUrl: string = baseUrl + 'group/getRecordsBySearch/'; // + criteria
+export const delGroupUrl: string = baseUrl + 'group/del'; // + id of subject
+export const getStudentsUrl: string = baseUrl + 'student/getRecords';
+export const editGroupUrl: string = baseUrl + 'group/update'; // + id of subject
 
 //Array of entities for statistic page
-export const entities:any[] = [
+export const entities: any[] = [
     {
         name: "faculty",
         count: "...",
@@ -60,7 +60,7 @@ export const entities:any[] = [
     }
 ];
 //Pagination
-export const maxSize:number = 5;
+export const maxSize: number = 5;
 // Configuration for add-edit-modal component
 export const configAddFaculty = {
     title: "Створити факультет",
@@ -124,14 +124,14 @@ export const configEditSpeciality = {
 
 // Functions
 
-export const changeLimit = function ($event:any):void {
+export const changeLimit = function ($event: any): void {
     this.limit = $event.target.value;
     this.offset = 0;
     this.page = 1;
     this.getRecordsRange();
 };
 
-export const pageChange = function (num:number) {
+export const pageChange = function (num: number) {
     if (!num) {
         this.page = 1;
         return;
@@ -159,13 +159,13 @@ export const getRecordsRange = function () {
             error=> console.log("error: ", error))
 };
 
-export const delRecord = function (entity:string, id:number) {
+export const delRecord = function (entity: string, id: number) {
     this.offset = (this.page - 1) * this.limit;
     this.crudService.delRecord(entity, id)
         .subscribe(()=>this.refreshData("delete"));
 };
 
-export const findEntity = function($event) {
+export const findEntity = function ($event) {
     this.search = $event.target.value;
     if (this.search.length === 0) {
         this.offset = 0;
@@ -185,7 +185,7 @@ export const findEntity = function($event) {
         }, error=>console.log("error: ", error));
 };
 
-export const refreshData = function(action:string) {
+export const refreshData = function (action: string) {
     if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
         this.offset = (this.page - 2) * this.limit;
         this.page -= 1;

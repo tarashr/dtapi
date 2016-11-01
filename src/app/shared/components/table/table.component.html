@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <ul class="list-group entity-list">
+        <li class="list-group-item row  hidden-xs">
+            <div *ngFor="let item of headers" [ngClass]="item.style">{{item.name}}</div>
+        </li>
+        <li class="list-group-item row"
+            *ngFor="let entity of tableData; let i=index">
+            <div class="col-xs-12 col-sm-1">
+                <span class="visible-xs-inline-block">№:</span>
+                <span class="align-xs">{{i+1+(page-1)*limit}}</span>
+            </div>
+            <div *ngFor="let item of entity.entityColumns; let j=index" [ngClass]="headers[j+1].style">
+                <span class="visible-xs-inline-block">{{headers[j+1].name+": "}}</span>
+                <span class="align-xs">{{item}}</span>
+            </div>
+            <div [ngClass]="headers[headers.length-1].style">
+                <a class="btn btn-default btn-sm"
+                        *ngFor="let button of entity.actions"
+                        [title]="button.title+': ' + entity.entityColumns[0]"
+                        (click)="run(entity, button.action)">
+                    <span [ngClass]="button.style"></span>
+                </a>
+            </div>
+        </li>
+    </ul>
+</div>
