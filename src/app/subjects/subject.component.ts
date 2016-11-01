@@ -4,24 +4,23 @@ import '../shared/rxjs-operators';
 import {Router} from "@angular/router";
 import {Subject}   from '../shared/classes/subject';
 import {CRUDService}  from '../shared/services/crud.service';
-import { configAddSubject, configEditSubject } from '../shared/constants';
+import {configAddSubject, configEditSubject} from '../shared/constants';
 
 @Component({
     selector: 'subject-container',
     templateUrl: 'subject.component.html'
-    })
+})
 
 export class SubjectComponent implements OnInit {
 
     //common variables
-    public pageTittle: string = "Предмети";
-    public entity:string = "subject";
+    public entity: string = "subject";
     public subjects: Subject[];
     public errorMessage: string;
 
     //variables for pagination
     public limit: number = 5;
-    public totalSubjects: number;
+    private entityDataLength: number;
     public currentPage: number = 1;
     public offset: number = 0;
     public maxSize: number = 5;
@@ -33,22 +32,43 @@ export class SubjectComponent implements OnInit {
     public configAddSubject = configAddSubject;
     public configEditSubject = configEditSubject;
 
-    constructor(
-        private crudService: CRUDService
-    ) {}
+    // variables for common component
+    public searchTitle: string = "Введіть дані для пошуку";
+    public entityTitle: string = "Предмети";
+    public selectLimit: string = "Виберіть кількість предметів на сторінці";
+
+    public entityData: any[] = [];
+    public search: string = "";
+
+    constructor(private crudService: CRUDService,
+                private _router: Router) {
+    }
 
     ngOnInit() {
         this.getCountSubjects();
     }
 
-    deleteSubject(subject: Subject): void {
+    headers = [
+        {name: "№", style: "col-xs-12 col-sm-1"},
+        {name: "Назва предмету", style: "col-xs-12 col-sm-4"},
+        {name: "Опис предмету", style: "col-xs-12 col-sm-4"},
+        {name: "", style: "col-xs-12 col-sm-3"}
+    ];
+
+    actions = [
+        {title: "Перейти до тестів", action: "group", style: "glyphicon glyphicon-th"},
+        {title: "Редагувати предмет", action: "edit", style: "glyphicon glyphicon-edit"},
+        {title: "Видалити предмет", action: "delete", style: "glyphicon glyphicon-trash"}
+    ];
+
+    deleteSubject(entity: string, id: number): void {
         if (confirm('Підтвердіть видалення предмету')) {
+            this.offset = (this.currentPage - 1) * this.limit;
             this.crudService
-                .delRecord(this.entity, subject.subject_id)
+                .delRecord(entity, id)
                 .subscribe(
-                    data => {
-                        this.refreshData(data);
-                        return true;
+                    () => {
+                        this.refreshData("delete");
                     },
                     error => this.errorMessage = <any>error
                 );
@@ -59,18 +79,44 @@ export class SubjectComponent implements OnInit {
         this.crudService.getCountRecords(this.entity)
             .subscribe(
                 res => {
-                    this.totalSubjects = +res.numberOfRecords;
+                    this.entityDataLength = +res.numberOfRecords;
                     this.getSubjectsRange();
                 },
                 error => this.errorMessage = <any>error
             );
     }
 
+    modalAdd(data: any) {
+        if (data.action === "create") {
+            let newSubject: Subject = new Subject(data.list[0].value, data.list[1].value);
+            this.crudService.insertData(this.entity, newSubject)
+                .subscribe(response=> {
+                    console.log(response);
+                    this.refreshData(data.action);
+                });
+        } else if (data.action === "edit") {
+            let editedSubject: Subject = new Subject(data.list[0].value, data.list[1].value);
+            this.crudService.updateData(this.entity, data.id, editedSubject)
+                .subscribe(response=> {
+                    console.log(response);
+                    this.refreshData(data.action);
+                });
+        }
+    }
+
     getSubjectsRange(): void {
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
-                res => {
-                    this.subjects = res;
+                data => {
+                    let tempArr: any[] = [];
+                    data.forEach((item)=> {
+                        let subject: any = {};
+                        subject.entity_id = item.subject_id;
+                        subject.entityColumns = [item.subject_name, item.subject_description];
+                        subject.actions = this.actions;
+                        tempArr.push(subject);
+                    });
+                    this.entityData = tempArr;
                 },
                 error => this.errorMessage = <any>error
             );
@@ -96,56 +142,71 @@ export class SubjectComponent implements OnInit {
 
     getSubjectsBySearch(): void {
         this.crudService.getRecordsBySearch(this.entity, this.searchCriteria)
-            .subscribe(
-                res => {
-                    if(res.response === "no records") this.subjects = [];
-                    if(res.length) this.subjects = res;
+            .subscribe(data => {
+                    if (data.response == "no records") {
+                        this.entityData = [];
+                        return;
+                    }
+                    this.currentPage = 1;
+                    let tempArr: any[] = [];
+                    data.forEach((item)=> {
+                        let subject: any = {};
+                        subject.entity_id = item.subject_id;
+                        subject.entityColumns = [item.subjecty_name, item.subject_description];
+                        subject.actions = this.actions;
+                        tempArr.push(subject);
+                    });
+                    this.entityData = tempArr;
                 },
-                error => this.errorMessage = <any>error
-            )
+                error=>console.log("error: ", error));
     }
 
-    searchForData($event) {
-        this.searchCriteria = $event.currentTarget.value;
-        if (this.searchCriteria) {
-            this.getSubjectsBySearch();
+    findEntity(searchTerm: string) {
+        this.search = searchTerm;
+        if (this.search.length === 0) {
+            this.offset = 0;
+            this.currentPage = 1;
+            this.getSubjectsRange();
+            return;
         }
-        else if (!this.searchCriteria) {
-            this.getCountSubjects();
-        }
-    }
+        this.getSubjectsBySearch();
+    };
 
-    refreshData(data: string) {
-        if (this.subjects.length === 1) {
+
+    refreshData(action: string) {
+        if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
             this.offset = (this.currentPage - 2) * this.limit;
             this.currentPage -= 1;
-        } else if (this.subjects.length > 1) {
+        } else if (this.entityData.length > 1) {
             this.offset = (this.currentPage - 1) * this.limit;
         }
-        this.getCountSubjects();
+
+        this.crudService.getCountRecords(this.entity)
+            .subscribe(
+                data => {
+                    this.entityDataLength = +data.numberOfRecords;
+                    this.getSubjectsRange();
+                },
+                error=>console.log(error)
+            );
     }
 
-    activate(data:any) {
-        if (data.action === "create") {
-            let newSubject:Subject = new Subject(data.list[0].value, data.list[1].value);
-            this.crudService.insertData(this.entity, newSubject)
-                .subscribe(
-                    response => {
-                        this.refreshData(data.action);
-                    },
-                    error => this.errorMessage = <any>error,
-                );
-        } else if (data.action === "edit") {
-            let editedSubject: Subject = new Subject(data.list[0].value, data.list[1].value);
-            this.crudService.updateData(this.entity, data.id, editedSubject)
-                .subscribe(
-                    (res) => {
-                        this.refreshData(data.action);
-                    },
-                    error => this.errorMessage = <any>error
-                );
+    activate(data: any) {
+        console.log("!!! ", data);
+        switch (data.action) {
+            case "tests":
+                this._router.navigate(["/admin/subject", data.entity_id, "tests"]);
+                break;
+            case "edit":
+                console.log("we will edit ", data.entityColumns[0] + " with id: " + data.entity_id);
+                break;
+            case "delete":
+                console.log("we will delete ", data.entityColumns[0] + " with id: " + data.entity_id);
+                this.deleteSubject(this.entity, data.entity_id);
+                break;
         }
     }
+
 
 }
 
