@@ -10,20 +10,23 @@
             (selectRun)="changeLimit($event)">
     </entity-bar>
     <dt-table *ngIf="entityData.length>0"
+              [page]="page"
+              [limit]="limit"
               [headers]="headers"
               [tableData]="entityData"
               (activate)="activate($event)">
     </dt-table>
     <ngb-pagination
             *ngIf="entityDataLength"
-            [hidden]="!!searchCriteria || limit >= entityDataLength"
+            [hidden]="searchCriteria.length || limit>=entityDataLength"
             [pageSize]="limit"
             [collectionSize]="entityDataLength"
-            [(page)]="currentPage"
+            [(page)]="page"
+            [rotate]="true"
             (pageChange)="pageChange($event)"
-            [maxSize]="maxSize"
+            [maxSize]="paginationSize"
             [ellipses]="true"
-            [boundaryLinks]=true>
+            [boundaryLinks]="true">
     </ngb-pagination>
 </div>
 <template ngbModalContainer></template>

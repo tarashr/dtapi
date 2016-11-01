@@ -15,22 +15,22 @@ export class SubjectComponent implements OnInit {
 
     //common variables
     public entity: string = "subject";
-    public subjects: Subject[];
     public errorMessage: string;
 
     //variables for pagination
     public limit: number = 5;
     private entityDataLength: number;
-    public currentPage: number = 1;
+    public page: number = 1;
     public offset: number = 0;
     public maxSize: number = 5;
+    public paginationSize = this.maxSize;
 
     //variables for search
-    public searchCriteria: string;
+    public searchCriteria: string = "";
 
     //varibles for addedit
-    public configAddSubject = configAddSubject;
-    public configEditSubject = configEditSubject;
+    public configAdd = configAddSubject;
+    public configEdit = configEditSubject;
 
     // variables for common component
     public searchTitle: string = "Введіть дані для пошуку";
@@ -38,7 +38,7 @@ export class SubjectComponent implements OnInit {
     public selectLimit: string = "Виберіть кількість предметів на сторінці";
 
     public entityData: any[] = [];
-    public search: string = "";
+    // public search: string = "";
 
     constructor(private crudService: CRUDService,
                 private _router: Router) {
@@ -56,14 +56,14 @@ export class SubjectComponent implements OnInit {
     ];
 
     actions = [
-        {title: "Перейти до тестів", action: "group", style: "glyphicon glyphicon-th"},
+        {title: "Перейти до тестів", action: "test", style: "glyphicon glyphicon-th"},
         {title: "Редагувати предмет", action: "edit", style: "glyphicon glyphicon-edit"},
         {title: "Видалити предмет", action: "delete", style: "glyphicon glyphicon-trash"}
     ];
 
     deleteSubject(entity: string, id: number): void {
         if (confirm('Підтвердіть видалення предмету')) {
-            this.offset = (this.currentPage - 1) * this.limit;
+            this.offset = (this.page - 1) * this.limit;
             this.crudService
                 .delRecord(entity, id)
                 .subscribe(
@@ -122,21 +122,20 @@ export class SubjectComponent implements OnInit {
             );
     }
 
-    changeLimit($event) {
-        console.log($event.currentTarget.value);
-        this.limit = $event.currentTarget.value;
+    changeLimit(limit: number): void {
+        this.limit = limit;
         this.offset = 0;
-        this.currentPage = 1;
+        this.page = 1;
         this.getSubjectsRange();
     }
 
     pageChange(num: number) {
         if (!num) {
-            this.currentPage = 1;
+            this.page = 1;
             return;
         }
-        this.currentPage = num;
-        this.offset = (this.currentPage - 1) * this.limit;
+        this.page = num;
+        this.offset = (this.page - 1) * this.limit;
         this.getSubjectsRange();
     }
 
@@ -147,38 +146,37 @@ export class SubjectComponent implements OnInit {
                         this.entityData = [];
                         return;
                     }
-                    this.currentPage = 1;
+                    this.page = 1;
                     let tempArr: any[] = [];
                     data.forEach((item)=> {
                         let subject: any = {};
                         subject.entity_id = item.subject_id;
-                        subject.entityColumns = [item.subjecty_name, item.subject_description];
+                        subject.entityColumns = [item.subject_name, item.subject_description];
                         subject.actions = this.actions;
                         tempArr.push(subject);
                     });
                     this.entityData = tempArr;
                 },
                 error=>console.log("error: ", error));
-    }
+    };
 
     findEntity(searchTerm: string) {
-        this.search = searchTerm;
-        if (this.search.length === 0) {
+        this.searchCriteria = searchTerm;
+        if (this.searchCriteria.length === 0) {
             this.offset = 0;
-            this.currentPage = 1;
+            this.page = 1;
             this.getSubjectsRange();
             return;
         }
         this.getSubjectsBySearch();
     };
 
-
     refreshData(action: string) {
         if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
-            this.offset = (this.currentPage - 2) * this.limit;
-            this.currentPage -= 1;
+            this.offset = (this.page - 2) * this.limit;
+            this.page -= 1;
         } else if (this.entityData.length > 1) {
-            this.offset = (this.currentPage - 1) * this.limit;
+            this.offset = (this.page - 1) * this.limit;
         }
 
         this.crudService.getCountRecords(this.entity)
