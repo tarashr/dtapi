@@ -124,8 +124,8 @@ export const configEditSpeciality = {
 
 // Functions
 
-export const changeLimit = function ($event: any): void {
-    this.limit = $event.target.value;
+export const changeLimit = function (limit: number): void {
+    this.limit = limit;
     this.offset = 0;
     this.page = 1;
     this.getRecordsRange();

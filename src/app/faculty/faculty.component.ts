@@ -6,49 +6,18 @@ import {
     configAddFaculty,
     configEditFaculty,
     maxSize,
-    // changeLimit,
+    changeLimit,
     pageChange,
     getCountRecords,
     getRecordsRange,
     delRecord,
     // findEntity,
     refreshData
-} from "../shared/constants"
-
-export const changeLimit = function (limit: number): void {
-    this.limit = limit;
-    this.offset = 0;
-    this.page = 1;
-    this.getRecordsRange();
-};
-
-export const headers = [
-    {name: "№", style: "col-xs-12 col-sm-1"},
-    {name: "Назва факультету", style: "col-xs-12 col-sm-4"},
-    {name: "Опис Факультету", style: "col-xs-12 col-sm-4"},
-    {name: "", style: "col-xs-12 col-sm-3"}
-];
-
-export const actions = [
-    {
-        title: "Перейти до груп факультету",
-        action: "group",
-        style: "glyphicon glyphicon-th",
-        btnStyle: "btn btn-default btn-sm"
-    },
-    {
-        title: "Редагувати факультет",
-        action: "edit",
-        style: "glyphicon glyphicon-edit",
-        btnStyle: "btn btn-default btn-sm"
-    },
-    {
-        title: "Видалити факультет",
-        action: "delete",
-        style: "glyphicon glyphicon-trash",
-        btnStyle: "btn btn-danger btn-sm"
-    }
-];
+} from "../shared/constants";
+import {
+    headersFaculty,
+    actionsFaculty
+} from "../shared/constant-config"
 
 @Component({
     templateUrl: 'faculty.component.html',
@@ -59,8 +28,8 @@ export class FacultyComponent implements OnInit {
     public configAdd = configAddFaculty;
     public configEdit = configEditFaculty;
     public paginationSize = maxSize;
-    public headers: any = headers;
-    public actions: any = actions;
+    public headers: any = headersFaculty;
+    public actions: any = actionsFaculty;
 
     //constants for view
     public searchTitle: string = "Введіть дані для пошуку";
@@ -84,23 +53,28 @@ export class FacultyComponent implements OnInit {
     public pageChange = pageChange;
     public getCountRecords = getCountRecords;
     public delRecord = delRecord;
+    public refreshData = refreshData;
 
     ngOnInit() {
         this.getCountRecords();
     }
 
+    private createTableConfig = (data: any)=> {
+        let tempArr: any[] = [];
+        data.forEach((item)=> {
+            let faculty: any = {};
+            faculty.entity_id = item.faculty_id;
+            faculty.entityColumns = [item.faculty_name, item.faculty_description];
+            tempArr.push(faculty);
+        });
+        this.entityData = tempArr;
+    };
+
     getRecordsRange() {
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                 data => {
-                    let tempArr: any[] = [];
-                    data.forEach((item)=> {
-                        let faculty: any = {};
-                        faculty.entity_id = item.faculty_id;
-                        faculty.entityColumns = [item.faculty_name, item.faculty_description];
-                        tempArr.push(faculty);
-                    });
-                    this.entityData = tempArr;
+                    this.createTableConfig(data);
                 },
                 error=> console.log("error: ", error))
     };
@@ -121,15 +95,7 @@ export class FacultyComponent implements OnInit {
                     return;
                 }
                 this.page = 1;
-                let tempArr: any[] = [];
-                data.forEach((item)=> {
-                    let faculty: any = {};
-                    faculty.entity_id = item.faculty_id;
-                    faculty.entityColumns = [item.faculty_name, item.faculty_description];
-                    faculty.actions = this.actions;
-                    tempArr.push(faculty);
-                });
-                this.entityData = tempArr;
+                this.createTableConfig(data);
             }, error=>console.log("error: ", error));
     };
 
@@ -163,23 +129,5 @@ export class FacultyComponent implements OnInit {
                     this.refreshData(data.action);
                 });
         }
-    }
-
-    refreshData(action: string) {
-        if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
-            this.offset = (this.page - 2) * this.limit;
-            this.page -= 1;
-        } else if (this.entityData.length > 1) {
-            this.offset = (this.page - 1) * this.limit;
-        }
-
-        this.crudService.getCountRecords(this.entity)
-            .subscribe(
-                data => {
-                    this.entityDataLength = +data.numberOfRecords;
-                    this.getRecordsRange();
-                },
-                error=>console.log(error)
-            );
     }
 }
