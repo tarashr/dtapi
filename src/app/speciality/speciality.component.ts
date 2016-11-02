@@ -27,7 +27,7 @@ export class SpecialityComponent implements OnInit{
     public entityTitle:string = "Спеціальності";
     public selectLimit: string = "Виберіть кількість записів на сторінці";
 
-    public entityData: any[] = [1, 2, 3];
+    public entityData: any[] = [];
     private entityDataLength: number;
     public entity: string = "speciality";
     public limit: number = 5;
@@ -75,16 +75,14 @@ export class SpecialityComponent implements OnInit{
                     let tempArr: any[] = [];
                     data.forEach((item)=> {
                         let speciality: any = {};
-                        speciality.entity_id = item.faculty_id;
+                        speciality.entity_id = item.speciality_id;
                         speciality.entityColumns = [item.speciality_code, item.speciality_name];
                         speciality.actions = this.actions;
                         tempArr.push(speciality);
                     });
-                    alert(tempArr);
                     this.entityData = tempArr;
-                    console.log(this.entityData);
                 },
-                error=> console.log("error: ", error));
+                error=> console.log("error: ", error))
     };
 
 

@@ -8,8 +8,6 @@
             (searchRun)="findEntity($event)"
             (selectRun)="changeLimit($event)">
     </entity-bar>
-    <p>THIS IS entityData - {{entityData}} !!! </p>
-    <p>THIS IS headers - {{headers}} !!! </p>
     <dt-table *ngIf="entityData.length>0"
               [page]="page"
               [limit]="limit"
@@ -26,7 +24,7 @@
                     [ellipses]="true"
                     [boundaryLinks]="true"
                     (pageChange)="pageChange($event)"
-                    [hidden]="search.length || limit>=entityDataLength">
+                    [hidden]="searchCriteria.length || limit>=entityDataLength">
     </ngb-pagination>
 </div>
 <template ngbModalContainer></template>
