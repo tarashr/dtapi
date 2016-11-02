@@ -27,13 +27,10 @@ import {
 })
 export class FacultyComponent implements OnInit {
 
-    @ViewChild(InfoModalComponent)
-    private infoModal: InfoModalComponent;
-
     public modalInfoConfig = {
-        title: "Видалення",
+        title: "",
         infoString: "",
-        action: "confirm"
+        action: ""
     };
     public configAdd = configAddFaculty;
     public configEdit = configEditFaculty;
@@ -120,21 +117,20 @@ export class FacultyComponent implements OnInit {
                 console.log("we will edit ", data.entityColumns[0] + " with id: " + data.entity_id);
                 break;
             case "delete":
-                console.log("we will delete ", data.entityColumns[0] + " with id: " + data.entity_id);
-                this.modalInfoConfig.infoString=`Ви дійсно хочете видати ${data.entityColumns[0]}?`;
-                this.modalInfoConfig.action="confirm";
-                this.modalInfoConfig.title="Видалення";
-                this.modalService.open(this.infoModal.modalWindow, {size: "sm"}).result
+                this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+                this.modalInfoConfig.action = "confirm";
+                this.modalInfoConfig.title = "Видалення";
+                const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
+                modalRef.componentInstance.config = this.modalInfoConfig;
+                modalRef.result
                     .then(() => {
                         this.delRecord(this.entity, data.entity_id);
-                    }, ()=>{return});
+                    }, ()=> {
+                        return
+                    });
                 break;
         }
     }
-
-    // openInfoModal() {
-    //     this.infoModal.open(this.infoModal.modalWindow);
-    // }
 
     modalAdd(data: any) {
         if (data.action === "create") {

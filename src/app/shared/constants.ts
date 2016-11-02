@@ -1,3 +1,4 @@
+import {InfoModalComponent} from "./components/info-modal/info-modal.component";
 export const baseUrl: string = 'http://dtapi.local/';
 //AUTH action
 export const loginUrl: string = baseUrl + "login/index";
@@ -162,11 +163,13 @@ export const getRecordsRange = function () {
 export const delRecord = function (entity: string, id: number) {
     this.offset = (this.page - 1) * this.limit;
     this.crudService.delRecord(entity, id)
-        .subscribe(()=>{
-            this.modalInfoConfig.infoString=`Видалення пройшло успішно.`;
-            this.modalInfoConfig.action="info";
-            this.modalService.open(this.infoModal.modalWindow, {size: "sm"});
-            this.refreshData("delete")});
+        .subscribe(()=> {
+            this.modalInfoConfig.infoString = `Видалення пройшло успішно.`;
+            this.modalInfoConfig.action = "info";
+            const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
+            modalRef.componentInstance.config = this.modalInfoConfig;
+            this.refreshData("delete")
+        });
 };
 
 export const findEntity = function ($event) {

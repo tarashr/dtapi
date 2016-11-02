@@ -71,6 +71,7 @@ import {InfoModalComponent} from "./app/shared/components/info-modal/info-modal.
         AuthAdminGuard,
         AuthStudentGuard
     ],
+    entryComponents: [InfoModalComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule {
