@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {Faculty} from "../shared/classes/faculty";
+import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CRUDService} from "../shared/services/crud.service.ts";
 import {
     configAddFaculty,
@@ -25,6 +27,14 @@ import {
 })
 export class FacultyComponent implements OnInit {
 
+    @ViewChild(InfoModalComponent)
+    private infoModal: InfoModalComponent;
+
+    public modalInfoConfig = {
+        title: "Видалення",
+        infoString: "",
+        action: "confirm"
+    };
     public configAdd = configAddFaculty;
     public configEdit = configEditFaculty;
     public paginationSize = maxSize;
@@ -46,7 +56,8 @@ export class FacultyComponent implements OnInit {
     public offset: number = 0;
 
     constructor(private crudService: CRUDService,
-                private _router: Router) {
+                private _router: Router,
+                private modalService: NgbModal) {
     };
 
     public changeLimit = changeLimit;
@@ -110,10 +121,20 @@ export class FacultyComponent implements OnInit {
                 break;
             case "delete":
                 console.log("we will delete ", data.entityColumns[0] + " with id: " + data.entity_id);
-                this.delRecord(this.entity, data.entity_id);
+                this.modalInfoConfig.infoString=`Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+                this.modalInfoConfig.action="confirm";
+                this.modalInfoConfig.title="Видалення";
+                this.modalService.open(this.infoModal.modalWindow, {size: "sm"}).result
+                    .then(() => {
+                        this.delRecord(this.entity, data.entity_id);
+                    }, ()=>{return});
                 break;
         }
     }
+
+    // openInfoModal() {
+    //     this.infoModal.open(this.infoModal.modalWindow);
+    // }
 
     modalAdd(data: any) {
         if (data.action === "create") {

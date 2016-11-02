@@ -162,7 +162,11 @@ export const getRecordsRange = function () {
 export const delRecord = function (entity: string, id: number) {
     this.offset = (this.page - 1) * this.limit;
     this.crudService.delRecord(entity, id)
-        .subscribe(()=>this.refreshData("delete"));
+        .subscribe(()=>{
+            this.modalInfoConfig.infoString=`Видалення пройшло успішно.`;
+            this.modalInfoConfig.action="info";
+            this.modalService.open(this.infoModal.modalWindow, {size: "sm"});
+            this.refreshData("delete")});
 };
 
 export const findEntity = function ($event) {
