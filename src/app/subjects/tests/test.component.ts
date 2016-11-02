@@ -53,8 +53,22 @@ export class SubjectComponent implements OnInit {
         {title: "Видалити тест", action: "delete", style: "glyphicon glyphicon-trash"}
     ];
 
-    getTestsBySubjectId() :void {
-        this.subjectService.getTestsBySubjectId(this.entity, subject.subject_id)
+    getTestsBySubjectId(entity: string, id: number) :void {
+        this.subjectService.getTestsBySubjectId(entity, id)
+            .subscribe(
+                data => {
+                    let tempArr: any[] = [];
+                    data.forEach((item)=> {
+                        let subject: any = {};
+                        subject.entity_id = item.subject_id;
+                        subject.entityColumns = [item.subject_name, item.subject_description];
+                        subject.actions = this.actions;
+                        tempArr.push(subject);
+                    });
+                    this.entityData = tempArr;
+                },
+                error => this.errorMessage = <any>error
+            );
     }
 
 }
