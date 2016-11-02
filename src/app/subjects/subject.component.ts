@@ -57,6 +57,7 @@ export class SubjectComponent implements OnInit {
 
     actions = [
         {title: "Перейти до тестів", action: "test", style: "glyphicon glyphicon-th"},
+        {title: "Розклад тестів", action: "shedule", style: "glyphicon glyphicon-th"},
         {title: "Редагувати предмет", action: "edit", style: "glyphicon glyphicon-edit"},
         {title: "Видалити предмет", action: "delete", style: "glyphicon glyphicon-trash"}
     ];
@@ -194,6 +195,9 @@ export class SubjectComponent implements OnInit {
         switch (data.action) {
             case "tests":
                 this._router.navigate(["/admin/subject", data.entity_id, "tests"]);
+                break;
+            case "shedule":
+                this._router.navigate(["/admin/subject", data.entity_id, "shedule"]);
                 break;
             case "edit":
                 console.log("we will edit ", data.entityColumns[0] + " with id: " + data.entity_id);

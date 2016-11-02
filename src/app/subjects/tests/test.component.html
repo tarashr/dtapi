@@ -1,0 +1,21 @@
+<div class="entity-container">
+    <nav class="navbar navbar-default navbarDefault">
+        <div class="container-fluid">
+            <div class="navbar-text navbarText">{{pageTittle}}</div>
+        </div>
+        <form class="navbar-form navbar-right navbarForm">
+            <div class="form-group">
+                <add-edit-modal
+                        [config]="configAddTest"
+                        (activate)="activate($event)">
+                </add-edit-modal>
+            </div>
+        </form>
+    </nav>
+    <dt-table *ngIf="entityData.length>0"
+              [headers]="headers"
+              [tableData]="entityData"
+              (activate)="activate($event)">
+    </dt-table>
+</div>
+<template ngbModalContainer></template>
