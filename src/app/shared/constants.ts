@@ -86,7 +86,7 @@ export const configAddSpeciality = {
 export const configAddTest = {
     title: "Додати тест",
     list: [
-        {name: "Назва тесту, value: "", title: "name"},
+        {name: "Назва тесту", value: "", title: "name"},
         {name: "Кількість завдань", value: "", title: "tasks"},
         {name: "Тривалість тесту", value: "", title: "time_for_test"},
         {name: "Доступність", value: "", title: "enabled"},
@@ -130,7 +130,7 @@ export const configEditSpeciality = {
 export const configEditTest = {
     title: "Редагувати тест",
     list: [
-        {name: "Назва тесту, value: "", title: "name"},
+        {name: "Назва тесту", value: "", title: "name"},
         {name: "Кількість завдань", value: "", title: "tasks"},
         {name: "Тривалість тесту", value: "", title: "time_for_test"},
         {name: "Доступність", value: "", title: "enabled"},

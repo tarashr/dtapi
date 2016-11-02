@@ -1,7 +1,6 @@
-import {Component} from '@angular/core';
-import {OnInit} from '@angular/core';
-import '../shared/rxjs-operators';
-import {Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import {Subject}   from '../../shared/classes/subject';
 import {CRUDService}  from '../../shared/services/crud.service';
 import {SubjectService}  from '../../shared/services/subject.service';
@@ -12,7 +11,7 @@ import {configAddTest, configEditTest} from '../../shared/constants';
     templateUrl: 'test.component.html'
 })
 
-export class SubjectComponent implements OnInit {
+export class TestComponent implements OnInit {
 
     //common variables
     public entity: string = "test";
@@ -28,12 +27,39 @@ export class SubjectComponent implements OnInit {
     public entityData: any[] = [];
 
     constructor(private crudService: CRUDService,
-                private _router: Router,
-                private subjectService: SubjectService) {
-    }
+                private route: ActivatedRoute,
+                private router: Router,
+                private subjectService: SubjectService,
+                private location: Location
+    ) {}
 
     ngOnInit() {
-        this.getTestsBySubjectId();
+        this.route.params.forEach((params: Params) => {
+            let subject_id = +params['id']; // (+) converts string 'id' to a number
+            this.subjectService.getTestsBySubjectId(this.entity, subject_id)
+                .subscribe(
+                    data => {
+                        let tempArr: any[] = [];
+                        data.forEach((item)=> {
+                            let test: any = {};
+                            test.entity_id = item.test_id;
+                            test.entityColumns = [
+                                item.test_name,
+                                item.tasks,
+                                item.time_for_test,
+                                item.enabled,
+                                item.attempts
+                            ];
+                            test.actions = this.actions;
+                            tempArr.push(test);
+                        });
+                        this.entityData = tempArr;
+                    },
+                    error=>console.log("error: ", error)
+                );
+
+        });
+
     }
 
     headers = [
@@ -53,16 +79,9 @@ export class SubjectComponent implements OnInit {
         {title: "Видалити тест", action: "delete", style: "glyphicon glyphicon-trash"}
     ];
 
-    getTestsBySubjectId() :void {
-        this.subjectService.getTestsBySubjectId(this.entity, subject.subject_id)
+    goBack(): void {
+        this.location.back();
     }
-
-}
-
-
-
-
-
 
     // deleteTest(entity: string, id: number): void {
     //     if (confirm('Підтвердіть видалення тесту')) {
@@ -99,7 +118,7 @@ export class SubjectComponent implements OnInit {
     //     console.log("!!! ", data);
     //     switch (data.action) {
     //         case "tests":
-    //             this._router.navigate(["/admin/subject", data.entity_id, "tests"]);
+    //             this.router.navigate(["/admin/subject", data.entity_id, "tests"]);
     //             break;
     //         case "edit":
     //             console.log("we will edit ", data.entityColumns[0] + " with id: " + data.entity_id);

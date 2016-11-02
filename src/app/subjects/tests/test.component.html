@@ -10,6 +10,9 @@
                         (activate)="activate($event)">
                 </add-edit-modal>
             </div>
+            <button type="button" class="btn btn-secondary"
+                    (click)="goBack()">Назад
+            </button>
         </form>
     </nav>
     <dt-table *ngIf="entityData.length>0"
