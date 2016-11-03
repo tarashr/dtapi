@@ -51,9 +51,14 @@ export const entities: any[] = [
         nameForIteration: "тестів"
     }
 ];
-//Pagination
+
+// Pagination
+
 export const maxSize: number = 5;
+
+
 // Configuration for add-edit-modal component
+
 export const configAddFaculty = {
     title: "Створити факультет",
     list: [
@@ -69,6 +74,17 @@ export const configAddSubject = {
     list: [
         {name: "Назва предмету", value: "", title: "name"},
         {name: "Опис предмету", value: "", title: "description"},
+    ],
+    action: "create",
+    labelBtn: "Додати"
+};
+
+export const configAddAdminUser = {
+    title: "Додати адміністратора",
+    list: [
+        {name: "Логін", value: "", title: "username"},
+        {name: "Поштова скринька", value: "", title: "email"},
+        {name: "Пароль", value: "", title: "password"}
     ],
     action: "create",
     labelBtn: "Додати"
@@ -108,6 +124,18 @@ export const configEditFaculty = {
     id: ""
 };
 
+export const configEditAdminUser = {
+    title: "Редагувати адміністратора",
+    list: [
+        {name: "Логін", value: "", title: "username"},
+        {name: "Поштова скринька", value: "", title: "email"},
+        {name: "Пароль", value: "", title: "password"}
+    ],
+    action: "edit",
+    labelBtn: "Редагувати",
+    id: ""
+};
+
 export const configEditSubject = {
     title: "Редагувати предмет",
     list: [
@@ -125,7 +153,8 @@ export const configEditSpeciality = {
         {name: "Назва спеціальності", value: "", title: "name"}
     ],
     action: "edit",
-    labelBtn: "Редагувати"
+    labelBtn: "Редагувати",
+    id: ""
 };
 
 export const configEditTest = {
