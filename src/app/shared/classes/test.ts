@@ -4,19 +4,21 @@ export class Test {
     subject_id?: number;
     tasks?: any;
     time_for_test: any;
-    enabled: boolean;
+    enabled: number;
     attempts: number;
 
     constructor(test_name: string,
-                subject_id: number,
                 tasks: any,
                 time_for_test: any,
-                attempts: number)
+                enabled: number,
+                attempts: number,
+                subject_id: number)
     {
         this.test_name = test_name;
-        this.subject_id = subject_id;
         this.tasks = tasks;
         this.time_for_test = time_for_test;
         this.attempts = attempts;
+        this.enabled = enabled;
+        this.subject_id = subject_id;
     }
 }

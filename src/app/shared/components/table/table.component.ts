@@ -20,7 +20,7 @@ export class TableComponent implements OnInit {
     }
 
     run(entityData: any, action: string) {
-        let actionData = Object.assign({}, entityData)
+        let actionData = Object.assign({}, entityData);
         delete actionData.actions;
         entityData.action = action;
         this.activate.emit(entityData);

@@ -19,7 +19,10 @@ export class TestComponent implements OnInit {
     public errorMessage: string;
     public pageTitle: string = "Тести по предмету";
     public subject_id: number;
+    public page: number = 1;
+    public limit: number = 0;
 
+    public showTable: boolean = false;
 
     //varibles for addedit
     public configAdd = configAddTest;
@@ -28,6 +31,7 @@ export class TestComponent implements OnInit {
     // variables for common component
     public entityTitle: string = "Тести";
     public entityData: any[] = [];
+    public entityData1: any[] = [];
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -50,9 +54,9 @@ export class TestComponent implements OnInit {
         {name: "Завдань", style: "col-xs-12 col-sm-1"},
         {name: "Тривалість", style: "col-xs-12 col-sm-2"},
         {name: "Статус", style: "col-xs-12 col-sm-2"},
-        {name: "Cпробів", style: "col-xs-12 col-sm-1"},
+        {name: "Cпроб", style: "col-xs-12 col-sm-1"},
         {name: "", style: "col-xs-12 col-sm-3"}
-    ]
+    ];
 
     actions = [
         {title: "Детальніше про тест", action: "testDetaile", style: "glyphicon glyphicon-th"},
@@ -71,50 +75,59 @@ export class TestComponent implements OnInit {
             .subscribe(
                 data => {
                     let tempArr: any[] = [];
-                    data.forEach((item)=> {
-                        let test: any = {};
-                        test.entity_id = item.test_id;
-                        test.entityColumns = [
-                            item.test_name,
-                            item.tasks,
-                            item.time_for_test,
-                            item.enabled,
-                            item.attempts
-                        ];
-                        test.actions = this.actions;
-                        tempArr.push(test);
-                    });
-                    this.entityData = tempArr;
+                    if (data.length) {
+                        data.forEach((item)=> {
+                            let test: any = {};
+                            test.entity_id = item.test_id;
+                            test.entityColumns = [
+                                item.test_name,
+                                item.tasks,
+                                item.time_for_test,
+                                item.enabled,
+                                item.attempts
+                            ];
+                            test.actions = this.actions;
+                            tempArr.push(test);
+                        });
+                        this.entityData = tempArr;
+                        console.log("array" + JSON.stringify(this.entityData));
+
+                        for (let i = 0; i < this.entityData.length; i++) {
+                            this.entityData[i].entityColumns[3] == "1" ?
+                                this.entityData[i].entityColumns.splice(3, 1, "Доступно") :
+                                this.entityData[i].entityColumns.splice(3, 1, "Не доступно");
+                        }
+                    }
                 },
                 error=>console.log("error: ", error)
             );
     }
 
-    // deleteTest(entity: string, id: number): void {
-    //     if (confirm('Підтвердіть видалення тесту')) {
-    //         this.crudService
-    //             .delRecord(entity, id)
-    //             .subscribe(
-    //                 () => {
-    //                     this.refreshData("delete");
-    //                 },
-    //                 error => this.errorMessage = <any>error
-    //             );
-    //     }
-    // }
+    deleteTest(entity: string, id: number): void {
+        if (confirm('Підтвердіть видалення тесту')) {
+            this.crudService
+                .delRecord(this.entity, id)
+                .subscribe(
+                    () => {
+                        this.getTestBySubjectId();
+                    },
+                    error => this.errorMessage = <any>error
+                );
+        }
+    }
 
     modalAdd(data: any) {
         if (data.action === "create") {
             let newTest: Test = new Test(
                 data.list[0].value,
-                this.subject_id,
                 data.list[1].value,
                 data.list[2].value,
                 data.list[3].value,
+                data.list[4].value,
+                this.subject_id
             );
             this.crudService.insertData(this.entity, newTest)
                 .subscribe(response=> {
-                    console.log(response);
                     this.getTestBySubjectId();
                 });
             // } else if (data.action === "edit") {
@@ -132,22 +145,23 @@ export class TestComponent implements OnInit {
         }
     }
 
-    // activate(data: any) {
-    //     console.log("!!! ", data);
-    //     switch (data.action) {
-    //         case "tests":
-    //             this.router.navigate(["/admin/subject", data.entity_id, "tests"]);
-    //             break;
-    //         case "edit":
-    //             console.log("we will edit ", data.entityColumns[0] + " with id: " + data.entity_id);
-    //             break;
-    //         case "delete":
-    //             console.log("we will delete ", data.entityColumns[0] + " with id: " + data.entity_id);
-    //             this.deleteSubject(this.entity, data.entity_id);
-    //             break;
-    //     }
-    // }
-
+    activate(data: any) {
+        console.log("!!! ", data);
+        switch (data.action) {
+            case "tests":
+                this.router.navigate(["/admin/subject", data.entity_id, "tests"]);
+                break;
+            case "edit":
+                console.log("we will edit ", data.entityColumns[0] + " with id: " + data.entity_id);
+                break;
+            case "delete":
+                console.log("we will delete ", data.entityColumns[0] + " with id: " + data.entity_id);
+                this.deleteTest(this.entity, data.entity_id);
+                break;
+            // case "create":
+            //     this.modalAdd(data);
+        }
+    }
 
 }
 

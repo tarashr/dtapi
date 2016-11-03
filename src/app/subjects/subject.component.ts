@@ -111,18 +111,11 @@ export class SubjectComponent implements OnInit {
                 data => {
                     let tempArr: any[] = [];
                     data.forEach((item)=> {
-                        let test: any = {};
-                        test.entity_id = item.test_id;
-                        test.entityColumns = [
-                            item.test_name,
-                            item.tasks,
-                            item.time_for_test,
-                            item.enabled,
-                            item.attempts,
-                            item.subject_id
-                        ];
-                        test.actions = this.actions;
-                        tempArr.push(test);
+                        let subject: any = {};
+                        subject.entity_id = item.subject_id;
+                        subject.entityColumns = [item.subject_name, item.subject_description];
+                        subject.actions = this.actions;
+                        tempArr.push(subject);
                     });
                     this.entityData = tempArr;
                 },
@@ -198,7 +191,7 @@ export class SubjectComponent implements OnInit {
     }
 
     activate(data: any) {
-        console.log("!!! ", data);
+        // console.log("!!! ", data);
         switch (data.action) {
             case "test":
                 this._router.navigate(["/admin/subject", data.entity_id, "test"]);
