@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {Faculty} from "../shared/classes/faculty";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
+import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add-edit.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CRUDService} from "../shared/services/crud.service.ts";
 import {
@@ -14,7 +15,8 @@ import {
     getRecordsRange,
     delRecord,
     // findEntity,
-    refreshData
+    refreshData,
+    successEventModal
 } from "../shared/constants";
 import {
     headersFaculty,
@@ -39,6 +41,7 @@ export class FacultyComponent implements OnInit {
     public actions: any = actionsFaculty;
 
     //constants for view
+    public addTitle: string = "Створити новий факультет";
     public searchTitle: string = "Введіть дані для пошуку";
     public entityTitle: string = "Факультети";
     public selectLimit: string = "Виберіть кількість факультетів на сторінці";
@@ -62,6 +65,7 @@ export class FacultyComponent implements OnInit {
     public getCountRecords = getCountRecords;
     public delRecord = delRecord;
     public refreshData = refreshData;
+    public successEventModal = successEventModal;
 
     ngOnInit() {
         this.getCountRecords();
@@ -108,43 +112,71 @@ export class FacultyComponent implements OnInit {
     };
 
     activate(data: any) {
-        console.log("!!! ", data);
         switch (data.action) {
             case "group":
                 this._router.navigate(["/admin/faculty", data.entity_id, "groups"]);
                 break;
+            case "create":
+                this.createCase();
+                break;
             case "edit":
-                console.log("we will edit ", data.entityColumns[0] + " with id: " + data.entity_id);
+                this.editCase(data);
                 break;
             case "delete":
-                this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
-                this.modalInfoConfig.action = "confirm";
-                this.modalInfoConfig.title = "Видалення";
-                const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
-                modalRef.componentInstance.config = this.modalInfoConfig;
-                modalRef.result
-                    .then(() => {
-                        this.delRecord(this.entity, data.entity_id);
-                    }, ()=> {
-                        return
-                    });
+                this.deleteCase(data);
                 break;
         }
     }
 
-    modalAdd(data: any) {
-        if (data.action === "create") {
-            let newFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
-            this.crudService.insertData(this.entity, newFaculty)
-                .subscribe(response=> {
-                    this.refreshData(data.action);
-                });
-        } else if (data.action === "edit") {
-            let editedFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
-            this.crudService.updateData(this.entity, data.id, editedFaculty)
-                .subscribe(response=> {
-                    this.refreshData(data.action);
-                });
-        }
+    createCase() {
+        const modalRefAdd = this.modalService.open(ModalAddEditComponent);
+        modalRefAdd.componentInstance.config = this.configAdd;
+        modalRefAdd.result
+            .then((data: any) => {
+                let newFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
+                this.crudService.insertData(this.entity, newFaculty)
+                    .subscribe(response=> {
+                        this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
+                        this.successEventModal();
+                        this.refreshData(data.action);
+                    });
+            }, ()=> {
+                return
+            });
+    };
+
+    editCase(data:any){
+        this.configEdit.list.forEach((item, i)=> {
+            item.value = data.entityColumns[i]
+        });
+        this.configEdit.id = data.entity_id;
+        const modalRefEdit = this.modalService.open(ModalAddEditComponent);
+        modalRefEdit.componentInstance.config = this.configEdit;
+        modalRefEdit.result
+            .then((data: any) => {
+                let editedFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
+                this.crudService.updateData(this.entity, data.id, editedFaculty)
+                    .subscribe(()=> {
+                        this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
+                        this.successEventModal();
+                        this.refreshData(data.action);
+                    });
+            }, ()=> {
+                return
+            });
+    }
+
+    deleteCase(data:any){
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.action = "confirm";
+        this.modalInfoConfig.title = "Видалення";
+        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
+        modalRefDel.componentInstance.config = this.modalInfoConfig;
+        modalRefDel.result
+            .then(() => {
+                this.delRecord(this.entity, data.entity_id);
+            }, ()=> {
+                return
+            });
     }
 }

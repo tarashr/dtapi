@@ -100,7 +100,8 @@ export const configEditFaculty = {
         {name: "Опис факультету", value: "", title: "description"},
     ],
     action: "edit",
-    labelBtn: "Редагувати"
+    labelBtn: "Редагувати",
+    id: ""
 };
 
 export const configEditSubject = {
@@ -158,6 +159,13 @@ export const getRecordsRange = function () {
         .subscribe(
             data => this.entityData = data,
             error=> console.log("error: ", error))
+};
+
+export const successEventModal = function () {
+    this.modalInfoConfig.action = "info";
+    this.modalInfoConfig.title="Повідомлення";
+    const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
+    modalRef.componentInstance.config = this.modalInfoConfig;
 };
 
 export const delRecord = function (entity: string, id: number) {
