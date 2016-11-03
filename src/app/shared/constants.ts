@@ -84,7 +84,8 @@ export const configAddAdminUser = {
     list: [
         {name: "Логін", value: "", title: "username"},
         {name: "Поштова скринька", value: "", title: "email"},
-        {name: "Пароль", value: "", title: "password"}
+        {name: "Пароль", value: "", title: "password"},
+        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm"}
     ],
     action: "create",
     labelBtn: "Додати"
@@ -129,7 +130,8 @@ export const configEditAdminUser = {
     list: [
         {name: "Логін", value: "", title: "username"},
         {name: "Поштова скринька", value: "", title: "email"},
-        {name: "Пароль", value: "", title: "password"}
+        {name: "Пароль", value: "", title: "password"},
+        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm"}
     ],
     action: "edit",
     labelBtn: "Редагувати",
