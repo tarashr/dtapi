@@ -54,6 +54,58 @@ export const actionsSubject = [
     }
 ];
 
+// adminUser's configs
+export const headersAdminUser = [
+    {name: "№", style: "col-xs-12 col-sm-1"},
+    {name: "Логін", style: "col-xs-12 col-sm-4"},
+    {name: "Поштова скринька", style: "col-xs-12 col-sm-4"},
+    {name: "", style: "col-xs-12 col-sm-3"}
+];
+
+export const actionsAdminUser = [
+    {
+        title: "Редагувати дані адміністротора",
+        action: "edit",
+        style: "glyphicon glyphicon-edit",
+        btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Видалити адміністратора",
+        action: "delete",
+        style: "glyphicon glyphicon-trash",
+        btnStyle: "btn btn-danger btn-sm"
+    }
+];
+
+// Specialities configs
+export const headersSpeciality = [
+    {name: "№", style: "col-xs-12 col-sm-1"},
+    {name: "Код спеціальності", style: "col-xs-12 col-sm-4"},
+    {name: "Назва спеціальності", style: "col-xs-12 col-sm-4"},
+    {name: "", style: "col-xs-12 col-sm-3"}
+];
+
+export const actionsSpeciality = [
+    {
+        title: "Перейти до груп спеціальності",
+        action: "group",
+        style: "glyphicon glyphicon-th",
+        btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Редагувати дані адміністротора",
+        action: "edit",
+        style: "glyphicon glyphicon-edit",
+        btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Видалити адміністратора",
+        action: "delete",
+        style: "glyphicon glyphicon-trash",
+        btnStyle: "btn btn-danger btn-sm"
+    }
+];
+
 export const headersTest = [
     {name: "№", style: "col-xs-12 col-sm-1"},
     {name: "Назва тесту", style: "col-xs-12 col-sm-2"},

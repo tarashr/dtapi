@@ -124,6 +124,18 @@ export const configEditFaculty = {
     id: ""
 };
 
+export const configEditAdminUser = {
+    title: "Редагувати адміністратора",
+    list: [
+        {name: "Логін", value: "", title: "username"},
+        {name: "Поштова скринька", value: "", title: "email"},
+        {name: "Пароль", value: "", title: "password"}
+    ],
+    action: "edit",
+    labelBtn: "Редагувати",
+    id: ""
+};
+
 export const configEditSubject = {
     title: "Редагувати предмет",
     list: [
@@ -141,7 +153,8 @@ export const configEditSpeciality = {
         {name: "Назва спеціальності", value: "", title: "name"}
     ],
     action: "edit",
-    labelBtn: "Редагувати"
+    labelBtn: "Редагувати",
+    id: ""
 };
 
 export const configEditTest = {
