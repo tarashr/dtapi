@@ -1,16 +1,19 @@
 <div class="entity-container">
-    <nav class="navbar navbar-default navbarDefault">
+    <nav class="navbar navbar-default">
         <div class="container-fluid">
-            <div class="navbar-text navbarText">{{pageTittle}}</div>
+            <div class="navbar-text">{{pageTitle}}</div>
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <add-edit-modal
+                            [config]="configAddTest"
+                            (activate)="activate($event)">
+                    </add-edit-modal>
+                </div>
+                <button type="button" class="btn btn-secondary"
+                        (click)="goBack()">Назад
+                </button>
+            </form>
         </div>
-        <form class="navbar-form navbar-right navbarForm">
-            <div class="form-group">
-                <add-edit-modal
-                        [config]="configAddTest"
-                        (activate)="activate($event)">
-                </add-edit-modal>
-            </div>
-        </form>
     </nav>
     <dt-table *ngIf="entityData.length>0"
               [headers]="headers"

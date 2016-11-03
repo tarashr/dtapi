@@ -1,22 +1,24 @@
-import {Component} from '@angular/core';
-import {OnInit} from '@angular/core';
-import '../shared/rxjs-operators';
-import {Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
+import {Router, ActivatedRoute, Params} from '@angular/router';
 import {Subject}   from '../../shared/classes/subject';
 import {CRUDService}  from '../../shared/services/crud.service';
 import {SubjectService}  from '../../shared/services/subject.service';
 import {configAddTest, configEditTest} from '../../shared/constants';
+import {Test} from "../../shared/classes/test"
 
 @Component({
     selector: 'test-container',
     templateUrl: 'test.component.html'
 })
 
-export class SubjectComponent implements OnInit {
+export class TestComponent implements OnInit {
 
     //common variables
     public entity: string = "test";
     public errorMessage: string;
+    public pageTitle: string = "Тести по предмету";
+    public subject_id: number;
 
 
     //varibles for addedit
@@ -28,23 +30,29 @@ export class SubjectComponent implements OnInit {
     public entityData: any[] = [];
 
     constructor(private crudService: CRUDService,
-                private _router: Router,
-                private subjectService: SubjectService) {
+                private route: ActivatedRoute,
+                private router: Router,
+                private subjectService: SubjectService,
+                private location: Location) {
     }
 
     ngOnInit() {
-        this.getTestsBySubjectId();
+        this.route.params.forEach((params: Params) => {
+            this.subject_id = +params['id']; // (+) converts string 'id' to a number
+            this.getTestBySubjectId();
+        });
+
     }
 
     headers = [
         {name: "№", style: "col-xs-12 col-sm-1"},
-        {name: "Назва тесту", style: "col-xs-12 col-sm-4"},
-        {name: "Кількість завдань", style: "col-xs-12 col-sm-4"},
-        {name: "Тривалість тесту", style: "col-xs-12 col-sm-4"},
-        {name: "Статус", style: "col-xs-12 col-sm-4"},
-        {name: "Кількість спроб", style: "col-xs-12 col-sm-4"},
+        {name: "Назва тесту", style: "col-xs-12 col-sm-2"},
+        {name: "Завдань", style: "col-xs-12 col-sm-1"},
+        {name: "Тривалість", style: "col-xs-12 col-sm-2"},
+        {name: "Статус", style: "col-xs-12 col-sm-2"},
+        {name: "Cпробів", style: "col-xs-12 col-sm-1"},
         {name: "", style: "col-xs-12 col-sm-3"}
-    ];
+    ]
 
     actions = [
         {title: "Детальніше про тест", action: "testDetaile", style: "glyphicon glyphicon-th"},
@@ -53,30 +61,34 @@ export class SubjectComponent implements OnInit {
         {title: "Видалити тест", action: "delete", style: "glyphicon glyphicon-trash"}
     ];
 
-    getTestsBySubjectId(entity: string, id: number) :void {
-        this.subjectService.getTestsBySubjectId(entity, id)
+    goBack(): void {
+        this.location.back();
+
+    }
+
+    getTestBySubjectId() {
+        this.subjectService.getTestsBySubjectId(this.entity, this.subject_id)
             .subscribe(
                 data => {
                     let tempArr: any[] = [];
                     data.forEach((item)=> {
-                        let subject: any = {};
-                        subject.entity_id = item.subject_id;
-                        subject.entityColumns = [item.subject_name, item.subject_description];
-                        subject.actions = this.actions;
-                        tempArr.push(subject);
+                        let test: any = {};
+                        test.entity_id = item.test_id;
+                        test.entityColumns = [
+                            item.test_name,
+                            item.tasks,
+                            item.time_for_test,
+                            item.enabled,
+                            item.attempts
+                        ];
+                        test.actions = this.actions;
+                        tempArr.push(test);
                     });
                     this.entityData = tempArr;
                 },
-                error => this.errorMessage = <any>error
+                error=>console.log("error: ", error)
             );
     }
-
-}
-
-
-
-
-
 
     // deleteTest(entity: string, id: number): void {
     //     if (confirm('Підтвердіть видалення тесту')) {
@@ -91,29 +103,40 @@ export class SubjectComponent implements OnInit {
     //     }
     // }
 
-    // modalAdd(data: any) {
-    //     if (data.action === "create") {
-    //         let newTest: Test = new Test(data.list[0].value, data.list[1].value);
-    //         this.crudService.insertData(this.entity, newTest)
-    //             .subscribe(response=> {
-    //                 console.log(response);
-    //                 this.refreshData(data.action);
-    //             });
-    //     } else if (data.action === "edit") {
-    //         let editedTest: Test = new Test(data.list[0].value, data.list[1].value);
-    //         this.crudService.updateData(this.entity, data.id, editedTest)
-    //             .subscribe(response=> {
-    //                 console.log(response);
-    //                 this.refreshData(data.action);
-    //             });
-    //     }
-    // }
+    modalAdd(data: any) {
+        if (data.action === "create") {
+            let newTest: Test = new Test(
+                data.list[0].value,
+                this.subject_id,
+                data.list[1].value,
+                data.list[2].value,
+                data.list[3].value,
+            );
+            this.crudService.insertData(this.entity, newTest)
+                .subscribe(response=> {
+                    console.log(response);
+                    this.getTestBySubjectId();
+                });
+            // } else if (data.action === "edit") {
+            //     let editedTest: Test = new Test(
+            //         data.list[0].value,
+            //         data.list[1].value,
+            //         data.list[2].value,
+            //         data.list[3].value
+            //     );
+            //     this.crudService.updateData(this.entity, data.id, editedTest)
+            //         .subscribe(response=> {
+            //             console.log(response);
+            //             this.getTestBySubjectId();
+            //         });
+        }
+    }
 
     // activate(data: any) {
     //     console.log("!!! ", data);
     //     switch (data.action) {
     //         case "tests":
-    //             this._router.navigate(["/admin/subject", data.entity_id, "tests"]);
+    //             this.router.navigate(["/admin/subject", data.entity_id, "tests"]);
     //             break;
     //         case "edit":
     //             console.log("we will edit ", data.entityColumns[0] + " with id: " + data.entity_id);
