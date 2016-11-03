@@ -1,0 +1,19 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">{{config.title}}</h4>
+</div>
+<div class="modal-body modal-body-add-edit">
+    {{config.infoString}}
+</div>
+<div class="modal-footer" *ngIf="config.action==='confirm'">
+    <button type="button" class="btn btn-secondary"
+            (click)="activeModal.close()">ТАК
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">НІ</button>
+</div>
+<div class="modal-footer" *ngIf="config.action==='info'">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">OK</button>
+</div>
+

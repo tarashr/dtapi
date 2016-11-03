@@ -30,6 +30,7 @@ import {StudentProfileComponent} from "./app/student/student-profile.component";
 import {AddEditModalComponent} from "./app/shared/components/addeditmodal/add-edit-modal.component"
 import {EntityBarComponent} from "./app/shared/components/entity-bar/entity-bar.component";
 import {TableComponent} from "./app/shared/components/table/table.component";
+import {InfoModalComponent} from "./app/shared/components/info-modal/info-modal.component";
 
 @NgModule({
     imports: [
@@ -57,7 +58,8 @@ import {TableComponent} from "./app/shared/components/table/table.component";
         StudentProfileComponent,
         AddEditModalComponent,
         EntityBarComponent,
-        TableComponent
+        TableComponent,
+        InfoModalComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},
@@ -69,6 +71,7 @@ import {TableComponent} from "./app/shared/components/table/table.component";
         AuthAdminGuard,
         AuthStudentGuard
     ],
+    entryComponents: [InfoModalComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule {
