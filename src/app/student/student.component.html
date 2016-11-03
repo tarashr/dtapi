@@ -2,10 +2,10 @@
     <entity-bar
             [entityTitle]="entityTitle"
             [searchTitle]="searchTitle"
-
+            [addTitle]="addTitle"
             [selectLimit]="selectLimit"
             [entityDataLength]="entityDataLength"
-
+            (activate)="activate($event)"
             (searchRun)="findEntity($event)"
             (selectRun)="changeLimit($event)">
             <!--[configAdd]="configAdd"-->
@@ -15,6 +15,7 @@
               [page]="page"
               [limit]="limit"
               [headers]="headers"
+              [actions]="actions"
               [tableData]="entityData"
               (activate)="activate($event)">
     </dt-table>
@@ -30,3 +31,4 @@
                     [hidden]="search.length || limit>=entityDataLength">
     </ngb-pagination>
 </div>
+<template ngbModalContainer></template>

@@ -4,3 +4,65 @@
     padding: 10px 10px 0 10px;
     min-width: 412px;
 }
+
+.student-profile-title{
+    font-size: 150%;
+    padding: 10px 0 10px 0;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    background-color: #F8F8F8;
+    text-align: center;
+}
+
+.student-datas{
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+    margin: 15px 0 15px 0;
+    padding: 10px 0 10px 0;
+    background-color: #F8F8F8;
+    display: inline-block;
+    width: 100%;
+}
+
+.student-foto{
+    display: inline-block;
+    float: left;
+    /*border: 1px solid black;*/
+}
+
+.student-data1{
+    display: inline-block;
+    /*border: 1px solid black;*/
+    float:	left;
+    text-align:right;
+    padding: 10px;
+}
+
+.student-data2{
+    display: inline-block;
+    /*border: 1px solid black;*/
+    float:	left;
+    text-align:right;
+    padding: 10px;
+}
+
+label {
+    float:left;
+    margin: 10px 0 10px 0;
+}
+
+.inputStudentData{
+    margin: 10px 0 10px 0;
+}
+
+.button-save-student-profile{
+    margin: 0 auto 0 auto;
+    text-align: center;
+    alignment: ce;
+}
+
+.buttonCreateRefresh{
+    margin: auto;
+    text-align: center;
+}

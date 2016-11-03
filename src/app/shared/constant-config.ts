@@ -27,6 +27,29 @@ export const actionsFaculty = [
     }
 ];
 
+// Student's configs
+export const headersStudentAdmin = [
+    {name: "№", style: "col-xs-12 col-sm-1"},
+    {name: "ПІБ", style: "col-xs-12 col-sm-3"},
+    {name: "№ залікової книжки", style: "col-xs-12 col-sm-3"},
+    {name: "Група", style: "col-xs-12 col-sm-3"},
+    {name: "", style: "col-xs-12 col-sm-2"}
+];
+
+export const actionsStudentAdmin = [
+    {
+        title: "Переглянути профіль студента",
+        action: "view",
+        style: "glyphicon glyphicon-user",
+        btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Видалити профіль студента",
+        action: "delete",
+        style: "glyphicon glyphicon-trash",
+        btnStyle: "btn btn-danger btn-sm"
+    }];
+
 // Subject's config
 export const headersSubject = [
     {name: "№", style: "col-xs-12 col-sm-1"},
@@ -51,6 +74,58 @@ export const actionsSubject = [
     {
         title: "Видалити предмет", action: "delete",
         style: "glyphicon glyphicon-trash", btnStyle: "btn btn-danger btn-sm"
+    }
+];
+
+// adminUser's configs
+export const headersAdminUser = [
+    {name: "№", style: "col-xs-12 col-sm-1"},
+    {name: "Логін", style: "col-xs-12 col-sm-4"},
+    {name: "Поштова скринька", style: "col-xs-12 col-sm-4"},
+    {name: "", style: "col-xs-12 col-sm-3"}
+];
+
+export const actionsAdminUser = [
+    {
+        title: "Редагувати дані адміністротора",
+        action: "edit",
+        style: "glyphicon glyphicon-edit",
+        btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Видалити адміністратора",
+        action: "delete",
+        style: "glyphicon glyphicon-trash",
+        btnStyle: "btn btn-danger btn-sm"
+    }
+];
+
+// Specialities configs
+export const headersSpeciality = [
+    {name: "№", style: "col-xs-12 col-sm-1"},
+    {name: "Код спеціальності", style: "col-xs-12 col-sm-4"},
+    {name: "Назва спеціальності", style: "col-xs-12 col-sm-4"},
+    {name: "", style: "col-xs-12 col-sm-3"}
+];
+
+export const actionsSpeciality = [
+    {
+        title: "Перейти до груп спеціальності",
+        action: "group",
+        style: "glyphicon glyphicon-th",
+        btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Редагувати дані адміністротора",
+        action: "edit",
+        style: "glyphicon glyphicon-edit",
+        btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Видалити адміністратора",
+        action: "delete",
+        style: "glyphicon glyphicon-trash",
+        btnStyle: "btn btn-danger btn-sm"
     }
 ];
 
@@ -82,3 +157,4 @@ export const actionsTest = [
         style: "glyphicon glyphicon-trash", btnStyle: "btn btn-danger btn-sm"
     }
 ];
+
