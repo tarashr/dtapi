@@ -139,6 +139,7 @@ export class SpecialityComponent implements OnInit{
                 let newSpeciality: Speciality = new Speciality(data.list[0].value, data.list[1].value);
                 this.crudService.insertData(this.entity, newSpeciality)
                     .subscribe(response=> {
+                        this.configAdd.list.forEach((item)=>{item.value=""});
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
                         this.refreshData(data.action);

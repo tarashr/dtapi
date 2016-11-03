@@ -114,6 +114,7 @@ export class AdminUserComponent implements OnInit {
                 let newAdminUser: User = new User(data.list[0].value, data.list[1].value, data.list[2].value);
                 this.crudService.insertData(this.entity, newAdminUser)
                     .subscribe(response=> {
+                        this.configAdd.list.forEach((item)=>{item.value=""});
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
                         this.refreshData(data.action);
