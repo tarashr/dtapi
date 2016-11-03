@@ -15,7 +15,7 @@ export const getStudentsUrl: string = baseUrl + 'student/getRecords';
 export const editGroupUrl: string = baseUrl + 'group/update'; // + id of subject
 
 
-export const getTestsBySubjectIdUrl: string = baseUrl + 'getTestsBySubject'; // + id of subject
+export const getTestsBySubjectIdUrl: string = baseUrl + 'test/getTestsBySubject'; // + id of subject
 
 //Array of entities for statistic page
 export const entities: any[] = [

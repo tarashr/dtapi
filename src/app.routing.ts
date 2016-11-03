@@ -29,7 +29,7 @@ const appRoutes:Routes = [
             {path: "", redirectTo: "statistic"},
             {path: "statistic", component: StatisticComponent},
             {path: "subject", component: SubjectComponent},
-            {path: "test/:id", component: TestComponent},
+            {path: "subject/:id/test", component: TestComponent},
             {path: "speciality", component: SpecialityComponent},
             {path: "faculty", component: FacultyComponent},
             {path: "group", component: GroupComponent},
