@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {Subject}   from '../shared/classes/subject';
 import {CRUDService}  from '../shared/services/crud.service';
 import {configAddSubject, configEditSubject} from '../shared/constants';
+import {headersSubject, actionsSubject} from "../shared/constant-config"
 
 @Component({
     selector: 'subject-container',
@@ -16,6 +17,8 @@ export class SubjectComponent implements OnInit {
     //common variables
     public entity: string = "subject";
     public errorMessage: string;
+    public headers: any = headersSubject;
+    public actions: any = actionsSubject;
 
     //variables for pagination
     public limit: number = 5;
@@ -47,20 +50,6 @@ export class SubjectComponent implements OnInit {
     ngOnInit() {
         this.getCountSubjects();
     }
-
-    headers = [
-        {name: "№", style: "col-xs-12 col-sm-1"},
-        {name: "Назва предмету", style: "col-xs-12 col-sm-4"},
-        {name: "Опис предмету", style: "col-xs-12 col-sm-4"},
-        {name: "", style: "col-xs-12 col-sm-3"}
-    ];
-
-    actions = [
-        {title: "Перейти до тестів", action: "test", style: "glyphicon glyphicon-check"},
-        {title: "Розклад тестів", action: "shedule", style: "glyphicon glyphicon-th"},
-        {title: "Редагувати предмет", action: "edit", style: "glyphicon glyphicon-edit"},
-        {title: "Видалити предмет", action: "delete", style: "glyphicon glyphicon-trash"}
-    ];
 
     deleteSubject(entity: string, id: number): void {
         if (confirm('Підтвердіть видалення предмету')) {
@@ -191,7 +180,7 @@ export class SubjectComponent implements OnInit {
     }
 
     activate(data: any) {
-        // console.log("!!! ", data);
+        console.log("!!! ", data);
         switch (data.action) {
             case "test":
                 this._router.navigate(["/admin/subject", data.entity_id, "test"]);

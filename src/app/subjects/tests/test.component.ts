@@ -5,7 +5,8 @@ import {Subject}   from '../../shared/classes/subject';
 import {CRUDService}  from '../../shared/services/crud.service';
 import {SubjectService}  from '../../shared/services/subject.service';
 import {configAddTest, configEditTest} from '../../shared/constants';
-import {Test} from "../../shared/classes/test"
+import {Test} from "../../shared/classes/test";
+import { headersTest, actionsTest } from "../../shared/constant-config"
 
 @Component({
     selector: 'test-container',
@@ -21,8 +22,8 @@ export class TestComponent implements OnInit {
     public subject_id: number;
     public page: number = 1;
     public limit: number = 0;
-
-    public showTable: boolean = false;
+    public headers: any = headersTest;
+    public actions: any = actionsTest;
 
     //varibles for addedit
     public configAdd = configAddTest;
@@ -47,23 +48,6 @@ export class TestComponent implements OnInit {
         });
 
     }
-
-    headers = [
-        {name: "№", style: "col-xs-12 col-sm-1"},
-        {name: "Назва тесту", style: "col-xs-12 col-sm-2"},
-        {name: "Завдань", style: "col-xs-12 col-sm-1"},
-        {name: "Тривалість", style: "col-xs-12 col-sm-2"},
-        {name: "Статус", style: "col-xs-12 col-sm-2"},
-        {name: "Cпроб", style: "col-xs-12 col-sm-1"},
-        {name: "", style: "col-xs-12 col-sm-3"}
-    ];
-
-    actions = [
-        {title: "Детальніше про тест", action: "testDetaile", style: "glyphicon glyphicon-th"},
-        {title: "Завдання", action: "task", style: "glyphicon glyphicon-th"},
-        {title: "Редагувати тест", action: "edit", style: "glyphicon glyphicon-edit"},
-        {title: "Видалити тест", action: "delete", style: "glyphicon glyphicon-trash"}
-    ];
 
     goBack(): void {
         this.location.back();
@@ -90,8 +74,6 @@ export class TestComponent implements OnInit {
                             tempArr.push(test);
                         });
                         this.entityData = tempArr;
-                        console.log("array" + JSON.stringify(this.entityData));
-
                         for (let i = 0; i < this.entityData.length; i++) {
                             this.entityData[i].entityColumns[3] == "1" ?
                                 this.entityData[i].entityColumns.splice(3, 1, "Доступно") :
