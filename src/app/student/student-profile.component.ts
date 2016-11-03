@@ -5,7 +5,7 @@ import {CRUDService} from "../shared/services/crud.service";
 
 @Component({
     templateUrl: 'student-profile.component.html',
-    styleUrls: ['student-profile.component.css'],
+    styleUrls: ['student.component.css'],
 })
 export class StudentProfileComponent implements OnInit {
 

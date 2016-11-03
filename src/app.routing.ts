@@ -36,8 +36,8 @@ const appRoutes:Routes = [
             {path: "faculty/:id/groups", component: GroupComponent},
             {path: "adminUser", component: AdminUserComponent},
             {path: "student", component: StudentComponent},
-            {path: "student-new-profile", component: StudentNewProfileComponent},
-            {path: "student-profile", component: StudentProfileComponent},
+            {path: "student/student-new-profile", component: StudentNewProfileComponent},
+            {path: "student/student-profile/:id", component: StudentProfileComponent},
             {path: "**", redirectTo: "statistic", pathMatch: "full"}
         ]
     },

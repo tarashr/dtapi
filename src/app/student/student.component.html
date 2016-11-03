@@ -2,10 +2,10 @@
     <entity-bar
             [entityTitle]="entityTitle"
             [searchTitle]="searchTitle"
-
+            [addTitle]="addTitle"
             [selectLimit]="selectLimit"
             [entityDataLength]="entityDataLength"
-
+            (activate)="activate($event)"
             (searchRun)="findEntity($event)"
             (selectRun)="changeLimit($event)">
             <!--[configAdd]="configAdd"-->

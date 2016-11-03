@@ -38,15 +38,9 @@ export const headersStudentAdmin = [
 
 export const actionsStudentAdmin = [
     {
-        title: "Перегляд профілю студента",
-        action: "group",
+        title: "Переглянути профіль студента",
+        action: "view",
         style: "glyphicon glyphicon-user",
-        btnStyle: "btn btn-default btn-sm"
-    },
-    {
-        title: "Редагувати профіль студента",
-        action: "edit",
-        style: "glyphicon glyphicon-edit",
         btnStyle: "btn btn-default btn-sm"
     },
     {

@@ -43,6 +43,7 @@ export class StudentComponent implements OnInit {
     public actions: any = actionsStudentAdmin;
 
     //constants for view
+    public addTitle: string = "Додати нового студента";
     public searchTitle: string = "Введіть дані для пошуку";
     public entityTitle: string = "Студенти";
     public selectLimit: string = "Виберіть кількість студентів на сторінці";
@@ -124,7 +125,6 @@ export class StudentComponent implements OnInit {
             );
     }
 
-
     findEntity(searchTerm: string) {
         this.search = searchTerm;
         if (this.search.length === 0) {
@@ -148,7 +148,12 @@ export class StudentComponent implements OnInit {
 
     activate(data: any) {
         switch (data.action) {
-            case "edit":
+            case "create":
+                this._router.navigate(["/admin/student/student-new-profile"]);
+                console.log("we will add ");
+                break;
+            case "view":
+                this._router.navigate(["/admin/student/student-profile", data.entity_id]);
                 console.log("we will edit ", data.entityColumns[0] + " with id: " + data.entity_id);
                 break;
             case "delete":
