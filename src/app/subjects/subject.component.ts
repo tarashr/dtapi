@@ -2,9 +2,12 @@ import {Component} from '@angular/core';
 import {OnInit} from '@angular/core';
 import '../shared/rxjs-operators';
 import {Router} from "@angular/router";
+import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add-edit.component";
+import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Subject}   from '../shared/classes/subject';
 import {CRUDService}  from '../shared/services/crud.service';
-import {configAddSubject, configEditSubject} from '../shared/constants';
+import {configAddSubject, configEditSubject, successEventModal} from '../shared/constants';
 import {headersSubject, actionsSubject} from "../shared/constant-config"
 
 @Component({
@@ -39,30 +42,35 @@ export class SubjectComponent implements OnInit {
     public searchTitle: string = "Введіть дані для пошуку";
     public entityTitle: string = "Предмети";
     public selectLimit: string = "Виберіть кількість предметів на сторінці";
+    public successEventModal = successEventModal;
 
     public entityData: any[] = [];
-    // public search: string = "";
 
     constructor(private crudService: CRUDService,
-                private _router: Router) {
+                private _router: Router,
+                private modalService: NgbModal) {
     }
 
     ngOnInit() {
         this.getCountSubjects();
     }
 
+    public modalInfoConfig = {
+        title: "",
+        infoString: "",
+        action: ""
+    };
+
     deleteSubject(entity: string, id: number): void {
-        if (confirm('Підтвердіть видалення предмету')) {
-            this.offset = (this.page - 1) * this.limit;
-            this.crudService
-                .delRecord(entity, id)
-                .subscribe(
-                    () => {
-                        this.refreshData("delete");
-                    },
-                    error => this.errorMessage = <any>error
-                );
-        }
+        this.offset = (this.page - 1) * this.limit;
+        this.crudService
+            .delRecord(entity, id)
+            .subscribe(
+                () => {
+                    this.refreshData("delete");
+                },
+                error => this.errorMessage = <any>error
+            );
     }
 
     getCountSubjects() {
@@ -74,24 +82,6 @@ export class SubjectComponent implements OnInit {
                 },
                 error => this.errorMessage = <any>error
             );
-    }
-
-    modalAdd(data: any) {
-        if (data.action === "create") {
-            let newSubject: Subject = new Subject(data.list[0].value, data.list[1].value);
-            this.crudService.insertData(this.entity, newSubject)
-                .subscribe(response=> {
-                    console.log(response);
-                    this.refreshData(data.action);
-                });
-        } else if (data.action === "edit") {
-            let editedSubject: Subject = new Subject(data.list[0].value, data.list[1].value);
-            this.crudService.updateData(this.entity, data.id, editedSubject)
-                .subscribe(response=> {
-                    console.log(response);
-                    this.refreshData(data.action);
-                });
-        }
     }
 
     getSubjectsRange(): void {
@@ -189,15 +179,67 @@ export class SubjectComponent implements OnInit {
                 this._router.navigate(["/admin/subject", data.entity_id, "shedule"]);
                 break;
             case "edit":
-                console.log("we will edit ", data.entityColumns[0] + " with id: " + data.entity_id);
+                this.editCase(data);
                 break;
             case "delete":
-                console.log("we will delete ", data.entityColumns[0] + " with id: " + data.entity_id);
-                this.deleteSubject(this.entity, data.entity_id);
+                this.deleteCase(data);
+                break;
+            case "create":
+                this.createCase();
                 break;
         }
     }
 
+    createCase() {
+        const modalRefAdd = this.modalService.open(ModalAddEditComponent);
+        modalRefAdd.componentInstance.config = this.configAdd;
+        modalRefAdd.result
+            .then((data: any) => {
+                let newSubject: Subject = new Subject(data.list[0].value, data.list[1].value);
+                this.crudService.insertData(this.entity, newSubject)
+                    .subscribe(response=> {
+                        this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
+                        this.successEventModal();
+                        this.refreshData(data.action);
+                    });
+            }, ()=> {
+                return
+            });
+    };
 
+    editCase(data: any) {
+        this.configEdit.list.forEach((item, i) => {
+            item.value = data.entityColumns[i]
+        });
+        this.configEdit.id = data.entity_id;
+        const modalRefEdit = this.modalService.open(ModalAddEditComponent);
+        modalRefEdit.componentInstance.config = this.configEdit;
+        modalRefEdit.result
+            .then((data: any) => {
+                let editedSubject: Subject = new Subject(data.list[0].value, data.list[1].value);
+                this.crudService.updateData(this.entity, data.id, editedSubject)
+                    .subscribe(()=> {
+                        this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
+                        this.successEventModal();
+                        this.refreshData(data.action);
+                    });
+            }, ()=> {
+                return
+            });
+    }
+
+    deleteCase(data: any) {
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.action = "confirm";
+        this.modalInfoConfig.title = "Видалення";
+        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
+        modalRefDel.componentInstance.config = this.modalInfoConfig;
+        modalRefDel.result
+            .then(() => {
+                this.deleteSubject(this.entity, data.entity_id);
+            }, ()=> {
+                return
+            });
+    }
 }
 

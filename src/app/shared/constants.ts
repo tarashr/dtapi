@@ -115,7 +115,8 @@ export const configEditSubject = {
         {name: "Опис предмету", value: "", title: "description"},
     ],
     action: "edit",
-    labelBtn: "Редагувати"
+    labelBtn: "Редагувати",
+    id: ""
 };
 
 export const configEditSpeciality = {
@@ -139,7 +140,8 @@ export const configEditTest = {
         {name: "Назва предмет", value: "", title: "subject_name"}
     ],
     action: "edit",
-    labelBtn: "Редагувати"
+    labelBtn: "Редагувати",
+    id: ""
 };
 
 
