@@ -67,11 +67,11 @@ export const headersTest = [
 export const actionsTest = [
     {
         title: "Детальніше про тест", action: "testDetaile",
-        style: "glyphicon glyphicon-th", btnStyle: "btn btn-default btn-sm"
+        style: "glyphicon glyphicon-info-sign", btnStyle: "btn btn-default btn-sm"
     },
     {
         title: "Завдання", action: "task",
-        style: "glyphicon glyphicon-th", btnStyle: "btn btn-default btn-sm"
+        style: "glyphicon glyphicon-tasks", btnStyle: "btn btn-default btn-sm"
     },
     {
         title: "Редагувати тест", action: "edit",

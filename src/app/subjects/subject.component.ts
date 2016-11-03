@@ -200,6 +200,7 @@ export class SubjectComponent implements OnInit {
                     .subscribe(response=> {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
+                        this.configAdd.list.forEach((item)=>{item.value=""});
                         this.refreshData(data.action);
                     });
             }, ()=> {

@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
-import {Subject}   from '../../shared/classes/subject';
 import {CRUDService}  from '../../shared/services/crud.service';
 import {SubjectService}  from '../../shared/services/subject.service';
-import {configAddTest, configEditTest} from '../../shared/constants';
+import {configAddTest, configEditTest, successEventModal} from '../../shared/constants';
 import {Test} from "../../shared/classes/test";
-import { headersTest, actionsTest } from "../../shared/constant-config"
+import {headersTest, actionsTest} from "../../shared/constant-config"
+import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
+import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'test-container',
@@ -24,6 +26,8 @@ export class TestComponent implements OnInit {
     public limit: number = 0;
     public headers: any = headersTest;
     public actions: any = actionsTest;
+    public successEventModal = successEventModal;
+    private config:any = {action: "create"};
 
     //varibles for addedit
     public configAdd = configAddTest;
@@ -34,11 +38,18 @@ export class TestComponent implements OnInit {
     public entityData: any[] = [];
     public entityData1: any[] = [];
 
+    public modalInfoConfig = {
+        title: "",
+        infoString: "",
+        action: ""
+    };
+
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
                 private router: Router,
                 private subjectService: SubjectService,
-                private location: Location) {
+                private location: Location,
+                private modalService: NgbModal) {
     }
 
     ngOnInit() {
@@ -46,7 +57,6 @@ export class TestComponent implements OnInit {
             this.subject_id = +params['id']; // (+) converts string 'id' to a number
             this.getTestBySubjectId();
         });
-
     }
 
     goBack(): void {
@@ -86,7 +96,6 @@ export class TestComponent implements OnInit {
     }
 
     deleteTest(entity: string, id: number): void {
-        if (confirm('Підтвердіть видалення тесту')) {
             this.crudService
                 .delRecord(this.entity, id)
                 .subscribe(
@@ -95,56 +104,92 @@ export class TestComponent implements OnInit {
                     },
                     error => this.errorMessage = <any>error
                 );
-        }
-    }
-
-    modalAdd(data: any) {
-        if (data.action === "create") {
-            let newTest: Test = new Test(
-                data.list[0].value,
-                data.list[1].value,
-                data.list[2].value,
-                data.list[3].value,
-                data.list[4].value,
-                this.subject_id
-            );
-            this.crudService.insertData(this.entity, newTest)
-                .subscribe(response=> {
-                    this.getTestBySubjectId();
-                });
-            // } else if (data.action === "edit") {
-            //     let editedTest: Test = new Test(
-            //         data.list[0].value,
-            //         data.list[1].value,
-            //         data.list[2].value,
-            //         data.list[3].value
-            //     );
-            //     this.crudService.updateData(this.entity, data.id, editedTest)
-            //         .subscribe(response=> {
-            //             console.log(response);
-            //             this.getTestBySubjectId();
-            //         });
-        }
     }
 
     activate(data: any) {
         console.log("!!! ", data);
         switch (data.action) {
-            case "tests":
-                this.router.navigate(["/admin/subject", data.entity_id, "tests"]);
+            case "test":
+                this.router.navigate(["/admin/subject", data.entity_id, "test"]);
+                break;
+            case "shedule":
+                this.router.navigate(["/admin/subject", data.entity_id, "shedule"]);
                 break;
             case "edit":
-                console.log("we will edit ", data.entityColumns[0] + " with id: " + data.entity_id);
+                this.editCase(data);
                 break;
             case "delete":
-                console.log("we will delete ", data.entityColumns[0] + " with id: " + data.entity_id);
-                this.deleteTest(this.entity, data.entity_id);
+                this.deleteCase(data);
                 break;
-            // case "create":
-            //     this.modalAdd(data);
+            case "create":
+                this.createCase();
+                break;
         }
     }
 
+    createCase() {
+        const modalRefAdd = this.modalService.open(ModalAddEditComponent);
+        modalRefAdd.componentInstance.config = this.configAdd;
+        modalRefAdd.result
+            .then((data: any) => {
+                let newTest: Test = new Test(data.list[0].value,
+                    data.list[1].value,
+                    data.list[2].value,
+                    data.list[3].value,
+                    data.list[4].value,
+                    this.subject_id);
+                this.crudService.insertData(this.entity, newTest)
+                    .subscribe(() => {
+                        this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
+                        this.successEventModal();
+                        this.configAdd.list.forEach((item)=> {
+                            item.value = ""
+                        });
+                        this.getTestBySubjectId();
+                    });
+            }, ()=> {
+                return
+            });
+    };
+
+    editCase(data) {
+        this.configEdit.list.forEach((item, i) => {
+            item.value = data.entityColumns[i]
+        });
+        this.configEdit.id = data.entity_id;
+        const modalRefEdit = this.modalService.open(ModalAddEditComponent);
+        modalRefEdit.componentInstance.config = this.configEdit;
+        modalRefEdit.result
+            .then((data: any) => {
+                let editedTest: Test = new Test(data.list[0].value,
+                    data.list[1].value,
+                    data.list[2].value,
+                    data.list[3].value,
+                    data.list[4].value);
+                this.crudService.updateData(this.entity, data.id, editedTest)
+                    .subscribe(()=> {
+                        this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
+                        this.successEventModal();
+                        this.getTestBySubjectId();
+                    });
+            }, ()=> {
+                return
+            });
+    }
+
+    deleteCase(data) {
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.action = "confirm";
+        this.modalInfoConfig.title = "Видалення";
+        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
+        modalRefDel.componentInstance.config = this.modalInfoConfig;
+        modalRefDel.result
+            .then(() => {
+                this.deleteTest(this.entity, data.entity_id);
+            }, ()=> {
+                return
+            });
+    }
 }
 
 

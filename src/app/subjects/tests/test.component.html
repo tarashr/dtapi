@@ -4,10 +4,7 @@
             <div class="navbar-text">{{pageTitle}}</div>
             <form class="navbar-form navbar-right">
                 <div class="form-group">
-                    <add-edit-modal
-                            [config]="configAdd"
-                            (activate)="modalAdd($event)">
-                    </add-edit-modal>
+                    <a class="btn btn-default" (click)="createCase()" [title]="addTitle">Додати </a>
                 </div>
                 <button type="button" class="btn btn-secondary"
                         (click)="goBack()">Назад
@@ -23,6 +20,6 @@
               [tableData]="entityData"
               (activate)="activate($event)">
     </dt-table>
-    <div *ngIf="!entityData.length">Тестів немає</div>
+    <!--<div *ngIf="!entityData.length">Тестів немає</div>-->
 </div>
 <template ngbModalContainer></template>

@@ -136,8 +136,7 @@ export const configEditTest = {
         {name: "Кількість завдань", value: "", title: "tasks"},
         {name: "Тривалість тесту", value: "", title: "time_for_test"},
         {name: "Доступність", value: "", title: "enabled"},
-        {name: "Кількість спроб", value: "", title: "attempts"},
-        {name: "Назва предмет", value: "", title: "subject_name"}
+        {name: "Кількість спроб", value: "", title: "attempts"}
     ],
     action: "edit",
     labelBtn: "Редагувати",
