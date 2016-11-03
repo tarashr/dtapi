@@ -1,72 +1,23 @@
 <div class="entity-container">
-    <nav class="navbar navbar-default facultyNavbarDefault navbarDefault">
-        <div class="container-fluid">
-            <div class="navbar-text navbarText">Студенти</div>
-            <form class="navbar-form navbar-left facultyNavbarFormLeft navbarForm">
-                <div class="form-group inputSearch">
-                    <input type="text" class="form-control" placeholder="пошук" name="inputSearch"
-                           title="введіть дані для пошуку"
-                           (input)="findEntity($event)">
-                </div>
-            </form>
-            <form class="navbar-form navbar-right navbarForm">
-                <div class="form-group">
-                    <a class="btn btn-default" role="button" title="Добавити нового студента"
-                       [routerLink]="['../student-new-profile']">Додати</a>
-                    <select class="form-control media767" name="count" id=""
-                            title="виберіть кількість студентів на сторінці"
-                            (input)="changeLimit($event)"
-                            [disabled]="search.length>0">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option [value]="entityDataLength">Всі</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-    </nav>
+    <entity-bar
+            [entityTitle]="entityTitle"
+            [searchTitle]="searchTitle"
 
-    <div class="container-fluid">
-        <ul class="list-group entity_list">
-            <li class="list-group-item row  hidden-xs">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">№</div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12">ПІБ</div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12">№ залікової книжки</div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12">Група</div>
-                <div class="col-xs-12 col-sm-2 col-md-2 colxs12_btn"></div>
-            </li>
-            <li class="list-group-item row"
-                *ngFor="let student of entityData; let i=index">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">
-                    <span class="visible-xs-inline-block">№:</span>
-                    <span class="align-xs">{{i+1+(page-1)*limit}}</span>
-                </div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12">
-                    <span class="visible-xs-inline-block">ПІБ:</span>
-                    <span class="align-xs">{{student.student_surname+" "+student.student_name+" "+student.student_fname}}</span>
-                </div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12">
-                    <span class="visible-xs-inline-block">№ залікової книжки</span>
-                    <span class="align-xs">{{student.gradebook_id}}</span>
-                </div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12">
-                    <span class="visible-xs-inline-block">Група</span>
-                    <span class="align-xs">{{student.group_name}}</span>
-                </div>
-                <div class="col-xs-12 col-sm-2 col-md-2 colxs12_btn">
-                    <a class="btn btn-default btn-sm faculty_btnsm" role="button" title="Профіль студента"
-                       [routerLink]="['../student-profile']">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                    </a>
-                    <a class="btn btn-danger btn-sm faculty_btnsm" role="button" title="Видалити студента"
-                       (click)="delRecord(entity, student.user_id)">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </a>
-                </div>
-            </li>
-        </ul>
-    </div>
+            [selectLimit]="selectLimit"
+            [entityDataLength]="entityDataLength"
+
+            (searchRun)="findEntity($event)"
+            (selectRun)="changeLimit($event)">
+            <!--[configAdd]="configAdd"-->
+            <!--(activate)="modalAdd($event)"-->
+    </entity-bar>
+    <dt-table *ngIf="entityData.length>0"
+              [page]="page"
+              [limit]="limit"
+              [headers]="headers"
+              [tableData]="entityData"
+              (activate)="activate($event)">
+    </dt-table>
     <ngb-pagination *ngIf="entityDataLength"
                     [collectionSize]="entityDataLength"
                     [(page)]="page"
@@ -79,5 +30,3 @@
                     [hidden]="search.length || limit>=entityDataLength">
     </ngb-pagination>
 </div>
-
-

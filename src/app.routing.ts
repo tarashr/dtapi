@@ -7,6 +7,7 @@ import {LoginComponent}     from './app/login/login.component';
 import {StartPageComponent}  from './app/studentpart/start-page.component';
 import {AdminStartPageComponent} from "./app/admin-start/admin-start-page.component.ts";
 import {SubjectComponent} from './app/subjects/subject.component';
+import { TestComponent } from './app/subjects/tests/test.component'
 import {FacultyComponent} from './app/faculty/faculty.component';
 import {StatisticComponent} from "./app/statistic/statistic.component";
 import {GroupComponent} from './app/group/group.component';
@@ -28,6 +29,7 @@ const appRoutes:Routes = [
             {path: "", redirectTo: "statistic"},
             {path: "statistic", component: StatisticComponent},
             {path: "subject", component: SubjectComponent},
+            {path: "subject/:id/test", component: TestComponent},
             {path: "speciality", component: SpecialityComponent},
             {path: "faculty", component: FacultyComponent},
             {path: "group", component: GroupComponent},
