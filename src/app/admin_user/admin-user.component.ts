@@ -111,14 +111,22 @@ export class AdminUserComponent implements OnInit {
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                let newAdminUser: User = new User(data.list[0].value, data.list[1].value, data.list[2].value);
-                this.crudService.insertData(this.entity, newAdminUser)
-                    .subscribe(response=> {
-                        this.configAdd.list.forEach((item)=>{item.value=""});
-                        this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
-                        this.successEventModal();
-                        this.refreshData(data.action);
-                    });
+                if(data.list[2].value === data.list[3].value){
+                    let newAdminUser: User = new User(data.list[0].value, data.list[1].value, data.list[2].value);
+                    this.crudService.insertData(this.entity, newAdminUser)
+                        .subscribe(response=> {
+                            this.configAdd.list.forEach((item)=>{item.value=""});
+                            this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
+                            this.successEventModal();
+                            this.refreshData(data.action);
+                        });
+                } else {
+                    data.list[2].value = "";
+                    data.list[3].value = "";
+                    this.modalInfoConfig.infoString = `Введені паролі не співпадають`;
+                    this.createCase();
+                    this.successEventModal();
+                }
             }, ()=> {
                 return
             });
