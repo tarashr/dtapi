@@ -18,6 +18,6 @@ export class AdminStartPageComponent {
     }
 
     logout() {
-        this._loginService.logout();
+        this._loginService.logout()
     }
 }

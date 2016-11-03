@@ -17,3 +17,6 @@ html, body {
 .entity-list li:not(:first-child):hover {
     background-color: #e7e7e7;
 }
+.entity-list li a {
+    margin: 2px;
+}
