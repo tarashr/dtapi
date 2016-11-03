@@ -5,27 +5,18 @@ export const loginUrl: string = baseUrl + "login/index";
 export const logoutUrl: string = baseUrl + "login/logout";
 
 //CRUD Action whith entity
-export const getSubjectsUrl: string = baseUrl + 'subject/getRecords';
-export const getSubjectUrl: string = baseUrl + 'subject/getRecords'; // + id of subject
-export const getRangeOfSubjectsUrl: string = baseUrl + 'subject/getRecordsRange';
-export const countSubjectsUrl: string = baseUrl + 'subject/countRecords';
-export const addSubjectUrl: string = baseUrl + 'subject/insertData';
-export const editSubjectUrl: string = baseUrl + 'subject/update'; // + id of subject
-export const delSubjectUrl: string = baseUrl + 'subject/del'; // + id of subject
-export const getGroupUrl: string = baseUrl + 'group/getRecords';
-export const countGroupsUrl: string = baseUrl + 'group/countRecords';
-export const getRangeOfGroupUrl: string = baseUrl + 'group/getRecordsRange';
 export const getEntityValues: string = baseUrl + 'EntityManager/getEntityValues';
 export const getSubjectsBySearchUrl: string = baseUrl + 'subject/getRecordsBySearch/'; // + criteria
 export const getSpecialityUrl: string = baseUrl + 'speciality/getRecords';
 export const delSpecialityUrl: string = baseUrl + 'speciality/del';
-export const addGroupUrl: string = baseUrl + 'group/insertData';
 export const getFacultysUrl: string = baseUrl + 'faculty/getRecords';
 export const getSpecialitysUrl: string = baseUrl + 'speciality/getRecords';
 export const getGroupsBySearchUrl: string = baseUrl + 'group/getRecordsBySearch/'; // + criteria
-export const delGroupUrl: string = baseUrl + 'group/del'; // + id of subject
 export const getStudentsUrl: string = baseUrl + 'student/getRecords';
 export const editGroupUrl: string = baseUrl + 'group/update'; // + id of subject
+
+
+export const getTestsBySubjectIdUrl: string = baseUrl + 'test/getTestsBySubject'; // + id of subject
 
 //Array of entities for statistic page
 export const entities: any[] = [
@@ -93,6 +84,19 @@ export const configAddSpeciality = {
     labelBtn: "Додати"
 };
 
+export const configAddTest = {
+    title: "Додати тест",
+    list: [
+        {name: "Назва тесту", value: "", title: "name"},
+        {name: "Кількість завдань", value: "", title: "tasks"},
+        {name: "Тривалість тесту", value: "", title: "time_for_test"},
+        {name: "Доступність", value: "", title: "enabled"},
+        {name: "Кількість спроб", value: "", title: "attempts"}
+    ],
+    action: "create",
+    labelBtn: "Додати"
+};
+
 export const configEditFaculty = {
     title: "Редагувати факультет",
     list: [
@@ -100,7 +104,8 @@ export const configEditFaculty = {
         {name: "Опис факультету", value: "", title: "description"},
     ],
     action: "edit",
-    labelBtn: "Редагувати"
+    labelBtn: "Редагувати",
+    id: ""
 };
 
 export const configEditSubject = {
@@ -123,8 +128,22 @@ export const configEditSpeciality = {
     labelBtn: "Редагувати"
 };
 
-// Functions
+export const configEditTest = {
+    title: "Редагувати тест",
+    list: [
+        {name: "Назва тесту", value: "", title: "name"},
+        {name: "Кількість завдань", value: "", title: "tasks"},
+        {name: "Тривалість тесту", value: "", title: "time_for_test"},
+        {name: "Доступність", value: "", title: "enabled"},
+        {name: "Кількість спроб", value: "", title: "attempts"},
+        {name: "Назва предмет", value: "", title: "subject_name"}
+    ],
+    action: "edit",
+    labelBtn: "Редагувати"
+};
 
+
+// Functions
 export const changeLimit = function (limit: number): void {
     this.limit = limit;
     this.offset = 0;
@@ -158,6 +177,13 @@ export const getRecordsRange = function () {
         .subscribe(
             data => this.entityData = data,
             error=> console.log("error: ", error))
+};
+
+export const successEventModal = function () {
+    this.modalInfoConfig.action = "info";
+    this.modalInfoConfig.title="Повідомлення";
+    const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
+    modalRef.componentInstance.config = this.modalInfoConfig;
 };
 
 export const delRecord = function (entity: string, id: number) {

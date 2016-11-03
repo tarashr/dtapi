@@ -8,21 +8,21 @@ import {Subject} from 'rxjs';
 })
 export class EntityBarComponent implements OnInit {
 
-    @Input() entityTitle:string;
-    @Input() searchTitle:string;
-    @Input() configAdd:string;
-    @Input() selectLimit:string;
-    @Input() entityDataLength:number;
+    @Input() addTitle: string;
+    @Input() entityTitle: string;
+    @Input() searchTitle: string;
+    @Input() selectLimit: string;
+    @Input() entityDataLength: number;
     @Output() activate = new EventEmitter();
     @Output() searchRun = new EventEmitter();
     @Output() selectRun = new EventEmitter();
-
+    private config:any = {action: "create"};
     private searchTerms = new Subject();
 
     constructor() {
     }
 
-    find(term:string) {
+    find(term: string) {
         this.searchTerms.next(term);
     }
 
@@ -35,11 +35,11 @@ export class EntityBarComponent implements OnInit {
             });
     }
 
-    modal(data:any) {
+    modal(data: any) {
         this.activate.emit(data);
     }
 
-    changeLimit(limit:number) {
+    changeLimit(limit: number) {
         this.selectRun.emit(limit);
     }
 

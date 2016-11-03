@@ -2,7 +2,6 @@
     <entity-bar
             [entityTitle]="entityTitle"
             [searchTitle]="searchTitle"
-            [configAdd]="configAdd"
             [selectLimit]="selectLimit"
             [entityDataLength]="entityDataLength"
             (activate)="modalAdd($event)"
@@ -13,6 +12,7 @@
               [page]="page"
               [limit]="limit"
               [headers]="headers"
+              [actions]="actions"
               [tableData]="entityData"
               (activate)="activate($event)">
     </dt-table>
