@@ -11,10 +11,12 @@ export class AddEditModalComponent implements OnInit {
     public data:any;
 
     @Input() name:string;
+    @Input() username:string;
     @Input() description:string;
     @Input() email:string;
     @Input() code:string;
     @Input() id:number;
+    @Input() password:string;
     @Input() config:any;
     @Output() activate = new EventEmitter();
 
@@ -45,6 +47,12 @@ export class AddEditModalComponent implements OnInit {
             }
             if (item.title === "code") {
                 item.value = this.code
+            }
+            if (item.title === "username") {
+                item.value = this.username
+            }
+            if (item.title === "password") {
+                item.value = this.password
             }
         });
 
