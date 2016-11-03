@@ -38,19 +38,19 @@ export const headersStudentAdmin = [
 
 export const actionsStudentAdmin = [
     {
-        title: "Перейти до груп факультету",
+        title: "Перегляд профілю студента",
         action: "group",
-        style: "glyphicon glyphicon-th",
+        style: "glyphicon glyphicon-user",
         btnStyle: "btn btn-default btn-sm"
     },
     {
-        title: "Редагувати факультет",
+        title: "Редагувати профіль студента",
         action: "edit",
         style: "glyphicon glyphicon-edit",
         btnStyle: "btn btn-default btn-sm"
     },
     {
-        title: "Видалити факультет",
+        title: "Видалити профіль студента",
         action: "delete",
         style: "glyphicon glyphicon-trash",
         btnStyle: "btn btn-danger btn-sm"
