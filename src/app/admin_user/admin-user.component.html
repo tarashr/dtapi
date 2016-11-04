@@ -26,7 +26,7 @@
                     [ellipses]="true"
                     [boundaryLinks]="true"
                     (pageChange)="pageChange($event)"
-                    [hidden]="search.length || limit>=entityDataLength">
+                    [hidden]="searchCriteria.length || limit>=entityDataLength">
     </ngb-pagination>
 </div>
 <template ngbModalContainer></template>
