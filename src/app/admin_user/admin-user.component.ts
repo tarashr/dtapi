@@ -54,6 +54,7 @@ export class AdminUserComponent implements OnInit {
     public search: string = "";
     public page: number = 1;
     public offset: number = 0;
+    public searchCriteria: string = "";
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
@@ -90,6 +91,26 @@ export class AdminUserComponent implements OnInit {
                     this.createTableConfig(data);
                 },
                 error=> console.log("error: ", error))
+    };
+
+    findEntity(searchTerm: string) {
+        this.searchCriteria = searchTerm;
+        if (!this.searchCriteria.length) {
+            this.offset = 0;
+            this.page = 1;
+            this.getCountRecords();
+            return;
+        }
+
+        this.crudService.getRecordsBySearch(this.entity, this.searchCriteria)
+            .subscribe(data => {
+                if (data.response == "No records") {
+                    this.entityData = [];
+                    return;
+                }
+                this.page = 1;
+                this.createTableConfig(data);
+            }, error=>console.log("error: ", error));
     };
 
     activate(data: any) {
