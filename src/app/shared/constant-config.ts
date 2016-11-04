@@ -142,11 +142,11 @@ export const headersTest = [
 export const actionsTest = [
     {
         title: "Детальніше про тест", action: "testDetaile",
-        style: "glyphicon glyphicon-th", btnStyle: "btn btn-default btn-sm"
+        style: "glyphicon glyphicon-info-sign", btnStyle: "btn btn-default btn-sm"
     },
     {
         title: "Завдання", action: "task",
-        style: "glyphicon glyphicon-th", btnStyle: "btn btn-default btn-sm"
+        style: "glyphicon glyphicon-tasks", btnStyle: "btn btn-default btn-sm"
     },
     {
         title: "Редагувати тест", action: "edit",
@@ -158,3 +158,20 @@ export const actionsTest = [
     }
 ];
 
+export const headersTimeTable = [
+    {name: "№", style: "col-xs-12 col-sm-1"},
+    {name: "Назва групи", style: "col-xs-12 col-sm-4"},
+    {name: "Дата", style: "col-xs-12 col-sm-3"},
+    {name: "", style: "col-xs-12 col-sm-4"}
+];
+
+export const actionsTimeTable = [
+    {
+        title: "Редагувати розклад", action: "edit",
+        style: "glyphicon glyphicon-edit", btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Видалити розклад", action: "delete",
+        style: "glyphicon glyphicon-trash", btnStyle: "btn btn-danger btn-sm"
+    }
+];
