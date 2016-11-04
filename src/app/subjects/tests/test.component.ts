@@ -186,6 +186,7 @@ export class TestComponent implements OnInit {
         modalRefDel.result
             .then(() => {
                 this.deleteTest(this.entity, data.entity_id);
+                console.log("dataaaa" + JSON.stringify(data));
             }, ()=> {
                 return
             });

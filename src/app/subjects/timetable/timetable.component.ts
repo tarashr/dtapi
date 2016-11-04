@@ -88,17 +88,15 @@ export class TimeTableComponent implements OnInit {
         this.crudService.getEntityValues(data)
             .subscribe(
                 data => {
-
                     this.groupsById = data;
                     for (let i = 0; i < this.timeTableWithGroupId.length; i++) {
                         for (let j = 0; j < this.groupsById.length; j++) {
                             if (this.timeTableWithGroupId[i].group_id === this.groupsById[j].group_id) {
                                 this.timeTableWithGroupId[j].group_name = this.groupsById[j].group_name;
                             }
-
                         }
                         this.createTableConfig(this.timeTableWithGroupId),
-                            error=>console.log("error: ", error)
+                        error=>console.log("error: ", error)
                     }
                 }
             )
@@ -114,7 +112,6 @@ export class TimeTableComponent implements OnInit {
                 timetable.actions = this.actions;
                 tempArr.push(timetable);
             });
-
             this.entityData = tempArr;
         }
     };
@@ -150,6 +147,11 @@ export class TimeTableComponent implements OnInit {
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
+                this.groupsById.forEach((item) => {
+                   if(item.group_name =  data.list[0].value) {
+                       data.list[0].value = item.group_id;
+                   }
+                });
                 console.log("this data" + "" + JSON.stringify(data));
                 let newTimeTable: TimeTable = new TimeTable(data.list[0].value,
                     data.list[1].value,
@@ -199,6 +201,7 @@ export class TimeTableComponent implements OnInit {
         modalRefDel.result
             .then(() => {
                 this.deleteTimeTable(this.entity, data.entity_id);
+                console.log("dataaaa" + JSON.stringify(data));
             }, ()=> {
                 return
             });

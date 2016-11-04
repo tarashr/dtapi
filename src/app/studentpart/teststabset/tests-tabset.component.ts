@@ -1,4 +1,4 @@
-﻿import {Component, OnInit} from '@angular/core';
+﻿import {Component, OnInit, Input} from '@angular/core';
 import { CRUDService } from "../../shared/services/crud.service";
 
 @Component({
@@ -12,7 +12,8 @@ export class TestsTabsetComponent implements OnInit{
 		student_name:"loading...",
 		group_id:""
 	};
-	
+
+	@Input() usergroup_name;
 	public userGroup = {
 		speciality_id:"",
 		faculty_id:""
