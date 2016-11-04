@@ -62,8 +62,8 @@ export const maxSize: number = 5;
 export const configAddFaculty = {
     title: "Створити факультет",
     list: [
-        {name: "Назва факультету", value: "", title: "name"},
-        {name: "Опис факультету", value: "", title: "description"},
+        {name: "Назва факультету", value: "", title: "name", type: "text"},
+        {name: "Опис факультету", value: "", title: "description", type: "text"},
     ],
     action: "create",
     labelBtn: "Додати"
@@ -72,8 +72,8 @@ export const configAddFaculty = {
 export const configAddSubject = {
     title: "Створити предмет",
     list: [
-        {name: "Назва предмету", value: "", title: "name"},
-        {name: "Опис предмету", value: "", title: "description"},
+        {name: "Назва предмету", value: "", title: "name", type: "text"},
+        {name: "Опис предмету", value: "", title: "description", type: "text"},
     ],
     action: "create",
     labelBtn: "Додати"
@@ -82,10 +82,10 @@ export const configAddSubject = {
 export const configAddAdminUser = {
     title: "Додати адміністратора",
     list: [
-        {name: "Логін", value: "", title: "username"},
-        {name: "Поштова скринька", value: "", title: "email"},
-        {name: "Пароль", value: "", title: "password"},
-        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm"}
+        {name: "Логін", value: "", title: "username", type: "text"},
+        {name: "Поштова скринька", value: "", title: "email", type: "email"},
+        {name: "Пароль", value: "", title: "password", type: "password"},
+        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password"}
     ],
     action: "create",
     labelBtn: "Додати"
@@ -94,8 +94,8 @@ export const configAddAdminUser = {
 export const configAddSpeciality = {
     title: "Додати спеціальність",
     list: [
-        {name: "Код спеціальності", value: "", title: "code"},
-        {name: "Назва спеціальності", value: "", title: "name"}
+        {name: "Код спеціальності", value: "", title: "code", type: "text"},
+        {name: "Назва спеціальності", value: "", title: "name", type: "text"}
     ],
     action: "create",
     labelBtn: "Додати"
@@ -104,11 +104,11 @@ export const configAddSpeciality = {
 export const configAddTest = {
     title: "Додати тест",
     list: [
-        {name: "Назва тесту", value: "", title: "name"},
-        {name: "Кількість завдань", value: "", title: "tasks"},
-        {name: "Тривалість тесту", value: "", title: "time_for_test"},
-        {name: "Доступність", value: "", title: "enabled"},
-        {name: "Кількість спроб", value: "", title: "attempts"}
+        {name: "Назва тесту", value: "", title: "name", type: "text"},
+        {name: "Кількість завдань", value: "", title: "tasks", type: "text"},
+        {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text"},
+        {name: "Доступність", value: "", title: "enabled", type: "text"},
+        {name: "Кількість спроб", value: "", title: "attempts", type: "text"}
     ],
     action: "create",
     labelBtn: "Додати"
@@ -117,8 +117,8 @@ export const configAddTest = {
 export const configEditFaculty = {
     title: "Редагувати факультет",
     list: [
-        {name: "Назва факультету", value: "", title: "name"},
-        {name: "Опис факультету", value: "", title: "description"},
+        {name: "Назва факультету", value: "", title: "name", type: "text"},
+        {name: "Опис факультету", value: "", title: "description", type: "text"},
     ],
     action: "edit",
     labelBtn: "Редагувати",
@@ -128,10 +128,10 @@ export const configEditFaculty = {
 export const configEditAdminUser = {
     title: "Редагувати адміністратора",
     list: [
-        {name: "Логін", value: "", title: "username"},
-        {name: "Поштова скринька", value: "", title: "email"},
-        {name: "Пароль", value: "", title: "password"},
-        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm"}
+        {name: "Логін", value: "", title: "username", type: "text"},
+        {name: "Поштова скринька", value: "", title: "email", type: "email"},
+        {name: "Пароль", value: "", title: "password", type: "password"},
+        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password"}
     ],
     action: "edit",
     labelBtn: "Редагувати",
@@ -141,8 +141,8 @@ export const configEditAdminUser = {
 export const configEditSubject = {
     title: "Редагувати предмет",
     list: [
-        {name: "Назва предмету", value: "", title: "name"},
-        {name: "Опис предмету", value: "", title: "description"},
+        {name: "Назва предмету", value: "", title: "name", type: "text"},
+        {name: "Опис предмету", value: "", title: "description", type: "text"},
     ],
     action: "edit",
     labelBtn: "Редагувати"
@@ -151,8 +151,8 @@ export const configEditSubject = {
 export const configEditSpeciality = {
     title: "Редагувати спеціальність",
     list: [
-        {name: "Код спеціальності", value: "", title: "code"},
-        {name: "Назва спеціальності", value: "", title: "name"}
+        {name: "Код спеціальності", value: "", title: "code", type: "text"},
+        {name: "Назва спеціальності", value: "", title: "name", type: "text"}
     ],
     action: "edit",
     labelBtn: "Редагувати",
@@ -162,12 +162,12 @@ export const configEditSpeciality = {
 export const configEditTest = {
     title: "Редагувати тест",
     list: [
-        {name: "Назва тесту", value: "", title: "name"},
-        {name: "Кількість завдань", value: "", title: "tasks"},
-        {name: "Тривалість тесту", value: "", title: "time_for_test"},
-        {name: "Доступність", value: "", title: "enabled"},
-        {name: "Кількість спроб", value: "", title: "attempts"},
-        {name: "Назва предмет", value: "", title: "subject_name"}
+        {name: "Назва тесту", value: "", title: "name", type: "text"},
+        {name: "Кількість завдань", value: "", title: "tasks", type: "text"},
+        {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text"},
+        {name: "Доступність", value: "", title: "enabled", type: "text"},
+        {name: "Кількість спроб", value: "", title: "attempts", type: "text"},
+        {name: "Назва предмет", value: "", title: "subject_name", type: "text"}
     ],
     action: "edit",
     labelBtn: "Редагувати"

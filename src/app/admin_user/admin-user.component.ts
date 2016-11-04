@@ -132,7 +132,7 @@ export class AdminUserComponent implements OnInit {
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                if(data.list[2].value === data.list[3].value){
+                if(data.list[2].value === data.list[3].value) {
                     let newAdminUser: User = new User(data.list[0].value, data.list[1].value, data.list[2].value);
                     this.crudService.insertData(this.entity, newAdminUser)
                         .subscribe(response=> {
