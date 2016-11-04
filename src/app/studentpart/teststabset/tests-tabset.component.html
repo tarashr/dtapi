@@ -10,7 +10,11 @@
                     Дата проведення: 2016-10-26
                 </div>
                 <div class="col-xs-3">
-                    <button class="btn btn-default text-right" role="button">
+
+
+                    <button class="btn btn-default text-right"
+                            routerLink="/student/test-player"
+                            routerLinkActive="active">
 									<span aria-hidden="true" class="glyphicon glyphicon glyphicon-play">
 										Тестуватися
 									</span>
@@ -24,7 +28,9 @@
                     Дата проведення: 2016-10-26
                 </div>
                 <div class="col-xs-3">
-                    <button class="btn btn-default text-right" role="button">
+                    <button class="btn btn-default text-right"
+							routerLink="/student/test-player"
+                            routerLinkActive="active">
 									<span aria-hidden="true" class="glyphicon glyphicon glyphicon-play">
 										Тестуватися
 									</span>
@@ -38,7 +44,9 @@
                     Дата проведення: 2016-10-26
                 </div>
                 <div class="col-xs-3">
-                    <button class="btn btn-default text-right" role="button">
+                    <button class="btn btn-default text-right" 
+							routerLink="/student/test-player"
+                            routerLinkActive="active">
 									<span aria-hidden="true" class="glyphicon glyphicon glyphicon-play">
 										Тестуватися
 									</span>
@@ -47,9 +55,10 @@
             </div>
         </template>
     </ngb-tab>
+
     <ngb-tab title="Заплановані">
         <template ngbTabContent>
-            <h3>Cписок тестувань які плануються для групи {{userGroup.group_name}}</h3>
+            <h3>Cписок тестувань які плануються для групи "{{userGroup.group_name}}"</h3>
             <div class="row">
                 <div class="col-xs-12">
                     Предмет: <b>Асемблер</b> Назва тесту: <b>Середній рівень</b><br>
@@ -67,7 +76,7 @@
         <template ngbTabContent>
             <h3>Результати тестувань</h3>
             <div class="container-fluid">
-                <ul class="list-group entity_list">
+                <ul class="list-group entity-list">
                     <li class="list-group-item row bg-warning hidden-xs">
 
                         <div class=" col-md-3 text-center"><b>Назва тесту</b></div>

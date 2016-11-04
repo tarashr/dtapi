@@ -3,7 +3,7 @@ import { CRUDService } from "../../shared/services/crud.service";
 
 @Component({
     selector: 'ngbd-tabset-tests',
-    templateUrl: './tests-tabset-component.html'
+    templateUrl: './tests-tabset.component.html'
 })
 
 export class TestsTabsetComponent implements OnInit{

@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-xs-12 col-md-8 info">
+            <ngbd-tabset-tests>
+            </ngbd-tabset-tests>
+        </div>
+
+        <div class="col-xs-12 col-md-4 info text-center">
+
+            <h3>Профайл студента</h3>
+            <img src="../../../assets/img/profile.png" class="img-responsive img-circle center-block" alt="">
+            <h4> {{user.student_surname+" "+user.student_name}} </h4>
+            <p class="text-left"><b>Факультет:</b> {{userFaculty.faculty_name}}</p>
+            <p class="text-left"><b>Спеціальність:</b> {{userSpeciality.speciality_name}}</p>
+            <p class="text-left"><b>Група (id):</b>
+                {{userGroup.group_name}}
+
+            </p>
+            <p class="text-left"><b>№ залікової книжки:</b> {{user.gradebook_id}}</p>
+
+            <button class="btn btn-default btn-lg" role="button" (click)="logout()">
+					<span aria-hidden="true" class="glyphicon glyphicon-log-out">
+						Вихід
+					</span>
+            </button>
+
+            <br><br>
+        </div>
+
+    </div>
+</div>

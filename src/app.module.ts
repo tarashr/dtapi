@@ -28,7 +28,9 @@ import { GroupService } from './app/shared/services/group.service';
 import {StudentNewProfileComponent} from "./app/student/student-new-profile.component";
 import {StudentProfileComponent} from "./app/student/student-profile.component";
 import {AddEditModalComponent} from "./app/shared/components/addeditmodal/add-edit-modal.component"
-import {TestsTabsetComponent} from "./app/studentpart/teststabset/tests-tabset-component";
+import {TestsTabsetComponent} from "./app/studentpart/teststabset/tests-tabset.component";
+import {TestPlayerComponent} from "./app/test-player/test-player.component";
+import {UserProfileComponent} from "./app/studentpart/profile/user-profile.component";
 
 
 @NgModule({
@@ -56,7 +58,9 @@ import {TestsTabsetComponent} from "./app/studentpart/teststabset/tests-tabset-c
         StudentNewProfileComponent,
         StudentProfileComponent,
         AddEditModalComponent,
-		TestsTabsetComponent
+		TestsTabsetComponent,
+        TestPlayerComponent,
+        UserProfileComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},

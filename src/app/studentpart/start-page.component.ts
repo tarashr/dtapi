@@ -5,7 +5,6 @@ import { LoginService } from "../shared/services/login.service";
 
 
 @Component({
-    selector: 'start-page',
     templateUrl: 'start-page.component.html',
 	styleUrls: ['start-page.component.css'],
     providers: [LoginService]
@@ -48,7 +47,6 @@ export class StartPageComponent implements OnInit{
         }
 		
 		this.getStudentProfile(userId);
-		console.log(this.userGroup);
     }
 
 
