@@ -71,19 +71,16 @@ export class TimeTableComponent implements OnInit {
         this.subjectService.getTimeTableForSubject(this.entity, this.subject_id)
             .subscribe(
                 data => {
-                    this.timeTableWithGroupId = data;
-                    console.log("timeTableWithGroupId" + JSON.stringify(data));
-                    for (let i = 0; i < data.length; i++) {
-                        this.groupsId[i] = data[i].group_id;
+                    if (data.length) {
+                        this.timeTableWithGroupId = data;
+                        for (let i = 0; i < data.length; i++) {
+                            this.groupsId[i] = data[i].group_id;
+                        }
+                        this.getGroupsById()
                     }
-                    this.getGroupsById();
                 },
-                error=>console.log("error: ", error),
-                () => {
-                    setTimeout(this.createTableConfig(this.timeTableWithGroupId), 0);
-                    console.log("Group array" + JSON.stringify(this.timeTableWithGroupId));
-                }
-            )
+                error=>console.log("error: ", error)
+            );
     }
 
     getGroupsById() {
@@ -91,17 +88,18 @@ export class TimeTableComponent implements OnInit {
         this.crudService.getEntityValues(data)
             .subscribe(
                 data => {
+
                     this.groupsById = data;
-                    console.log("groupsById" + JSON.stringify(data));
                     for (let i = 0; i < this.timeTableWithGroupId.length; i++) {
                         for (let j = 0; j < this.groupsById.length; j++) {
                             if (this.timeTableWithGroupId[i].group_id === this.groupsById[j].group_id) {
                                 this.timeTableWithGroupId[j].group_name = this.groupsById[j].group_name;
                             }
+
                         }
+                        this.createTableConfig(this.timeTableWithGroupId),
+                            error=>console.log("error: ", error)
                     }
-                    console.log("groupsByIdresult" + JSON.stringify(this.timeTableWithGroupId));
-                    error=>console.log("error: ", error)
                 }
             )
     }
@@ -152,6 +150,7 @@ export class TimeTableComponent implements OnInit {
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
+                console.log("this data" + "" + JSON.stringify(data));
                 let newTimeTable: TimeTable = new TimeTable(data.list[0].value,
                     data.list[1].value,
                     this.subject_id);
