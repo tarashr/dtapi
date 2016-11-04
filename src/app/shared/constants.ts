@@ -118,8 +118,8 @@ export const configAddTest = {
 export const configAddTimeTable = {
     title: "Додати новий розклад проведення тестування",
     list: [
-        {name: "Назва групи", value: "", title: "name"},
-        {name: "Дата", value: "", title: "date"},
+        {name: "Назва групи", value: "", title: "name", type: "text"},
+        {name: "Дата", value: "", title: "date", type: "text"},
     ],
     action: "create",
     labelBtn: "Зареєструвати"
