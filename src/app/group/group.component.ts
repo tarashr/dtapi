@@ -1,10 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {Group} from '../shared/classes/group';
+import {Faculty} from "../shared/classes/faculty";
+import {Speciality} from "../shared/classes/speciality";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add-edit.component";
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {EntityManagerBody} from "../shared/classes/entity-manager-body";
 import {CRUDService} from "../shared/services/crud.service.ts";
 import {
     configAddGroup,
@@ -13,9 +16,7 @@ import {
     changeLimit,
     pageChange,
     getCountRecords,
-    getRecordsRange,
     delRecord,
-    // findEntity,
     refreshData,
     successEventModal
 } from "../shared/constants";
@@ -51,11 +52,17 @@ export class GroupComponent implements OnInit {
 
     public entityData: any[] = [];
     private entityDataLength: number;
+    public entityData2: Group[];
     public entity: string = "group";
     public limit: number = 5;
     public search: string = "";
     public page: number = 1;
     public offset: number = 0;
+
+    public facultyEntity: string = "Faculty";
+    public faculties: Faculty[] = [];
+    public specialityEntity: string = "Speciality";
+    public specialities: Speciality[] = [];
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
@@ -78,7 +85,7 @@ export class GroupComponent implements OnInit {
         data.forEach((item)=> {
             let group: any = {};
             group.entity_id = item.group_id;
-            group.entityColumns = [item.group_name, item.faculty_id, item.speciality_id];
+            group.entityColumns = [item.group_name, item.faculty_name, item.speciality_name];
             tempArr.push(group);
         });
         this.entityData = tempArr;
@@ -88,10 +95,60 @@ export class GroupComponent implements OnInit {
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                 data => {
-                    this.createTableConfig(data);
+                    this.entityData2 =  data;
+                    this.getFacultyName();
+                    // this.createTableConfig(data);
                 },
                 error=> console.log("error: ", error))
     };
+
+    getFacultyName(): void{
+        let facultyId: number[] = [];
+        let data2 = this.entityData2;
+        for(let i in data2) {
+            facultyId.push(data2[i].faculty_id);
+        }
+        let facultyEntManObject = new EntityManagerBody(this.facultyEntity, facultyId);
+        this.crudService.getEntityValues(facultyEntManObject)
+            .subscribe(
+                response => {
+                    this.faculties = response;
+                    for(let i in this.entityData2) {
+                        for(let k in this.faculties) {
+                            if (this.entityData2[i].faculty_id == this.faculties[k].faculty_id) {
+                                this.entityData2[i].faculty_name = this.faculties[k].faculty_name;
+                            }
+                        }
+                    }
+                    this.getSpecialityName();
+                },
+                error => console.log("error: ", error)
+            );
+    }
+
+    getSpecialityName(): void{
+        let specialityId: number[] = [];
+        let data2 = this.entityData2;
+        for(let i in data2) {
+            specialityId.push(data2[i].speciality_id);
+        }
+        let specialityEntManObject = new EntityManagerBody(this.specialityEntity, specialityId);
+        this.crudService.getEntityValues(specialityEntManObject)
+            .subscribe(
+                response => {
+                    this.specialities = response;
+                    for(let i in this.entityData2) {
+                        for(let k in this.specialities) {
+                            if (this.entityData2[i].speciality_id == this.specialities[k].speciality_id) {
+                                this.entityData2[i].speciality_name = this.specialities[k].speciality_name;
+                            }
+                        }
+                    }
+                    this.createTableConfig(this.entityData2);
+                },
+                error => console.log("error: ", error)
+            );
+    }
 
     findEntity(searchTerm: string) {
         this.search = searchTerm;
@@ -143,7 +200,7 @@ export class GroupComponent implements OnInit {
                         this.refreshData(data.action);
                     });
             }, ()=> {
-                return
+                return;
             });
     };
 
@@ -164,7 +221,7 @@ export class GroupComponent implements OnInit {
                         this.refreshData(data.action);
                     });
             }, ()=> {
-                return
+                return;
             });
     }
 
