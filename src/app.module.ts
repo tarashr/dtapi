@@ -33,6 +33,10 @@ import {TableComponent} from "./app/shared/components/table/table.component";
 import {InfoModalComponent} from "./app/shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent} from "./app/shared/components/addeditmodal/modal-add-edit.component";
 
+import {TestsTabsetComponent} from "./app/studentpart/teststabset/tests-tabset.component";
+import {TestPlayerComponent} from "./app/test-player/test-player.component";
+import {UserProfileComponent} from "./app/studentpart/profile/user-profile.component";
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -62,6 +66,9 @@ import {ModalAddEditComponent} from "./app/shared/components/addeditmodal/modal-
         InfoModalComponent,
         ModalAddEditComponent,
         TestComponent,
+		TestsTabsetComponent,
+        TestPlayerComponent,
+        UserProfileComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},
