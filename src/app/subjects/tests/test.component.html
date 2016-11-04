@@ -20,6 +20,8 @@
               [tableData]="entityData"
               (activate)="activate($event)">
     </dt-table>
-    <!--<div *ngIf="!entityData.length">Тестів немає</div>-->
+    <div *ngIf="!entityData.length" class="alert alert-info" role="alert">
+        Для вибраного предмету тестів на даний момент не зареєстровано
+    </div>
 </div>
 <template ngbModalContainer></template>

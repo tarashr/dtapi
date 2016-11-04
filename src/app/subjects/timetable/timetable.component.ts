@@ -107,7 +107,7 @@ export class TimeTableComponent implements OnInit {
         if (this.timeTableWithGroupId.length) {
             this.timeTableWithGroupId.forEach((item)=> {
                 let timetable: any = {};
-                timetable.entity_id = item.test_id;
+                timetable.entity_id = item.timetable_id;
                 timetable.entityColumns = [item.group_name, item.event_date];
                 timetable.actions = this.actions;
                 tempArr.push(timetable);
@@ -142,16 +142,20 @@ export class TimeTableComponent implements OnInit {
         }
     }
 
+    substituteNameGroupOnId(data){
+        this.groupsById.forEach((item) => {
+            if(item.group_name =  data.list[0].value) {
+                data.list[0].value = item.group_id;
+            }
+        });
+    }
+
     createCase() {
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                this.groupsById.forEach((item) => {
-                   if(item.group_name =  data.list[0].value) {
-                       data.list[0].value = item.group_id;
-                   }
-                });
+                this.substituteNameGroupOnId(data);
                 console.log("this data" + "" + JSON.stringify(data));
                 let newTimeTable: TimeTable = new TimeTable(data.list[0].value,
                     data.list[1].value,
