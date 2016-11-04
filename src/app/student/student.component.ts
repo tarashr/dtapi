@@ -1,12 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {Router} from "@angular/router";
 import {Student} from "../shared/classes/student";
 import {Group} from "../shared/classes/group";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {CRUDService} from "../shared/services/crud.service.ts";
 import {EntityManagerBody} from "../shared/classes/entity-manager-body";
-import '../shared/rxjs-operators';
+import "../shared/rxjs-operators";
 import {
     maxSize,
     changeLimit,
@@ -14,20 +14,21 @@ import {
     delRecord,
     refreshData,
     getCountRecords,
-    //findEntity,
-    //getRecordsRange,
+    // findEntity,
+    // getRecordsRange,
     // changeLimit
-} from "../shared/constants"
+} from "../shared/constants";
 
 import {
     headersStudentAdmin,
     actionsStudentAdmin
-} from "../shared/constant-config"
+} from "../shared/constant-config";
+
 import {Observable} from "rxjs";
 
 @Component({
-    templateUrl: 'student.component.html',
-    styleUrls: ['student.component.css']
+    templateUrl: "student.component.html",
+    styleUrls: ["student.component.css"]
 })
 
 export class StudentComponent implements OnInit {
@@ -42,7 +43,7 @@ export class StudentComponent implements OnInit {
     public headers: any = headersStudentAdmin;
     public actions: any = actionsStudentAdmin;
 
-    //constants for view
+    // constants for view
     public addTitle: string = "Додати нового студента";
     public searchTitle: string = "Введіть дані для пошуку";
     public entityTitle: string = "Студенти";
@@ -71,22 +72,23 @@ export class StudentComponent implements OnInit {
     public delRecord = delRecord;
     public refreshData = refreshData;
     public getCountRecords = getCountRecords;
-    //public findEntity = findEntity;
-    //public getRecordsRange = getRecordsRange;
-    //public errorMessage: string;
+    // public findEntity = findEntity;
+    // public getRecordsRange = getRecordsRange;
+    // public errorMessage: string;
 
     ngOnInit() {
         this.getCountRecords();
+        this.getRecordsRange();
     }
 
-    private createTableConfig = (data: any)=> {
-        //console.log("data :");
-        //console.log(JSON.stringify(data));
+    private createTableConfig = (data: any) => {
+        // console.log("data :");
+        // console.log(JSON.stringify(data));
         let tempArr: any[] = [];
-        data.forEach((item)=> {
+        data.forEach((item) => {
             let student: any = {};
             student.entity_id = item.user_id;
-            student.entityColumns = [(item.student_surname+" "+item.student_name+" "+item.student_fname), item.gradebook_id, item.group_name];
+            student.entityColumns = [(item.student_surname + " " + item.student_name + " " + item.student_fname), item.gradebook_id, item.group_name];
             tempArr.push(student);
         });
         this.entityData = tempArr;
@@ -99,10 +101,10 @@ export class StudentComponent implements OnInit {
                     this.entityData2 =  data;
                     this.getGroupName();
                 },
-                error=> console.log("error: ", error))
-    };
+                error => console.log("error: ", error));
+    }
 
-    getGroupName(): void{
+    getGroupName(): void {
         let groupId: number[] = [];
         let data2 = this.entityData2;
         for (let i in data2) {
@@ -115,7 +117,7 @@ export class StudentComponent implements OnInit {
                     this.groups = groups;
                     for (let j in this.entityData2)
                         for (let i in this.groups) {
-                            if (this.entityData2[j].group_id == this.groups[i].group_id) {
+                            if (this.entityData2[j].group_id === this.groups[i].group_id) {
                                 this.entityData2[j].group_name = this.groups[i].group_name;
                             }
                         }
@@ -135,7 +137,7 @@ export class StudentComponent implements OnInit {
         }
         this.crudService.getRecordsBySearch(this.entity, this.search)
             .subscribe(data => {
-                if (data.response == "no records") {
+                if (data.response === "no records") {
                     this.entityData = [];
                     return;
                 }
@@ -143,7 +145,7 @@ export class StudentComponent implements OnInit {
                 this.entityData2 = data;
                 this.getGroupName();
 
-            }, error=>console.log("error: ", error));
+            }, error => console.log("error: ", error));
     };
 
     activate(data: any) {
@@ -165,8 +167,8 @@ export class StudentComponent implements OnInit {
                 modalRef.result
                     .then(() => {
                         this.delRecord(this.entity, data.entity_id);
-                    }, ()=> {
-                        return
+                    }, () => {
+                        return;
                     });
                 break;
         }

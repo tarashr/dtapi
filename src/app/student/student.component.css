@@ -66,3 +66,8 @@ label {
     margin: auto;
     text-align: center;
 }
+
+.positionLeft{
+    float: right;
+    margin-right: 10px;
+}
