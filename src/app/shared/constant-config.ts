@@ -100,7 +100,7 @@ export const actionsAdminUser = [
     }
 ];
 
-// Specialities configs
+// Speciality`s configs
 export const headersSpeciality = [
     {name: "№", style: "col-xs-12 col-sm-1"},
     {name: "Код спеціальності", style: "col-xs-12 col-sm-4"},
@@ -128,6 +128,51 @@ export const actionsSpeciality = [
         btnStyle: "btn btn-danger btn-sm"
     }
 ];
+// end of speciality's configs
+
+// Group's configs
+export const headersGroup = [
+    {name: "№", style: "col-xs-12 col-sm-1"},
+    {name: "Назва групи", style: "col-xs-12 col-sm-2"},
+    {name: "Факультет", style: "col-xs-12 col-sm-3"},
+    {name: "Спеціальність", style: "col-xs-12 col-sm-3"},
+    {name: "", style: "col-xs-12 col-sm-3"}
+];
+
+export const actionsGroup = [
+    {
+        title: "Результати тустування групи",
+        action: "",
+        style: "glyphicon glyphicon-list-alt",
+        btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Переглянути студентів групи",
+        action: "",
+        style: "glyphicon glyphicon-user",
+        btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Розклад тестування групи",
+        action: "",
+        style: "glyphicon glyphicon-calendar",
+        btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Редагувати групу",
+        action: "edit",
+        style: "glyphicon glyphicon-edit",
+        btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Видалити групу",
+        action: "delete",
+        style: "glyphicon glyphicon-trash",
+        btnStyle: "btn btn-danger btn-sm"
+    }
+];
+// end of Group's configs
+
 
 export const headersTest = [
     {name: "№", style: "col-xs-12 col-sm-1"},
