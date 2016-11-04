@@ -17,6 +17,7 @@ export const editGroupUrl: string = baseUrl + 'group/update'; // + id of subject
 
 
 export const getTestsBySubjectIdUrl: string = baseUrl + 'test/getTestsBySubject'; // + id of subject
+export const getTimeTableForSubjectUrl: string = baseUrl + 'timeTable/getTimeTablesForSubject'; // + id of subject
 
 //Array of entities for statistic page
 export const entities: any[] = [
@@ -113,6 +114,16 @@ export const configAddTest = {
     labelBtn: "Додати"
 };
 
+export const configAddTimeTable = {
+    title: "Додати новий розклад проведення тестування",
+    list: [
+        {name: "Назва групи", value: "", title: "name"},
+        {name: "Дата", value: "", title: "date"},
+    ],
+    action: "create",
+    labelBtn: "Зареєструвати"
+};
+
 export const configEditFaculty = {
     title: "Редагувати факультет",
     list: [
@@ -166,6 +177,17 @@ export const configEditTest = {
         {name: "Тривалість тесту", value: "", title: "time_for_test"},
         {name: "Доступність", value: "", title: "enabled"},
         {name: "Кількість спроб", value: "", title: "attempts"}
+    ],
+    action: "edit",
+    labelBtn: "Редагувати",
+    id: ""
+};
+
+export const configEditTimeTable = {
+    title: "Редагувати розклад проведення тестування",
+    list: [
+        {name: "Назва групи", value: "", title: "name"},
+        {name: "Дата", value: "", title: "date"},
     ],
     action: "edit",
     labelBtn: "Редагувати",

@@ -16,6 +16,7 @@ import {SpecialityComponent} from "./app/speciality/speciality.component";
 import {StudentComponent} from "./app/student/student.component";
 import {StudentNewProfileComponent} from "./app/student/student-new-profile.component";
 import {StudentProfileComponent} from "./app/student/student-profile.component";
+import {TimeTableComponent} from "./app/subjects/timetable/timetable.component";
 
 const appRoutes:Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -30,6 +31,7 @@ const appRoutes:Routes = [
             {path: "statistic", component: StatisticComponent},
             {path: "subject", component: SubjectComponent},
             {path: "subject/:id/test", component: TestComponent},
+            {path: "subject/:id/timeTable", component: TimeTableComponent},
             {path: "speciality", component: SpecialityComponent},
             {path: "faculty", component: FacultyComponent},
             {path: "group", component: GroupComponent},

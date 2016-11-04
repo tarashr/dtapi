@@ -176,7 +176,7 @@ export class SubjectComponent implements OnInit {
                 this._router.navigate(["/admin/subject", data.entity_id, "test"]);
                 break;
             case "shedule":
-                this._router.navigate(["/admin/subject", data.entity_id, "shedule"]);
+                this._router.navigate(["/admin/subject", data.entity_id, "timeTable"]);
                 break;
             case "edit":
                 this.editCase(data);

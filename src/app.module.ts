@@ -13,6 +13,7 @@ import {AdminStartPageComponent} from "./app/admin-start/admin-start-page.compon
 import {StatisticComponent} from "./app/statistic/statistic.component";
 import {SubjectComponent}        from "./app/subjects/subject.component";
 import { TestComponent } from "./app/subjects/tests/test.component"
+import {TimeTableComponent} from "./app/subjects/timetable/timetable.component";
 import {AddeditGroupComponent}  from './app/group/addedit-group.component';
 import {FacultyComponent}        from "./app/faculty/faculty.component";
 import {GroupComponent}        from './app/group/group.component';
@@ -64,6 +65,7 @@ import {ModalAddEditComponent} from "./app/shared/components/addeditmodal/modal-
         InfoModalComponent,
         ModalAddEditComponent,
         TestComponent,
+        TimeTableComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: '/'},

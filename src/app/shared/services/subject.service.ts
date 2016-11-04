@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {Router} from "@angular/router";
 import '../rxjs-operators';
 import {baseUrl}  from "../constants.ts";
-import {getTestsBySubjectIdUrl}  from "../constants.ts";
+import {getTestsBySubjectIdUrl, getTimeTableForSubjectUrl}  from "../constants.ts";
 import {EntityManagerBody} from "../classes/entity-manager-body";
 import {Test}   from '../classes/test'
 import *as url from '../constants';
@@ -33,6 +33,12 @@ export class SubjectService {
     getTestsBySubjectId(entity:string, id:number):Observable<any> {
         return this.http
             .get(`${getTestsBySubjectIdUrl}/${id}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    getTimeTableForSubject(entity:string, id:number):Observable<any>{
+        return this.http.get(`${getTimeTableForSubjectUrl}/${id}`)
             .map(this.successResponse)
             .catch(this.handleError);
     }

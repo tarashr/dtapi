@@ -158,3 +158,20 @@ export const actionsTest = [
     }
 ];
 
+export const headersTimeTable = [
+    {name: "№", style: "col-xs-12 col-sm-1"},
+    {name: "Назва групи", style: "col-xs-12 col-sm-4"},
+    {name: "Дата", style: "col-xs-12 col-sm-3"},
+    {name: "", style: "col-xs-12 col-sm-4"}
+];
+
+export const actionsTimeTable = [
+    {
+        title: "Редагувати розклад", action: "edit",
+        style: "glyphicon glyphicon-edit", btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Видалити розклад", action: "delete",
+        style: "glyphicon glyphicon-trash", btnStyle: "btn btn-danger btn-sm"
+    }
+];
