@@ -12,16 +12,16 @@ import {LoginService} from "./../shared/services/login.service";
 
 export class LoginComponent {
 
-    public user:User = new User();
-    public loginMessage:boolean = false;
+    public user: User = new User();
+    public loginMessage: boolean = false;
 
-    constructor(private _loginService:LoginService,
-                private _router:Router) {
+    constructor(private _loginService: LoginService,
+                private _router: Router) {
     }
 
-    onSubmit():void {
+    onSubmit(): void {
         this._loginService.login(this.user)
-            .subscribe((response:any)=> {
+            .subscribe((response: any) => {
                     if (response.roles[1] === "student") {
                         sessionStorage.setItem("userRole", response.roles[1]);
                         sessionStorage.setItem("userId", response.id);
@@ -33,14 +33,14 @@ export class LoginComponent {
                         this.loginMessage = true;
                     }
                 },
-                (error:any)=> {                    
+                (error: any) => {
                     if (error === "400 - Bad Request") {
                         this.loginMessage = true;
                     }
-                })
+                });
     }
 
-    delWarning():void {
+    delWarning(): void {
         this.loginMessage = false;
     }
 }

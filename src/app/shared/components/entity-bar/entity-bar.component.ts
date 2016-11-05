@@ -1,10 +1,10 @@
-import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Component, Input, Output, EventEmitter, OnInit} from "@angular/core";
+import {Subject} from "rxjs";
 
 @Component({
-    selector: 'entity-bar',
-    templateUrl: 'entity-bar.component.html',
-    styleUrls: ['entity-bar.component.css']
+    selector: "entity-bar",
+    templateUrl: "entity-bar.component.html",
+    styleUrls: ["entity-bar.component.css"]
 })
 export class EntityBarComponent implements OnInit {
 
@@ -16,7 +16,7 @@ export class EntityBarComponent implements OnInit {
     @Output() activate = new EventEmitter();
     @Output() searchRun = new EventEmitter();
     @Output() selectRun = new EventEmitter();
-    private config:any = {action: "create"};
+    private config: any = {action: "create"};
     private searchTerms = new Subject();
 
     constructor() {

@@ -9,15 +9,15 @@ import {LoginService} from "../shared/services/login.service.ts";
     styleUrls: ["admin-start-page.component.css"]
 })
 export class AdminStartPageComponent {
-        
-    constructor(private _loginService:LoginService,
-                private _router:Router) {
+
+    constructor(private _loginService: LoginService,
+                private _router: Router) {
     }
 
     ngOnInit() {
     }
 
     logout() {
-        this._loginService.logout()
+        this._loginService.logout();
     }
 }
