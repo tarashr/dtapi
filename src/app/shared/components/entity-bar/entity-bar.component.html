@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default entity-bar">
     <div class="container-fluid">
         <div class="navbar-text">{{entityTitle}}</div>
         <form class="navbar-form navbar-left">
@@ -11,9 +11,13 @@
         </form>
         <form *ngIf="facultyList" class="navbar-form navbar-left">
             <div class="form-group">
-                <select class="form-control" name="facultiesList" width="30px">
+                <select #facultySelect
+                        class="form-control"
+                        name="facultiesList"
+                        width="30px"
+                        (input)="onSelect(facultySelect.value)">
                     <option value="none">Виберіть факультет</option>
-                    <option *ngFor="let item of facultyList" value="item">{{item}}</option>
+                    <option *ngFor="let item of facultyList" [value]="item">{{item}}</option>
                 </select>
                 <select class="form-control" name="specialitiesList">
                     <option value="none">Виберіть спеціальність</option>

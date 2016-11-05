@@ -37,6 +37,10 @@ export class EntityBarComponent implements OnInit {
             });
     }
 
+    onSelect(data): void {
+        alert(data);
+    }
+
     modal(data: any) {
         this.activate.emit(data);
     }
