@@ -1,0 +1,32 @@
+<div class="entity-container">
+    <entity-bar
+            [entityTitle]="entityTitle"
+            [searchTitle]="searchTitle"
+            [selectLimit]="selectLimit"
+            [entityDataLength]="entityDataLength"
+            (activate)="activate($event)"
+            (searchRun)="findEntity($event)"
+            (selectRun)="changeLimit($event)">
+    </entity-bar>
+    <dt-table *ngIf="entityData.length>0"
+              [page]="page"
+              [limit]="limit"
+              [headers]="headers"
+              [actions]="actions"
+              [tableData]="entityData"
+              (activate)="activate($event)">
+    </dt-table>
+    <ngb-pagination
+            *ngIf="entityDataLength"
+            [hidden]="searchCriteria.length || limit>=entityDataLength"
+            [pageSize]="limit"
+            [collectionSize]="entityDataLength"
+            [(page)]="page"
+            [rotate]="true"
+            (pageChange)="pageChange($event)"
+            [maxSize]="paginationSize"
+            [ellipses]="true"
+            [boundaryLinks]="true">
+    </ngb-pagination>
+</div>
+<template ngbModalContainer></template>

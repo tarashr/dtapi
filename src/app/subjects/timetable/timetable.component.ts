@@ -183,6 +183,7 @@ export class TimeTableComponent implements OnInit {
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
+                this.substituteNameGroupOnId(data);
                 let editedTimeTable: TimeTable = new TimeTable(data.list[0].value,
                     data.list[1].value);
                 this.crudService.updateData(this.entity, data.id, editedTimeTable)

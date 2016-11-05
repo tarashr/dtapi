@@ -64,7 +64,7 @@ export const actionsSubject = [
         style: "glyphicon glyphicon-check", btnStyle: "btn btn-default btn-sm"
     },
     {
-        title: "Розклад тестів", action: "shedule",
+        title: "Розклад тестів", action: "timeTable",
         style: "glyphicon glyphicon-th", btnStyle: "btn btn-default btn-sm"
     },
     {
@@ -141,11 +141,11 @@ export const headersTest = [
 
 export const actionsTest = [
     {
-        title: "Детальніше про тест", action: "testDetaile",
+        title: "Детальніше про тест", action: "testDetail",
         style: "glyphicon glyphicon-info-sign", btnStyle: "btn btn-default btn-sm"
     },
     {
-        title: "Завдання", action: "task",
+        title: "Завдання", action: "question",
         style: "glyphicon glyphicon-tasks", btnStyle: "btn btn-default btn-sm"
     },
     {
@@ -172,6 +172,45 @@ export const actionsTimeTable = [
     },
     {
         title: "Видалити розклад", action: "delete",
+        style: "glyphicon glyphicon-trash", btnStyle: "btn btn-danger btn-sm"
+    }
+];
+
+export const headersTestDetail = [
+    {name: "№", style: "col-xs-12 col-sm-1"},
+    {name: "Рівень", style: "col-xs-12 col-sm-2"},
+    {name: "Кількість завдань", style: "col-xs-12 col-sm-3"},
+    {name: "Кількість балів", style: "col-xs-12 col-sm-3"},
+    {name: "", style: "col-xs-12 col-sm-3"}
+];
+
+export const actionsTestDetail = [
+    {
+        title: "Редагувати параметр", action: "edit",
+        style: "glyphicon glyphicon-edit", btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Видалити параметр", action: "delete",
+        style: "glyphicon glyphicon-trash", btnStyle: "btn btn-danger btn-sm"
+    }
+];
+
+export const headersQuestion = [
+    {name: "№", style: "col-xs-12 col-sm-1"},
+    {name: "Завдання", style: "col-xs-12 col-sm-3"},
+    {name: "Рівень", style: "col-xs-12 col-sm-1"},
+    {name: "Тип", style: "col-xs-12 col-sm-2"},
+    {name: "Вкладення", style: "col-xs-12 col-sm-3"},
+    {name: "", style: "col-xs-12 col-sm-2"}
+];
+
+export const actionsQuestion = [
+    {
+        title: "Редагувати завдання", action: "edit",
+        style: "glyphicon glyphicon-edit", btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Видалити завдання", action: "delete",
         style: "glyphicon glyphicon-trash", btnStyle: "btn btn-danger btn-sm"
     }
 ];
