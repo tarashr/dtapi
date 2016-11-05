@@ -81,34 +81,6 @@ export class FacultyComponent implements OnInit {
         this.entityData = tempArr;
     };
 
-    // getRecordsRange() {
-    //     this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
-    //         .subscribe(
-    //             data => {
-    //                 this.createTableConfig(data);
-    //             },
-    //             error => console.log("error: ", error));
-    // };
-
-    // findEntity(searchTerm: string) {
-    //     this.search = searchTerm;
-    //     if (this.search.length === 0) {
-    //         this.offset = 0;
-    //         this.page = 1;
-    //         this.getCountRecords();
-    //         return;
-    //     }
-    //     this.crudService.getRecordsBySearch(this.entity, this.search)
-    //         .subscribe(data => {
-    //             if (data.response === "no records") {
-    //                 this.entityData = [];
-    //                 return;
-    //             }
-    //             this.page = 1;
-    //             this.createTableConfig(data);
-    //         }, error => console.log("error: ", error));
-    // };
-
     activate(data: any) {
         switch (data.action) {
             case "group":
