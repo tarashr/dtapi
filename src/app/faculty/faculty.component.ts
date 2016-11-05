@@ -14,14 +14,13 @@ import {
     getCountRecords,
     getRecordsRange,
     delRecord,
-    // findEntity,
+    findEntity,
     refreshData,
-    successEventModal
-} from "../shared/constants";
-import {
+    successEventModal,
     headersFaculty,
-    actionsFaculty
-} from "../shared/constant-config";
+    actionsFaculty,
+    modalInfoConfig
+} from "../shared/constant";
 
 @Component({
     templateUrl: "faculty.component.html",
@@ -29,14 +28,10 @@ import {
 })
 export class FacultyComponent implements OnInit {
 
-    public modalInfoConfig = {
-        title: "",
-        infoString: "",
-        action: ""
-    };
-    public configAdd = configAddFaculty;
-    public configEdit = configEditFaculty;
-    public paginationSize = maxSize;
+    public modalInfoConfig: any = modalInfoConfig;
+    public configAdd: any = configAddFaculty;
+    public configEdit: any = configEditFaculty;
+    public paginationSize: number = maxSize;
     public headers: any = headersFaculty;
     public actions: any = actionsFaculty;
 
@@ -44,7 +39,7 @@ export class FacultyComponent implements OnInit {
     public addTitle: string = "Створити новий факультет";
     public searchTitle: string = "Введіть дані для пошуку";
     public entityTitle: string = "Факультети";
-    public selectLimit: string = "Виберіть кількість факультетів на сторінці";
+    public selectLimitTitle: string = "Виберіть кількість факультетів на сторінці";
     //
 
     public entityData: any[] = [];
@@ -66,6 +61,8 @@ export class FacultyComponent implements OnInit {
     public delRecord = delRecord;
     public refreshData = refreshData;
     public successEventModal = successEventModal;
+    getRecordsRange = getRecordsRange;
+    findEntity = findEntity;
 
     ngOnInit() {
         this.getCountRecords();
@@ -84,33 +81,33 @@ export class FacultyComponent implements OnInit {
         this.entityData = tempArr;
     };
 
-    getRecordsRange() {
-        this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
-            .subscribe(
-                data => {
-                    this.createTableConfig(data);
-                },
-                error => console.log("error: ", error));
-    };
+    // getRecordsRange() {
+    //     this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
+    //         .subscribe(
+    //             data => {
+    //                 this.createTableConfig(data);
+    //             },
+    //             error => console.log("error: ", error));
+    // };
 
-    findEntity(searchTerm: string) {
-        this.search = searchTerm;
-        if (this.search.length === 0) {
-            this.offset = 0;
-            this.page = 1;
-            this.getCountRecords();
-            return;
-        }
-        this.crudService.getRecordsBySearch(this.entity, this.search)
-            .subscribe(data => {
-                if (data.response === "no records") {
-                    this.entityData = [];
-                    return;
-                }
-                this.page = 1;
-                this.createTableConfig(data);
-            }, error => console.log("error: ", error));
-    };
+    // findEntity(searchTerm: string) {
+    //     this.search = searchTerm;
+    //     if (this.search.length === 0) {
+    //         this.offset = 0;
+    //         this.page = 1;
+    //         this.getCountRecords();
+    //         return;
+    //     }
+    //     this.crudService.getRecordsBySearch(this.entity, this.search)
+    //         .subscribe(data => {
+    //             if (data.response === "no records") {
+    //                 this.entityData = [];
+    //                 return;
+    //             }
+    //             this.page = 1;
+    //             this.createTableConfig(data);
+    //         }, error => console.log("error: ", error));
+    // };
 
     activate(data: any) {
         switch (data.action) {
