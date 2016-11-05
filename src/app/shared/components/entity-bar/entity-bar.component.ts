@@ -13,6 +13,8 @@ export class EntityBarComponent implements OnInit {
     @Input() searchTitle: string;
     @Input() selectLimit: string;
     @Input() entityDataLength: number;
+    @Input() facultyList: string[];
+    @Input() specialityList: string[];
     @Output() activate = new EventEmitter();
     @Output() searchRun = new EventEmitter();
     @Output() selectRun = new EventEmitter();

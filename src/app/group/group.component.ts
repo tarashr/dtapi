@@ -64,6 +64,9 @@ export class GroupComponent implements OnInit {
     public specialityEntity: string = "Speciality";
     public specialities: Speciality[] = [];
 
+    public facultiesNames: string[] = [];
+    public specialitiesNames: string[] = [];
+
     constructor(private crudService: CRUDService,
                 private _router: Router,
                 private modalService: NgbModal) {
@@ -78,6 +81,8 @@ export class GroupComponent implements OnInit {
 
     ngOnInit() {
         this.getCountRecords();
+        this.getFacultiesList();
+        this.getSpecialityList()
     }
 
     private createTableConfig = (data: any)=> {
@@ -97,12 +102,33 @@ export class GroupComponent implements OnInit {
                 data => {
                     this.entityData2 =  data;
                     this.getFacultyName();
-                    // this.createTableConfig(data);
                 },
                 error=> console.log("error: ", error))
     };
 
-    getFacultyName(): void{
+    getFacultiesList() {
+        this.crudService.getRecords("Faculty")
+            .subscribe(
+                data => {
+                    for(let i = 0 ; i < data.length; i++) {
+                        this.facultiesNames.push(data[i].faculty_name);
+                    }
+                },
+                error=> console.log("error: ", error))
+    };
+
+    getSpecialityList() {
+        this.crudService.getRecords("Speciality")
+            .subscribe(
+                data => {
+                    for(let i = 0 ; i < data.length; i++) {
+                        this.specialitiesNames.push(data[i].speciality_name);
+                    }
+                },
+                error=> console.log("error: ", error))
+    };
+
+    getFacultyName(): void {
         let facultyId: number[] = [];
         let data2 = this.entityData2;
         for(let i in data2) {
