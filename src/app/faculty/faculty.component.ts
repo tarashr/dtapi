@@ -130,6 +130,9 @@ export class FacultyComponent implements OnInit {
     }
 
     createCase() {
+        this.configAdd.list.forEach((item) => {
+            item.value = "";
+        });
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
@@ -137,9 +140,6 @@ export class FacultyComponent implements OnInit {
                 let newFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
                 this.crudService.insertData(this.entity, newFaculty)
                     .subscribe(response => {
-                        this.configAdd.list.forEach((item) => {
-                            item.value = "";
-                        });
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
                         this.refreshData(data.action);
@@ -151,7 +151,7 @@ export class FacultyComponent implements OnInit {
 
     editCase(data: any) {
         this.configEdit.list.forEach((item, i) => {
-            item.value = data.entityColumns[i];
+            item.value = data.entityColumns[i + 1];
         });
         this.configEdit.id = data.entity_id;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
@@ -171,7 +171,7 @@ export class FacultyComponent implements OnInit {
     }
 
     deleteCase(data: any) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});

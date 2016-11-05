@@ -3,40 +3,43 @@ import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
 import {SubjectService}  from '../../shared/services/subject.service';
-import {configAddTest, configEditTest, successEventModal} from '../../shared/constants';
-import {Test} from "../../shared/classes/test";
-import {headersTest, actionsTest} from "../../shared/constant-config"
+import {configAddTimeTable, configEditTimeTable, successEventModal} from '../../shared/constants';
+import {TimeTable} from "../../shared/classes/timetable";
+import {headersTimeTable, actionsTimeTable} from "../../shared/constant-config"
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {EntityManagerBody} from "../../shared/classes/entity-manager-body";
 
 @Component({
-    selector: 'test-container',
-    templateUrl: 'test.component.html'
+    selector: 'timetable-container',
+    templateUrl: 'timetable.component.html'
 })
 
-export class TestComponent implements OnInit {
+export class TimeTableComponent implements OnInit {
 
     //common variables
-    public entity: string = "test";
+    public entity: string = "timeTable";
     public errorMessage: string;
-    public pageTitle: string = "Тести по предмету";
+    public pageTitle: string = "Розклад тестів по предмету";
     public subject_id: number;
     public page: number = 1;
     public limit: number = 0;
-    public headers: any = headersTest;
-    public actions: any = actionsTest;
+    public headers: any = headersTimeTable;
+    public actions: any = actionsTimeTable;
     public successEventModal = successEventModal;
-    private config:any = {action: "create"};
+    private config: any = {action: "create"};
 
     //varibles for addedit
-    public configAdd = configAddTest;
-    public configEdit = configEditTest;
+    public configAdd = configAddTimeTable;
+    public configEdit = configEditTimeTable;
 
     // variables for common component
-    public entityTitle: string = "Тести";
+    public entityTitle: string = "Розклад тестів";
     public entityData: any[] = [];
-    public entityData1: any[] = [];
+    public groupsId = [];
+    public groupsById = [];
+    public timeTableWithGroupId = [];
 
     public modalInfoConfig = {
         title: "",
@@ -55,7 +58,7 @@ export class TestComponent implements OnInit {
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
             this.subject_id = +params['id']; // (+) converts string 'id' to a number
-            this.getTestBySubjectId();
+            this.getTimeTableForSubject();
         });
     }
 
@@ -64,57 +67,72 @@ export class TestComponent implements OnInit {
 
     }
 
-    getTestBySubjectId() {
-        this.subjectService.getTestsBySubjectId(this.entity, this.subject_id)
+    getTimeTableForSubject() {
+        this.subjectService.getTimeTableForSubject(this.entity, this.subject_id)
             .subscribe(
                 data => {
-                    let tempArr: any[] = [];
                     if (data.length) {
-                        data.forEach((item)=> {
-                            let test: any = {};
-                            test.entity_id = item.test_id;
-                            test.entityColumns = [
-                                item.test_name,
-                                item.tasks,
-                                item.time_for_test,
-                                item.enabled,
-                                item.attempts
-                            ];
-                            test.actions = this.actions;
-                            tempArr.push(test);
-                        });
-                        this.entityData = tempArr;
-                        for (let i = 0; i < this.entityData.length; i++) {
-                            this.entityData[i].entityColumns[3] == "1" ?
-                                this.entityData[i].entityColumns.splice(3, 1, "Доступно") :
-                                this.entityData[i].entityColumns.splice(3, 1, "Не доступно");
+                        this.timeTableWithGroupId = data;
+                        for (let i = 0; i < data.length; i++) {
+                            this.groupsId[i] = data[i].group_id;
                         }
+                        this.getGroupsById()
                     }
                 },
                 error=>console.log("error: ", error)
             );
     }
 
-    deleteTest(entity: string, id: number): void {
-            this.crudService
-                .delRecord(this.entity, id)
-                .subscribe(
-                    () => {
-                        this.getTestBySubjectId();
-                    },
-                    error => this.errorMessage = <any>error
-                );
+    getGroupsById() {
+        let data = new EntityManagerBody("Group", this.groupsId);
+        this.crudService.getEntityValues(data)
+            .subscribe(
+                data => {
+
+                    this.groupsById = data;
+                    for (let i = 0; i < this.timeTableWithGroupId.length; i++) {
+                        for (let j = 0; j < this.groupsById.length; j++) {
+                            if (this.timeTableWithGroupId[i].group_id === this.groupsById[j].group_id) {
+                                this.timeTableWithGroupId[j].group_name = this.groupsById[j].group_name;
+                            }
+
+                        }
+                        this.createTableConfig(this.timeTableWithGroupId),
+                            error=>console.log("error: ", error)
+                    }
+                }
+            )
+    }
+
+    private createTableConfig = (data: any)=> {
+        let tempArr: any[] = [];
+        if (this.timeTableWithGroupId.length) {
+            this.timeTableWithGroupId.forEach((item)=> {
+                let timetable: any = {};
+                timetable.entity_id = item.test_id;
+                timetable.entityColumns = [item.group_name, item.event_date];
+                timetable.actions = this.actions;
+                tempArr.push(timetable);
+            });
+
+            this.entityData = tempArr;
+        }
+    };
+
+    deleteTimeTable(entity: string, id: number): void {
+        this.crudService
+            .delRecord(this.entity, id)
+            .subscribe(
+                () => {
+                    this.getTimeTableForSubject();
+                },
+                error => this.errorMessage = <any>error
+            );
     }
 
     activate(data: any) {
         console.log("!!! ", data);
         switch (data.action) {
-            case "test":
-                this.router.navigate(["/admin/subject", data.entity_id, "test"]);
-                break;
-            case "shedule":
-                this.router.navigate(["/admin/subject", data.entity_id, "shedule"]);
-                break;
             case "edit":
                 this.editCase(data);
                 break;
@@ -132,20 +150,18 @@ export class TestComponent implements OnInit {
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                let newTest: Test = new Test(data.list[0].value,
+                console.log("this data" + "" + JSON.stringify(data));
+                let newTimeTable: TimeTable = new TimeTable(data.list[0].value,
                     data.list[1].value,
-                    data.list[2].value,
-                    data.list[3].value,
-                    data.list[4].value,
                     this.subject_id);
-                this.crudService.insertData(this.entity, newTest)
+                this.crudService.insertData(this.entity, newTimeTable)
                     .subscribe(() => {
-                        this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
+                        this.modalInfoConfig.infoString = `Новий розклад для групи ${data.list[0].value} успішно створено`;
                         this.successEventModal();
                         this.configAdd.list.forEach((item)=> {
                             item.value = ""
                         });
-                        this.getTestBySubjectId();
+                        this.getTimeTableForSubject();
                     });
             }, ()=> {
                 return
@@ -161,16 +177,13 @@ export class TestComponent implements OnInit {
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
-                let editedTest: Test = new Test(data.list[0].value,
-                    data.list[1].value,
-                    data.list[2].value,
-                    data.list[3].value,
-                    data.list[4].value);
-                this.crudService.updateData(this.entity, data.id, editedTest)
+                let editedTimeTable: TimeTable = new TimeTable(data.list[0].value,
+                    data.list[1].value);
+                this.crudService.updateData(this.entity, data.id, editedTimeTable)
                     .subscribe(()=> {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
                         this.successEventModal();
-                        this.getTestBySubjectId();
+                        this.getTimeTableForSubject();
                     });
             }, ()=> {
                 return
@@ -185,7 +198,7 @@ export class TestComponent implements OnInit {
         modalRefDel.componentInstance.config = this.modalInfoConfig;
         modalRefDel.result
             .then(() => {
-                this.deleteTest(this.entity, data.entity_id);
+                this.deleteTimeTable(this.entity, data.entity_id);
             }, ()=> {
                 return
             });

@@ -1,103 +1,32 @@
 <div class="entity-container">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <form class="form-group navbar-form">
-                <div class="navbar-text">Групи</div>
-                <form class="navbar-left col-sm-12 col-md-12">
-                    <input (input)="searchForData($event)" type="text" class="form-control" placeholder="пошук">
-                </form>
-                <form class="navbar-form col-xs-12 col-sm-4 col-md-4">
-                    <select class="form-control" (change)="getGrouByFacultyName($event)">
-                        <option selected>Виберіть факультет</option>
-                        <option *ngFor="let faculty of faculties">{{faculty.faculty_name}}</option>
-                    </select>
-                </form>
-                <form class="navbar-form col-xs-12 col-xs-12 col-sm-4 col-md-4">
-                    <select class="form-control" (change)="getGroupBySpecialityName($event)">
-                        <option selected>Виберіть спеціальність</option>
-                        <option *ngFor="let speciality of specialities">{{speciality.speciality_name}}</option>
-                    </select>
-                </form>
-                <form class="col-md-4 col-sm-12 col-xs-12 navbar-form navbar-right">
-
-                    <addedit-group
-                            [action]="create"
-                            (refreshData)="refreshData($event)"
-                            [title]="titleForNew"
-                            [faculties]="faculties"
-                            [specialities]="specialities">
-                    </addedit-group>
-                    <select class=" form-control " name="count"
-                            title="виберіть кількість груп на сторінці"
-                            (change)="changeLimit($event)" [disabled]="!!searchCriteria">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option [value]="countOfGroup">Всі</option>
-                    </select>
-
-                </form>
-            </form>
-        </div>
-    </nav>
-    <div class="container-fluid">
-        <ul class="list-group entity_list">
-            <li class="list-group-item row table_header">
-                <div class="col-xs-2 col-sm-1 col-md-1 ">№</div>
-                <div class="col-xs-3 col-sm-2 col-md-2 ">Назва</div>
-                <div class="col-xs-3 col-sm-2 col-md-3 ">Факультет</div>
-                <div class="col-xs-4 col-sm-3 col-md-3 ">Спеціальність</div>
-                <div class="col-xs-12 col-sm-4 col-md-3 ">
-                </div>
-            </li>
-            <li class="list-group-item row" *ngFor="let group of groups; let i=index;">
-                <div class="col-xs-2 col-sm-1 col-md-1 col-esm"><span class="table_header_sm">Номер</span>{{i+1+(page-1)*limit}}
-                </div>
-                <div class="col-xs-3 col-sm-2 col-md-2 col-esm"><span class="table_header_sm">Назва</span>{{group.group_name}}
-                </div>
-                <div class="col-xs-3 col-sm-2 col-md-3 col-esm"><span class="table_header_sm">Факультет</span>{{group.faculty_name}}
-                </div>
-                <div class="col-xs-4 col-sm-3 col-md-3 col-esm"><span class="table_header_sm">Спеціальність</span>{{group.speciality_name}}
-                </div>
-                <div class="col-xs-12 col-sm-4 col-md-3 button_xs ">
-                    <div class="glyph">
-                        <a class="btn btn-default btn-sm" role="button" title="Результати">
-                            <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-                        </a>
-                        <a class="btn btn-default btn-sm" role="button"
-                           title="Переглянути студентів">
-                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        </a>
-                        <a class="btn btn-default btn-sm" role="button" title="Розклад">
-                            <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-                        </a>
-                        <addedit-group
-                                [title]="titleForEdit"
-                                [groups]="group"
-                                [groupName]="group.group_name"
-                                [groupId]="group.group_id"
-                                [action]="edit"
-                                (refreshData)="refreshData($event)">
-                        </addedit-group>
-                        <a (click)="deleteGroup(group)" class="btn btn-danger btn-sm" role="button" title="Видалити"
-                           data-toggle="modal"
-                           data-target="#removeGroup">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        </a>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <ngb-pagination
-            [hidden]="!!searchCriteria || limit >= countOfGroup"
-            [collectionSize]="countOfGroup"
-            [pageSize]="limit"
-            [(page)]="page"
-            [maxSize]="5"
-            [rotate]="true"
-            [ellipses]="false"
-            [boundaryLinks]="true"
-            (pageChange)="pageChange($event)">
+    <entity-bar
+            [entityTitle]="entityTitle"
+            [searchTitle]="searchTitle"
+            [addTitle]="addTitle"
+            [selectLimit]="selectLimit"
+            [entityDataLength]="entityDataLength"
+            (activate)="activate($event)"
+            (searchRun)="findEntity($event)"
+            (selectRun)="changeLimit($event)">
+    </entity-bar>
+    <dt-table *ngIf="entityData.length>0"
+              [page]="page"
+              [limit]="limit"
+              [headers]="headers"
+              [actions]="actions"
+              [tableData]="entityData"
+              (activate)="activate($event)">
+    </dt-table>
+    <ngb-pagination *ngIf="entityDataLength"
+                    [collectionSize]="entityDataLength"
+                    [(page)]="page"
+                    [maxSize]="paginationSize"
+                    [pageSize]="limit"
+                    [rotate]="true"
+                    [ellipses]="true"
+                    [boundaryLinks]="true"
+                    (pageChange)="pageChange($event)"
+                    [hidden]="search.length || limit>=entityDataLength">
     </ngb-pagination>
 </div>
 <template ngbModalContainer></template>

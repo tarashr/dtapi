@@ -1,80 +1,33 @@
 <div class="entity-container">
-    <div class="navbar navbar-default ">
-        <div class="container-fluid">
-            <div class="navbar-text navbarText">{{title}}</div>
-            <form class="navbar-form navbar-left  navbarForm">
-                <div class="form-group inputSearch">
-                    <input type="text" class="form-control" placeholder="пошук">
-                </div>
-            </form>
-            <form class="navbar-form navbar-right navbarForm">
-                <div class="form-group">
-                    <add-edit-admin-user
-                        [action]="create"
-                        (refreshData)="refreshData($event)"
-                        [title]="createTitle">
-                    </add-edit-admin-user>
-                    <select class="form-control" name="count" id=""
-                            title="виберіть кількість записів на сторінці"
-                            (input)="changeLimit($event)">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option [value]="countOfAdminUsers">Всі</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <ul class="list-group entity_list">
-            <li class="list-group-item row hidden-xs">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">№</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Логін</div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">Поштова скринька</div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                </div>
-            </li>
-            <li *ngFor="let adminUser of adminUsers; let i = index" class="list-group-item row">
-                <div class="col-xs-12 col-sm-1 col-md-1 colxs12_number">
-                    <span class="visible-xs-inline-block">№:</span>
-                    <span class="align-xs">{{i+1+(currentPage-1)*limit}}</span>
-                </div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
-                    <span class="visible-xs-inline-block">Логін:</span>
-                    <span class="align-xs">{{adminUser.username}}</span>
-                </div>
-                <div class="col-xs-12 col-sm-4 col-md-4 colxs12">
-                    <span class="visible-xs-inline-block">Поштова скринька:</span>
-                    <span class="align-xs">{{adminUser.email}}</span>
-                </div>
-                <div class="col-xs-12 col-sm-3 col-md-3 colxs12_btn">
-                    <add-edit-admin-user
-                            [action]="edit"
-                            [title]="editTitle"
-                            [speciality]="adminUser"
-                            [id]="adminUser.id"
-                            [username]="adminUser.username"
-                            [email]="adminUser.email"
-                            (refreshData)="refreshData($event)">
-                    </add-edit-admin-user>
-                    <a class="btn btn-danger btn-sm " role="button"
-                       title="Видалити" (click)="delRecord(entity, adminUser.id)">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </a>
-
-                </div>
-            </li>
-        </ul>
-        <ngb-pagination
-                [pageSize]="limit"
-                [collectionSize]="countOfAdminUsers"
-                [(page)]="currentPage"
-                (pageChange)="pageChange($event)"
-                [maxSize]="maxSize"
-                [ellipses]="true"
-                [boundaryLinks]="true">
-        </ngb-pagination>
-    </div>
+    <entity-bar
+            [entityTitle]="entityTitle"
+            [searchTitle]="searchTitle"
+            [addTitle]="addTitle"
+            [selectLimit]="selectLimit"
+            [entityDataLength]="entityDataLength"
+            (activate)="activate($event)"
+            (searchRun)="findEntity($event)"
+            (selectRun)="changeLimit($event)">
+    </entity-bar>
+    <dt-table *ngIf="entityData.length"
+              [page]="page"
+              [limit]="limit"
+              [headers]="headers"
+              [actions]="actions"
+              [tableData]="entityData"
+              (activate)="activate($event)">
+    </dt-table>
+    <ngb-pagination *ngIf="entityDataLength"
+                    [collectionSize]="entityDataLength"
+                    [(page)]="page"
+                    [maxSize]="paginationSize"
+                    [pageSize]="limit"
+                    [rotate]="true"
+                    [ellipses]="true"
+                    [boundaryLinks]="true"
+                    (pageChange)="pageChange($event)"
+                    [hidden]="searchCriteria.length || limit>=entityDataLength">
+    </ngb-pagination>
 </div>
 <template ngbModalContainer></template>
+
