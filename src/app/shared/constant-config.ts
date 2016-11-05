@@ -134,8 +134,8 @@ export const headersTest = [
     {name: "Назва тесту", style: "col-xs-12 col-sm-2"},
     {name: "Завдань", style: "col-xs-12 col-sm-1"},
     {name: "Тривалість", style: "col-xs-12 col-sm-2"},
-    {name: "Статус", style: "col-xs-12 col-sm-2"},
     {name: "Cпроб", style: "col-xs-12 col-sm-1"},
+    {name: "Статус", style: "col-xs-12 col-sm-2"},
     {name: "", style: "col-xs-12 col-sm-3"}
 ];
 

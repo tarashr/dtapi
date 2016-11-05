@@ -20,5 +20,8 @@
               [tableData]="entityData"
               (activate)="activate($event)">
     </dt-table>
+    <div *ngIf="!entityData.length" class="alert alert-info" role="alert">
+        Для вибраного тесту немає детальнішого опису
+    </div>
 </div>
 <template ngbModalContainer></template>

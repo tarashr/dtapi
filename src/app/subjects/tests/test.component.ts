@@ -42,6 +42,7 @@ export class TestComponent implements OnInit {
         infoString: "",
         action: ""
     };
+    public
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -76,17 +77,17 @@ export class TestComponent implements OnInit {
                                 item.test_name,
                                 item.tasks,
                                 item.time_for_test,
-                                item.enabled,
-                                item.attempts
+                                item.attempts,
+                                item.enabled
                             ];
                             test.actions = this.actions;
                             tempArr.push(test);
                         });
                         this.entityData = tempArr;
                         for (let i = 0; i < this.entityData.length; i++) {
-                            this.entityData[i].entityColumns[3] == "1" ?
-                                this.entityData[i].entityColumns.splice(3, 1, "Доступно") :
-                                this.entityData[i].entityColumns.splice(3, 1, "Не доступно");
+                            this.entityData[i].entityColumns[4] == "1" ?
+                                this.entityData[i].entityColumns.splice(4, 1, "Доступно") :
+                                this.entityData[i].entityColumns.splice(4, 1, "Не доступно");
                         }
                     }
                 },
@@ -135,7 +136,7 @@ export class TestComponent implements OnInit {
                     data.list[1].value,
                     data.list[2].value,
                     data.list[3].value,
-                    data.list[4].value,
+                    data.select.selectItem.indexOf(data.select.selected),
                     this.subject_id);
                 this.crudService.insertData(this.entity, newTest)
                     .subscribe(() => {
@@ -144,6 +145,7 @@ export class TestComponent implements OnInit {
                         this.configAdd.list.forEach((item)=> {
                             item.value = ""
                         });
+                        this.configAdd.select.selected = "";
                         this.getTestBySubjectId();
                     });
             }, ()=> {
@@ -156,6 +158,7 @@ export class TestComponent implements OnInit {
             item.value = data.entityColumns[i]
         });
         this.configEdit.id = data.entity_id;
+        this.configEdit.select.selected = data.entityColumns[4];
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
@@ -164,7 +167,7 @@ export class TestComponent implements OnInit {
                     data.list[1].value,
                     data.list[2].value,
                     data.list[3].value,
-                    data.list[4].value);
+                    data.select.selectItem.indexOf(data.select.selected));
                 this.crudService.updateData(this.entity, data.id, editedTest)
                     .subscribe(()=> {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
@@ -185,7 +188,6 @@ export class TestComponent implements OnInit {
         modalRefDel.result
             .then(() => {
                 this.deleteTest(this.entity, data.entity_id);
-                console.log("dataaaa" + JSON.stringify(data));
             }, ()=> {
                 return
             });

@@ -81,7 +81,13 @@ export const configAddSubject = {
         {name: "Опис предмету", value: "", title: "description", type: "text"},
     ],
     action: "create",
-    labelBtn: "Додати"
+    labelBtn: "Додати",
+    select: {
+        state: false,
+        selectName: "Доступність",
+        selectItem: [],
+        selected: ""
+    }
 };
 
 export const configAddAdminUser = {
@@ -112,11 +118,16 @@ export const configAddTest = {
         {name: "Назва тесту", value: "", title: "name", type: "text"},
         {name: "Кількість завдань", value: "", title: "tasks", type: "number"},
         {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text"},
-        {name: "Доступність", value: "", title: "enabled", type: "text"},
         {name: "Кількість спроб", value: "", title: "attempts", type: "number"}
     ],
     action: "create",
-    labelBtn: "Додати"
+    labelBtn: "Додати",
+    select: {
+        state: "true",
+        selectName: "Доступність",
+        selectItem: ["Не доступно", "Доступно"],
+        selected: ""
+    }
 };
 
 export const configAddTimeTable = {
@@ -184,7 +195,13 @@ export const configEditSubject = {
     ],
     action: "edit",
     labelBtn: "Редагувати",
-    id: ""
+    id: "",
+    select: {
+        state: false,
+        selectName: "Доступність",
+        selectItem: [],
+        selected: ""
+    }
 };
 
 export const configEditSpeciality = {
@@ -204,13 +221,17 @@ export const configEditTest = {
         {name: "Назва тесту", value: "", title: "name", type: "text"},
         {name: "Кількість завдань", value: "", title: "tasks", type: "text"},
         {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text"},
-        {name: "Доступність", value: "", title: "enabled", type: "text"},
         {name: "Кількість спроб", value: "", title: "attempts", type: "text"},
-        {name: "Назва предмет", value: "", title: "subject_name", type: "text"}
     ],
     action: "edit",
     labelBtn: "Редагувати",
-    id: ""
+    id: "",
+    select: {
+        state: "true",
+        selectName: "Доступність",
+        selectItem: ["Не доступно", "Доступно"],
+        selected: ""
+    }
 };
 
 export const configEditTimeTable = {
@@ -286,7 +307,7 @@ export const getRecordsRange = function () {
 
 export const successEventModal = function () {
     this.modalInfoConfig.action = "info";
-    this.modalInfoConfig.title="Повідомлення";
+    this.modalInfoConfig.title = "Повідомлення";
     const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
     modalRef.componentInstance.config = this.modalInfoConfig;
 };

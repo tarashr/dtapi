@@ -28,5 +28,8 @@
             [ellipses]="true"
             [boundaryLinks]="true">
     </ngb-pagination>
+    <div *ngIf="!entityData.length" class="alert alert-info" role="alert">
+        Для вибраного тесту завдань немає
+    </div>
 </div>
 <template ngbModalContainer></template>
