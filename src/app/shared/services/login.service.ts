@@ -7,14 +7,22 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {User} from "../classes/user";
 import {loginUrl} from "../constants";
 import {logoutUrl} from "../constants";
-import {modalInfoConfig, successEventModal} from "../constant";
+import {
+    modalInfoConfig,
+    successEventModal,
+    badLoginOrPasswordMessage,
+    badLogoutMessage,
+    serverErrorMessage
+} from "../constant";
 
 @Injectable()
 export class LoginService {
     private modalInfoConfig: any = modalInfoConfig;
     private loginUrl: string = loginUrl;
     private logoutUrl: string = logoutUrl;
-
+    private badLoginOrPasswordMessage: string = badLoginOrPasswordMessage;
+    private badLogoutMessage: string = badLogoutMessage;
+    private serverErrorMessage: string = serverErrorMessage;
     private _headers = new Headers({"content-type": "application/json"});
 
     constructor(private _router: Router,
@@ -27,7 +35,7 @@ export class LoginService {
     private handleError = (error: any): Observable<any> => {
         // let errMsg = (error.message) ? error.message :
         //     error.status ? `${error.status} - ${error.statusText}` : "Server error";
-        return Observable.throw(error.status || `Помилка на сервері`);
+        return Observable.throw(error.status);
     };
 
     private success = (response: Response) => response.json();
@@ -56,12 +64,11 @@ export class LoginService {
                     }
                 },
                 (error: any) => {
-                    debugger;
                     if (error === 400) {
-                        this.modalInfoConfig.infoString = `Неправильний логін або пароль`;
+                        this.modalInfoConfig.infoString = this.badLoginOrPasswordMessage;
                         this.successEventModal();
                     } else {
-                        this.modalInfoConfig.infoString = error;
+                        this.modalInfoConfig.infoString = this.serverErrorMessage;
                         this.successEventModal();
                     }
                 });
@@ -76,9 +83,17 @@ export class LoginService {
                 () => {
                     sessionStorage.removeItem("userRole");
                     sessionStorage.removeItem("userId");
-                    this._router.navigate(["/login"]);
-                    this.modalInfoConfig.infoString = `Виникла помилка в процесі виходу. Вихід з облікового запису не відбувся!`;
-                    this.successEventModal();
+                    this.modalInfoConfig.infoString = this.badLogoutMessage;
+                    this.modalInfoConfig.action = "info";
+                    this.modalInfoConfig.title = "Попередження!";
+                    const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
+                    modalRef.componentInstance.config = this.modalInfoConfig;
+                    modalRef.result
+                        .then(() => {
+                            return;
+                        }, () => {
+                            this._router.navigate(["/login"]);
+                        });
                 });
     }
 
