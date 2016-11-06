@@ -152,11 +152,9 @@ export class StudentComponent implements OnInit {
         switch (data.action) {
             case "create":
                 this._router.navigate(["/admin/student/student-new-profile"]);
-                console.log("we will add ");
                 break;
             case "view":
                 this._router.navigate(["/admin/student/student-profile", data.entity_id]);
-                console.log("we will edit ", data.entityColumns[0] + " with id: " + data.entity_id);
                 break;
             case "delete":
                 this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;

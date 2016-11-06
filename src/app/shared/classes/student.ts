@@ -1,5 +1,5 @@
 export class Student {
-    user_id:number;
+    user_id: number;
     username: string;
     password: string;
     password_confirm: string;
@@ -10,6 +10,7 @@ export class Student {
     student_fname: string;
     group_id: number;
     group_name?: string;
+    photo?: string;
     plain_password: string;
 }
 

@@ -71,3 +71,11 @@ label {
     float: right;
     margin-right: 10px;
 }
+
+.selectGroup{
+    clear:both;
+    width: 157px;
+    padding: 2px;
+    height: 24px;
+    /*text-align:right;*/
+}

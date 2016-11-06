@@ -1,7 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {Location} from "@angular/common";
 import {Router, ActivatedRoute, Params} from "@angular/router";
-import {Student} from "../shared/classes/student";
 import {Group} from "../shared/classes/group";
 import {CRUDService} from "../shared/services/crud.service";
 import {EntityManagerBody} from "../shared/classes/entity-manager-body";
@@ -22,14 +21,13 @@ export class StudentProfileComponent implements OnInit {
     public passwordStatus: boolean = true;
     public passwordStatusText: string = "password";
     public passwordButtonName: string = "Показати пароль";
-    public editSaveStatus: boolean = false;
+    // public editSaveStatus: boolean = false;
     public editSaveButtonName: string = "Редагувати дані";
-    public statusView: string = "disabled";
+    public statusView: boolean = true;
     private studentDataPart1: Array <any>;
     private studentDataPart2: Array <any>;
 
-    constructor(private _router: Router,
-                private route: ActivatedRoute,
+    constructor(private route: ActivatedRoute,
                 private _commonService: CRUDService,
                 private location: Location) {
     }
@@ -58,15 +56,13 @@ export class StudentProfileComponent implements OnInit {
     }
 
     editSaveStudentProfile() {
-        if (this.editSaveStatus) {
-            this.editSaveButtonName = "Редагувати дані";
-            this.statusView = "disabled";
+        if (this.statusView) {
+            this.editSaveButtonName = "Зберегти дані";
         }
         else {
-            this.editSaveButtonName = "Зберегти дані";
-            this.statusView = "";
+            this.editSaveButtonName = "Редагувати дані";
         }
-        this.editSaveStatus = !this.editSaveStatus;
+        this.statusView = !this.statusView;
     }
 
     getData() {
@@ -76,7 +72,7 @@ export class StudentProfileComponent implements OnInit {
         ).subscribe(data => {
                 this.studentDataPart1 = data[0];
                 this.studentDataPart2 = data[1];
-                Object.assign(this.student, this.studentDataPart1);
+                this.student = this.studentDataPart1;
                 this.student[0].email = this.studentDataPart2[0].email;
                 this.student[0].username = this.studentDataPart2[0].username;
                 this.getGroupName();

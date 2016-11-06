@@ -1,26 +1,37 @@
 <div class="entity-container">
-    <div class="student-profile-title">ПРОФІЛЬ НОВОГО СТУДЕНТА</div>
-    <div class="student-datas row">
-        <div class="student-foto col-xs-12 col-sm-3 col-md-3">
-            <!--*<img class="img-responsive img-circle" src="img/profile.png" alt="">-->
-            <input class="inputStudentData" type="file">
-        </div>
-        <div class="student-data1 col-xs-12 col-sm-4 col-md-4">
-            <div><label for="surname">Прізвище:</label><input id="surname" class="inputStudentData "></div>
-            <div><label for="name">Ім'я:</label><input id="name" class="inputStudentData"></div>
-            <div><label for="fname">По батькові:</label><input id="fname" class="inputStudentData "></div>
-            <div><label class="" for="group">Група:</label><input id="group" class="inputStudentData"></div>
-        </div>
-        <div class="student-data2 col-xs-12 col-sm-5 col-md-5">
-            <div><label for="login">Логін:</label><input id="login" class="inputStudentData"></div>
-            <div><label for="password">Пароль:</label><input id="password" class="inputStudentData"></div>
-            <div><label for="gradebook_id">№ залікової книжки:</label><input id="gradebook_id" class="inputStudentData"></div>
-            <div><label for="email">Електронна адреса:</label><input id="email" class="inputStudentData"></div>
-        </div>
-        <div class="buttonCreateRefresh">
-            <input class="button-save-student-profile" type="button" value="Зберегти дані">
-            <input class="button-refresh-datas" type="button" value="Очистити дані">
-        </div>
+    <div class="student-profile-title">ПРОФІЛЬ НОВОГО СТУДЕНТА
+        <button type="button" class="btn btn-default positionLeft"
+                (click)="goBack()">Назад
+        </button>
     </div>
+    <div class="student-datas row">
+            <div class="student-foto col-xs-12 col-sm-3 col-md-3">
+                <!--*<img class="img-responsive img-circle" src="img/profile.png" alt="">-->
+                <input class="inputStudentData" type="file">
+            </div>
+            <div *ngFor="let stud of student">
+                <div class="student-data1 col-xs-12 col-sm-4 col-md-4" >
+                    <div><label for="surname">Прізвище:</label><input id="surname" class="inputStudentData" [disabled]="!statusView" [(ngModel)]="stud.student_surname" required></div>
+                    <div><label for="name">Ім'я:</label><input id="name" class="inputStudentData" [(ngModel)]="stud.student_name" [disabled]="!statusView" required></div>
+                    <div><label for="fname">По батькові:</label><input id="fname" class="inputStudentData" [(ngModel)]="stud.student_fname" [disabled]="!statusView" required></div>
+                    <div><label class="" for="group">Група:</label>
+                    <select id="group" class="inputStudentData selectGroup" [(ngModel)]="stud.group_name">
+                        <option *ngFor="let item of groups" class="inputStudentData" [value]="item.group_name">{{item.group_name}}</option>
+                    </select>
+                       <!-- <input id="group" class="inputStudentData" [(ngModel)]="stud.group_name" [disabled]="!statusView" required></div> -->
+                    </div>
+                </div>
 
+                <div class="student-data2 col-xs-12 col-sm-5 col-md-5">
+                    <div><label for="login">Логін:</label><input id="login" class="inputStudentData" [(ngModel)]="stud.username" [disabled]="!statusView" required></div>
+                    <div><label for="password">Пароль:</label><input id="password" class="inputStudentData" [type]="passwordStatusText" [(ngModel)]="stud.plain_password" [disabled]="!statusView" required></div>
+                    <div><label for="gradebook_id">№ залікової книжки:</label><input id="gradebook_id" class="inputStudentData" [(ngModel)]="stud.gradebook_id" [disabled]="!statusView" required></div>
+                    <div><label for="email" required pattern="\S+@[a-z]+.[a-z]+">Електронна адреса:</label><input id="email" class="inputStudentData" [(ngModel)]="stud.email" [disabled]="!statusView" required></div>
+                </div>
+            </div>
+            <div class="buttonCreateRefresh">
+                <button class="button-save-student-profile" type="button" (click)="editSaveStudentProfile()" [disabled]="!editSaveButtonStatus" >{{editSaveButtonName}}</button>
+                <button class="button-refresh-datas" type="button" (click)="showPassword()">{{passwordButtonName}}</button>
+            </div>
+        </div>
 </div>
