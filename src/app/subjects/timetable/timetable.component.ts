@@ -39,6 +39,8 @@ export class TimeTableComponent implements OnInit {
     public entityData: any[] = [];
     public groupsId = [];
     public groupsById = [];
+    public groups = [];
+    public entityGroup = "group";
     public timeTableWithGroupId = [];
 
     public modalInfoConfig = {
@@ -60,11 +62,20 @@ export class TimeTableComponent implements OnInit {
             this.subject_id = +params['id']; // (+) converts string 'id' to a number
             this.getTimeTableForSubject();
         });
+        this.getGroups();
     }
 
     goBack(): void {
         this.location.back();
 
+    }
+
+    getGroups() {
+        this.crudService.getRecords(this.entityGroup)
+            .subscribe(
+                data => this.groups = data,
+                error=>console.log("error: ", error)
+            )
     }
 
     getTimeTableForSubject() {
@@ -76,7 +87,7 @@ export class TimeTableComponent implements OnInit {
                         for (let i = 0; i < data.length; i++) {
                             this.groupsId[i] = data[i].group_id;
                         }
-                        this.getGroupsById()
+                        this.getGroupsById();
                     }
                 },
                 error=>console.log("error: ", error)
@@ -89,6 +100,8 @@ export class TimeTableComponent implements OnInit {
             .subscribe(
                 data => {
                     this.groupsById = data;
+                    console.log("this is timeT" + "" +this.timeTableWithGroupId);
+                    console.log("this is group" + "" +this.groupsById);
                     for (let i = 0; i < this.timeTableWithGroupId.length; i++) {
                         for (let j = 0; j < this.groupsById.length; j++) {
                             if (this.timeTableWithGroupId[i].group_id === this.groupsById[j].group_id) {
@@ -142,9 +155,10 @@ export class TimeTableComponent implements OnInit {
         }
     }
 
+
     substituteNameGroupOnId(data) {
-        this.groupsById.forEach((item) => {
-            if (item.group_name = data.select[0].selected) {
+        this.groups.forEach((item) => {
+            if (item.group_name === data.select[0].selected) {
                 data.select[0].selected = item.group_id;
             }
         });
@@ -157,7 +171,7 @@ export class TimeTableComponent implements OnInit {
         });
         this.configAdd.select[0].selected = "";
         this.configAdd.select[0].selectItem = [];
-        this.groupsById.forEach(item => {
+        this.groups.forEach(item => {
             this.configAdd.select[0].selectItem.push(item.group_name);
         });
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
@@ -186,7 +200,7 @@ export class TimeTableComponent implements OnInit {
         this.configEdit.select[0].selected = data.entityColumns[0];
         this.configEdit.id = data.entity_id;
         this.configEdit.select[0].selectItem = [];
-        this.groupsById.forEach(item => {
+        this.groups.forEach(item => {
             this.configEdit.select[0].selectItem.push(item.group_name);
         });
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
@@ -209,7 +223,7 @@ export class TimeTableComponent implements OnInit {
     }
 
     deleteCase(data) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видалити ${data.entityColumns[0]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});

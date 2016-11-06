@@ -81,8 +81,7 @@ export const configAddSubject = {
         {name: "Опис предмету", value: "", title: "description", type: "text"},
     ],
     action: "create",
-    labelBtn: "Додати",
-    select: ""
+    labelBtn: "Додати"
 };
 
 export const configAddAdminUser = {
@@ -189,8 +188,7 @@ export const configEditSubject = {
     ],
     action: "edit",
     labelBtn: "Редагувати",
-    id: "",
-    select: ""
+    id: ""
 };
 
 export const configEditSpeciality = {
@@ -223,12 +221,14 @@ export const configEditTest = {
 export const configEditTimeTable = {
     title: "Редагувати розклад проведення тестування",
     list: [
-        {name: "Дата", value: "", title: "date"},
+        {name: "Дата", value: "", title: "date", type: "date"},
     ],
     action: "edit",
     labelBtn: "Редагувати",
     id: "",
-    select: ""
+    select: [
+        {selectName: "Групи", selectItem: [], selected: ""}
+    ]
 };
 
 export const configEditTestDetail = {
