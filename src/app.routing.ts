@@ -20,8 +20,6 @@ import {TimeTableComponent} from "./app/subjects/timetable/timetable.component";
 import { TestDetailComponent } from "./app/subjects/test-detail/test-detail.component";
 import { QuestionComponent } from "./app/subjects/question/question.component";
 
-import {StartPageComponent}  from './app/studentpart/start-page.component';
-
 import {UserProfileComponent} from "./app/studentpart/profile/user-profile.component";
 import {TestPlayerComponent} from "./app/test-player/test-player.component";
 import {TestDetail} from "./app/shared/classes/test-detail";

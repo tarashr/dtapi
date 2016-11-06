@@ -3,15 +3,15 @@ import {Headers, Http, Response} from '@angular/http';
 import {Observable} from 'rxjs';
 import {Router} from "@angular/router";
 import '../rxjs-operators';
-import {baseUrl}  from "../constants.ts";
 import {
     getTestsBySubjectIdUrl,
     getTimeTableForSubjectUrl,
     getTestDetailsByTestUrl,
     getQuestionsByLevelRandUrl,
     getRecordsRangeByTestUrl,
-    countRecordsByTestUrl
-}  from "../constants.ts";
+    countRecordsByTestUrl,
+    baseUrl
+}  from "../../shared/constants";
 
 @Injectable()
 export class SubjectService {

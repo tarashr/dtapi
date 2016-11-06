@@ -3,9 +3,14 @@ import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
 import {SubjectService}  from '../../shared/services/subject.service';
-import {configAddTestDetail, configEditTestDetail, successEventModal} from '../../shared/constants';
+import {
+    configAddTestDetail,
+    configEditTestDetail,
+    successEventModal,
+    headersTestDetail,
+    actionsTestDetail,
+    modalInfoConfig} from '../../shared/constant';
 import {TestDetail} from "../../shared/classes/test-detail";
-import {headersTestDetail, actionsTestDetail} from "../../shared/constant-config"
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -27,7 +32,8 @@ export class TestDetailComponent implements OnInit {
     public headers: any = headersTestDetail;
     public actions: any = actionsTestDetail;
     public successEventModal = successEventModal;
-    private config:any = {action: "create"};
+    private config: any = {action: "create"};
+    public modalInfoConfig: any = modalInfoConfig;
 
     //varibles for addedit
     public configAdd = configAddTestDetail;
@@ -36,12 +42,6 @@ export class TestDetailComponent implements OnInit {
     // variables for common component
     public entityTitle: string = "Детальніше про тест";
     public entityData: any[] = [];
-
-    public modalInfoConfig = {
-        title: "",
-        infoString: "",
-        action: ""
-    };
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -68,11 +68,14 @@ export class TestDetailComponent implements OnInit {
             .subscribe(
                 data => {
                     let tempArr: any[] = [];
+                    let numberOfOrder: number;
                     if (data.length) {
-                        data.forEach((item)=> {
+                        data.forEach((item, i)=> {
+                            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                             let testDetail: any = {};
                             testDetail.entity_id = item.id;
                             testDetail.entityColumns = [
+                                numberOfOrder,
                                 item.level,
                                 item.tasks,
                                 item.rate
@@ -114,6 +117,9 @@ export class TestDetailComponent implements OnInit {
     }
 
     createCase() {
+        this.configAdd.list.forEach((item)=> {
+            item.value = ""
+        });
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
@@ -127,9 +133,6 @@ export class TestDetailComponent implements OnInit {
                     .subscribe(() => {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
-                        this.configAdd.list.forEach((item)=> {
-                            item.value = ""
-                        });
                         this.getTestDetailsByTest();
                     });
             }, ()=> {
@@ -139,7 +142,7 @@ export class TestDetailComponent implements OnInit {
 
     editCase(data) {
         this.configEdit.list.forEach((item, i) => {
-            item.value = data.entityColumns[i]
+            item.value = data.entityColumns[i+1]
         });
         this.configEdit.id = data.entity_id;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
@@ -161,7 +164,7 @@ export class TestDetailComponent implements OnInit {
     }
 
     deleteCase(data) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});

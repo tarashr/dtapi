@@ -64,13 +64,8 @@ export const actionsSubject = [
         glyphicon: "glyphicon glyphicon-check", btnClassName: "btn btn-default btn-sm"
     },
     {
-<<<<<<< HEAD
         title: "Розклад тестів", action: "timeTable",
         style: "glyphicon glyphicon-th", btnStyle: "btn btn-default btn-sm"
-=======
-        title: "Розклад тестів", action: "shedule",
-        glyphicon: "glyphicon glyphicon-th", btnClassName: "btn btn-default btn-sm"
->>>>>>> d087ed305600f4235eadb5b7891d911046b6660f
     },
     {
         title: "Редагувати предмет", action: "edit",
@@ -180,7 +175,6 @@ export const actionsGroup = [
 
 
 export const headersTest = [
-<<<<<<< HEAD
     {name: "№", style: "col-xs-12 col-sm-1"},
     {name: "Назва тесту", style: "col-xs-12 col-sm-2"},
     {name: "Завдань", style: "col-xs-12 col-sm-1"},
@@ -188,34 +182,17 @@ export const headersTest = [
     {name: "Cпроб", style: "col-xs-12 col-sm-1"},
     {name: "Статус", style: "col-xs-12 col-sm-2"},
     {name: "", style: "col-xs-12 col-sm-3"}
-=======
-    {name: "№", className: "col-xs-12 col-sm-1"},
-    {name: "Назва тесту", className: "col-xs-12 col-sm-2"},
-    {name: "Завдань", className: "col-xs-12 col-sm-1"},
-    {name: "Тривалість", className: "col-xs-12 col-sm-2"},
-    {name: "Статус", className: "col-xs-12 col-sm-2"},
-    {name: "Cпроб", className: "col-xs-12 col-sm-1"},
-    {name: "", className: "col-xs-12 col-sm-3"}
->>>>>>> d087ed305600f4235eadb5b7891d911046b6660f
 ];
 
 export const actionsTest = [
     {
-<<<<<<< HEAD
         title: "Детальніше про тест", action: "testDetail",
         style: "glyphicon glyphicon-info-sign", btnStyle: "btn btn-default btn-sm"
     },
     {
-        title: "Завдання", action: "question",
-        style: "glyphicon glyphicon-tasks", btnStyle: "btn btn-default btn-sm"
-=======
-        title: "Детальніше про тест", action: "testDetaile",
-        glyphicon: "glyphicon glyphicon-info-sign", btnClassName: "btn btn-default btn-sm"
-    },
-    {
         title: "Завдання", action: "task",
         glyphicon: "glyphicon glyphicon-tasks", btnClassName: "btn btn-default btn-sm"
->>>>>>> d087ed305600f4235eadb5b7891d911046b6660f
+
     },
     {
         title: "Редагувати тест", action: "edit",

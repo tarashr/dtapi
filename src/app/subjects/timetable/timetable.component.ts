@@ -3,9 +3,14 @@ import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
 import {SubjectService}  from '../../shared/services/subject.service';
-import {configAddTimeTable, configEditTimeTable, successEventModal} from '../../shared/constants';
+import {
+    configAddTimeTable,
+    configEditTimeTable,
+    successEventModal,
+    headersTimeTable,
+    actionsTimeTable,
+    modalInfoConfig} from '../../shared/constant';
 import {TimeTable} from "../../shared/classes/timetable";
-import {headersTimeTable, actionsTimeTable} from "../../shared/constant-config"
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -29,6 +34,7 @@ export class TimeTableComponent implements OnInit {
     public actions: any = actionsTimeTable;
     public successEventModal = successEventModal;
     private config: any = {action: "create"};
+    public modalInfoConfig: any = modalInfoConfig;
 
     //varibles for addedit
     public configAdd = configAddTimeTable;
@@ -42,12 +48,6 @@ export class TimeTableComponent implements OnInit {
     public groups = [];
     public entityGroup = "group";
     public timeTableWithGroupId = [];
-
-    public modalInfoConfig = {
-        title: "",
-        infoString: "",
-        action: ""
-    };
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -115,11 +115,13 @@ export class TimeTableComponent implements OnInit {
 
     private createTableConfig = (data: any)=> {
         let tempArr: any[] = [];
+        let numberOfOrder: number;
         if (this.timeTableWithGroupId.length) {
-            this.timeTableWithGroupId.forEach((item)=> {
+            this.timeTableWithGroupId.forEach((item, i)=> {
+                numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                 let timetable: any = {};
                 timetable.entity_id = item.timetable_id;
-                timetable.entityColumns = [item.group_name, item.event_date];
+                timetable.entityColumns = [numberOfOrder, item.group_name, item.event_date];
                 timetable.actions = this.actions;
                 tempArr.push(timetable);
             });
@@ -193,8 +195,8 @@ export class TimeTableComponent implements OnInit {
     };
 
     editCase(data) {
-        this.configEdit.list[0].value = data.entityColumns[1];
-        this.configEdit.select[0].selected = data.entityColumns[0];
+        this.configEdit.list[0].value = data.entityColumns[2];
+        this.configEdit.select[0].selected = data.entityColumns[1];
         this.configEdit.id = data.entity_id;
         this.configEdit.select[0].selectItem = [];
         this.groups.forEach(item => {
@@ -220,7 +222,7 @@ export class TimeTableComponent implements OnInit {
     }
 
     deleteCase(data) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видалити ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видалити ${data.entityColumns[1]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});

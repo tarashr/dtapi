@@ -3,9 +3,14 @@ import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
 import {SubjectService}  from '../../shared/services/subject.service';
-import {configAddQuestion, configEditQuestion, successEventModal} from '../../shared/constants';
+import {
+    configAddQuestion,
+    configEditQuestion,
+    successEventModal,
+    headersQuestion,
+    actionsQuestion,
+    modalInfoConfig} from '../../shared/constant';
 import {Question} from "../../shared/classes/question";
-import {headersQuestion, actionsQuestion} from "../../shared/constant-config"
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -26,7 +31,7 @@ export class QuestionComponent implements OnInit {
     public headers: any = headersQuestion;
     public actions: any = actionsQuestion;
     public successEventModal = successEventModal;
-    private config:any = {action: "create"};
+    private config: any = {action: "create"};
 
     //variable for pagination
     public page: number = 1;
@@ -46,12 +51,6 @@ export class QuestionComponent implements OnInit {
 
     // variables for common component
     public entityData: any[] = [];
-
-    public modalInfoConfig = {
-        title: "",
-        infoString: "",
-        action: ""
-    };
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -89,11 +88,14 @@ export class QuestionComponent implements OnInit {
             .subscribe(
                 data => {
                     let tempArr: any[] = [];
-                    if(data.length) {
-                        data.forEach(item => {
+                    let numberOfOrder: number;
+                    if (data.length) {
+                        data.forEach((item, i) => {
+                            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                             let question: any = {};
                             question.entity_id = item.question_id;
                             question.entityColumns = [
+                                numberOfOrder,
                                 item.question_text,
                                 item.level,
                                 item.type,

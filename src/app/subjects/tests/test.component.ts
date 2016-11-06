@@ -3,9 +3,14 @@ import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
 import {SubjectService}  from '../../shared/services/subject.service';
-import {configAddTest, configEditTest, successEventModal} from '../../shared/constants';
+import {
+    configAddTest,
+    configEditTest,
+    successEventModal,
+    actionsTest,
+    headersTest,
+    modalInfoConfig} from '../../shared/constant';
 import {Test} from "../../shared/classes/test";
-import {headersTest, actionsTest} from "../../shared/constant-config"
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -27,7 +32,8 @@ export class TestComponent implements OnInit {
     public headers: any = headersTest;
     public actions: any = actionsTest;
     public successEventModal = successEventModal;
-    private config:any = {action: "create"};
+    private config: any = {action: "create"};
+    public modalInfoConfig: any = modalInfoConfig;
 
     //varibles for addedit
     public configAdd = configAddTest;
@@ -36,13 +42,6 @@ export class TestComponent implements OnInit {
     // variables for common component
     public entityTitle: string = "Тести";
     public entityData: any[] = [];
-
-    public modalInfoConfig = {
-        title: "",
-        infoString: "",
-        action: ""
-    };
-    public
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -69,11 +68,14 @@ export class TestComponent implements OnInit {
             .subscribe(
                 data => {
                     let tempArr: any[] = [];
+                    let numberOfOrder: number;
                     if (data.length) {
-                        data.forEach((item)=> {
+                        data.forEach((item, i)=> {
+                            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                             let test: any = {};
                             test.entity_id = item.test_id;
                             test.entityColumns = [
+                                numberOfOrder,
                                 item.test_name,
                                 item.tasks,
                                 item.time_for_test,
@@ -85,9 +87,9 @@ export class TestComponent implements OnInit {
                         });
                         this.entityData = tempArr;
                         for (let i = 0; i < this.entityData.length; i++) {
-                            this.entityData[i].entityColumns[4] == "1" ?
-                                this.entityData[i].entityColumns.splice(4, 1, "Доступно") :
-                                this.entityData[i].entityColumns.splice(4, 1, "Не доступно");
+                            this.entityData[i].entityColumns[5] == "1" ?
+                                this.entityData[i].entityColumns.splice(5, 1, "Доступно") :
+                                this.entityData[i].entityColumns.splice(5, 1, "Не доступно");
                         }
                     }
                 },
@@ -96,14 +98,14 @@ export class TestComponent implements OnInit {
     }
 
     deleteTest(entity: string, id: number): void {
-            this.crudService
-                .delRecord(this.entity, id)
-                .subscribe(
-                    () => {
-                        this.getTestBySubjectId();
-                    },
-                    error => this.errorMessage = <any>error
-                );
+        this.crudService
+            .delRecord(this.entity, id)
+            .subscribe(
+                () => {
+                    this.getTestBySubjectId();
+                },
+                error => this.errorMessage = <any>error
+            );
     }
 
     activate(data: any) {
@@ -155,10 +157,10 @@ export class TestComponent implements OnInit {
 
     editCase(data) {
         this.configEdit.list.forEach((item, i) => {
-            item.value = data.entityColumns[i]
+            item.value = data.entityColumns[i+1]
         });
         this.configEdit.id = data.entity_id;
-        this.configEdit.select[0].selected = data.entityColumns[4];
+        this.configEdit.select[0].selected = data.entityColumns[5];
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
