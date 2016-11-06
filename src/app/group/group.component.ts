@@ -17,13 +17,13 @@ import {
     pageChange,
     getCountRecords,
     delRecord,
+    findEntity,
     refreshData,
-    successEventModal
-} from "../shared/constants";
-import {
+    successEventModal,
     headersGroup,
-    actionsGroup
-} from "../shared/constant-config"
+    actionsGroup,
+    modalInfoConfig
+} from "../shared/constant";
 
 @Component({
     templateUrl: 'group.component.html',
@@ -31,12 +31,7 @@ import {
 })
 export class GroupComponent implements OnInit {
 
-    public modalInfoConfig = {
-        title: "",
-        infoString: "",
-        action: ""
-    };
-
+    public modalInfoConfig: any = modalInfoConfig;
     public configAdd = configAddGroup;
     public configEdit = configEditGroup;
     public paginationSize = maxSize;
@@ -78,6 +73,7 @@ export class GroupComponent implements OnInit {
     public delRecord = delRecord;
     public refreshData = refreshData;
     public successEventModal = successEventModal;
+    public findEntity = findEntity;
 
     ngOnInit() {
         this.getCountRecords();
@@ -87,10 +83,12 @@ export class GroupComponent implements OnInit {
 
     private createTableConfig = (data: any)=> {
         let tempArr: any[] = [];
-        data.forEach((item)=> {
+        let numberOfOrder: number;
+        data.forEach((item, i)=> {
+            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
             let group: any = {};
             group.entity_id = item.group_id;
-            group.entityColumns = [item.group_name, item.faculty_name, item.speciality_name];
+            group.entityColumns = [numberOfOrder, item.group_name, item.faculty_name, item.speciality_name];
             tempArr.push(group);
         });
         this.entityData = tempArr;
@@ -176,31 +174,8 @@ export class GroupComponent implements OnInit {
             );
     }
 
-    findEntity(searchTerm: string) {
-        this.search = searchTerm;
-        if (this.search.length === 0) {
-            this.offset = 0;
-            this.page = 1;
-            this.getCountRecords();
-            return;
-        }
-
-        this.crudService.getRecordsBySearch(this.entity, this.search)
-            .subscribe(data => {
-                if (data.response == "no records") {
-                    this.entityData = [];
-                    return;
-                }
-                this.page = 1;
-                this.createTableConfig(data);
-            }, error=>console.log("error: ", error));
-    };
-
     activate(data: any) {
         switch (data.action) {
-            case "group":
-                this._router.navigate(["/admin/faculty", data.entity_id, "groups"]);
-                break;
             case "create":
                 this.createCase();
                 break;
@@ -232,7 +207,7 @@ export class GroupComponent implements OnInit {
 
     editCase(data:any){
         this.configEdit.list.forEach((item, i)=> {
-            item.value = data.entityColumns[i]
+            item.value = data.entityColumns[i + 1]
         });
         this.configEdit.id = data.entity_id;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
