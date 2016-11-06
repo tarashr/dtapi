@@ -1,120 +1,122 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 import {Router, ActivatedRoute, Params} from "@angular/router";
+import {Location} from "@angular/common";
+import {Group} from "../shared/classes/group";
 import {Student} from "../shared/classes/student";
 import {CRUDService} from "../shared/services/crud.service";
 
 @Component({
-    templateUrl: 'student-new-profile.component.html',
-    styleUrls: ['student.component.css'],
+    templateUrl: "student-new-profile.component.html",
+    styleUrls: ["student.component.css"],
 })
 export class StudentNewProfileComponent implements OnInit {
 
-    public students:Student[];
-    private countOfStudents:number;
-    public entity:string = "student";
-    public limit:number = 5;
-    private findResultStudents:Student[];
-    public searchData:string = "";
-    public page:number = 1;
-    private offset:number = 0;
+    public student: Student [] = [];
+    public newStudent: Student [] = [];
+    public entity: string = "student";
+    // public entityUser: string = "AdminUser";
+    public groupEntity: string = "Group";
+    public groups: Group[] = [];
+    public user_id: number;
+    public passwordStatus: boolean = false;
+    public passwordStatusText: string = "text";
+    public passwordButtonName: string = "Приховати пароль";
+    // public editSaveStatus: boolean = true;
+    public editSaveButtonName: string = "Зберегти дані";
+    public statusView: boolean = true;
+    public editSaveButtonStatus: boolean = false;
 
-    constructor(private _router:Router,
-                private route:ActivatedRoute,
-                private _commonService:CRUDService) {
+    // private studentDataPart1: Array <any>;
+    // private studentDataPart2: Array <any>;
+
+    constructor(private route: ActivatedRoute,
+                private _commonService: CRUDService,
+                private location: Location
+                ) {
+
     }
 
     ngOnInit() {
-        let userRole: string = sessionStorage.getItem("userRole");
-        if (!userRole && userRole != "admin") {
-            this._router.navigate(["/login"]);
-        }
+        this.dataForView();
+        this.createNewStudent();
     }
 
-    /*ngOnInit() {
-        let userRole:string = sessionStorage.getItem("userRole");
-        if (!userRole && userRole != "admin") {
-            this._router.navigate(["/login"]);
-        }
-        this.countOfStudents = Number(localStorage.getItem(this.entity));
-        this.getRecordsRange();
+    goBack(): void {
+        this.location.back();
     }
-/*
-    getCountRecords() {
-        this._commonService.getCountRecords(this.entity)
-            .subscribe(
-                data => this.countOfStudents = data.numberOfRecords,
-                error=>console.log(error)
+
+    showPassword() {
+        if (this.passwordStatus) {
+            this.passwordButtonName = "Приховати пароль";
+            this.passwordStatusText = "text";
+        }
+        else {
+            this.passwordButtonName = "Показати пароль";
+            this.passwordStatusText = "password";
+        }
+        this.passwordStatus = !this.passwordStatus;
+    }
+
+    editSaveStudentProfile() {
+        if (this.statusView) {
+            // console.log("editSaveStudentProfile student : ", JSON.stringify(this.student[0])); // ++++
+            this.createNewStudent();
+            this.editSaveButtonName = "Редагувати дані";
+        }
+        else {
+            this.editSaveButtonName = "Зберегти дані";
+        }
+        this.statusView = !this.statusView;
+    }
+
+    dataForView(): void {
+        this.student[0] = new Student();
+        this.newStudent[0] = new Student();
+    }
+
+    createNewStudent() {
+        this._commonService.getRecords(this.groupEntity)
+            .subscribe(data => {
+                this.groups = data;
+                for (let i in this.groups) {
+                    if (this.groups[i].group_name === this.student[0].group_name) {
+                        this.student[0].group_id = this.groups[i].group_id;
+                    }
+                }
+                    // console.log(" getGroups this.student[0].group_id", this.student[0].group_id);
+
+                    this.newStudent[0].username = this.student[0].username;
+                    this.newStudent[0].password = this.student[0].plain_password;
+                    this.newStudent[0].password_confirm = this.student[0].plain_password;
+                    this.newStudent[0].email = this.student[0].email;
+                    this.newStudent[0].gradebook_id = this.student[0].gradebook_id;
+                    this.newStudent[0].student_surname = this.student[0].student_surname;
+                    this.newStudent[0].student_name = this.student[0].student_name;
+                    this.newStudent[0].student_fname = this.student[0].student_fname;
+                    this.newStudent[0].group_id = this.student[0].group_id;
+                    this.newStudent[0].plain_password = this.student[0].plain_password;
+                    this.newStudent[0].photo = "";
+
+                        console.log("this.newStudent[0]", JSON.stringify(this.newStudent));
+                        console.log("this.student[0]", JSON.stringify(this.student[0]));
+
+                        this._commonService.insertData(this.entity, this.newStudent[0])
+                            .subscribe(data => {
+                                    console.log("data : ", data);
+                                },
+                                error => console.log("error: ", error)
+                            );
+            },
+                error => console.log("error: ", error)
             );
     }
 
-    getRecordsRange() {
-        this._commonService.getRecordsRange(this.entity, this.limit, this.offset)
-            .subscribe(
-                data => this.students = data,
-                error=> {
-                    if (error.response === "Only logged users can work with entities") {
-                        this._router.navigate(["/login"])
-                    }
-                })
+    /* createNewStudent() {
+        this.getGroups();
+        console.log("this.newStudent[0]", JSON.stringify(this.newStudent));
+        console.log("this.student[0]", JSON.stringify(this.student[0]));
+        // console.log("createNewStudent student[0] : ",  this.newStudent[0]);
 
-    }
 
-    delRecord(entity:string, id:number) {
-        this.offset = (this.page - 1) * this.limit;
-        this._commonService.delRecord(entity, id)
-            .subscribe(()=>this.getRecordsRange());
-    }
-
-    changeLimit() {
-        this.offset = 0;
-        this.page = 1;
-        setTimeout(()=> {
-            this._commonService.getRecordsRange(this.entity, this.limit, this.offset)
-                .subscribe(data => this.students = data);
-        }, 0);
-    }
-
-    findEntity() {
-        setTimeout(()=> {
-            if (this.searchData.length === 0) {
-                this.offset = 0;
-                this.page = 1;
-                this.getCountRecords();
-                this.getRecordsRange();
-                return;
-            }
-
-            this._commonService.getRecords(this.entity)
-                .subscribe(data => {
-                    this.findResultStudents = data.filter((student)=> {
-                        // return ~student.student_name.toLowerCase().indexOf(this.searchData.toLowerCase());
-                        if (student.student_name.toLowerCase().indexOf(this.searchData.toLowerCase()) === -1) {
-                            return false
-                        }
-                        else {
-                            return true
-                        }
-                    });
-                    this.page = 1;
-                    this.countOfStudents = this.findResultStudents.length;
-                    this.students = this.findResultStudents;
-                },error=> {
-                    if (error.response === "Only logged users can work with entities") {
-                        this._router.navigate(["/login"])
-                    }
-                });
-
-        }, 0);
-    }
-
-    refreshData(data:string) {
-        this.offset = (this.page - 1) * this.limit;
-        this.getRecordsRange();
-    }
-
-    pageChange(num:number) {
-        this.page = num;
-        this.offset = (this.page - 1) * this.limit;
-        this.getRecordsRange();
     }*/
 }

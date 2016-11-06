@@ -1,12 +1,12 @@
-import {Component, Input} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {Component, Input} from "@angular/core";
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
-    selector: 'modal-add-edit',
-    templateUrl: 'modal-add-edit.component.html',
-    styleUrls: ['modal-add-edit.component.css']
+    selector: "modal-add-edit",
+    templateUrl: "modal-add-edit.component.html",
+    styleUrls: ["modal-add-edit.component.css"]
 })
-export class ModalAddEditComponent{
+export class ModalAddEditComponent {
 
     @Input() config: any;
 
