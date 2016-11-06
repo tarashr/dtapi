@@ -12,4 +12,5 @@ export class ModalAddEditComponent{
 
     constructor(private activeModal: NgbActiveModal) {
     }
+
 }

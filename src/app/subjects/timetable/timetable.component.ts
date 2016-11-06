@@ -96,7 +96,7 @@ export class TimeTableComponent implements OnInit {
                             }
                         }
                         this.createTableConfig(this.timeTableWithGroupId),
-                        error=>console.log("error: ", error)
+                            error=>console.log("error: ", error)
                     }
                 }
             )
@@ -142,31 +142,37 @@ export class TimeTableComponent implements OnInit {
         }
     }
 
-    substituteNameGroupOnId(data){
+    substituteNameGroupOnId(data) {
         this.groupsById.forEach((item) => {
-            if(item.group_name =  data.list[0].value) {
-                data.list[0].value = item.group_id;
+            if (item.group_name = data.select[0].selected) {
+                data.select[0].selected = item.group_id;
             }
         });
     }
 
+
     createCase() {
+        this.configAdd.list.forEach((item)=> {
+            item.value = ""
+        });
+        this.configAdd.select[0].selected = "";
+        this.configAdd.select[0].selectItem = [];
+        this.groupsById.forEach(item => {
+            this.configAdd.select[0].selectItem.push(item.group_name);
+        });
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
                 this.substituteNameGroupOnId(data);
-                console.log("this data" + "" + JSON.stringify(data));
-                let newTimeTable: TimeTable = new TimeTable(data.list[0].value,
-                    data.list[1].value,
+                let newTimeTable: TimeTable = new TimeTable(
+                    data.select[0].selected,
+                    data.list[0].value,
                     this.subject_id);
                 this.crudService.insertData(this.entity, newTimeTable)
                     .subscribe(() => {
                         this.modalInfoConfig.infoString = `Новий розклад для групи ${data.list[0].value} успішно створено`;
                         this.successEventModal();
-                        this.configAdd.list.forEach((item)=> {
-                            item.value = ""
-                        });
                         this.getTimeTableForSubject();
                     });
             }, ()=> {
@@ -175,17 +181,22 @@ export class TimeTableComponent implements OnInit {
     };
 
     editCase(data) {
-        this.configEdit.list.forEach((item, i) => {
-            item.value = data.entityColumns[i]
-        });
+        // this.formArrOfGroup();
+        this.configEdit.list[0].value = data.entityColumns[1];
+        this.configEdit.select[0].selected = data.entityColumns[0];
         this.configEdit.id = data.entity_id;
+        this.configEdit.select[0].selectItem = [];
+        this.groupsById.forEach(item => {
+            this.configEdit.select[0].selectItem.push(item.group_name);
+        });
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
                 this.substituteNameGroupOnId(data);
-                let editedTimeTable: TimeTable = new TimeTable(data.list[0].value,
-                    data.list[1].value);
+                let editedTimeTable: TimeTable = new TimeTable(
+                    data.select[0].selected,
+                    data.list[0].value);
                 this.crudService.updateData(this.entity, data.id, editedTimeTable)
                     .subscribe(()=> {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
@@ -206,11 +217,11 @@ export class TimeTableComponent implements OnInit {
         modalRefDel.result
             .then(() => {
                 this.deleteTimeTable(this.entity, data.entity_id);
-                console.log("dataaaa" + JSON.stringify(data));
             }, ()=> {
                 return
             });
     }
+
 }
 
 

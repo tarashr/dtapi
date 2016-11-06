@@ -82,12 +82,7 @@ export const configAddSubject = {
     ],
     action: "create",
     labelBtn: "Додати",
-    select: {
-        state: false,
-        selectName: "Доступність",
-        selectItem: [],
-        selected: ""
-    }
+    select: ""
 };
 
 export const configAddAdminUser = {
@@ -122,22 +117,21 @@ export const configAddTest = {
     ],
     action: "create",
     labelBtn: "Додати",
-    select: {
-        state: "true",
-        selectName: "Доступність",
-        selectItem: ["Не доступно", "Доступно"],
-        selected: ""
-    }
+    select: [
+        {selectName: "Доступність", selectItem: ["Не доступно", "Доступно"], selected: ""}
+    ]
 };
 
 export const configAddTimeTable = {
     title: "Додати новий розклад проведення тестування",
     list: [
-        {name: "Назва групи", value: "", title: "name", type: "text"},
         {name: "Дата", value: "", title: "date", type: "data"},
     ],
     action: "create",
-    labelBtn: "Зареєструвати"
+    labelBtn: "Зареєструвати",
+    select: [
+        {selectName: "Групи", selectItem: [], selected: ""}
+    ]
 };
 
 export const configAddTestDetail = {
@@ -196,12 +190,7 @@ export const configEditSubject = {
     action: "edit",
     labelBtn: "Редагувати",
     id: "",
-    select: {
-        state: false,
-        selectName: "Доступність",
-        selectItem: [],
-        selected: ""
-    }
+    select: ""
 };
 
 export const configEditSpeciality = {
@@ -226,23 +215,20 @@ export const configEditTest = {
     action: "edit",
     labelBtn: "Редагувати",
     id: "",
-    select: {
-        state: "true",
-        selectName: "Доступність",
-        selectItem: ["Не доступно", "Доступно"],
-        selected: ""
-    }
+    select: [
+        {selectName: "Доступність", selectItem: ["Не доступно", "Доступно"], selected: ""}
+    ]
 };
 
 export const configEditTimeTable = {
     title: "Редагувати розклад проведення тестування",
     list: [
-        {name: "Назва групи", value: "", title: "name"},
         {name: "Дата", value: "", title: "date"},
     ],
     action: "edit",
     labelBtn: "Редагувати",
-    id: ""
+    id: "",
+    select: ""
 };
 
 export const configEditTestDetail = {

@@ -128,6 +128,10 @@ export class TestComponent implements OnInit {
     }
 
     createCase() {
+        this.configAdd.list.forEach((item)=> {
+            item.value = ""
+        });
+        this.configAdd.select[0].selected = "";
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
@@ -136,16 +140,12 @@ export class TestComponent implements OnInit {
                     data.list[1].value,
                     data.list[2].value,
                     data.list[3].value,
-                    data.select.selectItem.indexOf(data.select.selected),
+                    data.select[0].selectItem.indexOf(data.select[0].selected),
                     this.subject_id);
                 this.crudService.insertData(this.entity, newTest)
                     .subscribe(() => {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
-                        this.configAdd.list.forEach((item)=> {
-                            item.value = ""
-                        });
-                        this.configAdd.select.selected = "";
                         this.getTestBySubjectId();
                     });
             }, ()=> {
@@ -158,7 +158,7 @@ export class TestComponent implements OnInit {
             item.value = data.entityColumns[i]
         });
         this.configEdit.id = data.entity_id;
-        this.configEdit.select.selected = data.entityColumns[4];
+        this.configEdit.select[0].selected = data.entityColumns[4];
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
@@ -167,7 +167,7 @@ export class TestComponent implements OnInit {
                     data.list[1].value,
                     data.list[2].value,
                     data.list[3].value,
-                    data.select.selectItem.indexOf(data.select.selected));
+                    data.select[0].selectItem.indexOf(data.select[0].selected));
                 this.crudService.updateData(this.entity, data.id, editedTest)
                     .subscribe(()=> {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
