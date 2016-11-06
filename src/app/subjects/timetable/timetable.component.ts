@@ -100,8 +100,6 @@ export class TimeTableComponent implements OnInit {
             .subscribe(
                 data => {
                     this.groupsById = data;
-                    console.log("this is timeT" + "" +this.timeTableWithGroupId);
-                    console.log("this is group" + "" +this.groupsById);
                     for (let i = 0; i < this.timeTableWithGroupId.length; i++) {
                         for (let j = 0; j < this.groupsById.length; j++) {
                             if (this.timeTableWithGroupId[i].group_id === this.groupsById[j].group_id) {
@@ -195,7 +193,6 @@ export class TimeTableComponent implements OnInit {
     };
 
     editCase(data) {
-        // this.formArrOfGroup();
         this.configEdit.list[0].value = data.entityColumns[1];
         this.configEdit.select[0].selected = data.entityColumns[0];
         this.configEdit.id = data.entity_id;
