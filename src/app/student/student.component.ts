@@ -14,17 +14,15 @@ import {
     delRecord,
     refreshData,
     getCountRecords,
+    headersStudentAdmin,
+    actionsStudentAdmin,
+    modalInfoConfig
     // findEntity,
     // getRecordsRange,
     // changeLimit
-} from "../shared/constants";
+} from "../shared/constant";
 
-import {
-    headersStudentAdmin,
-    actionsStudentAdmin
-} from "../shared/constant-config";
-
-import {Observable} from "rxjs";
+/*import {Observable} from "rxjs";*/
 
 @Component({
     templateUrl: "student.component.html",
@@ -33,12 +31,7 @@ import {Observable} from "rxjs";
 
 export class StudentComponent implements OnInit {
 
-    public modalInfoConfig = {
-        title: "",
-        infoString: "",
-        action: ""
-    };
-
+    public modalInfoConfig: any = modalInfoConfig;
     public paginationSize = maxSize;
     public headers: any = headersStudentAdmin;
     public actions: any = actionsStudentAdmin;
@@ -82,13 +75,13 @@ export class StudentComponent implements OnInit {
     }
 
     private createTableConfig = (data: any) => {
-        // console.log("data :");
-        // console.log(JSON.stringify(data));
         let tempArr: any[] = [];
-        data.forEach((item) => {
+        let numberOfOrder: number;
+        data.forEach((item, i) => {
+            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
             let student: any = {};
             student.entity_id = item.user_id;
-            student.entityColumns = [(item.student_surname + " " + item.student_name + " " + item.student_fname), item.gradebook_id, item.group_name];
+            student.entityColumns = [numberOfOrder, (item.student_surname + " " + item.student_name + " " + item.student_fname), item.gradebook_id, item.group_name];
             tempArr.push(student);
         });
         this.entityData = tempArr;
@@ -157,18 +150,22 @@ export class StudentComponent implements OnInit {
                 this._router.navigate(["/admin/student/student-profile", data.entity_id]);
                 break;
             case "delete":
-                this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
-                this.modalInfoConfig.action = "confirm";
-                this.modalInfoConfig.title = "Видалення";
-                const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
-                modalRef.componentInstance.config = this.modalInfoConfig;
-                modalRef.result
-                    .then(() => {
-                        this.delRecord(this.entity, data.entity_id);
-                    }, () => {
-                        return;
-                    });
+                this.deleteCase(data);
                 break;
         }
+    }
+
+    deleteCase(data: any) {
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
+        this.modalInfoConfig.action = "confirm";
+        this.modalInfoConfig.title = "Видалення";
+        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
+        modalRefDel.componentInstance.config = this.modalInfoConfig;
+        modalRefDel.result
+            .then(() => {
+                this.delRecord(this.entity, data.entity_id);
+            }, () => {
+                return;
+            });
     }
 }

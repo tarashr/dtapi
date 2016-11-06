@@ -1,9 +1,11 @@
 import {Component, OnInit} from "@angular/core";
-import {Router, ActivatedRoute, Params} from "@angular/router";
+// import {Router, ActivatedRoute, Params} from "@angular/router";
 import {Location} from "@angular/common";
 import {Group} from "../shared/classes/group";
 import {Student} from "../shared/classes/student";
 import {CRUDService} from "../shared/services/crud.service";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {type} from "os";
 
 @Component({
     templateUrl: "student-new-profile.component.html",
@@ -26,19 +28,19 @@ export class StudentNewProfileComponent implements OnInit {
     public statusView: boolean = true;
     public editSaveButtonStatus: boolean = false;
 
-    // private studentDataPart1: Array <any>;
-    // private studentDataPart2: Array <any>;
 
-    constructor(private route: ActivatedRoute,
+    // private route: ActivatedRoute,
+    constructor(
                 private _commonService: CRUDService,
-                private location: Location
-                ) {
+                private location: Location,
+                private modalService: NgbModal) {
 
     }
 
     ngOnInit() {
         this.dataForView();
-        this.createNewStudent();
+        this.getGroupName();
+        //this.createNewStudent();
     }
 
     goBack(): void {
@@ -59,7 +61,6 @@ export class StudentNewProfileComponent implements OnInit {
 
     editSaveStudentProfile() {
         if (this.statusView) {
-            // console.log("editSaveStudentProfile student : ", JSON.stringify(this.student[0])); // ++++
             this.createNewStudent();
             this.editSaveButtonName = "Редагувати дані";
         }
@@ -72,6 +73,15 @@ export class StudentNewProfileComponent implements OnInit {
     dataForView(): void {
         this.student[0] = new Student();
         this.newStudent[0] = new Student();
+    }
+
+    getGroupName() {
+        this._commonService.getRecords(this.groupEntity)
+            .subscribe(data => {
+                this.groups = data;
+                },
+                error => console.log("error: ", error)
+                );
     }
 
     createNewStudent() {
@@ -110,6 +120,10 @@ export class StudentNewProfileComponent implements OnInit {
                 error => console.log("error: ", error)
             );
     }
+
+    /*cleanData() {
+        this.student[0] = new Student();
+    }*/
 
     /* createNewStudent() {
         this.getGroups();
