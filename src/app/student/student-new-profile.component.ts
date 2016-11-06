@@ -5,7 +5,12 @@ import {Group} from "../shared/classes/group";
 import {Student} from "../shared/classes/student";
 import {CRUDService} from "../shared/services/crud.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {type} from "os";
+import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
+
+import {
+    modalInfoConfig,
+    successEventModal
+} from "../shared/constant";
 
 @Component({
     templateUrl: "student-new-profile.component.html",
@@ -16,20 +21,17 @@ export class StudentNewProfileComponent implements OnInit {
     public student: Student [] = [];
     public newStudent: Student [] = [];
     public entity: string = "student";
-    // public entityUser: string = "AdminUser";
     public groupEntity: string = "Group";
     public groups: Group[] = [];
     public user_id: number;
     public passwordStatus: boolean = false;
     public passwordStatusText: string = "text";
     public passwordButtonName: string = "Приховати пароль";
-    // public editSaveStatus: boolean = true;
     public editSaveButtonName: string = "Зберегти дані";
     public statusView: boolean = true;
     public editSaveButtonStatus: boolean = false;
+    public modalInfoConfig: any = modalInfoConfig;
 
-
-    // private route: ActivatedRoute,
     constructor(
                 private _commonService: CRUDService,
                 private location: Location,
@@ -37,10 +39,11 @@ export class StudentNewProfileComponent implements OnInit {
 
     }
 
+    public successEventModal = successEventModal;
+
     ngOnInit() {
         this.dataForView();
         this.getGroupName();
-        //this.createNewStudent();
     }
 
     goBack(): void {
@@ -62,6 +65,7 @@ export class StudentNewProfileComponent implements OnInit {
     editSaveStudentProfile() {
         if (this.statusView) {
             this.createNewStudent();
+
             this.editSaveButtonName = "Редагувати дані";
         }
         else {
@@ -93,8 +97,6 @@ export class StudentNewProfileComponent implements OnInit {
                         this.student[0].group_id = this.groups[i].group_id;
                     }
                 }
-                    // console.log(" getGroups this.student[0].group_id", this.student[0].group_id);
-
                     this.newStudent[0].username = this.student[0].username;
                     this.newStudent[0].password = this.student[0].plain_password;
                     this.newStudent[0].password_confirm = this.student[0].plain_password;
@@ -107,30 +109,37 @@ export class StudentNewProfileComponent implements OnInit {
                     this.newStudent[0].plain_password = this.student[0].plain_password;
                     this.newStudent[0].photo = "";
 
-                        console.log("this.newStudent[0]", JSON.stringify(this.newStudent));
-                        console.log("this.student[0]", JSON.stringify(this.student[0]));
-
-                        this._commonService.insertData(this.entity, this.newStudent[0])
-                            .subscribe(data => {
-                                    console.log("data : ", data);
-                                },
-                                error => console.log("error: ", error)
-                            );
+                    this._commonService.insertData(this.entity, this.newStudent[0])
+                        .subscribe(data => {
+                                console.log("data : ", data);
+                            },
+                            error => console.log("error: ", error)
+                        );
             },
                 error => console.log("error: ", error)
             );
     }
 
-    /*cleanData() {
-        this.student[0] = new Student();
-    }*/
-
-    /* createNewStudent() {
-        this.getGroups();
-        console.log("this.newStudent[0]", JSON.stringify(this.newStudent));
-        console.log("this.student[0]", JSON.stringify(this.student[0]));
-        // console.log("createNewStudent student[0] : ",  this.newStudent[0]);
+    activate(data: any) {
+        switch (data.action) {
+            case "delete":
+                this.infoCase(data);
+                break;
+        }
+    }
 
 
-    }*/
+    infoCase(data: any) {
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
+        this.modalInfoConfig.action = "confirm";
+        this.modalInfoConfig.title = "Видалення";
+        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
+        modalRefDel.componentInstance.config = this.modalInfoConfig;
+        /*modalRefDel.result
+            .then(() => {
+                this.delRecord(this.entity, data.entity_id);
+            }, () => {
+                return;
+            })*/
+    }
 }
