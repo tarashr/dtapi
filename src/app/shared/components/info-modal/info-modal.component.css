@@ -13,3 +13,8 @@
 .open-modal-btn {
     display: inline-block;
 }
+
+.modal-body-info-confirm{
+    text-align: center;
+    font-size: 120%;
+}

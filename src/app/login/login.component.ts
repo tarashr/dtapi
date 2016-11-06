@@ -1,5 +1,8 @@
 import {Component} from "@angular/core";
 import {Router} from "@angular/router";
+import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {modalInfoConfig, successEventModal} from "../shared/constant";
 
 import {User} from "../shared/classes/user";
 import {LoginService} from "./../shared/services/login.service";
@@ -11,17 +14,19 @@ import {LoginService} from "./../shared/services/login.service";
 })
 
 export class LoginComponent {
+    private modalInfoConfig: any = modalInfoConfig;
+    public user: User = new User();
 
-    public user:User = new User();
-    public loginMessage:boolean = false;
-
-    constructor(private _loginService:LoginService,
-                private _router:Router) {
+    constructor(private _loginService: LoginService,
+                private _router: Router,
+                private modalService: NgbModal) {
     }
 
-    onSubmit():void {
+    private successEventModal = successEventModal;
+
+    onSubmit(): void {
         this._loginService.login(this.user)
-            .subscribe((response:any)=> {
+            .subscribe((response: any) => {
                     if (response.roles[1] === "student") {
                         sessionStorage.setItem("userRole", response.roles[1]);
                         sessionStorage.setItem("userId", response.id);
@@ -29,18 +34,14 @@ export class LoginComponent {
                     } else if (response.roles[1] === "admin") {
                         sessionStorage.setItem("userRole", response.roles[1]);
                         this._router.navigate(["/admin"]);
-                    } else {
-                        this.loginMessage = true;
                     }
                 },
-                (error:any)=> {                    
+                (error: any) => {
                     if (error === "400 - Bad Request") {
-                        this.loginMessage = true;
+                        this.modalInfoConfig.infoString = `Неправильний логін або пароль`;
+                        this.successEventModal();
                     }
-                })
+                });
     }
 
-    delWarning():void {
-        this.loginMessage = false;
-    }
 }

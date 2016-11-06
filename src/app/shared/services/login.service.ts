@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
 import {Headers, Http, Response} from "@angular/http";
-import {Observable} from 'rxjs/Observable';
+import {Observable} from "rxjs/Observable";
 import {InfoModalComponent} from "../components/info-modal/info-modal.component";
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {User} from "../classes/user";
 import {loginUrl} from "../constants";
 import {logoutUrl} from "../constants";
@@ -22,15 +22,15 @@ export class LoginService {
                 private modalService: NgbModal) {
     };
 
-    private handleError = (error: any): Observable<any>=> {
+    private handleError = (error: any): Observable<any> => {
         let errMsg = (error.message) ? error.message :
-            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+            error.status ? `${error.status} - ${error.statusText}` : "Server error";
         return Observable.throw(errMsg);
     };
 
-    private success = (response: Response)=>response.json();
+    private success = (response: Response) => response.json();
 
-    private successLogout = (response: Response)=> {
+    private successLogout = (response: Response) => {
         if (response.status == 200) {
             sessionStorage.removeItem("userRole");
             sessionStorage.removeItem("userId");
@@ -42,7 +42,7 @@ export class LoginService {
         return this._http
             .post(this.loginUrl, JSON.stringify(user), {headers: this._headers})
             .map(this.success)
-            .catch(this.handleError)
+            .catch(this.handleError);
     };
 
     logout(): void {
@@ -50,13 +50,13 @@ export class LoginService {
             .get(this.logoutUrl)
             .catch(this.handleError)
             .subscribe(this.successLogout,
-                ()=> {
+                () => {
                     this.modalInfoConfig.infoString = `Виникла помилка в процесі виходу. Спробуйте вийти повторно`;
                     this.modalInfoConfig.action = "info";
                     this.modalInfoConfig.title = "Попередження";
                     const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
                     modalRef.componentInstance.config = this.modalInfoConfig;
-                })
+                });
     }
 
 }

@@ -1,9 +1,9 @@
-import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit} from "@angular/core";
 
 @Component({
-    selector: 'dt-table',
-    templateUrl: 'table.component.html',
-    styleUrls: ['table.component.css']
+    selector: "dt-table",
+    templateUrl: "table.component.html",
+    styleUrls: ["table.component.css"]
 })
 export class TableComponent implements OnInit {
 

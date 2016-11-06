@@ -92,6 +92,17 @@ export const configAddAdminUser = {
     labelBtn: "Додати"
 };
 
+export const configAddGroup = {
+    title: "Додати групу",
+    list: [
+        {name: "Назва групи", value: "", title: "name", type: "text"},
+        {name: "Факультет", value: "", title: "facultyName", type: "text"},
+        {name: "Спеціальність", value: "", title: "specialityName", type: "text"}
+    ],
+    action: "create",
+    labelBtn: "Додати"
+};
+
 export const configAddSpeciality = {
     title: "Додати спеціальність",
     list: [
@@ -143,6 +154,18 @@ export const configEditAdminUser = {
         {name: "Поштова скринька", value: "", title: "email", type: "email"},
         {name: "Пароль", value: "", title: "password", type: "password"},
         {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password"}
+    ],
+    action: "edit",
+    labelBtn: "Редагувати",
+    id: ""
+};
+
+export const configEditGroup = {
+    title: "Редагувати групу",
+    list: [
+        {name: "Назва групи", value: "", title: "name", type: "text"},
+        {name: "Факультет", value: "", title: "facultyName", type: "text"},
+        {name: "Спеціальність", value: "", title: "specialityName", type: "text"}
     ],
     action: "edit",
     labelBtn: "Редагувати",

@@ -162,6 +162,7 @@ export class AdminUserComponent implements OnInit {
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
+                if(data.list[2].value === data.list[3].value) {
                 let editedAdminUser: User = new User(data.list[0].value, data.list[1].value, data.list[2].value);
                 this.crudService.updateData(this.entity, data.id, editedAdminUser)
                     .subscribe(response=> {
@@ -169,6 +170,12 @@ export class AdminUserComponent implements OnInit {
                         this.successEventModal();
                         this.refreshData(data.action);
                     });
+                } else {
+                    data.list[2].value = "";
+                    data.list[3].value = "";
+                    this.modalInfoConfig.infoString = `Введені паролі не співпадають, спробуйте ще раз`;
+                    this.successEventModal();
+                }
             }, ()=> {
                 return
             });
