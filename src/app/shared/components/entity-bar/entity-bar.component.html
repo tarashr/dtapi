@@ -1,12 +1,28 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default entity-bar">
     <div class="container-fluid">
-        <div class="navbar-text ">{{entityTitle}}</div>
+        <div class="navbar-text">{{entityTitle}}</div>
         <form class="navbar-form navbar-left">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="пошук" name="inputSearch"
                        #inputSearch
                        [title]="searchTitle"
                        (input)="find(inputSearch.value)">
+            </div>
+        </form>
+        <form *ngIf="facultyList" class="navbar-form navbar-left">
+            <div class="form-group">
+                <select #facultySelect
+                        class="form-control"
+                        name="facultiesList"
+                        width="30px"
+                        (input)="onSelect(facultySelect.value)">
+                    <option value="none">Виберіть факультет</option>
+                    <option *ngFor="let item of facultyList" [value]="item">{{item}}</option>
+                </select>
+                <select class="form-control" name="specialitiesList">
+                    <option value="none">Виберіть спеціальність</option>
+                    <option *ngFor="let item of specialityList" value="item">{{item}}</option>
+                </select>
             </div>
         </form>
         <form class="navbar-form navbar-right">
