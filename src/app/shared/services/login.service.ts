@@ -7,13 +7,13 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {User} from "../classes/user";
 import {loginUrl} from "../constants";
 import {logoutUrl} from "../constants";
+import {modalInfoConfig, successEventModal} from "../constant";
 
 @Injectable()
 export class LoginService {
-
+    private modalInfoConfig: any = modalInfoConfig;
     private loginUrl: string = loginUrl;
     private logoutUrl: string = logoutUrl;
-    private modalInfoConfig: any = {};
 
     private _headers = new Headers({"content-type": "application/json"});
 
@@ -22,40 +22,63 @@ export class LoginService {
                 private modalService: NgbModal) {
     };
 
+    private successEventModal = successEventModal;
+
     private handleError = (error: any): Observable<any> => {
-        let errMsg = (error.message) ? error.message :
-            error.status ? `${error.status} - ${error.statusText}` : "Server error";
-        return Observable.throw(errMsg);
+        // let errMsg = (error.message) ? error.message :
+        //     error.status ? `${error.status} - ${error.statusText}` : "Server error";
+        return Observable.throw(error.status || `Помилка на сервері`);
     };
 
     private success = (response: Response) => response.json();
 
     private successLogout = (response: Response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
             sessionStorage.removeItem("userRole");
             sessionStorage.removeItem("userId");
             this._router.navigate(["/login"]);
         }
     };
 
-    login(user: User): Observable<any> {
-        return this._http
+    login(user: User) {
+        this._http
             .post(this.loginUrl, JSON.stringify(user), {headers: this._headers})
             .map(this.success)
-            .catch(this.handleError);
+            .catch(this.handleError)
+            .subscribe((response: any) => {
+                    if (response.roles[1] === "student") {
+                        sessionStorage.setItem("userRole", response.roles[1]);
+                        sessionStorage.setItem("userId", response.id);
+                        this._router.navigate(["/student"]);
+                    } else if (response.roles[1] === "admin") {
+                        sessionStorage.setItem("userRole", response.roles[1]);
+                        this._router.navigate(["/admin"]);
+                    }
+                },
+                (error: any) => {
+                    debugger;
+                    if (error === 400) {
+                        this.modalInfoConfig.infoString = `Неправильний логін або пароль`;
+                        this.successEventModal();
+                    } else {
+                        this.modalInfoConfig.infoString = error;
+                        this.successEventModal();
+                    }
+                });
     };
 
     logout(): void {
         this._http
             .get(this.logoutUrl)
+            .map(this.success)
             .catch(this.handleError)
             .subscribe(this.successLogout,
                 () => {
-                    this.modalInfoConfig.infoString = `Виникла помилка в процесі виходу. Спробуйте вийти повторно`;
-                    this.modalInfoConfig.action = "info";
-                    this.modalInfoConfig.title = "Попередження";
-                    const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
-                    modalRef.componentInstance.config = this.modalInfoConfig;
+                    sessionStorage.removeItem("userRole");
+                    sessionStorage.removeItem("userId");
+                    this._router.navigate(["/login"]);
+                    this.modalInfoConfig.infoString = `Виникла помилка в процесі виходу. Вихід з облікового запису не відбувся!`;
+                    this.successEventModal();
                 });
     }
 
