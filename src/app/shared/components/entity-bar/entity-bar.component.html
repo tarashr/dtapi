@@ -9,19 +9,23 @@
                        (input)="find(inputSearch.value)">
             </div>
         </form>
-        <form *ngIf="facultyList" class="navbar-form navbar-left">
+        <form *ngIf="listOfOptions1 || listOfOptions2" class="navbar-form navbar-left">
             <div class="form-group">
-                <select #facultySelect
+                <select *ngIf="listOfOptions1"
+                        #select1
                         class="form-control"
-                        name="facultiesList"
-                        width="30px"
-                        (input)="onSelect(facultySelect.value)">
-                    <option value="none">Виберіть факультет</option>
-                    <option *ngFor="let item of facultyList" [value]="item">{{item}}</option>
+                        name="select1"
+                        (input)="onSelect(select1.value)">
+                    <option value="default">Виберіть факультет</option>
+                    <option *ngFor="let item of listOfOptions1" [value]="item.id">{{item.name}}</option>
                 </select>
-                <select class="form-control" name="specialitiesList">
-                    <option value="none">Виберіть спеціальність</option>
-                    <option *ngFor="let item of specialityList" value="item">{{item}}</option>
+                <select *ngIf="listOfOptions2"
+                        #select2
+                        class="form-control"
+                        name="select2"
+                        (input)="onSelect(select2.value)">>
+                    <option value="">Виберіть спеціальність</option>
+                    <option *ngFor="let item of listOfOptions2" [value]="item.id">{{item.name}}</option>
                 </select>
             </div>
         </form>

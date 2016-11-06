@@ -5,9 +5,10 @@
             [addTitle]="addTitle"
             [selectLimit]="selectLimit"
             [entityDataLength]="entityDataLength"
-            [facultyList]="facultiesNames"
-            [specialityList]="specialitiesNames"
+            [listOfOptions1]="facultiesNames"
+            [listOfOptions2]="specialitiesNames"
             (activate)="activate($event)"
+            (sortGroupsId)="getGroupsByFaculty($event)"
             (searchRun)="findEntity($event)"
             (selectRun)="changeLimit($event)">
     </entity-bar>
@@ -19,7 +20,7 @@
               [tableData]="entityData"
               (activate)="activate($event)">
     </dt-table>
-    <ngb-pagination *ngIf="entityDataLength"
+    <ngb-pagination *ngIf="!sortHide"
                     [collectionSize]="entityDataLength"
                     [(page)]="page"
                     [maxSize]="paginationSize"

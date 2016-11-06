@@ -15,7 +15,7 @@ import {
     getCountRecords,
     getRecordsRange,
     delRecord,
-    findEntity,
+    // findEntity,
     refreshData,
     successEventModal,
     headersAdminUser,
@@ -65,7 +65,7 @@ export class AdminUserComponent implements OnInit {
     public refreshData = refreshData;
     public successEventModal = successEventModal;
     public getRecordsRange = getRecordsRange;
-    public findEntity = findEntity;
+    // public findEntity = findEntity;
 
 
     ngOnInit(): void {
@@ -98,6 +98,25 @@ export class AdminUserComponent implements OnInit {
                 break;
         }
     }
+
+    findEntity(searchTerm: string) {
+        this.search = searchTerm;
+        if (this.search.length === 0) {
+            this.offset = 0;
+            this.page = 1;
+            this.getCountRecords();
+            return;
+        }
+        this.crudService.getRecordsBySearch(this.entity, this.search)
+            .subscribe(data => {
+                if (data.response === "No records") {
+                    this.entityData = [];
+                    return;
+                }
+                this.page = 1;
+                this.createTableConfig(data);
+            }, error => console.log("error: ", error));
+    };
 
     createCase() {
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);

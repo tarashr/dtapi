@@ -59,8 +59,8 @@ export class GroupComponent implements OnInit {
     public specialityEntity: string = "Speciality";
     public specialities: Speciality[] = [];
 
-    public facultiesNames: string[] = [];
-    public specialitiesNames: string[] = [];
+    public facultiesNames: any[] = [];
+    public specialitiesNames: any[] = [];
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
@@ -74,6 +74,7 @@ export class GroupComponent implements OnInit {
     public refreshData = refreshData;
     public successEventModal = successEventModal;
     public findEntity = findEntity;
+    public sortHide: boolean =false;
 
     ngOnInit() {
         this.getCountRecords();
@@ -81,7 +82,7 @@ export class GroupComponent implements OnInit {
         this.getSpecialityList()
     }
 
-    private createTableConfig = (data: any)=> {
+    private createTableConfig = (data: any) => {
         let tempArr: any[] = [];
         let numberOfOrder: number;
         data.forEach((item, i)=> {
@@ -104,26 +105,21 @@ export class GroupComponent implements OnInit {
                 error=> console.log("error: ", error))
     };
 
-    getFacultiesList() {
-        this.crudService.getRecords("Faculty")
-            .subscribe(
-                data => {
-                    for(let i = 0 ; i < data.length; i++) {
-                        this.facultiesNames.push(data[i].faculty_name);
-                    }
-                },
-                error=> console.log("error: ", error))
-    };
+    getGroupsByFaculty(data: any) {
+        if(data === "default"){
+            this.sortHide = false;
+            this.getRecordsRange();
+        } else {
+            this.sortHide = true;
+            this.crudService.getGroupsByFaculty(data)
+                .subscribe(
+                    data => {
+                        this.entityData2 =  data;
+                        this.getFacultyName();
+                    },
+                    error=> console.log("error: ", error))
+        }
 
-    getSpecialityList() {
-        this.crudService.getRecords("Speciality")
-            .subscribe(
-                data => {
-                    for(let i = 0 ; i < data.length; i++) {
-                        this.specialitiesNames.push(data[i].speciality_name);
-                    }
-                },
-                error=> console.log("error: ", error))
     };
 
     getFacultyName(): void {
@@ -173,6 +169,28 @@ export class GroupComponent implements OnInit {
                 error => console.log("error: ", error)
             );
     }
+
+    getFacultiesList() {
+        this.crudService.getRecords("Faculty")
+            .subscribe(
+                data => {
+                    for(let i = 0 ; i < data.length; i++) {
+                        this.facultiesNames.push({name: data[i].faculty_name, id: data[i].faculty_id});
+                    }
+                },
+                error=> console.log("error: ", error))
+    };
+
+    getSpecialityList() {
+        this.crudService.getRecords("Speciality")
+            .subscribe(
+                data => {
+                    for(let i = 0 ; i < data.length; i++) {
+                        this.specialitiesNames.push({name: data[i].speciality_name, id: data[i].speciality_id});
+                    }
+                },
+                error=> console.log("error: ", error))
+    };
 
     activate(data: any) {
         switch (data.action) {
