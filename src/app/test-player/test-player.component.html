@@ -1,20 +1,20 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-6 info">
-
             Залишилось запитань: 6 з 10 (60%)
             <div class="progress hidden-xs">
-                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                     style="width: 60%;">
 
                 </div>
 
             </div>
         </div>
         <div class="col-xs-6 info">
-
             Залишилось часу: <b class="time">00:05:30</b> (45%)
             <div class="progress hidden-xs">
-                <div class="progress-bar progress-bar-warning " role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">
+                <div class="progress-bar progress-bar-warning " role="progressbar" aria-valuenow="45" aria-valuemin="0"
+                     aria-valuemax="100" style="width: 45%;">
 
                 </div>
 
@@ -24,43 +24,47 @@
     </div>
 </div>
 
-<div class="container">
+<div class="container" *ngIf="show && questions[0].answers">
     <div class="row">
-        <div class="col-xs-12 col-md-10 info">
-            <h4 class="text-right">Запитання №5</h4>
-            <h3>Скільки ж буде 2+2</h3>
-            <ul>
-                <li> 4
-                <li> 5
-                <li> 3
-                <li> скільки треба?
-
-            </ul>
-            <p class="text-right">
-                <button type="button" class="btn btn-primary">Пропустити</button>
-                <button type="button" class="btn btn-success">Відповісти</button>
-            </p>
-        </div>
+        <ng-container *ngFor="let question of questions; let i=index">
+            <div class="col-xs-12 col-md-10 info" *ngIf="(i+1)===activeQuestion">
+                <div>
+                    <h4 class="text-right">Запитання №{{i+1}}</h4>
+                    <img *ngIf="question.attachment.length>0" [src]="question.attachment" alt="Картинка для питання">
+                    <h3>{{question.question_text}}</h3>
+                    <ul>
+                        <li *ngFor="let answer of question.answers">
+                            <label><input type="checkbox" name="answer">
+                                <img *ngIf="answer.attachment.length>0"
+                                     [src]="answer.attachment"
+                                     alt="картинка для відповіді">{{answer.answer_text}}</label>
+                        </li>
+                    </ul>
+                    <p class="text-right">
+                        <button type="button" class="btn btn-primary" (click)="skipQuestion(activeQuestion+1)">
+                            Пропустити
+                        </button>
+                        <button type="button" class="btn btn-success" (click)="answerQuestion()">
+                            Відповісти
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </ng-container>
         <div class="col-xs-12 col-md-2 info text-center">
             <h3>Навігація</h3>
-            <button type="button" class="btn btn-success nom-qua">01</button>
-            <button type="button" class="btn btn-success nom-qua">02</button>
-            <button type="button" class="btn btn-success nom-qua">03</button>
-            <button type="button" class="btn btn-success nom-qua">04</button>
-            <button type="button" class="btn btn-warning nom-qua">05</button>
-            <button type="button" class="btn btn-primary nom-qua">06</button>
-            <button type="button" class="btn btn-primary nom-qua">07</button>
-            <button type="button" class="btn btn-primary nom-qua">08</button>
-            <button type="button" class="btn btn-primary nom-qua">09</button>
-            <button type="button" class="btn btn-primary nom-qua">10</button>
-            <br><br>
+            <button *ngFor="let button of navButtons; let j=index"
+                    type="button"
+                    [ngClass]="button.className"
+                    (click)="changeActiveQuestion(j+1)">{{button.name}}
+            </button>
         </div>
     </div>
 </div>
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12 info text-center">
-            <h2>Тихо! Іде тестування...</h2>
-        </div>
-    </div>
-</div>
+<!--<div class="container">-->
+<!--<div class="row">-->
+<!--<div class="col-xs-12 info text-center">-->
+<!--<h2>Тихо! Іде тестування...</h2>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->

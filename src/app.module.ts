@@ -32,11 +32,12 @@ import {TableComponent} from "./app/shared/components/table/table.component";
 import {InfoModalComponent} from "./app/shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent} from "./app/shared/components/addeditmodal/modal-add-edit.component";
 import { TestDetailComponent } from "./app/subjects/test-detail/test-detail.component";
-import { QuestionComponent } from "./app/subjects/question/question.component"
+import { QuestionComponent } from "./app/subjects/question/question.component";
 
 import {TestsTabsetComponent} from "./app/studentpart/teststabset/tests-tabset.component";
 import {TestPlayerComponent} from "./app/test-player/test-player.component";
 import {UserProfileComponent} from "./app/studentpart/profile/user-profile.component";
+import {TestPlayerService} from "./app/shared/services/test-player.service";
 
 @NgModule({
     imports: [
@@ -80,7 +81,8 @@ import {UserProfileComponent} from "./app/studentpart/profile/user-profile.compo
         SubjectService,
         HttpModule,
         AuthAdminGuard,
-        AuthStudentGuard
+        AuthStudentGuard,
+        TestPlayerService
     ],
     entryComponents: [ModalAddEditComponent, InfoModalComponent],
     bootstrap: [AppComponent]

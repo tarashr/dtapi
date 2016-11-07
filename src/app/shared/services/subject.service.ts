@@ -53,7 +53,7 @@ export class SubjectService {
             .catch(this.handleError);
     }
 
-    getQuestionsByLevelRand(test_id: number, level: number, number: number):Observable<any> {
+    getQuestionsByLevelRand(test_id: number, level: number, number: number): Observable<any> {
         return this.http.get(`${getQuestionsByLevelRandUrl}/${test_id}/${level}/${number}`)
             .map(this.successResponse)
             .catch(this.handleError);
