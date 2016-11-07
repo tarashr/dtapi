@@ -16,7 +16,7 @@ export const actionsGroup = [
     },
     {
         title: "Переглянути студентів групи",
-        action: "",
+        action: "viewStudents",
         glyphicon: "glyphicon glyphicon-user",
         btnClassName: "btn btn-default btn-sm"
     },

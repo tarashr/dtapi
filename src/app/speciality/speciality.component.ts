@@ -83,8 +83,8 @@ export class SpecialityComponent implements OnInit{
 
     activate(data: any) {
         switch (data.action) {
-            case "group":
-                this._router.navigate(["/admin/speciality", data.entity_id, "groups"]);
+            case "viewGroup":
+                this._router.navigate(["/admin/group"]);
                 break;
             case "create":
                 this.createCase();

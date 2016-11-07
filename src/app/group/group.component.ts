@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Router} from "@angular/router";
 
 import {Group} from '../shared/classes/group';
 import {Faculty} from "../shared/classes/faculty";
@@ -16,7 +17,6 @@ import {
     pageChange,
     getCountRecords,
     delRecord,
-    findEntity,
     refreshData,
     successEventModal,
     headersGroup,
@@ -59,12 +59,13 @@ export class GroupComponent implements OnInit {
     public specialities: Speciality[] = [];
 
     public noRecords: boolean = false;
-    public facultiesNames: any[] = [];
-    public specialitiesNames: any[] = [];
+    public facultiesNamesIDs: any[] = [];
+    public specialitiesNamesIDs: any[] = [];
     public defaultFacultySelect: string = "Виберіть факультет";
     public defaultSpecialitySelect: string = "Виберіть спеціальність";
 
     constructor(private crudService: CRUDService,
+                private _router: Router,
                 private modalService: NgbModal) {
     };
 
@@ -74,7 +75,6 @@ export class GroupComponent implements OnInit {
     public delRecord = delRecord;
     public refreshData = refreshData;
     public successEventModal = successEventModal;
-    public findEntity = findEntity;
     public sortHide: boolean =false;
 
     ngOnInit() {
@@ -203,8 +203,8 @@ export class GroupComponent implements OnInit {
         this.crudService.getRecords("Faculty")
             .subscribe(
                 data => {
-                    for(let i = 0 ; i < data.length; i++) {
-                        this.facultiesNames.push({name: data[i].faculty_name, id: data[i].faculty_id});
+                    for(let i = 0; i < data.length; i++) {
+                        this.facultiesNamesIDs.push({name: data[i].faculty_name, id: data[i].faculty_id});
                     }
                 },
                 error=> console.log("error: ", error))
@@ -215,14 +215,51 @@ export class GroupComponent implements OnInit {
             .subscribe(
                 data => {
                     for(let i = 0 ; i < data.length; i++) {
-                        this.specialitiesNames.push({name: data[i].speciality_name, id: data[i].speciality_id});
+                        this.specialitiesNamesIDs.push({name: data[i].speciality_name, id: data[i].speciality_id});
                     }
                 },
                 error=> console.log("error: ", error))
     };
 
+    findEntity(searchTerm: string) {
+        this.search = searchTerm;
+
+        if (this.search.length === 0) {
+            this.offset = 0;
+            this.page = 1;
+            this.getCountRecords();
+            return;
+        }
+
+        this.crudService.getRecordsBySearch(this.entity, this.search)
+            .subscribe(data => {
+                if (data.response === "no records") {
+                    this.entityData = [];
+                    return;
+                }
+                this.page = 1;
+                let tempData = data;
+                for(let i in tempData) {
+                    for(let k in this.specialitiesNamesIDs) {
+                        if (tempData[i].speciality_id == this.specialitiesNamesIDs[k].id) {
+                            tempData[i].speciality_name = this.specialitiesNamesIDs[k].name;
+                        }
+                    }
+                    for(let k in this.facultiesNamesIDs) {
+                        if (tempData[i].faculty_id == this.facultiesNamesIDs[k].id) {
+                            tempData[i].faculty_name = this.facultiesNamesIDs[k].name;
+                        }
+                    }
+                }
+                this.createTableConfig(tempData);
+            }, error => console.log("error: ", error));
+    };
+
     activate(data: any) {
         switch (data.action) {
+            case "viewStudents":
+                this._router.navigate(["/admin/student"]);
+                break;
             case "create":
                 this.createCase();
                 break;
@@ -236,7 +273,7 @@ export class GroupComponent implements OnInit {
     }
 
     substituteFacultiesNamesOnId(data) {
-        this.facultiesNames.forEach((item) => {
+        this.facultiesNamesIDs.forEach((item) => {
             if (item.name === data.select[0].selected) {
                 data.select[0].selected = item.id;
             }
@@ -244,7 +281,7 @@ export class GroupComponent implements OnInit {
     }
 
     substituteSpecialitiesNamesOnId(data) {
-        this.specialitiesNames.forEach((item) => {
+        this.specialitiesNamesIDs.forEach((item) => {
             if (item.name === data.select[1].selected) {
                 data.select[1].selected = item.id;
             }
@@ -257,12 +294,12 @@ export class GroupComponent implements OnInit {
         });
         this.configAdd.select[0].selected = "";
         this.configAdd.select[0].selectItem = [];
-        this.facultiesNames.forEach(item => {
+        this.facultiesNamesIDs.forEach(item => {
             this.configAdd.select[0].selectItem.push(item.name);
         });
         this.configAdd.select[1].selected = "";
         this.configAdd.select[1].selectItem = [];
-        this.specialitiesNames.forEach(item => {
+        this.specialitiesNamesIDs.forEach(item => {
             this.configAdd.select[1].selectItem.push(item.name);
         });
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
@@ -290,13 +327,12 @@ export class GroupComponent implements OnInit {
         this.configEdit.select[0].selected = data.entityColumns[2];
         this.configEdit.id = data.entity_id;
         this.configEdit.select[0].selectItem = [];
-        this.facultiesNames.forEach(item => {
+        this.facultiesNamesIDs.forEach(item => {
             this.configEdit.select[0].selectItem.push(item.name);
         });
         this.configEdit.select[1].selected = data.entityColumns[3];
-        console.log(JSON.stringify(data));
         this.configEdit.select[1].selectItem = [];
-        this.specialitiesNames.forEach(item => {
+        this.specialitiesNamesIDs.forEach(item => {
             this.configEdit.select[1].selectItem.push(item.name);
         });
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);

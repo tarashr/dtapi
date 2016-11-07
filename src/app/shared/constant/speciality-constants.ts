@@ -9,7 +9,7 @@ export const headersSpeciality = [
 export const actionsSpeciality = [
     {
         title: "Перейти до груп спеціальності",
-        action: "group",
+        action: "viewGroup",
         glyphicon: "glyphicon glyphicon-th",
         btnClassName: "btn btn-default btn-sm"
     },

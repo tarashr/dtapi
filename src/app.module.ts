@@ -17,7 +17,7 @@ import {TimeTableComponent} from "./app/subjects/timetable/timetable.component";
 import {FacultyComponent}        from "./app/faculty/faculty.component";
 import {GroupComponent}        from "./app/group/group.component";
 import {SpecialityComponent}        from "./app/speciality/speciality.component";
-import {AdminUserComponent} from "./app/admin_user/admin-user.component";
+import {AdminUserComponent} from "./app/admin-user/admin-user.component";
 import {StudentComponent}        from "./app/student/student.component";
 import {AuthAdminGuard} from "./app/shared/services/auth-admin.guard.ts";
 import {AuthStudentGuard} from "./app/shared/services/auth-student.guard.ts";
