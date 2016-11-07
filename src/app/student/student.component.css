@@ -52,7 +52,7 @@ label {
     margin: 10px 0 10px 0;
 }
 
-.inputStudentData{
+.input-student-data {
     margin: 10px 0 10px 0;
 }
 
@@ -62,20 +62,33 @@ label {
     alignment: ce;
 }
 
-.buttonCreateRefresh{
+.button-create-refresh {
     margin: auto;
     text-align: center;
+    width: 100%;
+    clear:both;
+    ;
 }
 
-.positionLeft{
+.position-left {
     float: right;
     margin-right: 10px;
 }
 
-.selectGroup{
+.select-group {
     clear:both;
-    width: 157px;
+    /*width: 157px;*/
     padding: 2px;
     height: 24px;
-    /*text-align:right;*/
+    width: 50%;
 }
+
+div.student-datas  input{
+    width: 50%;
+}
+
+.profile-foto{
+    width: 100px;
+    height: 100px;
+}
+

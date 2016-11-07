@@ -2,6 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {Location} from "@angular/common";
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import {Group} from "../shared/classes/group";
+import {Student} from "../shared/classes/student";
 import {CRUDService} from "../shared/services/crud.service";
 import {EntityManagerBody} from "../shared/classes/entity-manager-body";
 import {Observable} from "rxjs/Rx";
@@ -12,7 +13,8 @@ import {Observable} from "rxjs/Rx";
 })
 export class StudentProfileComponent implements OnInit {
 
-    public student: Array <any> = [];
+    public student: Student [] = [];
+    public newStudent: Student [] = [];
     public entity: string = "student";
     public entityUser: string = "AdminUser";
     public groupEntity: string = "Group";
@@ -21,7 +23,6 @@ export class StudentProfileComponent implements OnInit {
     public passwordStatus: boolean = true;
     public passwordStatusText: string = "password";
     public passwordButtonName: string = "Показати пароль";
-    // public editSaveStatus: boolean = false;
     public editSaveButtonName: string = "Редагувати дані";
     public statusView: boolean = true;
     private studentDataPart1: Array <any>;
@@ -37,6 +38,7 @@ export class StudentProfileComponent implements OnInit {
             this.user_id = +params["id"]; // (+) converts string 'id' to a number
             this.getData();
         });
+        this.getData();
     }
 
     goBack(): void {
@@ -60,9 +62,31 @@ export class StudentProfileComponent implements OnInit {
             this.editSaveButtonName = "Зберегти дані";
         }
         else {
+            this.updateStudent();
             this.editSaveButtonName = "Редагувати дані";
         }
         this.statusView = !this.statusView;
+    }
+
+    updateStudent() {
+        this.newStudent[0] = new Student;
+        this.newStudent[0].username = this.student[0].username;
+        this.newStudent[0].password = this.student[0].plain_password;
+        this.newStudent[0].password_confirm = this.student[0].plain_password;
+        this.newStudent[0].email = this.student[0].email;
+        this.newStudent[0].gradebook_id = this.student[0].gradebook_id;
+        this.newStudent[0].student_surname = this.student[0].student_surname;
+        this.newStudent[0].student_name = this.student[0].student_name;
+        this.newStudent[0].student_fname = this.student[0].student_fname;
+        this.newStudent[0].group_id = this.student[0].group_id;
+        this.newStudent[0].plain_password = this.student[0].plain_password;
+        this.newStudent[0].photo = this.student[0].photo;
+        this._commonService.updateData(this.entity, this.student[0].user_id, this.newStudent[0])
+            .subscribe(data => {
+                    console.log("data : ", data);
+                },
+                error => console.log("error: ", error)
+            );
     }
 
     getData() {

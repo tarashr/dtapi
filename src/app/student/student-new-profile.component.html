@@ -1,35 +1,43 @@
 <div class="entity-container">
     <div class="student-profile-title">ПРОФІЛЬ НОВОГО СТУДЕНТА
-        <button type="button" class="btn btn-default positionLeft"
+        <button type="button" class="btn btn-default position-left"
                 (click)="goBack()">Назад
         </button>
     </div>
     <div class="student-datas row">
             <div class="student-foto col-xs-12 col-sm-3 col-md-3">
                 <!--*<img class="img-responsive img-circle" src="img/profile.png" alt="">-->
-                <input class="inputStudentData" type="file">
+                <div class="profile-foto">
+                    <img #inputFotoStud id="output" src="" alt="profile-foto" />
+                </div>
+                <input  class="input-student-data" type="file" accept="image/*" (change)="openFile($event)" #inputFoto>
+
             </div>
             <div *ngFor="let stud of student">
                 <div class="student-data1 col-xs-12 col-sm-4 col-md-4" >
-                    <div><label for="surname">Прізвище:</label><input id="surname" class="inputStudentData" [disabled]="!statusView" [(ngModel)]="stud.student_surname" required></div>
-                    <div><label for="name">Ім'я:</label><input id="name" class="inputStudentData" [(ngModel)]="stud.student_name" [disabled]="!statusView" required></div>
-                    <div><label for="fname">По батькові:</label><input id="fname" class="inputStudentData" [(ngModel)]="stud.student_fname" [disabled]="!statusView" required></div>
-                    <div><label class="" for="group">Група:</label>
-                    <select id="group" class="inputStudentData selectGroup" [(ngModel)]="stud.group_name" [disabled]="!statusView">
-                        <option *ngFor="let item of groups" class="inputStudentData" [value]="item.group_name">{{item.group_name}}</option>
+                    <div><label for="surname">Прізвище:</label><input id="surname" class="input-student-data" [disabled]="statusView" [(ngModel)]="stud.student_surname" required></div>
+                    <div><label for="name">Ім'я:</label><input id="name" class="input-student-data" [(ngModel)]="stud.student_name" [disabled]="statusView" required></div>
+                    <div><label for="fname">По батькові:</label><input id="fname" class="input-student-data" [(ngModel)]="stud.student_fname" [disabled]="statusView" required></div>
+                    <div><label class="" for="faculty">Факультет:</label>
+                        <select id="faculty" class="input-student-data select-group" #curFaculty [disabled]="statusView" required (change)="getGroupName(curFaculty.value)">
+                                <option class="input-student-data" value=""></option>
+                                <option *ngFor="let item of facultys" class="input-student-data" [value]="item.faculty_id">{{item.faculty_name}}</option>
+                        </select>
+                    </div>
+                    <div><label for="group">Група:</label>
+                    <select id="group" *ngIf="curFaculty.value>0" class="input-student-data select-group" [(ngModel)]="stud.group_id" [disabled]="statusView" required>
+                        <option *ngFor="let item of groups" class="input-student-data" [value]="item.group_id">{{item.group_name}}</option>
                     </select>
-                       <!-- <input id="group" class="inputStudentData" [(ngModel)]="stud.group_name" [disabled]="!statusView" required></div> -->
                     </div>
                 </div>
-
                 <div class="student-data2 col-xs-12 col-sm-5 col-md-5">
-                    <div><label for="login">Логін:</label><input id="login" class="inputStudentData" [(ngModel)]="stud.username" [disabled]="!statusView" required></div>
-                    <div><label for="password">Пароль:</label><input id="password" class="inputStudentData" [type]="passwordStatusText" [(ngModel)]="stud.plain_password" [disabled]="!statusView" required></div>
-                    <div><label for="gradebook_id">№ залікової книжки:</label><input id="gradebook_id" class="inputStudentData" [(ngModel)]="stud.gradebook_id" [disabled]="!statusView" required></div>
-                    <div><label for="email" required pattern="\S+@[a-z]+.[a-z]+">Електронна адреса:</label><input id="email" class="inputStudentData" [(ngModel)]="stud.email" [disabled]="!statusView" required></div>
+                    <div><label for="login">Логін:</label><input id="login" class="input-student-data" [(ngModel)]="stud.username" [disabled]="statusView" required></div>
+                    <div><label for="password">Пароль:</label><input id="password" class="input-student-data" [type]="passwordStatusText" [(ngModel)]="stud.plain_password" [disabled]="statusView" required></div>
+                    <div><label for="gradebook_id">№ залікової книжки:</label><input id="gradebook_id" class="input-student-data" [(ngModel)]="stud.gradebook_id" [disabled]="statusView" required></div>
+                    <div><label for="email" required pattern="\S+@[a-z]+.[a-z]+">Електронна адреса:</label><input id="email" class="input-student-data" [(ngModel)]="stud.email" [disabled]="statusView" required></div>
                 </div>
             </div>
-            <div class="buttonCreateRefresh">
+            <div class="button-create-refresh">
                 <button class="button-save-student-profile" type="button" (click)="editSaveStudentProfile()">{{editSaveButtonName}}</button>
                 <button class="button-refresh-datas" type="button" (click)="dataForView()">Очистити форму</button>
                 <button class="button-refresh-datas" type="button" (click)="showPassword()">{{passwordButtonName}}</button>
