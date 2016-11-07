@@ -12,7 +12,8 @@
             (searchRun)="findEntity($event)"
             (selectRun)="changeLimit($event)">
     </entity-bar>
-    <dt-table *ngIf="entityData.length>0"
+    <p *ngIf="noRecords">Записів не знайдено</p>
+    <dt-table *ngIf="!noRecords"
               [page]="page"
               [limit]="limit"
               [headers]="headers"

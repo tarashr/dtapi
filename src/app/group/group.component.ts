@@ -59,6 +59,7 @@ export class GroupComponent implements OnInit {
     public specialityEntity: string = "Speciality";
     public specialities: Speciality[] = [];
 
+    public noRecords: boolean = false;
     public facultiesNames: any[] = [];
     public specialitiesNames: any[] = [];
 
@@ -96,6 +97,7 @@ export class GroupComponent implements OnInit {
     };
 
     getRecordsRange() {
+        this.noRecords = false;
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                 data => {
@@ -108,14 +110,21 @@ export class GroupComponent implements OnInit {
     getGroupsByFaculty(data: any) {
         if(data === "default"){
             this.sortHide = false;
+            this.noRecords = false;
             this.getRecordsRange();
         } else {
             this.sortHide = true;
             this.crudService.getGroupsByFaculty(data)
                 .subscribe(
                     data => {
-                        this.entityData2 =  data;
-                        this.getFacultyName();
+                        console.log(data.response)
+                        if(data.response) {
+                            this.noRecords = true;
+                        } else {
+                            this.entityData2 =  data;
+                            this.getFacultyName();
+                        }
+
                     },
                     error=> console.log("error: ", error))
         }
