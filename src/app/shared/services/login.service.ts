@@ -33,8 +33,6 @@ export class LoginService {
     private successEventModal = successEventModal;
 
     private handleError = (error: any): Observable<any> => {
-        // let errMsg = (error.message) ? error.message :
-        //     error.status ? `${error.status} - ${error.statusText}` : "Server error";
         return Observable.throw(error.status);
     };
 
@@ -77,7 +75,6 @@ export class LoginService {
     logout(): void {
         this._http
             .get(this.logoutUrl)
-            .map(this.success)
             .catch(this.handleError)
             .subscribe(this.successLogout,
                 () => {
