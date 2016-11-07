@@ -10,8 +10,8 @@ export class Test {
     constructor(test_name: string,
                 tasks: number,
                 time_for_test: number,
-                enabled: number,
                 attempts: number,
+                enabled: number,
                 subject_id?: number)
     {
         this.test_name = test_name;

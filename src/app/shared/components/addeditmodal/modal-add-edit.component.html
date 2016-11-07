@@ -10,6 +10,15 @@
         <input [type]="item.type" class="form-control modalInput"
                [(ngModel)]="item.value">
     </div>
+    <div *ngIf="config.select">
+        <div class="input-group input-group-add-edit" *ngFor="let item of config.select">
+            <span class="input-group-addon modal-span">{{item.selectName}}:</span>
+            <select class="form-control" name="count"
+                    [(ngModel)]="item.selected">
+                <option *ngFor="let option of item.selectItem">{{option}}</option>
+            </select>
+        </div>
+    </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary"

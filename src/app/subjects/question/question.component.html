@@ -2,8 +2,7 @@
     <entity-bar
             [entityTitle]="entityTitle"
             [searchTitle]="searchTitle"
-            [addTitle]="addTitle"
-            [selectLimit]="selectLimitTitle"
+            [selectLimit]="selectLimit"
             [entityDataLength]="entityDataLength"
             (activate)="activate($event)"
             (searchRun)="findEntity($event)"
@@ -17,16 +16,20 @@
               [tableData]="entityData"
               (activate)="activate($event)">
     </dt-table>
-    <ngb-pagination *ngIf="entityDataLength"
-                    [collectionSize]="entityDataLength"
-                    [(page)]="page"
-                    [maxSize]="paginationSize"
-                    [pageSize]="limit"
-                    [rotate]="true"
-                    [ellipses]="true"
-                    [boundaryLinks]="true"
-                    (pageChange)="pageChange($event)"
-                    [hidden]="search.length || limit>=entityDataLength">
+    <ngb-pagination
+            *ngIf="entityDataLength"
+            [hidden]="searchCriteria.length || limit>=entityDataLength"
+            [pageSize]="limit"
+            [collectionSize]="entityDataLength"
+            [(page)]="page"
+            [rotate]="true"
+            (pageChange)="pageChange($event)"
+            [maxSize]="paginationSize"
+            [ellipses]="true"
+            [boundaryLinks]="true">
     </ngb-pagination>
+    <div *ngIf="!entityData.length" class="alert alert-info" role="alert">
+        Для вибраного тесту завдань немає
+    </div>
 </div>
 <template ngbModalContainer></template>

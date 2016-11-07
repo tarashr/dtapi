@@ -3,9 +3,14 @@ import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
 import {SubjectService}  from '../../shared/services/subject.service';
-import {configAddTimeTable, configEditTimeTable, successEventModal} from '../../shared/constants';
+import {
+    configAddTimeTable,
+    configEditTimeTable,
+    successEventModal,
+    headersTimeTable,
+    actionsTimeTable,
+    modalInfoConfig} from '../../shared/constant';
 import {TimeTable} from "../../shared/classes/timetable";
-import {headersTimeTable, actionsTimeTable} from "../../shared/constant-config"
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -29,6 +34,7 @@ export class TimeTableComponent implements OnInit {
     public actions: any = actionsTimeTable;
     public successEventModal = successEventModal;
     private config: any = {action: "create"};
+    public modalInfoConfig: any = modalInfoConfig;
 
     //varibles for addedit
     public configAdd = configAddTimeTable;
@@ -39,13 +45,9 @@ export class TimeTableComponent implements OnInit {
     public entityData: any[] = [];
     public groupsId = [];
     public groupsById = [];
+    public groups = [];
+    public entityGroup = "group";
     public timeTableWithGroupId = [];
-
-    public modalInfoConfig = {
-        title: "",
-        infoString: "",
-        action: ""
-    };
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -60,11 +62,20 @@ export class TimeTableComponent implements OnInit {
             this.subject_id = +params['id']; // (+) converts string 'id' to a number
             this.getTimeTableForSubject();
         });
+        this.getGroups();
     }
 
     goBack(): void {
         this.location.back();
 
+    }
+
+    getGroups() {
+        this.crudService.getRecords(this.entityGroup)
+            .subscribe(
+                data => this.groups = data,
+                error=>console.log("error: ", error)
+            )
     }
 
     getTimeTableForSubject() {
@@ -76,7 +87,7 @@ export class TimeTableComponent implements OnInit {
                         for (let i = 0; i < data.length; i++) {
                             this.groupsId[i] = data[i].group_id;
                         }
-                        this.getGroupsById()
+                        this.getGroupsById();
                     }
                 },
                 error=>console.log("error: ", error)
@@ -88,14 +99,12 @@ export class TimeTableComponent implements OnInit {
         this.crudService.getEntityValues(data)
             .subscribe(
                 data => {
-
                     this.groupsById = data;
                     for (let i = 0; i < this.timeTableWithGroupId.length; i++) {
                         for (let j = 0; j < this.groupsById.length; j++) {
                             if (this.timeTableWithGroupId[i].group_id === this.groupsById[j].group_id) {
                                 this.timeTableWithGroupId[j].group_name = this.groupsById[j].group_name;
                             }
-
                         }
                         this.createTableConfig(this.timeTableWithGroupId),
                             error=>console.log("error: ", error)
@@ -106,15 +115,16 @@ export class TimeTableComponent implements OnInit {
 
     private createTableConfig = (data: any)=> {
         let tempArr: any[] = [];
+        let numberOfOrder: number;
         if (this.timeTableWithGroupId.length) {
-            this.timeTableWithGroupId.forEach((item)=> {
+            this.timeTableWithGroupId.forEach((item, i)=> {
+                numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                 let timetable: any = {};
-                timetable.entity_id = item.test_id;
-                timetable.entityColumns = [item.group_name, item.event_date];
+                timetable.entity_id = item.timetable_id;
+                timetable.entityColumns = [numberOfOrder, item.group_name, item.event_date];
                 timetable.actions = this.actions;
                 tempArr.push(timetable);
             });
-
             this.entityData = tempArr;
         }
     };
@@ -145,22 +155,38 @@ export class TimeTableComponent implements OnInit {
         }
     }
 
+
+    substituteNameGroupOnId(data) {
+        this.groups.forEach((item) => {
+            if (item.group_name === data.select[0].selected) {
+                data.select[0].selected = item.group_id;
+            }
+        });
+    }
+
+
     createCase() {
+        this.configAdd.list.forEach((item)=> {
+            item.value = ""
+        });
+        this.configAdd.select[0].selected = "";
+        this.configAdd.select[0].selectItem = [];
+        this.groups.forEach(item => {
+            this.configAdd.select[0].selectItem.push(item.group_name);
+        });
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                console.log("this data" + "" + JSON.stringify(data));
-                let newTimeTable: TimeTable = new TimeTable(data.list[0].value,
-                    data.list[1].value,
+                this.substituteNameGroupOnId(data);
+                let newTimeTable: TimeTable = new TimeTable(
+                    data.select[0].selected,
+                    data.list[0].value,
                     this.subject_id);
                 this.crudService.insertData(this.entity, newTimeTable)
                     .subscribe(() => {
                         this.modalInfoConfig.infoString = `Новий розклад для групи ${data.list[0].value} успішно створено`;
                         this.successEventModal();
-                        this.configAdd.list.forEach((item)=> {
-                            item.value = ""
-                        });
                         this.getTimeTableForSubject();
                     });
             }, ()=> {
@@ -169,16 +195,21 @@ export class TimeTableComponent implements OnInit {
     };
 
     editCase(data) {
-        this.configEdit.list.forEach((item, i) => {
-            item.value = data.entityColumns[i]
-        });
+        this.configEdit.list[0].value = data.entityColumns[2];
+        this.configEdit.select[0].selected = data.entityColumns[1];
         this.configEdit.id = data.entity_id;
+        this.configEdit.select[0].selectItem = [];
+        this.groups.forEach(item => {
+            this.configEdit.select[0].selectItem.push(item.group_name);
+        });
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
-                let editedTimeTable: TimeTable = new TimeTable(data.list[0].value,
-                    data.list[1].value);
+                this.substituteNameGroupOnId(data);
+                let editedTimeTable: TimeTable = new TimeTable(
+                    data.select[0].selected,
+                    data.list[0].value);
                 this.crudService.updateData(this.entity, data.id, editedTimeTable)
                     .subscribe(()=> {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
@@ -191,7 +222,7 @@ export class TimeTableComponent implements OnInit {
     }
 
     deleteCase(data) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видалити ${data.entityColumns[1]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
@@ -203,6 +234,7 @@ export class TimeTableComponent implements OnInit {
                 return
             });
     }
+
 }
 
 

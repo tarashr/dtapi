@@ -12,4 +12,9 @@ export class ModalAddEditComponent {
 
     constructor(private activeModal: NgbActiveModal) {
     }
+
+    select(data){
+        this.config.select[0].selected = data;
+    }
+
 }

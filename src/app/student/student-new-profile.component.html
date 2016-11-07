@@ -15,7 +15,7 @@
                     <div><label for="name">Ім'я:</label><input id="name" class="inputStudentData" [(ngModel)]="stud.student_name" [disabled]="!statusView" required></div>
                     <div><label for="fname">По батькові:</label><input id="fname" class="inputStudentData" [(ngModel)]="stud.student_fname" [disabled]="!statusView" required></div>
                     <div><label class="" for="group">Група:</label>
-                    <select id="group" class="inputStudentData selectGroup" [(ngModel)]="stud.group_name">
+                    <select id="group" class="inputStudentData selectGroup" [(ngModel)]="stud.group_name" [disabled]="!statusView">
                         <option *ngFor="let item of groups" class="inputStudentData" [value]="item.group_name">{{item.group_name}}</option>
                     </select>
                        <!-- <input id="group" class="inputStudentData" [(ngModel)]="stud.group_name" [disabled]="!statusView" required></div> -->
@@ -30,8 +30,10 @@
                 </div>
             </div>
             <div class="buttonCreateRefresh">
-                <button class="button-save-student-profile" type="button" (click)="editSaveStudentProfile()" [disabled]="!editSaveButtonStatus" >{{editSaveButtonName}}</button>
+                <button class="button-save-student-profile" type="button" (click)="editSaveStudentProfile()">{{editSaveButtonName}}</button>
+                <button class="button-refresh-datas" type="button" (click)="dataForView()">Очистити форму</button>
                 <button class="button-refresh-datas" type="button" (click)="showPassword()">{{passwordButtonName}}</button>
             </div>
         </div>
 </div>
+<template ngbModalContainer></template>

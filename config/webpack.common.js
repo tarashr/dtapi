@@ -39,7 +39,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 include: helpers.root('src', 'app'),
-                loader: 'raw!resolve-url'
+                loader: 'raw'
             }
         ]
     },
