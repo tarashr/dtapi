@@ -1,4 +1,7 @@
 export * from "./faculty-constants";
+export * from "./admin-user-constants";
+export * from "./speciality-constants";
+export * from "./group-constants";
 export * from "./statistic-constants";
 export * from "./constant-code";
 export * from "./common-constants";

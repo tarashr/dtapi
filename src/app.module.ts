@@ -12,7 +12,6 @@ import {StartPageComponent}      from "./app/studentpart/start-page.component";
 import {AdminStartPageComponent} from "./app/admin-start/admin-start-page.component.ts";
 import {StatisticComponent} from "./app/statistic/statistic.component";
 import {SubjectComponent}        from "./app/subjects/subject.component";
-import {AddeditGroupComponent}  from "./app/group/addedit-group.component";
 import {TestComponent} from "./app/subjects/tests/test.component";
 import {TimeTableComponent} from "./app/subjects/timetable/timetable.component";
 import {FacultyComponent}        from "./app/faculty/faculty.component";
@@ -57,7 +56,6 @@ import {UserProfileComponent} from "./app/studentpart/profile/user-profile.compo
         GroupComponent,
         AdminUserComponent,
         SpecialityComponent,
-        AddeditGroupComponent,
         StudentComponent,
         StudentNewProfileComponent,
         StudentProfileComponent,

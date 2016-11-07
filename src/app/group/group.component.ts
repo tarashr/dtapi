@@ -17,13 +17,13 @@ import {
     pageChange,
     getCountRecords,
     delRecord,
+    findEntity,
     refreshData,
-    successEventModal
-} from "../shared/constants";
-import {
+    successEventModal,
     headersGroup,
-    actionsGroup
-} from "../shared/constant-config"
+    actionsGroup,
+    modalInfoConfig
+} from "../shared/constant";
 
 @Component({
     templateUrl: 'group.component.html',
@@ -31,12 +31,7 @@ import {
 })
 export class GroupComponent implements OnInit {
 
-    public modalInfoConfig = {
-        title: "",
-        infoString: "",
-        action: ""
-    };
-
+    public modalInfoConfig: any = modalInfoConfig;
     public configAdd = configAddGroup;
     public configEdit = configEditGroup;
     public paginationSize = maxSize;
@@ -64,8 +59,11 @@ export class GroupComponent implements OnInit {
     public specialityEntity: string = "Speciality";
     public specialities: Speciality[] = [];
 
-    public facultiesNames: string[] = [];
-    public specialitiesNames: string[] = [];
+    public noRecords: boolean = false;
+    public facultiesNames: any[] = [];
+    public specialitiesNames: any[] = [];
+    public defaultFacultySelect: string = "Виберіть факультет";
+    public defaultSpecialitySelect: string = "Виберіть спеціальність";
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
@@ -78,6 +76,8 @@ export class GroupComponent implements OnInit {
     public delRecord = delRecord;
     public refreshData = refreshData;
     public successEventModal = successEventModal;
+    public findEntity = findEntity;
+    public sortHide: boolean =false;
 
     ngOnInit() {
         this.getCountRecords();
@@ -85,18 +85,21 @@ export class GroupComponent implements OnInit {
         this.getSpecialityList()
     }
 
-    private createTableConfig = (data: any)=> {
+    private createTableConfig = (data: any) => {
         let tempArr: any[] = [];
-        data.forEach((item)=> {
+        let numberOfOrder: number;
+        data.forEach((item, i)=> {
+            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
             let group: any = {};
             group.entity_id = item.group_id;
-            group.entityColumns = [item.group_name, item.faculty_name, item.speciality_name];
+            group.entityColumns = [numberOfOrder, item.group_name, item.faculty_name, item.speciality_name];
             tempArr.push(group);
         });
         this.entityData = tempArr;
     };
 
     getRecordsRange() {
+        this.noRecords = false;
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                 data => {
@@ -106,26 +109,48 @@ export class GroupComponent implements OnInit {
                 error=> console.log("error: ", error))
     };
 
-    getFacultiesList() {
-        this.crudService.getRecords("Faculty")
-            .subscribe(
-                data => {
-                    for(let i = 0 ; i < data.length; i++) {
-                        this.facultiesNames.push(data[i].faculty_name);
-                    }
-                },
-                error=> console.log("error: ", error))
+    getGroupsByFaculty(data: any) {
+        if(data === "default"){
+            this.sortHide = false;
+            this.noRecords = false;
+            this.getRecordsRange();
+        } else {
+            this.sortHide = true;
+            this.noRecords = false;
+            this.crudService.getGroupsByFaculty(data)
+                .subscribe(
+                    data => {
+                        if(data.response) {
+                            this.noRecords = true;
+                        } else {
+                            this.entityData2 =  data;
+                            this.getFacultyName();
+                        }
+                    },
+                    error=> console.log("error: ", error))
+        }
     };
 
-    getSpecialityList() {
-        this.crudService.getRecords("Speciality")
-            .subscribe(
-                data => {
-                    for(let i = 0 ; i < data.length; i++) {
-                        this.specialitiesNames.push(data[i].speciality_name);
-                    }
-                },
-                error=> console.log("error: ", error))
+    getGroupsBySpeciality(data: any) {
+        if(data === "default"){
+            this.sortHide = false;
+            this.noRecords = false;
+            this.getRecordsRange();
+        } else {
+            this.sortHide = true;
+            this.noRecords = false;
+            this.crudService.getGroupsBySpeciality(data)
+                .subscribe(
+                    data => {
+                        if(data.response) {
+                            this.noRecords = true;
+                        } else {
+                            this.entityData2 =  data;
+                            this.getFacultyName();
+                        }
+                    },
+                    error=> console.log("error: ", error))
+        }
     };
 
     getFacultyName(): void {
@@ -176,31 +201,30 @@ export class GroupComponent implements OnInit {
             );
     }
 
-    findEntity(searchTerm: string) {
-        this.search = searchTerm;
-        if (this.search.length === 0) {
-            this.offset = 0;
-            this.page = 1;
-            this.getCountRecords();
-            return;
-        }
+    getFacultiesList() {
+        this.crudService.getRecords("Faculty")
+            .subscribe(
+                data => {
+                    for(let i = 0 ; i < data.length; i++) {
+                        this.facultiesNames.push({name: data[i].faculty_name, id: data[i].faculty_id});
+                    }
+                },
+                error=> console.log("error: ", error))
+    };
 
-        this.crudService.getRecordsBySearch(this.entity, this.search)
-            .subscribe(data => {
-                if (data.response == "no records") {
-                    this.entityData = [];
-                    return;
-                }
-                this.page = 1;
-                this.createTableConfig(data);
-            }, error=>console.log("error: ", error));
+    getSpecialityList() {
+        this.crudService.getRecords("Speciality")
+            .subscribe(
+                data => {
+                    for(let i = 0 ; i < data.length; i++) {
+                        this.specialitiesNames.push({name: data[i].speciality_name, id: data[i].speciality_id});
+                    }
+                },
+                error=> console.log("error: ", error))
     };
 
     activate(data: any) {
         switch (data.action) {
-            case "group":
-                this._router.navigate(["/admin/faculty", data.entity_id, "groups"]);
-                break;
             case "create":
                 this.createCase();
                 break;
@@ -232,7 +256,7 @@ export class GroupComponent implements OnInit {
 
     editCase(data:any){
         this.configEdit.list.forEach((item, i)=> {
-            item.value = data.entityColumns[i]
+            item.value = data.entityColumns[i + 1]
         });
         this.configEdit.id = data.entity_id;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
