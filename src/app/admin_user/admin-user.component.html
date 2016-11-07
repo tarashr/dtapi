@@ -3,7 +3,7 @@
             [entityTitle]="entityTitle"
             [searchTitle]="searchTitle"
             [addTitle]="addTitle"
-            [selectLimit]="selectLimit"
+            [selectLimit]="selectLimitTitle"
             [entityDataLength]="entityDataLength"
             (activate)="activate($event)"
             (searchRun)="findEntity($event)"
@@ -26,7 +26,7 @@
                     [ellipses]="true"
                     [boundaryLinks]="true"
                     (pageChange)="pageChange($event)"
-                    [hidden]="searchCriteria.length || limit>=entityDataLength">
+                    [hidden]="search.length || limit>=entityDataLength">
     </ngb-pagination>
 </div>
 <template ngbModalContainer></template>

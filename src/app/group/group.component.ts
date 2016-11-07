@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {Group} from '../shared/classes/group';
@@ -66,7 +65,6 @@ export class GroupComponent implements OnInit {
     public defaultSpecialitySelect: string = "Виберіть спеціальність";
 
     constructor(private crudService: CRUDService,
-                private _router: Router,
                 private modalService: NgbModal) {
     };
 
@@ -237,12 +235,45 @@ export class GroupComponent implements OnInit {
         }
     }
 
+    substituteFacultiesNamesOnId(data) {
+        this.facultiesNames.forEach((item) => {
+            if (item.name === data.select[0].selected) {
+                data.select[0].selected = item.id;
+            }
+        });
+    }
+
+    substituteSpecialitiesNamesOnId(data) {
+        this.specialitiesNames.forEach((item) => {
+            if (item.name === data.select[1].selected) {
+                data.select[1].selected = item.id;
+            }
+        });
+    }
+
     createCase() {
+        this.configAdd.list.forEach((item)=> {
+            item.value = ""
+        });
+        this.configAdd.select[0].selected = "";
+        this.configAdd.select[0].selectItem = [];
+        this.facultiesNames.forEach(item => {
+            this.configAdd.select[0].selectItem.push(item.name);
+        });
+        this.configAdd.select[1].selected = "";
+        this.configAdd.select[1].selectItem = [];
+        this.specialitiesNames.forEach(item => {
+            this.configAdd.select[1].selectItem.push(item.name);
+        });
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                let newGroup: Group = new Group(data.list[0].value, data.list[1].value, data.list[2].value);
+                this.substituteSpecialitiesNamesOnId(data);
+                this.substituteFacultiesNamesOnId(data);
+                let newGroup: Group = new Group(data.list[0].value,
+                                                data.select[0].selected,
+                                                data.select[1].selected);
                 this.crudService.insertData(this.entity, newGroup)
                     .subscribe(response=> {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
@@ -255,16 +286,29 @@ export class GroupComponent implements OnInit {
     };
 
     editCase(data:any){
-        this.configEdit.list.forEach((item, i)=> {
-            item.value = data.entityColumns[i + 1]
-        });
+        this.configEdit.list[0].value = data.entityColumns[1];
+        this.configEdit.select[0].selected = data.entityColumns[2];
         this.configEdit.id = data.entity_id;
+        this.configEdit.select[0].selectItem = [];
+        this.facultiesNames.forEach(item => {
+            this.configEdit.select[0].selectItem.push(item.name);
+        });
+        this.configEdit.select[1].selected = data.entityColumns[3];
+        console.log(JSON.stringify(data));
+        this.configEdit.select[1].selectItem = [];
+        this.specialitiesNames.forEach(item => {
+            this.configEdit.select[1].selectItem.push(item.name);
+        });
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
-                let newGroup: Group = new Group(data.list[0].value, data.list[1].value, data.list[2].value);
-                this.crudService.insertData(this.entity, newGroup)
+                this.substituteSpecialitiesNamesOnId(data);
+                this.substituteFacultiesNamesOnId(data);
+                let newGroup: Group = new Group(data.list[0].value,
+                                                data.select[0].selected,
+                                                data.select[1].selected);
+                this.crudService.updateData(this.entity, data.id, newGroup)
                     .subscribe(response=> {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
                         this.successEventModal();
@@ -276,7 +320,7 @@ export class GroupComponent implements OnInit {
     }
 
     deleteCase(data:any){
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});

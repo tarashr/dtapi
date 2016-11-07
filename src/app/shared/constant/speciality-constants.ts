@@ -14,13 +14,13 @@ export const actionsSpeciality = [
         btnClassName: "btn btn-default btn-sm"
     },
     {
-        title: "Редагувати дані адміністротора",
+        title: "Редагувати дані спеціальності",
         action: "edit",
         glyphicon: "glyphicon glyphicon-edit",
         btnClassName: "btn btn-default btn-sm"
     },
     {
-        title: "Видалити адміністратора",
+        title: "Видалити спеціальність",
         action: "delete",
         glyphicon: "glyphicon glyphicon-trash",
         btnClassName: "btn btn-danger btn-sm"

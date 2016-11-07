@@ -47,8 +47,8 @@ export class SpecialityComponent implements OnInit{
     public entity: string = "speciality";
     public limit: number = 5;
     public offset: number = 0;
+    public search: string = "";
     public page: number = 1;
-    public searchCriteria: string = "";
 
     constructor(private crudService: CRUDService,
                 private _router: Router,

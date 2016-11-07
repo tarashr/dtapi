@@ -41,7 +41,7 @@ export class AdminUserComponent implements OnInit {
     public addTitle: string = "Додати адміністратора";
     public searchTitle:string = "Введіть дані для пошуку";
     public entityTitle:string = "Адміністратори";
-    public selectLimit: string = "Виберіть кількість записів на сторінці";
+    public selectLimitTitle: string = "Виберіть кількість записів на сторінці";
     //
 
     public entityData: any[] = [];
@@ -51,7 +51,6 @@ export class AdminUserComponent implements OnInit {
     public search: string = "";
     public page: number = 1;
     public offset: number = 0;
-    public searchCriteria: string = "";
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
@@ -76,8 +75,8 @@ export class AdminUserComponent implements OnInit {
         let tempArr: any[] = [];
         let numberOfOrder: number;
         data.forEach((item, i)=> {
-            let adminUser: any = {};
             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
+            let adminUser: any = {};
             adminUser.entity_id = item.id;
             adminUser.entityColumns = [numberOfOrder, item.username, item.email];
             tempArr.push(adminUser);

@@ -44,22 +44,26 @@ export const actionsGroup = [
 export const configAddGroup = {
     title: "Додати групу",
     list: [
-        {name: "Назва групи", value: "", title: "name", type: "text"},
-        {name: "Факультет", value: "", title: "facultyName", type: "text"},
-        {name: "Спеціальність", value: "", title: "specialityName", type: "text"}
+        {name: "Назва групи", value: "", title: "name", type: "text"}
     ],
     action: "create",
-    labelBtn: "Додати"
+    labelBtn: "Додати",
+    select: [
+        {selectName: "Факультет", selectItem: [], selected: ""},
+        {selectName: "Спеціальність", selectItem: [], selected: ""}
+    ]
 };
 
 export const configEditGroup = {
     title: "Редагувати групу",
     list: [
-        {name: "Назва групи", value: "", title: "name", type: "text"},
-        {name: "Факультет", value: "", title: "facultyName", type: "text"},
-        {name: "Спеціальність", value: "", title: "specialityName", type: "text"}
+        {name: "Назва групи", value: "", title: "name", type: "text"}
     ],
     action: "edit",
     labelBtn: "Редагувати",
-    id: ""
+    id: "",
+    select: [
+        {selectName: "Факультет", selectItem: [], selected: ""},
+        {selectName: "Спеціальність", selectItem: [], selected: ""}
+    ]
 };
