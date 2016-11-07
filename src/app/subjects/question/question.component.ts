@@ -73,10 +73,10 @@ export class QuestionComponent implements OnInit {
 
     }
 
-    deleteQuestion(entity: string, id: number): void {
+    deleteQuestion(id: number): void {
         this.offset = (this.page - 1) * this.limit;
         this.crudService
-            .delRecord(entity, id)
+            .delRecord(this.entity, id)
             .subscribe(
                 () => {
                     this.refreshData("delete");
@@ -150,22 +150,7 @@ export class QuestionComponent implements OnInit {
         }
         this.getRecordsRangeByTest();
     }
-
-    activate(data: any) {
-        console.log("!!! ", data);
-        switch (data.action) {
-            case "edit":
-                this.editCase(data);
-                break;
-            case "delete":
-                this.deleteCase(data);
-                break;
-            case "create":
-                this.createCase();
-                break;
-        }
-    }
-
+    
     createCase() {
         this.configAdd.list.forEach((item) => {
             item.value = "";
@@ -187,20 +172,6 @@ export class QuestionComponent implements OnInit {
                         this.configAdd.list.forEach((item)=>{item.value=""});
                         this.refreshData(data.action);
                     });
-            }, ()=> {
-                return
-            });
-    };
-
-    deleteCase(data: any) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
-        this.modalInfoConfig.action = "confirm";
-        this.modalInfoConfig.title = "Видалення";
-        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
-        modalRefDel.componentInstance.config = this.modalInfoConfig;
-        modalRefDel.result
-            .then(() => {
-                this.deleteQuestion(this.entity, data.entity_id);
             }, ()=> {
                 return
             });
