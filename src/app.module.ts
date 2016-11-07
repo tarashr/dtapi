@@ -37,6 +37,9 @@ import { QuestionComponent } from "./app/subjects/question/question.component"
 import {TestsTabsetComponent} from "./app/studentpart/teststabset/tests-tabset.component";
 import {TestPlayerComponent} from "./app/test-player/test-player.component";
 import {UserProfileComponent} from "./app/studentpart/profile/user-profile.component";
+import {TestListComponent} from "./app/studentpart/test-list/test-list.component";
+
+
 
 @NgModule({
     imports: [
@@ -71,7 +74,8 @@ import {UserProfileComponent} from "./app/studentpart/profile/user-profile.compo
         UserProfileComponent,
         TimeTableComponent,
         TestDetailComponent,
-        QuestionComponent
+        QuestionComponent,
+		TestListComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: "/"},

@@ -3,7 +3,9 @@
 
         <div class="col-xs-12 col-md-8 info">
             <ngbd-tabset-tests
-            [usergroup_name] = "userGroup.group_name">
+            [groupName] = "userGroup.group_name"
+			[groupId] = "userGroup.group_id">
+			
             </ngbd-tabset-tests>
         </div>
 
@@ -14,7 +16,7 @@
             <h4> {{user.student_surname+" "+user.student_name}} </h4>
             <p class="text-left"><b>Факультет:</b> {{userFaculty.faculty_name}}</p>
             <p class="text-left"><b>Спеціальність:</b> {{userSpeciality.speciality_name}}</p>
-            <p class="text-left"><b>Група (id):</b>
+            <p class="text-left"><b>Група:</b>
                 {{userGroup.group_name}}
 
             </p>
