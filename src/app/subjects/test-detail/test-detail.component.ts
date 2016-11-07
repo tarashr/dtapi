@@ -4,43 +4,43 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
 import {SubjectService}  from '../../shared/services/subject.service';
 import {
-    configAddTest,
-    configEditTest,
+    configAddTestDetail,
+    configEditTestDetail,
     successEventModal,
-    actionsTest,
-    headersTest,
+    headersTestDetail,
+    actionsTestDetail,
     modalInfoConfig} from '../../shared/constant';
-import {Test} from "../../shared/classes/test";
+import {TestDetail} from "../../shared/classes/test-detail";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'test-container',
-    templateUrl: 'test.component.html'
+    selector: 'test-detail-container',
+    templateUrl: 'test-detail.component.html'
 })
 
-export class TestComponent implements OnInit {
+export class TestDetailComponent implements OnInit {
 
     //common variables
-    public entity: string = "test";
+    public entity: string = "testDetail";
     public errorMessage: string;
-    public pageTitle: string = "Тести по предмету";
-    public subject_id: number;
+    public pageTitle: string = "Детальніше про тест";
+    public test_id: number;
     public page: number = 1;
     public limit: number = 0;
-    public headers: any = headersTest;
-    public actions: any = actionsTest;
+    public headers: any = headersTestDetail;
+    public actions: any = actionsTestDetail;
     public successEventModal = successEventModal;
     private config: any = {action: "create"};
     public modalInfoConfig: any = modalInfoConfig;
 
     //varibles for addedit
-    public configAdd = configAddTest;
-    public configEdit = configEditTest;
+    public configAdd = configAddTestDetail;
+    public configEdit = configEditTestDetail;
 
     // variables for common component
-    public entityTitle: string = "Тести";
+    public entityTitle: string = "Детальніше про тест";
     public entityData: any[] = [];
 
     constructor(private crudService: CRUDService,
@@ -53,8 +53,8 @@ export class TestComponent implements OnInit {
 
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
-            this.subject_id = +params['id']; // (+) converts string 'id' to a number
-            this.getTestBySubjectId();
+            this.test_id = +params['id'];
+            this.getTestDetailsByTest();
         });
     }
 
@@ -63,8 +63,8 @@ export class TestComponent implements OnInit {
 
     }
 
-    getTestBySubjectId() {
-        this.subjectService.getTestsBySubjectId(this.entity, this.subject_id)
+    getTestDetailsByTest() {
+        this.subjectService.getTestDetailsByTest(this.test_id)
             .subscribe(
                 data => {
                     let tempArr: any[] = [];
@@ -72,37 +72,30 @@ export class TestComponent implements OnInit {
                     if (data.length) {
                         data.forEach((item, i)=> {
                             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-                            let test: any = {};
-                            test.entity_id = item.test_id;
-                            test.entityColumns = [
+                            let testDetail: any = {};
+                            testDetail.entity_id = item.id;
+                            testDetail.entityColumns = [
                                 numberOfOrder,
-                                item.test_name,
+                                item.level,
                                 item.tasks,
-                                item.time_for_test,
-                                item.attempts,
-                                item.enabled
+                                item.rate
                             ];
-                            test.actions = this.actions;
-                            tempArr.push(test);
+                            testDetail.actions = this.actions;
+                            tempArr.push(testDetail);
                         });
                         this.entityData = tempArr;
-                        for (let i = 0; i < this.entityData.length; i++) {
-                            this.entityData[i].entityColumns[5] == "1" ?
-                                this.entityData[i].entityColumns.splice(5, 1, "Доступно") :
-                                this.entityData[i].entityColumns.splice(5, 1, "Не доступно");
-                        }
                     }
                 },
                 error=>console.log("error: ", error)
             );
     }
 
-    deleteTest(entity: string, id: number): void {
+    deleteTestDetail(entity: string, id: number): void {
         this.crudService
             .delRecord(this.entity, id)
             .subscribe(
                 () => {
-                    this.getTestBySubjectId();
+                    this.getTestDetailsByTest();
                 },
                 error => this.errorMessage = <any>error
             );
@@ -111,12 +104,6 @@ export class TestComponent implements OnInit {
     activate(data: any) {
         console.log("!!! ", data);
         switch (data.action) {
-            case "testDetail":
-                this.router.navigate(["/admin/subject/test", data.entity_id, "testDetail"]);
-                break;
-            case "question":
-                this.router.navigate(["/admin/subject/test", data.entity_id, "question"]);
-                break;
             case "edit":
                 this.editCase(data);
                 break;
@@ -133,22 +120,20 @@ export class TestComponent implements OnInit {
         this.configAdd.list.forEach((item)=> {
             item.value = ""
         });
-        this.configAdd.select[0].selected = "";
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                let newTest: Test = new Test(data.list[0].value,
+                let newTestDetail: TestDetail = new TestDetail(
+                    data.list[0].value,
                     data.list[1].value,
                     data.list[2].value,
-                    data.list[3].value,
-                    data.select[0].selectItem.indexOf(data.select[0].selected),
-                    this.subject_id);
-                this.crudService.insertData(this.entity, newTest)
+                    this.test_id);
+                this.crudService.insertData(this.entity, newTestDetail)
                     .subscribe(() => {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
-                        this.getTestBySubjectId();
+                        this.getTestDetailsByTest();
                     });
             }, ()=> {
                 return
@@ -160,21 +145,18 @@ export class TestComponent implements OnInit {
             item.value = data.entityColumns[i+1]
         });
         this.configEdit.id = data.entity_id;
-        this.configEdit.select[0].selected = data.entityColumns[5];
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
-                let editedTest: Test = new Test(data.list[0].value,
+                let editedTestDetail: TestDetail = new TestDetail(data.list[0].value,
                     data.list[1].value,
-                    data.list[2].value,
-                    data.list[3].value,
-                    data.select[0].selectItem.indexOf(data.select[0].selected));
-                this.crudService.updateData(this.entity, data.id, editedTest)
+                    data.list[2].value)
+                this.crudService.updateData(this.entity, data.id, editedTestDetail)
                     .subscribe(()=> {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
                         this.successEventModal();
-                        this.getTestBySubjectId();
+                        this.getTestDetailsByTest();
                     });
             }, ()=> {
                 return
@@ -182,18 +164,20 @@ export class TestComponent implements OnInit {
     }
 
     deleteCase(data) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
         modalRefDel.componentInstance.config = this.modalInfoConfig;
         modalRefDel.result
             .then(() => {
-                this.deleteTest(this.entity, data.entity_id);
+                this.deleteTestDetail(this.entity, data.entity_id);
+                console.log("dataaaa" + JSON.stringify(data));
             }, ()=> {
                 return
             });
     }
 }
+
 
 

@@ -18,6 +18,10 @@ export const editGroupUrl: string = baseUrl + 'group/update'; // + id of subject
 
 export const getTestsBySubjectIdUrl: string = baseUrl + 'test/getTestsBySubject'; // + id of subject
 export const getTimeTableForSubjectUrl: string = baseUrl + 'timeTable/getTimeTablesForSubject'; // + id of subject
+export const getTestDetailsByTestUrl: string = baseUrl + 'testDetail/getTestDetailsByTest'; // + id of subject
+export const getQuestionsByLevelRandUrl: string = baseUrl + "question/getQuestionsByLevelRand"; // + test_id + level + number
+export const getRecordsRangeByTestUrl: string = baseUrl + "question/getRecordsRangeByTest"; // + test_id + limit + offset
+export const countRecordsByTestUrl: string = baseUrl + "question/countRecordsByTest"; // + test_id
 
 //Array of entities for statistic page
 export const entities: any[] = [
@@ -117,23 +121,50 @@ export const configAddTest = {
     title: "Додати тест",
     list: [
         {name: "Назва тесту", value: "", title: "name", type: "text"},
-        {name: "Кількість завдань", value: "", title: "tasks", type: "text"},
+        {name: "Кількість завдань", value: "", title: "tasks", type: "number"},
         {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text"},
-        {name: "Доступність", value: "", title: "enabled", type: "text"},
-        {name: "Кількість спроб", value: "", title: "attempts", type: "text"}
+        {name: "Кількість спроб", value: "", title: "attempts", type: "number"}
     ],
     action: "create",
-    labelBtn: "Додати"
+    labelBtn: "Додати",
+    select: [
+        {selectName: "Доступність", selectItem: ["Не доступно", "Доступно"], selected: ""}
+    ]
 };
 
 export const configAddTimeTable = {
     title: "Додати новий розклад проведення тестування",
     list: [
-        {name: "Назва групи", value: "", title: "name", type: "text"},
-        {name: "Дата", value: "", title: "date", type: "text"},
+        {name: "Дата", value: "", title: "date", type: "data"},
+    ],
+    action: "create",
+    labelBtn: "Зареєструвати",
+    select: [
+        {selectName: "Групи", selectItem: [], selected: ""}
+    ]
+};
+
+export const configAddTestDetail = {
+    title: "Додати новий параметр тесту",
+    list: [
+        {name: "Рівень", value: "", title: "level", type: "number"},
+        {name: "Кількість завдань", value: "", title: "tasks", type: "number"},
+        {name: "Кількість балів", value: "", title: "rate", type: "number"}
     ],
     action: "create",
     labelBtn: "Зареєструвати"
+};
+
+export const configAddQuestion = {
+    title: "Додати нове завдання",
+    list: [
+        {name: "Завдання", value: "", title: "task", type: "text"},
+        {name: "Рівень", value: "", title: "level", type: "number"},
+        {name: "Тип", value: "", title: "type", type: ""},
+        {name: "Вкладення", value: "", title: "level", type: ""}
+    ],
+    action: "create",
+    labelBtn: "Додати"
 };
 
 export const configEditFaculty = {
@@ -200,26 +231,52 @@ export const configEditTest = {
         {name: "Назва тесту", value: "", title: "name", type: "text"},
         {name: "Кількість завдань", value: "", title: "tasks", type: "text"},
         {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text"},
-        {name: "Доступність", value: "", title: "enabled", type: "text"},
         {name: "Кількість спроб", value: "", title: "attempts", type: "text"},
-        {name: "Назва предмет", value: "", title: "subject_name", type: "text"}
     ],
     action: "edit",
     labelBtn: "Редагувати",
-    id: ""
+    id: "",
+    select: [
+        {selectName: "Доступність", selectItem: ["Не доступно", "Доступно"], selected: ""}
+    ]
 };
 
 export const configEditTimeTable = {
     title: "Редагувати розклад проведення тестування",
     list: [
-        {name: "Назва групи", value: "", title: "name"},
-        {name: "Дата", value: "", title: "date"},
+        {name: "Дата", value: "", title: "date", type: "date"},
+    ],
+    action: "edit",
+    labelBtn: "Редагувати",
+    id: "",
+    select: [
+        {selectName: "Групи", selectItem: [], selected: ""}
+    ]
+};
+
+export const configEditTestDetail = {
+    title: "Редагувати параметр тесту",
+    list: [
+        {name: "Рівень", value: "", title: "level", type: "number"},
+        {name: "Кількість завдань", value: "", title: "tasks", type: "number"},
+        {name: "Кількість балів", value: "", title: "rate", type: "number"}
     ],
     action: "edit",
     labelBtn: "Редагувати",
     id: ""
 };
 
+export const configEditQuestion = {
+    title: "Редагувати завдання",
+    list: [
+        {name: "Завдання", value: "", title: "task", type: "text"},
+        {name: "Рівень", value: "", title: "level", type: "number"},
+        {name: "Тип", value: "", title: "type", type: ""},
+        {name: "Вкладення", value: "", title: "level", type: ""}
+    ],
+    action: "edit",
+    labelBtn: "Редагувати"
+};
 
 // Functions
 export const changeLimit = function (limit: number): void {
@@ -259,7 +316,7 @@ export const getRecordsRange = function () {
 
 export const successEventModal = function () {
     this.modalInfoConfig.action = "info";
-    this.modalInfoConfig.title="Повідомлення";
+    this.modalInfoConfig.title = "Повідомлення";
     const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
     modalRef.componentInstance.config = this.modalInfoConfig;
 };

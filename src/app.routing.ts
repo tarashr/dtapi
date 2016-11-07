@@ -16,8 +16,13 @@ import {StudentComponent} from "./app/student/student.component";
 import {StudentNewProfileComponent} from "./app/student/student-new-profile.component";
 import {StudentProfileComponent} from "./app/student/student-profile.component";
 import {TimeTableComponent} from "./app/subjects/timetable/timetable.component";
+
+import { TestDetailComponent } from "./app/subjects/test-detail/test-detail.component";
+import { QuestionComponent } from "./app/subjects/question/question.component";
+
 import {UserProfileComponent} from "./app/studentpart/profile/user-profile.component";
 import {TestPlayerComponent} from "./app/test-player/test-player.component";
+import {TestDetail} from "./app/shared/classes/test-detail";
 
 const appRoutes: Routes = [
     {path: "", redirectTo: "login", pathMatch: "full"},
@@ -41,6 +46,8 @@ const appRoutes: Routes = [
             {path: "statistic", component: StatisticComponent},
             {path: "subject", component: SubjectComponent},
             {path: "subject/:id/test", component: TestComponent},
+            {path: "subject/test/:id/testDetail", component: TestDetailComponent},
+            {path: "subject/test/:id/question", component: QuestionComponent},
             {path: "subject/:id/timeTable", component: TimeTableComponent},
             {path: "speciality", component: SpecialityComponent},
             {path: "faculty", component: FacultyComponent},

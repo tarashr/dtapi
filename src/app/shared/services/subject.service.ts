@@ -3,11 +3,15 @@ import {Headers, Http, Response} from '@angular/http';
 import {Observable} from 'rxjs';
 import {Router} from "@angular/router";
 import '../rxjs-operators';
-import {baseUrl}  from "../constants.ts";
-import {getTestsBySubjectIdUrl, getTimeTableForSubjectUrl}  from "../constants.ts";
-import {EntityManagerBody} from "../classes/entity-manager-body";
-import {Test}   from '../classes/test'
-import *as url from '../constants';
+import {
+    getTestsBySubjectIdUrl,
+    getTimeTableForSubjectUrl,
+    getTestDetailsByTestUrl,
+    getQuestionsByLevelRandUrl,
+    getRecordsRangeByTestUrl,
+    countRecordsByTestUrl,
+    baseUrl
+}  from "../../shared/constants";
 
 @Injectable()
 export class SubjectService {
@@ -39,6 +43,30 @@ export class SubjectService {
 
     getTimeTableForSubject(entity:string, id:number):Observable<any>{
         return this.http.get(`${getTimeTableForSubjectUrl}/${id}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    getTestDetailsByTest(id:number):Observable<any>{
+        return this.http.get(`${getTestDetailsByTestUrl}/${id}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    getQuestionsByLevelRand(test_id: number, level: number, number: number):Observable<any> {
+        return this.http.get(`${getQuestionsByLevelRandUrl}/${test_id}/${level}/${number}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    getRecordsRangeByTest(test_id: number, limit: number, offset: number):Observable<any> {
+        return this.http.get(`${getRecordsRangeByTestUrl}/${test_id}/${limit}/${offset}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    countRecordsByTest(test_id: number):Observable<any> {
+        return this.http.get(`${countRecordsByTestUrl}/${test_id}`)
             .map(this.successResponse)
             .catch(this.handleError);
     }

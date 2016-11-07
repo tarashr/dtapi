@@ -31,6 +31,9 @@ import {EntityBarComponent} from "./app/shared/components/entity-bar/entity-bar.
 import {TableComponent} from "./app/shared/components/table/table.component";
 import {InfoModalComponent} from "./app/shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent} from "./app/shared/components/addeditmodal/modal-add-edit.component";
+import { TestDetailComponent } from "./app/subjects/test-detail/test-detail.component";
+import { QuestionComponent } from "./app/subjects/question/question.component"
+
 import {TestsTabsetComponent} from "./app/studentpart/teststabset/tests-tabset.component";
 import {TestPlayerComponent} from "./app/test-player/test-player.component";
 import {UserProfileComponent} from "./app/studentpart/profile/user-profile.component";
@@ -66,7 +69,9 @@ import {UserProfileComponent} from "./app/studentpart/profile/user-profile.compo
         TestsTabsetComponent,
         TestPlayerComponent,
         UserProfileComponent,
-        TimeTableComponent
+        TimeTableComponent,
+        TestDetailComponent,
+        QuestionComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: "/"},

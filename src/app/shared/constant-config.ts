@@ -64,8 +64,8 @@ export const actionsSubject = [
         glyphicon: "glyphicon glyphicon-check", btnClassName: "btn btn-default btn-sm"
     },
     {
-        title: "Розклад тестів", action: "shedule",
-        glyphicon: "glyphicon glyphicon-th", btnClassName: "btn btn-default btn-sm"
+        title: "Розклад тестів", action: "timeTable",
+        style: "glyphicon glyphicon-th", btnStyle: "btn btn-default btn-sm"
     },
     {
         title: "Редагувати предмет", action: "edit",
@@ -175,23 +175,24 @@ export const actionsGroup = [
 
 
 export const headersTest = [
-    {name: "№", className: "col-xs-12 col-sm-1"},
-    {name: "Назва тесту", className: "col-xs-12 col-sm-2"},
-    {name: "Завдань", className: "col-xs-12 col-sm-1"},
-    {name: "Тривалість", className: "col-xs-12 col-sm-2"},
-    {name: "Статус", className: "col-xs-12 col-sm-2"},
-    {name: "Cпроб", className: "col-xs-12 col-sm-1"},
-    {name: "", className: "col-xs-12 col-sm-3"}
+    {name: "№", style: "col-xs-12 col-sm-1"},
+    {name: "Назва тесту", style: "col-xs-12 col-sm-2"},
+    {name: "Завдань", style: "col-xs-12 col-sm-1"},
+    {name: "Тривалість", style: "col-xs-12 col-sm-2"},
+    {name: "Cпроб", style: "col-xs-12 col-sm-1"},
+    {name: "Статус", style: "col-xs-12 col-sm-2"},
+    {name: "", style: "col-xs-12 col-sm-3"}
 ];
 
 export const actionsTest = [
     {
-        title: "Детальніше про тест", action: "testDetaile",
-        glyphicon: "glyphicon glyphicon-info-sign", btnClassName: "btn btn-default btn-sm"
+        title: "Детальніше про тест", action: "testDetail",
+        style: "glyphicon glyphicon-info-sign", btnStyle: "btn btn-default btn-sm"
     },
     {
         title: "Завдання", action: "task",
         glyphicon: "glyphicon glyphicon-tasks", btnClassName: "btn btn-default btn-sm"
+
     },
     {
         title: "Редагувати тест", action: "edit",
@@ -218,5 +219,44 @@ export const actionsTimeTable = [
     {
         title: "Видалити розклад", action: "delete",
         glyphicon: "glyphicon glyphicon-trash", btnClassName: "btn btn-danger btn-sm"
+    }
+];
+
+export const headersTestDetail = [
+    {name: "№", style: "col-xs-12 col-sm-1"},
+    {name: "Рівень", style: "col-xs-12 col-sm-2"},
+    {name: "Кількість завдань", style: "col-xs-12 col-sm-3"},
+    {name: "Кількість балів", style: "col-xs-12 col-sm-3"},
+    {name: "", style: "col-xs-12 col-sm-3"}
+];
+
+export const actionsTestDetail = [
+    {
+        title: "Редагувати параметр", action: "edit",
+        style: "glyphicon glyphicon-edit", btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Видалити параметр", action: "delete",
+        style: "glyphicon glyphicon-trash", btnStyle: "btn btn-danger btn-sm"
+    }
+];
+
+export const headersQuestion = [
+    {name: "№", style: "col-xs-12 col-sm-1"},
+    {name: "Завдання", style: "col-xs-12 col-sm-3"},
+    {name: "Рівень", style: "col-xs-12 col-sm-1"},
+    {name: "Тип", style: "col-xs-12 col-sm-2"},
+    {name: "Вкладення", style: "col-xs-12 col-sm-3"},
+    {name: "", style: "col-xs-12 col-sm-2"}
+];
+
+export const actionsQuestion = [
+    {
+        title: "Редагувати завдання", action: "edit",
+        style: "glyphicon glyphicon-edit", btnStyle: "btn btn-default btn-sm"
+    },
+    {
+        title: "Видалити завдання", action: "delete",
+        style: "glyphicon glyphicon-trash", btnStyle: "btn btn-danger btn-sm"
     }
 ];

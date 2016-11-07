@@ -7,8 +7,13 @@ import {InfoModalComponent} from "../shared/components/info-modal/info-modal.com
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Subject}   from '../shared/classes/subject';
 import {CRUDService}  from '../shared/services/crud.service';
-import {configAddSubject, configEditSubject, successEventModal} from '../shared/constants';
-import {headersSubject, actionsSubject} from "../shared/constant-config"
+import {
+    configAddSubject,
+    configEditSubject,
+    successEventModal,
+    headersSubject,
+    actionsSubject,
+    modalInfoConfig} from '../shared/constant';
 
 @Component({
     selector: 'subject-container',
@@ -22,6 +27,7 @@ export class SubjectComponent implements OnInit {
     public errorMessage: string;
     public headers: any = headersSubject;
     public actions: any = actionsSubject;
+    public modalInfoConfig: any = modalInfoConfig;
 
     //variables for pagination
     public limit: number = 5;
@@ -55,12 +61,6 @@ export class SubjectComponent implements OnInit {
         this.getCountSubjects();
     }
 
-    public modalInfoConfig = {
-        title: "",
-        infoString: "",
-        action: ""
-    };
-
     deleteSubject(entity: string, id: number): void {
         this.offset = (this.page - 1) * this.limit;
         this.crudService
@@ -89,10 +89,12 @@ export class SubjectComponent implements OnInit {
             .subscribe(
                 data => {
                     let tempArr: any[] = [];
-                    data.forEach((item)=> {
+                    let numberOfOrder: number;
+                    data.forEach((item, i)=> {
+                        numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                         let subject: any = {};
                         subject.entity_id = item.subject_id;
-                        subject.entityColumns = [item.subject_name, item.subject_description];
+                        subject.entityColumns = [numberOfOrder, item.subject_name, item.subject_description];
                         subject.actions = this.actions;
                         tempArr.push(subject);
                     });
@@ -127,11 +129,13 @@ export class SubjectComponent implements OnInit {
                         return;
                     }
                     this.page = 1;
+                    let numberOfOrder: number;
                     let tempArr: any[] = [];
-                    data.forEach((item)=> {
+                    data.forEach((item, i)=> {
+                        numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                         let subject: any = {};
                         subject.entity_id = item.subject_id;
-                        subject.entityColumns = [item.subject_name, item.subject_description];
+                        subject.entityColumns = [numberOfOrder, item.subject_name, item.subject_description];
                         subject.actions = this.actions;
                         tempArr.push(subject);
                     });
@@ -175,7 +179,7 @@ export class SubjectComponent implements OnInit {
             case "test":
                 this._router.navigate(["/admin/subject", data.entity_id, "test"]);
                 break;
-            case "shedule":
+            case "timeTable":
                 this._router.navigate(["/admin/subject", data.entity_id, "timeTable"]);
                 break;
             case "edit":
@@ -191,6 +195,9 @@ export class SubjectComponent implements OnInit {
     }
 
     createCase() {
+        this.configAdd.list.forEach((item) => {
+            item.value = "";
+        });
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
@@ -210,7 +217,7 @@ export class SubjectComponent implements OnInit {
 
     editCase(data: any) {
         this.configEdit.list.forEach((item, i) => {
-            item.value = data.entityColumns[i]
+            item.value = data.entityColumns[i+1]
         });
         this.configEdit.id = data.entity_id;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
