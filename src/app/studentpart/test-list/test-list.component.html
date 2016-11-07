@@ -1,7 +1,13 @@
-<div class="col-xs-12" *ngFor="let test of tests">
-	<span *ngIf = "test.enabled == 1">
-		Предмет: <b>{{test.subjectName}}</b> Назва тесту: <b>{{test.test_name}}</b><br>
-	Дата проведення: <b>***</b> (доступність - {{test.enabled}})
-	<hr>
-	</span>
-</div>
+<!--<div class="col-xs-12" *ngFor="let test of tests">-->
+	<!--<span *ngIf = "test.enabled == 1">-->
+		<!--Предмет: <b>{{test.subjectName}}</b> Назва тесту: <b>{{test.test_name}}</b><br>-->
+	<!--Дата проведення: <b>***</b> (доступність - {{test.enabled}})-->
+	<!--<hr>-->
+	<!--</span>-->
+<!--</div>-->
+<dt-table *ngIf="entityData.length>0"
+		  [headers]="headers"
+		  [actions]="actions"
+		  [tableData]="entityData"
+		  (activate)="activate($event)">
+</dt-table>
