@@ -15,16 +15,16 @@
                         #select1
                         class="form-control"
                         name="select1"
-                        (input)="onSelect(select1.value)">
-                    <option value="default">Виберіть факультет</option>
+                        (input)="onSelect1(select1.value)">
+                    <option value="default">{{defaultOption1}}</option>
                     <option *ngFor="let item of listOfOptions1" [value]="item.id">{{item.name}}</option>
                 </select>
                 <select *ngIf="listOfOptions2"
                         #select2
                         class="form-control"
                         name="select2"
-                        (input)="onSelect(select2.value)">>
-                    <option value="">Виберіть спеціальність</option>
+                        (input)="onSelect2(select2.value)">>
+                    <option value="default">{{defaultOption2}}</option>
                     <option *ngFor="let item of listOfOptions2" [value]="item.id">{{item.name}}</option>
                 </select>
             </div>

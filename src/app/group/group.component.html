@@ -7,8 +7,11 @@
             [entityDataLength]="entityDataLength"
             [listOfOptions1]="facultiesNames"
             [listOfOptions2]="specialitiesNames"
+            [defaultOption1]="defaultFacultySelect"
+            [defaultOption2]="defaultSpecialitySelect"
             (activate)="activate($event)"
-            (sortGroupsId)="getGroupsByFaculty($event)"
+            (sortByField1)="getGroupsByFaculty($event)"
+            (sortByField2)="getGroupsBySpeciality($event)"
             (searchRun)="findEntity($event)"
             (selectRun)="changeLimit($event)">
     </entity-bar>

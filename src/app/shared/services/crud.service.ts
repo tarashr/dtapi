@@ -89,6 +89,13 @@ export class CRUDService {
             .catch(this.handleError);
     }
 
+    getGroupsBySpeciality(faculty_id: number): Observable<any> {
+        return this._http
+            .get(`${this.hostUrlBase}group/getGroupsBySpeciality/${faculty_id}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
     getRecordsBySearch(entity: string, search: string) {
         return this._http
             .get(`${this.hostUrlBase}${entity}/getRecordsBySearch/${search}`)

@@ -15,10 +15,13 @@ export class EntityBarComponent implements OnInit {
     @Input() entityDataLength: number;
     @Input() listOfOptions1: any[];
     @Input() listOfOptions2: any[];
+    @Input() defaultOption1: string;
+    @Input() defaultOption2: string;
     @Output() activate = new EventEmitter();
     @Output() searchRun = new EventEmitter();
     @Output() selectRun = new EventEmitter();
-    @Output() sortGroupsId = new EventEmitter();
+    @Output() sortByField1 = new EventEmitter();
+    @Output() sortByField2 = new EventEmitter();
     private config: any = {action: "create"};
     private searchTerms = new Subject();
 
@@ -38,8 +41,12 @@ export class EntityBarComponent implements OnInit {
             });
     }
 
-    onSelect(data): void {
-        this.sortGroupsId.emit(data);
+    onSelect1(data): void {
+        this.sortByField1.emit(data);
+    }
+
+    onSelect2(data): void {
+        this.sortByField2.emit(data);
     }
 
     modal(data: any) {

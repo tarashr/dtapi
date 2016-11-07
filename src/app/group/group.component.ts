@@ -62,6 +62,8 @@ export class GroupComponent implements OnInit {
     public noRecords: boolean = false;
     public facultiesNames: any[] = [];
     public specialitiesNames: any[] = [];
+    public defaultFacultySelect: string = "Виберіть факультет";
+    public defaultSpecialitySelect: string = "Виберіть спеціальність";
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
@@ -114,21 +116,41 @@ export class GroupComponent implements OnInit {
             this.getRecordsRange();
         } else {
             this.sortHide = true;
+            this.noRecords = false;
             this.crudService.getGroupsByFaculty(data)
                 .subscribe(
                     data => {
-                        console.log(data.response)
                         if(data.response) {
                             this.noRecords = true;
                         } else {
                             this.entityData2 =  data;
                             this.getFacultyName();
                         }
-
                     },
                     error=> console.log("error: ", error))
         }
+    };
 
+    getGroupsBySpeciality(data: any) {
+        if(data === "default"){
+            this.sortHide = false;
+            this.noRecords = false;
+            this.getRecordsRange();
+        } else {
+            this.sortHide = true;
+            this.noRecords = false;
+            this.crudService.getGroupsBySpeciality(data)
+                .subscribe(
+                    data => {
+                        if(data.response) {
+                            this.noRecords = true;
+                        } else {
+                            this.entityData2 =  data;
+                            this.getFacultyName();
+                        }
+                    },
+                    error=> console.log("error: ", error))
+        }
     };
 
     getFacultyName(): void {
