@@ -1,13 +1,26 @@
 <div class="entity-container">
-    <entity-bar
-            [entityTitle]="entityTitle"
-            [searchTitle]="searchTitle"
-            [selectLimit]="selectLimit"
-            [entityDataLength]="entityDataLength"
-            (activate)="activate($event)"
-            (searchRun)="findEntity($event)"
-            (selectRun)="changeLimit($event)">
-    </entity-bar>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-text ">{{entityTitle}}</div>
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <a class="btn btn-default" (click)="createCase()" [title]="addTitle">Додати </a>
+                    <select class="form-control" name="count"
+                            #select
+                            [title]="selectLimit"
+                            (input)="changeLimit(select.value)">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option [value]="entityDataLength">Всі</option>
+                    </select>
+                    <button type="button" class="btn btn-secondary"
+                            (click)="goBack()">Назад
+                    </button>
+                </div>
+            </form>
+        </div>
+    </nav>
     <dt-table *ngIf="entityData.length>0"
               [page]="page"
               [limit]="limit"
