@@ -27,7 +27,7 @@ export class TestDetailComponent implements OnInit {
     public entity: string = "testDetail";
     public entityTestName: string = "test";
     public errorMessage: string;
-    public pageTitle: string = "Детальніше про тест";
+    public pageTitle: string = `Детальніше про тест: `;
     public test_id: number;
     public page: number = 1;
     public limit: number = 0;
@@ -42,7 +42,7 @@ export class TestDetailComponent implements OnInit {
     public configEdit = configEditTestDetail;
 
     // variables for common component
-    public entityTitle: string = "Детальніше про тест";
+    public entityTitle: string = `Детальніше про тест`;
     public entityData: any[] = [];
     public tasksTest;
     public tasksTestDetail: number = 0;
@@ -50,6 +50,8 @@ export class TestDetailComponent implements OnInit {
     public testDetails: any[] = [];
     public subject_id;
     public entityTest = [];
+    public subscribtion;
+    public testName;
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -57,10 +59,11 @@ export class TestDetailComponent implements OnInit {
                 private subjectService: SubjectService,
                 private location: Location,
                 private modalService: NgbModal) {
-        // this.subject_id = route.snapshot.data[0]['id'];
-        console.log("this.subject_id = " + this.subject_id);
-        this.subject_id = sessionStorage.getItem("subject_id");
-        console.log("this.id = " + this.subject_id);
+        route.queryParams.subscribe(
+            data => {
+                this.subject_id = data['token'];
+                this.testName = data['name'];
+            });
     }
 
     ngOnInit() {

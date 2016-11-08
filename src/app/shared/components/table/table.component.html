@@ -7,7 +7,6 @@
             *ngFor="let entity of tableData; let i=index">
             <div *ngFor="let item of entity.entityColumns; let j=index" [ngClass]="headers[j].className">
                 <span class="visible-xs-inline-block">{{headers[j].name+": "}}</span>
-                <span class="align-xs" *ngIf="item.length > 150"><img [src]="item" alt="Картинка для завдання" width="110%"></span>
                 <span class="align-xs">{{item}}</span>
             </div>
             <div [ngClass]="headers[headers.length-1].className">

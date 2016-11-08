@@ -25,7 +25,8 @@ export class TestComponent implements OnInit {
     //common variables
     public entity: string = "test";
     public errorMessage: string;
-    public pageTitle: string = "Тести по предмету";
+    public subjectName:string;
+    public pageTitle: string = `Тести по предмету: `;
     public subject_id;
     public page: number = 1;
     public limit: number = 0;
@@ -42,7 +43,6 @@ export class TestComponent implements OnInit {
     // variables for common component
     public entityTitle: string = "Тести";
     public entityData: any[] = [];
-    public tasksTest;
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -50,6 +50,11 @@ export class TestComponent implements OnInit {
                 private subjectService: SubjectService,
                 private location: Location,
                 private modalService: NgbModal) {
+        route.queryParams.subscribe(
+            data => {
+                this.subjectName = data['token'];
+                console.log(this.subjectName);
+            });
     }
 
     ngOnInit() {
@@ -57,7 +62,6 @@ export class TestComponent implements OnInit {
             this.subject_id = +params['id']; // (+) converts string 'id' to a number
             this.getTestBySubjectId();
         });
-        sessionStorage.setItem("subject_id", this.subject_id);
     }
 
     goBack(): void {
@@ -114,10 +118,10 @@ export class TestComponent implements OnInit {
         console.log("!!! ", data);
         switch (data.action) {
             case "testDetail":
-                this.router.navigate(["/admin/subject/test", data.entity_id, "testDetail"]);
+                this.router.navigate(["/admin/subject/test", data.entity_id, "testDetail"], {queryParams: {token:this.subject_id, name:data.entityColumns[1]}});
                 break;
             case "question":
-                this.router.navigate(["/admin/subject/test", data.entity_id, "question"]);
+                this.router.navigate(["/admin/subject/test", data.entity_id, "question"], {queryParams: {name:data.entityColumns[1]}});
                 break;
             case "edit":
                 this.editCase(data);

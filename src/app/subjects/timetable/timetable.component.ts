@@ -24,9 +24,10 @@ import {EntityManagerBody} from "../../shared/classes/entity-manager-body";
 export class TimeTableComponent implements OnInit {
 
     //common variables
-    public entity: string = "timeTable";
+    public entity: string = "timeTable"
+    public subjectName: string;
     public errorMessage: string;
-    public pageTitle: string = "Розклад тестів по предмету";
+    public pageTitle: string = "Розклад тестів по предмету: ";
     public subject_id: number;
     public page: number = 1;
     public limit: number = 0;
@@ -55,6 +56,11 @@ export class TimeTableComponent implements OnInit {
                 private subjectService: SubjectService,
                 private location: Location,
                 private modalService: NgbModal) {
+        route.queryParams.subscribe(
+            data => {
+                this.subjectName = data['token'];
+                console.log(this.subjectName);
+            });
     }
 
     ngOnInit() {

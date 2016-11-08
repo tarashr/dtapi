@@ -26,7 +26,8 @@ export class QuestionComponent implements OnInit {
     //common variables
     public entity: string = "question";
     public errorMessage: string;
-    public entityTitle: string = "Завдання";
+    public entityTitle: string = "Завдання для тесту: ";
+    public testName: string;
 
     public test_id: number;
     public headers: any = headersQuestion;
@@ -60,6 +61,11 @@ export class QuestionComponent implements OnInit {
                 private subjectService: SubjectService,
                 private location: Location,
                 private modalService: NgbModal) {
+        route.queryParams.subscribe(
+            data => {
+                this.testName = data['name'];
+                console.log(this.testName);
+            });
     }
 
     ngOnInit() {
@@ -140,6 +146,17 @@ export class QuestionComponent implements OnInit {
         this.page = num;
         this.offset = (this.page - 1) * this.limit;
         this.getRecordsRangeByTest();
+    }
+
+    openFile($event) {
+        let input = $event.target;
+        var reader = new FileReader();
+        reader.onload = function(){
+            var dataURL = reader.result;
+            var img = document.getElementById('img');
+            // img.src = dataURL;
+        };
+        reader.readAsDataURL(input.files[0]);
     }
 
     refreshData(action: string) {
