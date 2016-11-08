@@ -6,11 +6,10 @@
     </div>
     <div class="student-datas row">
             <div class="student-foto col-xs-12 col-sm-3 col-md-3">
-                <!--*<img class="img-responsive img-circle" src="img/profile.png" alt="">-->
                 <div class="profile-foto">
-                    <img #inputFotoStud id="output" src="" alt="profile-foto" />
-                </div>
+                    <img #inputFotoStud id="output" alt="profile-foto" />
                 <input  class="input-student-data" type="file" accept="image/*" (change)="openFile($event)" #inputFoto>
+                </div>
 
             </div>
             <div *ngFor="let stud of student">
@@ -20,12 +19,12 @@
                     <div><label for="fname">По батькові:</label><input id="fname" class="input-student-data" [(ngModel)]="stud.student_fname" [disabled]="statusView" required></div>
                     <div><label class="" for="faculty">Факультет:</label>
                         <select id="faculty" class="input-student-data select-group" #curFaculty [disabled]="statusView" required (change)="getGroupName(curFaculty.value)">
-                                <option class="input-student-data" value=""></option>
+                                <option class="input-student-data" value="" disabled></option>
                                 <option *ngFor="let item of facultys" class="input-student-data" [value]="item.faculty_id">{{item.faculty_name}}</option>
                         </select>
                     </div>
                     <div><label for="group">Група:</label>
-                    <select id="group" *ngIf="curFaculty.value>0" class="input-student-data select-group" [(ngModel)]="stud.group_id" [disabled]="statusView" required>
+                    <select id="group" *ngIf="curFaculty.value>0 || groups.length > 0" class="input-student-data select-group" [(ngModel)]="stud.group_id" [disabled]="statusView" required>
                         <option *ngFor="let item of groups" class="input-student-data" [value]="item.group_id">{{item.group_name}}</option>
                     </select>
                     </div>
