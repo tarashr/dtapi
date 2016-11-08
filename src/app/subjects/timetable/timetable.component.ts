@@ -73,7 +73,6 @@ export class TimeTableComponent implements OnInit {
 
     goBack(): void {
         this.location.back();
-
     }
 
     getGroups() {
