@@ -38,6 +38,7 @@ import {TestsTabsetComponent} from "./app/studentpart/teststabset/tests-tabset.c
 import {TestPlayerComponent} from "./app/test-player/test-player.component";
 import {UserProfileComponent} from "./app/studentpart/profile/user-profile.component";
 import {TestListComponent} from "./app/studentpart/test-list/test-list.component";
+import {TestListSheduleComponent} from "./app/studentpart/test-list-shedule/test-list-shedule.component";
 
 
 
@@ -75,7 +76,8 @@ import {TestListComponent} from "./app/studentpart/test-list/test-list.component
         TimeTableComponent,
         TestDetailComponent,
         QuestionComponent,
-		TestListComponent
+		TestListComponent,
+        TestListSheduleComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: "/"},

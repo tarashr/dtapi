@@ -11,12 +11,13 @@ export class TestsTabsetComponent implements OnInit{
 	@Input() groupName;
 	@Input() groupId;
 
+
    constructor(
 
     ) { }
 	
 	ngOnInit() {
-		
+
 
     }
 	

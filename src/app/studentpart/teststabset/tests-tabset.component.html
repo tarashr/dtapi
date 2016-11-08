@@ -3,16 +3,12 @@
         <template ngbTabContent>
             <h3>Cписок доступних тестувань для групи "{{groupName}}"</h3>
 
+            <test-list
+                    [groupId] = "groupId">
+            </test-list>
 
             <div class="row">
-                <div class="col-xs-9">
-                    Предмет: <b>Асемблер</b> Назва тесту: <b>Основи</b><br>
-                    Дата проведення: 2016-10-26
-                </div>
-                <div class="col-xs-3">
-
-
-                    <button class="btn btn-default text-right"
+                  <button class="btn btn-default text-right"
                             routerLink="/student/test-player"
                             routerLinkActive="active">
 									<span aria-hidden="true" class="glyphicon glyphicon glyphicon-play">
@@ -20,39 +16,9 @@
 									</span>
                     </button>
                 </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-xs-9">
-                    Предмет: <b>Асемблер</b> Назва тесту: <b>Елементарний рівень</b><br>
-                    Дата проведення: 2016-10-26
-                </div>
-                <div class="col-xs-3">
-                    <button class="btn btn-default text-right"
-							routerLink="/student/test-player"
-                            routerLinkActive="active">
-									<span aria-hidden="true" class="glyphicon glyphicon glyphicon-play">
-										Тестуватися
-									</span>
-                    </button>
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-xs-9">
-                    Предмет: <b>Асемблер</b> Назва тесту: <b>Середній рівень</b><br>
-                    Дата проведення: 2016-10-26
-                </div>
-                <div class="col-xs-3">
-                    <button class="btn btn-default text-right" 
-							routerLink="/student/test-player"
-                            routerLinkActive="active">
-									<span aria-hidden="true" class="glyphicon glyphicon glyphicon-play">
-										Тестуватися
-									</span>
-                    </button>
-                </div>
-            </div>
+          
+
+
         </template>
     </ngb-tab>
 
@@ -60,9 +26,10 @@
         <template ngbTabContent>
             <h3>Cписок тестувань які плануються для групи "{{groupName}}"</h3>
             <div class="row">
-            	<test-list
-				[groupId] = "groupId">
-				</test-list>
+                <test-list-shedule
+                        [groupId] = "groupId">
+
+                </test-list-shedule>
 			</div>
         </template>
     </ngb-tab>

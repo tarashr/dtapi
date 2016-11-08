@@ -3,11 +3,11 @@ import {CRUDService} from "../../shared/services/crud.service";
 import {SubjectService} from "../../shared/services/subject.service";
 
 @Component({
-    selector: 'test-list',
-    templateUrl: './test-list.component.html'
+    selector: 'test-list-shedule',
+    templateUrl: './test-list-shedule.component.html'
 })
 
-export class TestListComponent implements OnInit {
+export class TestListSheduleComponent implements OnInit {
     @Input() groupId;
 
     public tests = [{
@@ -33,14 +33,6 @@ export class TestListComponent implements OnInit {
         {name: "", className: "col-xs-12 col-sm-1"}
     ];
 
-    public actions = [
-        {
-            title: "Запустити тест",
-            action: "start",
-            glyphicon: "glyphicon glyphicon-play",
-            btnClassName: "btn btn-default btn-sm"
-        }
-    ];
 
     public entityData = [];
 
@@ -53,10 +45,6 @@ export class TestListComponent implements OnInit {
         this.getTimeStamp();
         this.getTimeTable();
 
-    }
-
-    activate(data) {
-        console.log(JSON.stringify(data));
     }
 
     getTimeTable() {
@@ -83,15 +71,15 @@ export class TestListComponent implements OnInit {
             this._commonService.getRecordById("Subject", this.tests[i].subject_id)
                 .subscribe(subject=> {
                         this.tests[i].subjectName = subject[0].subject_name;
-                    if (eventDate == this.dateNow) {
-                        this.entityData.push({
-                            entityColumns: [
-                                subject[0].subject_name,
-                                this.tests[i].test_name,
-                                eventDate],
-                            entity_id: this.tests[i].test_id
-                        })
-                    }
+                        if (eventDate > this.dateNow) {
+                            this.entityData.push({
+                                entityColumns: [
+                                    subject[0].subject_name,
+                                    this.tests[i].test_name,
+                                    eventDate],
+                                entity_id: this.tests[i].test_id
+                            })
+                        }
 
                         this.entityData.sort(function (a, b) {
                             if (a.entityColumns[1] > b.entityColumns[1]) {
@@ -108,23 +96,23 @@ export class TestListComponent implements OnInit {
         }
     }
 
-   getTimeStamp() {
+    getTimeStamp() {
 
-       var myDate = new Date();
-       var yy = myDate.getFullYear();
-       var mm = myDate.getMonth()+1;
-       var dd = "0"+myDate.getDate();
-       this.dateNow = yy + "-" + mm + "-" + dd;
-       /*     this._commonService.getTime()
-            .subscribe(time=> {
-                this.dateNow = time;
-                this.dateNow.curtime += +this.dateNow.offset;
-                console.log("this.dateNow.curtime = " + this.dateNow.curtime);
-                var newTime = new Date(this.dateNow.curtime);
-                var myDate = newTime.getFullYear() + "-" + newTime.getMonth() + "-" + newTime.getDate();
-                console.log("time = " + newTime);
-                console.log("my time = " + myDate)
-            })*/
+        var myDate = new Date();
+        var yy = myDate.getFullYear();
+        var mm = myDate.getMonth()+1;
+        var dd = "0"+myDate.getDate();
+        this.dateNow = yy + "-" + mm + "-" + dd;
+        /*     this._commonService.getTime()
+         .subscribe(time=> {
+         this.dateNow = time;
+         this.dateNow.curtime += +this.dateNow.offset;
+         console.log("this.dateNow.curtime = " + this.dateNow.curtime);
+         var newTime = new Date(this.dateNow.curtime);
+         var myDate = newTime.getFullYear() + "-" + newTime.getMonth() + "-" + newTime.getDate();
+         console.log("time = " + newTime);
+         console.log("my time = " + myDate)
+         })*/
     }
 
 }

@@ -96,4 +96,24 @@ export class CRUDService {
             .catch(this.handleError);
     }
 
+    getTimeTableForGroup(groupId: number|string): Observable<any> {
+        return this._http
+            .get(`${this.hostUrlBase}timeTable/getTimeTablesForGroup/${groupId}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    getTestsBySubject(groupId: number|string): Observable<any> {
+        return this._http
+            .get(`${this.hostUrlBase}timeTable/getTimeTablesForGroup/${groupId}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    getTime(): Observable<any> {
+        return this._http
+            .get(`${this.hostUrlBase}TestPlayer/getTimeStamp`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
 }
