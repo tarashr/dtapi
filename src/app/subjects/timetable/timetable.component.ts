@@ -179,6 +179,7 @@ export class TimeTableComponent implements OnInit {
         modalRefAdd.result
             .then((data: any) => {
                 this.substituteNameGroupOnId(data);
+                console.log(JSON.stringify(data));
                 let newTimeTable: TimeTable = new TimeTable(
                     data.select[0].selected,
                     data.list[0].value,

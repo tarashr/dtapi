@@ -12,13 +12,12 @@ import {StartPageComponent}      from "./app/studentpart/start-page.component";
 import {AdminStartPageComponent} from "./app/admin-start/admin-start-page.component.ts";
 import {StatisticComponent} from "./app/statistic/statistic.component";
 import {SubjectComponent}        from "./app/subjects/subject.component";
-import {AddeditGroupComponent}  from "./app/group/addedit-group.component";
 import {TestComponent} from "./app/subjects/tests/test.component";
 import {TimeTableComponent} from "./app/subjects/timetable/timetable.component";
 import {FacultyComponent}        from "./app/faculty/faculty.component";
 import {GroupComponent}        from "./app/group/group.component";
 import {SpecialityComponent}        from "./app/speciality/speciality.component";
-import {AdminUserComponent} from "./app/admin_user/admin-user.component";
+import {AdminUserComponent} from "./app/admin-user/admin-user.component";
 import {StudentComponent}        from "./app/student/student.component";
 import {AuthAdminGuard} from "./app/shared/services/auth-admin.guard.ts";
 import {AuthStudentGuard} from "./app/shared/services/auth-student.guard.ts";
@@ -61,7 +60,6 @@ import {TestListSheduleComponent} from "./app/studentpart/test-list-shedule/test
         GroupComponent,
         AdminUserComponent,
         SpecialityComponent,
-        AddeditGroupComponent,
         StudentComponent,
         StudentNewProfileComponent,
         StudentProfileComponent,

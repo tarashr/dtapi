@@ -9,7 +9,8 @@ import {
     successEventModal,
     headersQuestion,
     actionsQuestion,
-    modalInfoConfig} from '../../shared/constant';
+    modalInfoConfig
+} from '../../shared/constant';
 import {Question} from "../../shared/classes/question";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
@@ -23,7 +24,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 export class QuestionComponent implements OnInit {
 
     //common variables
-    public entity: string = "task";
+    public entity: string = "question";
     public errorMessage: string;
     public entityTitle: string = "Завдання";
 
@@ -48,6 +49,7 @@ export class QuestionComponent implements OnInit {
     //varibles for addedit
     public configAdd = configAddQuestion;
     public configEdit = configEditQuestion;
+    public modalInfoConfig: any = modalInfoConfig;
 
     // variables for common component
     public entityData: any[] = [];
@@ -70,6 +72,18 @@ export class QuestionComponent implements OnInit {
     goBack(): void {
         this.location.back();
 
+    }
+
+    deleteQuestion(entity, id: number): void {
+        this.offset = (this.page - 1) * this.limit;
+        this.crudService
+            .delRecord(entity, id)
+            .subscribe(
+                () => {
+                    this.refreshData("delete");
+                },
+                error => this.errorMessage = <any>error
+            );
     }
 
     getCountRecordsByTest() {
@@ -135,22 +149,75 @@ export class QuestionComponent implements OnInit {
         } else if (this.entityData.length > 1) {
             this.offset = (this.page - 1) * this.limit;
         }
-        this.getCountRecordsByTest();
+        this.getRecordsRangeByTest();
     }
 
-    activate(data: any) {
-        console.log("!!! ", data);
-        switch (data.action) {
-            case "edit":
-                // this.editCase(data);
-                break;
-            case "delete":
-                // this.deleteCase(data);
-                break;
-            case "create":
-                // this.createCase();
-                break;
-        }
+    createCase() {
+        this.configAdd.list.forEach((item) => {
+            item.value = "";
+        });
+        const modalRefAdd = this.modalService.open(ModalAddEditComponent);
+        modalRefAdd.componentInstance.config = this.configAdd;
+        modalRefAdd.result
+            .then((data: any) => {
+                let newQuestion: Question = new Question(
+                    data.list[0].value,
+                    data.list[1].value,
+                    data.list[2].value,
+                    data.list[3].value
+                );
+                this.crudService.insertData(this.entity, newQuestion)
+                    .subscribe(response=> {
+                        this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
+                        this.successEventModal();
+                        this.configAdd.list.forEach((item)=> {
+                            item.value = ""
+                        });
+                        this.refreshData(data.action);
+                    });
+            }, ()=> {
+                return
+            });
+    };
+
+    editCase(data: any) {
+        this.configEdit.list.forEach((item, i) => {
+            item.value = data.entityColumns[i + 1]
+        });
+        this.configEdit.id = data.entity_id;
+        const modalRefEdit = this.modalService.open(ModalAddEditComponent);
+        modalRefEdit.componentInstance.config = this.configEdit;
+        modalRefEdit.result
+            .then((data: any) => {
+                let editedQuestion: Question = new Question(
+                    data.list[0].value,
+                    data.list[1].value,
+                    data.list[2].value,
+                    data.list[3].value
+                );
+                this.crudService.updateData(this.entity, data.id, editedQuestion)
+                    .subscribe(()=> {
+                        this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
+                        this.successEventModal();
+                        this.refreshData(data.action);
+                    });
+            }, ()=> {
+                return
+            });
+    }
+
+    deleteCase(data) {
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.action = "confirm";
+        this.modalInfoConfig.title = "Видалення";
+        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
+        modalRefDel.componentInstance.config = this.modalInfoConfig;
+        modalRefDel.result
+            .then(() => {
+                this.deleteQuestion(this.entity, data.entity_id);
+            }, ()=> {
+                return
+            });
     }
 
 }

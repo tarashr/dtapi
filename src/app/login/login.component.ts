@@ -13,11 +13,11 @@ export class LoginComponent {
 
     public user: User = new User();
 
-    constructor(private _loginService: LoginService) {
+    constructor(private loginService: LoginService) {
     }
 
     onSubmit(): void {
-        this._loginService.login(this.user);
+        this.loginService.login(this.user);
     }
 
 }
