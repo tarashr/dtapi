@@ -9,7 +9,8 @@ import {
     successEventModal,
     headersTestDetail,
     actionsTestDetail,
-    modalInfoConfig} from '../../shared/constant';
+    modalInfoConfig
+} from '../../shared/constant';
 import {TestDetail} from "../../shared/classes/test-detail";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
@@ -42,6 +43,11 @@ export class TestDetailComponent implements OnInit {
     // variables for common component
     public entityTitle: string = "Детальніше про тест";
     public entityData: any[] = [];
+    public tasksTest: number = 10;
+    public tasksTestDetail:number = 0;
+    public countTask: number = 0;
+    public testDetails: any[] = [];
+    public subject_id: number;
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -49,6 +55,8 @@ export class TestDetailComponent implements OnInit {
                 private subjectService: SubjectService,
                 private location: Location,
                 private modalService: NgbModal) {
+        // this.subject_id = route.snapshot.data[0]['id'];
+        // console.log("this.subject_id = " + this.subject_id);
     }
 
     ngOnInit() {
@@ -120,21 +128,36 @@ export class TestDetailComponent implements OnInit {
         this.configAdd.list.forEach((item)=> {
             item.value = ""
         });
+        this.tasksTestDetail = 0;
+        this.subjectService.getTestDetailsByTest(this.test_id)
+            .subscribe(
+                res => {
+                    this.testDetails = res;
+                    this.testDetails.forEach((item) => {
+                        this.tasksTestDetail += (+item.tasks);
+                    });
+                },
+                error => this.errorMessage = <any>error);
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                let newTestDetail: TestDetail = new TestDetail(
-                    data.list[0].value,
-                    data.list[1].value,
-                    data.list[2].value,
-                    this.test_id);
-                this.crudService.insertData(this.entity, newTestDetail)
-                    .subscribe(() => {
-                        this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
-                        this.successEventModal();
-                        this.getTestDetailsByTest();
-                    });
+                if (this.tasksTest >= +(this.tasksTestDetail +  +data.list[1].value)) {
+                    let newTestDetail: TestDetail = new TestDetail(
+                        data.list[0].value,
+                        data.list[1].value,
+                        data.list[2].value,
+                        this.test_id);
+                    this.crudService.insertData(this.entity, newTestDetail)
+                        .subscribe(() => {
+                            this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
+                            this.successEventModal();
+                            this.getTestDetailsByTest();
+                        });
+                } else {
+                    this.modalInfoConfig.infoString = `Перевищено максимальну кількість завдань`;
+                    this.successEventModal();
+                }
             }, ()=> {
                 return
             });
@@ -142,22 +165,38 @@ export class TestDetailComponent implements OnInit {
 
     editCase(data) {
         this.configEdit.list.forEach((item, i) => {
-            item.value = data.entityColumns[i+1]
+            item.value = data.entityColumns[i + 1]
         });
+        this.tasksTestDetail = 0;
+        this.subjectService.getTestDetailsByTest(this.test_id)
+            .subscribe(
+                res => {
+                    this.testDetails = res;
+                    this.testDetails.forEach((item) => {
+                        this.tasksTestDetail += (+item.tasks);
+                    });
+                },
+                error => this.errorMessage = <any>error);
         this.configEdit.id = data.entity_id;
+        this.tasksTestDetail -=  data.entityColumns[2];
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
-                let editedTestDetail: TestDetail = new TestDetail(data.list[0].value,
-                    data.list[1].value,
-                    data.list[2].value)
-                this.crudService.updateData(this.entity, data.id, editedTestDetail)
-                    .subscribe(()=> {
-                        this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
-                        this.successEventModal();
-                        this.getTestDetailsByTest();
-                    });
+                if (this.tasksTest >= +(this.tasksTestDetail +  +data.list[1].value)) {
+                    let editedTestDetail: TestDetail = new TestDetail(data.list[0].value,
+                        data.list[1].value,
+                        data.list[2].value)
+                    this.crudService.updateData(this.entity, data.id, editedTestDetail)
+                        .subscribe(()=> {
+                            this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
+                            this.successEventModal();
+                            this.getTestDetailsByTest();
+                        });
+                } else {
+                    this.modalInfoConfig.infoString = `Перевищено максимальну кількість завдань`;
+                    this.successEventModal();
+                }
             }, ()=> {
                 return
             });

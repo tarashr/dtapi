@@ -9,7 +9,8 @@ import {
     successEventModal,
     headersQuestion,
     actionsQuestion,
-    modalInfoConfig} from '../../shared/constant';
+    modalInfoConfig
+} from '../../shared/constant';
 import {Question} from "../../shared/classes/question";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
@@ -73,10 +74,10 @@ export class QuestionComponent implements OnInit {
 
     }
 
-    deleteQuestion(id: number): void {
+    deleteQuestion(entity, id: number): void {
         this.offset = (this.page - 1) * this.limit;
         this.crudService
-            .delRecord(this.entity, id)
+            .delRecord(entity, id)
             .subscribe(
                 () => {
                     this.refreshData("delete");
@@ -150,7 +151,7 @@ export class QuestionComponent implements OnInit {
         }
         this.getRecordsRangeByTest();
     }
-    
+
     createCase() {
         this.configAdd.list.forEach((item) => {
             item.value = "";
@@ -169,7 +170,9 @@ export class QuestionComponent implements OnInit {
                     .subscribe(response=> {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
-                        this.configAdd.list.forEach((item)=>{item.value=""});
+                        this.configAdd.list.forEach((item)=> {
+                            item.value = ""
+                        });
                         this.refreshData(data.action);
                     });
             }, ()=> {
@@ -179,7 +182,7 @@ export class QuestionComponent implements OnInit {
 
     editCase(data: any) {
         this.configEdit.list.forEach((item, i) => {
-            item.value = data.entityColumns[i+1]
+            item.value = data.entityColumns[i + 1]
         });
         this.configEdit.id = data.entity_id;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
@@ -202,6 +205,21 @@ export class QuestionComponent implements OnInit {
                 return
             });
     }
+
+    deleteCase(data) {
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.action = "confirm";
+        this.modalInfoConfig.title = "Видалення";
+        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
+        modalRefDel.componentInstance.config = this.modalInfoConfig;
+        modalRefDel.result
+            .then(() => {
+                this.deleteQuestion(this.entity, data.entity_id);
+            }, ()=> {
+                return
+            });
+    }
+
 }
 
 

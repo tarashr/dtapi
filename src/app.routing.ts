@@ -46,7 +46,7 @@ const appRoutes: Routes = [
             {path: "statistic", component: StatisticComponent},
             {path: "subject", component: SubjectComponent},
             {path: "subject/:id/test", component: TestComponent},
-            {path: "subject/test/:id/testDetail", component: TestDetailComponent},
+            {path: "subject/test/:id/testDetail", component: TestDetailComponent, data: [{id: this.subject_id}]},
             {path: "subject/test/:id/question", component: QuestionComponent},
             {path: "subject/:id/timeTable", component: TimeTableComponent},
             {path: "speciality", component: SpecialityComponent},
