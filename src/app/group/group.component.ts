@@ -238,20 +238,19 @@ export class GroupComponent implements OnInit {
                     return;
                 }
                 this.page = 1;
-                let tempData = data;
-                for(let i in tempData) {
+                for(let i in data) {
                     for(let k in this.specialitiesNamesIDs) {
-                        if (tempData[i].speciality_id == this.specialitiesNamesIDs[k].id) {
-                            tempData[i].speciality_name = this.specialitiesNamesIDs[k].name;
+                        if (data[i].speciality_id == this.specialitiesNamesIDs[k].id) {
+                            data[i].speciality_name = this.specialitiesNamesIDs[k].name;
                         }
                     }
                     for(let k in this.facultiesNamesIDs) {
-                        if (tempData[i].faculty_id == this.facultiesNamesIDs[k].id) {
-                            tempData[i].faculty_name = this.facultiesNamesIDs[k].name;
+                        if (data[i].faculty_id == this.facultiesNamesIDs[k].id) {
+                            data[i].faculty_name = this.facultiesNamesIDs[k].name;
                         }
                     }
                 }
-                this.createTableConfig(tempData);
+                this.createTableConfig(data);
             }, error => console.log("error: ", error));
     };
 

@@ -68,11 +68,10 @@ export class GroupTimetableComponent implements OnInit {
         this.groupService.getTimeTablesForGroup(this.groupId)
             .subscribe(
                 data => {
-                    let tempData = data;
-                    for(let i in tempData) {
+                    for(let i in data) {
                         for(let k in this.subjects) {
-                            if (tempData[i].subject_id == this.subjects[k].subject_id) {
-                                tempData[i].subject_name = this.subjects[k].subject_name;
+                            if (data[i].subject_id == this.subjects[k].subject_id) {
+                                data[i].subject_name = this.subjects[k].subject_name;
                             }
                         }
                     }
@@ -203,13 +202,15 @@ export class GroupTimetableComponent implements OnInit {
     private createTableConfig = (data: any) => {
         let tempArr: any[] = [];
         let numberOfOrder: number;
-        data.forEach((item, i) => {
-            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-            let groupTimetable: any = {};
-            groupTimetable.entity_id = item.timetable_id;
-            groupTimetable.entityColumns = [numberOfOrder, item.subject_name, item.event_date];
-            tempArr.push(groupTimetable);
-        });
-        this.entityData = tempArr;
+        if(data.length){
+            data.forEach((item, i) => {
+                numberOfOrder = i + 1 + (this.page - 1) * this.limit;
+                let groupTimetable: any = {};
+                groupTimetable.entity_id = item.timetable_id;
+                groupTimetable.entityColumns = [numberOfOrder, item.subject_name, item.event_date];
+                tempArr.push(groupTimetable);
+            });
+            this.entityData = tempArr;
+        }
     };
 }
