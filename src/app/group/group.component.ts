@@ -257,6 +257,9 @@ export class GroupComponent implements OnInit {
 
     activate(data: any) {
         switch (data.action) {
+            case "viewTimetable":
+                this._router.navigate(["/admin/group/groupTimetable"], {queryParams: {groupId: 1}});
+                break;
             case "viewStudents":
                 this._router.navigate(["/admin/student"]);
                 break;

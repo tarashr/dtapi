@@ -25,9 +25,9 @@ export class GroupService {
         return Observable.throw(errMsg);
     };
 
-    getTimeTablesForGroup(group_id: number): Observable<any> {
+    getTimeTablesForGroup(groupId: number): Observable<any> {
         return this.http
-            .get(`${this.hostUrlBase}group/getTimeTablesForGroup/${group_id}`)
+            .get(`${this.hostUrlBase}group/getTimeTablesForGroup/${groupId}`)
             .map(this.successResponse)
             .catch(this.handleError);
     }

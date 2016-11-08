@@ -60,7 +60,6 @@ export class TestComponent implements OnInit {
 
     goBack(): void {
         this.location.back();
-
     }
 
     getTestBySubjectId() {
