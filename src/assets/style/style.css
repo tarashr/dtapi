@@ -20,3 +20,7 @@ html, body {
 .entity-list li a {
     margin: 2px;
 }
+.entity-bar .container-fluid form.navbar-left select{
+    width: 200px;
+    margin: 0 15px;
+}
