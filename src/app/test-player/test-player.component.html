@@ -5,9 +5,7 @@
             <div class="progress hidden-xs">
                 <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
                      style="width: 60%;">
-
                 </div>
-
             </div>
         </div>
         <div class="col-xs-6 info">
@@ -15,29 +13,31 @@
             <div class="progress hidden-xs">
                 <div class="progress-bar progress-bar-warning " role="progressbar" aria-valuenow="45" aria-valuemin="0"
                      aria-valuemax="100" style="width: 45%;">
-
                 </div>
-
             </div>
         </div>
-
     </div>
 </div>
 
-<div class="container" *ngIf="show && questions[0].answers">
+<div class="container" *ngIf="show">
     <div class="row">
         <ng-container *ngFor="let question of questions; let i=index">
             <div class="col-xs-12 col-md-10 info" *ngIf="(i+1)===activeQuestion">
                 <div>
                     <h4 class="text-right">Запитання №{{i+1}}</h4>
-                    <img *ngIf="question.attachment.length>0" [src]="question.attachment" alt="Картинка для питання">
-                    <h3>{{question.question_text}}</h3>
+                    <div class="question-img">
+                        <img *ngIf="question.attachment.length>0" [src]="question.attachment"
+                             alt="Картинка для питання">
+                    </div>
+                    <h3 class="question-text">{{question.question_text}}</h3>
                     <ul>
                         <li *ngFor="let answer of question.answers">
-                            <label><input type="checkbox" name="answer">
+                            <label (click)="toggleAnswer($event, answer.answer_id, i)">
+                                <input type="checkbox" name="answer" [value]="answer.answer_id">
                                 <img *ngIf="answer.attachment.length>0"
                                      [src]="answer.attachment"
-                                     alt="картинка для відповіді">{{answer.answer_text}}</label>
+                                     alt="картинка для відповіді">{{answer.answer_text}}
+                            </label>
                         </li>
                     </ul>
                     <p class="text-right">
@@ -51,7 +51,7 @@
                 </div>
             </div>
         </ng-container>
-        <div class="col-xs-12 col-md-2 info text-center">
+        <div class="col-xs-12 col-md-2 info text-center nav-buttons">
             <h3>Навігація</h3>
             <button *ngFor="let button of navButtons; let j=index"
                     type="button"

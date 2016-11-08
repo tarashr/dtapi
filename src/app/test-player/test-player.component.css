@@ -1,0 +1,21 @@
+.nav-buttons button {
+    margin: 1px 2px;
+}
+
+.info {
+    padding-bottom: 15px;
+}
+
+.question-img {
+    text-align: center;
+}
+
+.question-img img {
+    max-height: 180px;
+    border: 1px solid #ddd;
+}
+
+.question-text {
+    border-bottom: 2px solid #bbb;
+    padding-bottom: 10px;
+}
