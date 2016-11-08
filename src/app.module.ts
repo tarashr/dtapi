@@ -27,7 +27,6 @@ import {AuthStudentGuard}        from "./app/shared/services/auth-student.guard.
 import {LoginService}            from "./app/shared/services/login.service";
 import {CRUDService}             from "./app/shared/services/crud.service";
 import {SubjectService}          from "./app/shared/services/subject.service";
-import {StudentNewProfileComponent} from "./app/student/student-new-profile.component";
 import {StudentProfileComponent} from "./app/student/student-profile.component";
 import {EntityBarComponent}      from "./app/shared/components/entity-bar/entity-bar.component";
 import {TableComponent}          from "./app/shared/components/table/table.component";
@@ -83,7 +82,7 @@ import {TestBarComponent} from "./app/shared/components/test-bar/test-bar.compon
         TestDetailComponent,
         QuestionComponent,
         AnswerComponent,
-		TestListComponent,
+        TestListComponent,
         TestListSheduleComponent,
         TestBarComponent
     ],

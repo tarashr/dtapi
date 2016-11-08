@@ -16,7 +16,6 @@ import {GroupTestResultComponent} from "./app/group/group-test-result/group-test
 import {AdminUserComponent} from "./app/admin-user/admin-user.component";
 import {SpecialityComponent} from "./app/speciality/speciality.component";
 import {StudentComponent} from "./app/student/student.component";
-import {StudentNewProfileComponent} from "./app/student/student-new-profile.component";
 import {StudentProfileComponent} from "./app/student/student-profile.component";
 import {TimeTableComponent} from "./app/subjects/timetable/timetable.component";
 
