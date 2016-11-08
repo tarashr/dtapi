@@ -22,7 +22,7 @@ export const actionsGroup = [
     },
     {
         title: "Розклад тестування групи",
-        action: "",
+        action: "viewTimetable",
         glyphicon: "glyphicon glyphicon-calendar",
         btnClassName: "btn btn-default btn-sm"
     },
