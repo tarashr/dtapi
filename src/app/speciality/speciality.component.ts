@@ -15,14 +15,13 @@ import {
     getCountRecords,
     getRecordsRange,
     delRecord,
-    // findEntity,
+    findEntity,
     refreshData,
-    successEventModal
-} from "../shared/constants";
-import {
+    successEventModal,
     headersSpeciality,
-    actionsSpeciality
-} from "../shared/constant-config"
+    actionsSpeciality,
+    modalInfoConfig
+} from "../shared/constant";
 
 @Component({
     templateUrl:'speciality.component.html',
@@ -30,12 +29,7 @@ import {
 })
 export class SpecialityComponent implements OnInit{
 
-    public modalInfoConfig = {
-        title: "",
-        infoString: "",
-        action: ""
-    };
-
+    public modalInfoConfig: any = modalInfoConfig;
     public configAdd = configAddSpeciality;
     public configEdit = configEditSpeciality;
     public paginationSize = maxSize;
@@ -53,8 +47,8 @@ export class SpecialityComponent implements OnInit{
     public entity: string = "speciality";
     public limit: number = 5;
     public offset: number = 0;
+    public search: string = "";
     public page: number = 1;
-    public searchCriteria: string = "";
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
@@ -67,6 +61,8 @@ export class SpecialityComponent implements OnInit{
     public delRecord = delRecord;
     public refreshData = refreshData;
     public successEventModal = successEventModal;
+    public getRecordsRange = getRecordsRange;
+    public findEntity = findEntity;
 
     ngOnInit(){
         this.getCountRecords();
@@ -74,49 +70,21 @@ export class SpecialityComponent implements OnInit{
 
     private createTableConfig = (data: any)=> {
         let tempArr: any[] = [];
-        data.forEach((item)=> {
+        let numberOfOrder: number;
+        data.forEach((item, i)=> {
+            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
             let speciality: any = {};
             speciality.entity_id = item.speciality_id;
-            speciality.entityColumns = [item.speciality_code, item.speciality_name];
+            speciality.entityColumns = [numberOfOrder, item.speciality_code, item.speciality_name];
             tempArr.push(speciality);
         });
         this.entityData = tempArr;
     };
 
-    getRecordsRange() {
-        this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
-            .subscribe(
-                data => {
-                    this.createTableConfig(data);
-                },
-                error=> console.log("error: ", error))
-    };
-
-
-    findEntity(searchTerm: string) {
-        this.searchCriteria = searchTerm;
-        if (this.searchCriteria.length === 0) {
-            this.offset = 0;
-            this.page = 1;
-            this.getCountRecords();
-            return;
-        }
-
-        this.crudService.getRecordsBySearch(this.entity, this.searchCriteria)
-            .subscribe(data => {
-                if (data.response == "no records") {
-                    this.entityData = [];
-                    return;
-                }
-                this.page = 1;
-                this.createTableConfig(data);
-            }, error=>console.log("error: ", error));
-    };
-
     activate(data: any) {
         switch (data.action) {
-            case "group":
-                this._router.navigate(["/admin/faculty", data.entity_id, "groups"]);
+            case "viewGroup":
+                this._router.navigate(["/admin/group"]);
                 break;
             case "create":
                 this.createCase();
@@ -151,7 +119,7 @@ export class SpecialityComponent implements OnInit{
 
     editCase(data:any){
         this.configEdit.list.forEach((item, i)=> {
-            item.value = data.entityColumns[i]
+            item.value = data.entityColumns[i + 1]
         });
         this.configEdit.id = data.entity_id;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
