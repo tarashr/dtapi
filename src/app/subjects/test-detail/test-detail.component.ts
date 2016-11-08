@@ -25,6 +25,7 @@ export class TestDetailComponent implements OnInit {
 
     //common variables
     public entity: string = "testDetail";
+    public entityTestName: string = "test";
     public errorMessage: string;
     public pageTitle: string = "Детальніше про тест";
     public test_id: number;
@@ -43,11 +44,12 @@ export class TestDetailComponent implements OnInit {
     // variables for common component
     public entityTitle: string = "Детальніше про тест";
     public entityData: any[] = [];
-    public tasksTest: number = 10;
-    public tasksTestDetail:number = 0;
+    public tasksTest;
+    public tasksTestDetail: number = 0;
     public countTask: number = 0;
     public testDetails: any[] = [];
-    public subject_id: number;
+    public subject_id;
+    public entityTest = [];
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -56,14 +58,33 @@ export class TestDetailComponent implements OnInit {
                 private location: Location,
                 private modalService: NgbModal) {
         // this.subject_id = route.snapshot.data[0]['id'];
-        // console.log("this.subject_id = " + this.subject_id);
+        console.log("this.subject_id = " + this.subject_id);
+        this.subject_id = sessionStorage.getItem("subject_id");
+        console.log("this.id = " + this.subject_id);
     }
 
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
             this.test_id = +params['id'];
             this.getTestDetailsByTest();
+            this.getTasks();
         });
+    }
+
+    getTasks() {
+        this.subject_id = +this.subject_id;
+        this.subjectService.getTestsBySubjectId(this.entityTestName, this.subject_id)
+            .subscribe(
+                data => {
+                    data.forEach((item) => {
+                        if(item.test_id == this.test_id) {
+                            this.tasksTest = item.tasks;
+                        }
+                    });
+                        console.log("this.tasksTest=" + this.tasksTest);
+                },
+                error=>console.log("error: ", error)
+            );
     }
 
     goBack(): void {
@@ -142,7 +163,7 @@ export class TestDetailComponent implements OnInit {
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                if (this.tasksTest >= +(this.tasksTestDetail +  +data.list[1].value)) {
+                if (+this.tasksTest >= +(this.tasksTestDetail + +data.list[1].value)) {
                     let newTestDetail: TestDetail = new TestDetail(
                         data.list[0].value,
                         data.list[1].value,
@@ -178,12 +199,12 @@ export class TestDetailComponent implements OnInit {
                 },
                 error => this.errorMessage = <any>error);
         this.configEdit.id = data.entity_id;
-        this.tasksTestDetail -=  data.entityColumns[2];
+        this.tasksTestDetail -= data.entityColumns[2];
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
-                if (this.tasksTest >= +(this.tasksTestDetail +  +data.list[1].value)) {
+                if (+this.tasksTest >= +(this.tasksTestDetail + +data.list[1].value)) {
                     let editedTestDetail: TestDetail = new TestDetail(data.list[0].value,
                         data.list[1].value,
                         data.list[2].value)

@@ -26,7 +26,7 @@ export class TestComponent implements OnInit {
     public entity: string = "test";
     public errorMessage: string;
     public pageTitle: string = "Тести по предмету";
-    public subject_id: number;
+    public subject_id;
     public page: number = 1;
     public limit: number = 0;
     public headers: any = headersTest;
@@ -42,6 +42,7 @@ export class TestComponent implements OnInit {
     // variables for common component
     public entityTitle: string = "Тести";
     public entityData: any[] = [];
+    public tasksTest;
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -56,6 +57,7 @@ export class TestComponent implements OnInit {
             this.subject_id = +params['id']; // (+) converts string 'id' to a number
             this.getTestBySubjectId();
         });
+        sessionStorage.setItem("subject_id", this.subject_id);
     }
 
     goBack(): void {
