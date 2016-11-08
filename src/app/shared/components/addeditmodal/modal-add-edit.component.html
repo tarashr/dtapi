@@ -19,6 +19,13 @@
             </select>
         </div>
     </div>
+    <div *ngIf="config.img">
+        <div class="input-group input-group-add-edit" *ngFor="let item of config.img">
+            <span class="input-group-addon modal-span">{{item.imgName}}:</span>
+            <input [type]="item.type" class="form-control modalInput"
+                   (change)="openFile($event)" id="img" accept='image/*'>
+        </div>
+    </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary"

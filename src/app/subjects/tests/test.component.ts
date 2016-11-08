@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
@@ -14,13 +14,16 @@ import {Test} from "../../shared/classes/test";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'test-container',
     templateUrl: 'test.component.html'
 })
 
-export class TestComponent implements OnInit {
+export class TestComponent implements OnInit, OnDestroy {
+
+    private subscription: Subscription;
 
     //common variables
     public entity: string = "test";
@@ -50,10 +53,9 @@ export class TestComponent implements OnInit {
                 private subjectService: SubjectService,
                 private location: Location,
                 private modalService: NgbModal) {
-        route.queryParams.subscribe(
+        this.subscription = route.queryParams.subscribe(
             data => {
                 this.subjectName = data['token'];
-                console.log(this.subjectName);
             });
     }
 
@@ -62,6 +64,10 @@ export class TestComponent implements OnInit {
             this.subject_id = +params['id']; // (+) converts string 'id' to a number
             this.getTestBySubjectId();
         });
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 
     goBack(): void {

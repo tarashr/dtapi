@@ -33,7 +33,10 @@ export const configAddQuestion = {
         {name: "Вкладення", value: "", title: "level", type: "file"}
     ],
     action: "create",
-    labelBtn: "Додати"
+    labelBtn: "Додати",
+    img: [
+        {imgName: "Вкладення", value: "", title: "attachment", type: "file"}
+    ]
 };
 
 export const configEditQuestion = {

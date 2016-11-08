@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
@@ -15,13 +15,16 @@ import {Question} from "../../shared/classes/question";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'question-container',
     templateUrl: 'question.component.html'
 })
 
-export class QuestionComponent implements OnInit {
+export class QuestionComponent implements OnInit, OnDestroy {
+
+    private subscription: Subscription;
 
     //common variables
     public entity: string = "question";
@@ -33,18 +36,14 @@ export class QuestionComponent implements OnInit {
     public headers: any = headersQuestion;
     public actions: any = actionsQuestion;
     public successEventModal = successEventModal;
-    private config: any = {action: "create"};
+    public config: any = {action: "create"};
 
     //variable for pagination
     public page: number = 1;
     public limit: number = 5;
-    private entityDataLength: number;
+    public entityDataLength: number;
     public offset: number = 0;
     public maxSize: number = 5;
-    public paginationSize = this.maxSize;
-
-    // variable for search
-    public searchCriteria: string = "";
     public selectLimit: string = "Виберіть кількість завдань на сторінці";
 
     //varibles for addedit
@@ -61,10 +60,9 @@ export class QuestionComponent implements OnInit {
                 private subjectService: SubjectService,
                 private location: Location,
                 private modalService: NgbModal) {
-        route.queryParams.subscribe(
+        this.subscription = route.queryParams.subscribe(
             data => {
                 this.testName = data['name'];
-                console.log(this.testName);
             });
     }
 
@@ -73,6 +71,10 @@ export class QuestionComponent implements OnInit {
             this.test_id = +params['id'];
             this.getCountRecordsByTest();
         });
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 
     goBack(): void {
@@ -110,6 +112,7 @@ export class QuestionComponent implements OnInit {
                     let tempArr: any[] = [];
                     let numberOfOrder: number;
                     if (data.length) {
+                        console.log("range" + data.length);
                         data.forEach((item, i) => {
                             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                             let question: any = {};
@@ -132,6 +135,7 @@ export class QuestionComponent implements OnInit {
     }
 
     changeLimit(limit: number): void {
+        console.log("this limit" + limit);
         this.limit = limit;
         this.offset = 0;
         this.page = 1;
@@ -139,6 +143,7 @@ export class QuestionComponent implements OnInit {
     }
 
     pageChange(num: number) {
+        console.log("page change num", num);
         if (!num) {
             this.page = 1;
             return;
@@ -153,8 +158,8 @@ export class QuestionComponent implements OnInit {
         var reader = new FileReader();
         reader.onload = function(){
             var dataURL = reader.result;
-            var img = document.getElementById('img');
-            // img.src = dataURL;
+            var image = <HTMLImageElement>document.getElementById('img');
+            image.src = dataURL;
         };
         reader.readAsDataURL(input.files[0]);
     }
@@ -166,7 +171,7 @@ export class QuestionComponent implements OnInit {
         } else if (this.entityData.length > 1) {
             this.offset = (this.page - 1) * this.limit;
         }
-        this.getRecordsRangeByTest();
+        this.getCountRecordsByTest();
     }
 
     createCase() {
@@ -181,10 +186,11 @@ export class QuestionComponent implements OnInit {
                     data.list[0].value,
                     data.list[1].value,
                     data.list[2].value,
-                    data.list[3].value
+                    data.list[3].value,
+                    this.test_id
                 );
                 this.crudService.insertData(this.entity, newQuestion)
-                    .subscribe(response=> {
+                    .subscribe(() => {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
                         this.configAdd.list.forEach((item)=> {

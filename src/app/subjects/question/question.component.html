@@ -69,13 +69,13 @@
     </div>
     <ngb-pagination
             *ngIf="entityDataLength"
-            [hidden]="searchCriteria.length || limit>=entityDataLength"
+            [hidden]="limit>=entityDataLength"
             [pageSize]="limit"
             [collectionSize]="entityDataLength"
             [(page)]="page"
             [rotate]="true"
             (pageChange)="pageChange($event)"
-            [maxSize]="paginationSize"
+            [maxSize]="maxSize"
             [ellipses]="true"
             [boundaryLinks]="true">
     </ngb-pagination>
