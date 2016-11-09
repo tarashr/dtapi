@@ -1,4 +1,5 @@
 import {Component, Input, Output, EventEmitter, OnInit} from "@angular/core";
+import {Location} from "@angular/common";
 import {Subject} from "rxjs";
 
 @Component({
@@ -15,6 +16,7 @@ export class EntityBarComponent implements OnInit {
     @Input() entityDataLength: number;
     @Input() listOfOptions1: any[];
     @Input() listOfOptions2: any[];
+    @Input() isSelectedBy: boolean;
     @Input() defaultOption1: string;
     @Input() defaultOption2: string;
     @Output() activate = new EventEmitter();
@@ -25,7 +27,7 @@ export class EntityBarComponent implements OnInit {
     private config: any = {action: "create"};
     private searchTerms = new Subject();
 
-    constructor() {
+    constructor(private location: Location) {
     }
 
     find(term: string) {
@@ -57,5 +59,8 @@ export class EntityBarComponent implements OnInit {
         this.selectRun.emit(limit);
     }
 
+    goBack(): void {
+        this.location.back();
+    }
 
 }

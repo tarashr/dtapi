@@ -1,35 +1,35 @@
-import {Component} from '@angular/core';
-import {OnInit} from '@angular/core';
-import '../shared/rxjs-operators';
+import {Component} from "@angular/core";
+import {OnInit} from "@angular/core";
+import "../shared/rxjs-operators";
 import {Router} from "@angular/router";
 import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Subject}   from '../shared/classes/subject';
-import {CRUDService}  from '../shared/services/crud.service';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {Subject}   from "../shared/classes/subject";
+import {CRUDService}  from "../shared/services/crud.service";
 import {
     configAddSubject,
     configEditSubject,
     successEventModal,
     headersSubject,
     actionsSubject,
-    modalInfoConfig} from '../shared/constant';
+    modalInfoConfig} from "../shared/constant";
 
 @Component({
-    selector: 'subject-container',
-    templateUrl: 'subject.component.html'
+    selector: "subject-container",
+    templateUrl: "subject.component.html"
 })
 
 export class SubjectComponent implements OnInit {
 
-    //common variables
+    // common variables
     public entity: string = "subject";
     public errorMessage: string;
     public headers: any = headersSubject;
     public actions: any = actionsSubject;
     public modalInfoConfig: any = modalInfoConfig;
 
-    //variables for pagination
+    // variables for pagination
     public limit: number = 5;
     private entityDataLength: number;
     public page: number = 1;
@@ -37,10 +37,10 @@ export class SubjectComponent implements OnInit {
     public maxSize: number = 5;
     public paginationSize = this.maxSize;
 
-    //variables for search
+    // variables for search
     public searchCriteria: string = "";
 
-    //varibles for addedit
+    // varibles for addedit
     public configAdd = configAddSubject;
     public configEdit = configEditSubject;
 
@@ -90,7 +90,7 @@ export class SubjectComponent implements OnInit {
                 data => {
                     let tempArr: any[] = [];
                     let numberOfOrder: number;
-                    data.forEach((item, i)=> {
+                    data.forEach((item, i) => {
                         numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                         let subject: any = {};
                         subject.entity_id = item.subject_id;
@@ -124,14 +124,14 @@ export class SubjectComponent implements OnInit {
     getSubjectsBySearch(): void {
         this.crudService.getRecordsBySearch(this.entity, this.searchCriteria)
             .subscribe(data => {
-                    if (data.response == "no records") {
+                    if (data.response === "no records") {
                         this.entityData = [];
                         return;
                     }
                     this.page = 1;
                     let numberOfOrder: number;
                     let tempArr: any[] = [];
-                    data.forEach((item, i)=> {
+                    data.forEach((item, i) => {
                         numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                         let subject: any = {};
                         subject.entity_id = item.subject_id;
@@ -141,7 +141,7 @@ export class SubjectComponent implements OnInit {
                     });
                     this.entityData = tempArr;
                 },
-                error=>console.log("error: ", error));
+                error => console.log("error: ", error));
     };
 
     findEntity(searchTerm: string) {
@@ -169,18 +169,17 @@ export class SubjectComponent implements OnInit {
                     this.entityDataLength = +data.numberOfRecords;
                     this.getSubjectsRange();
                 },
-                error=>console.log(error)
+                error => console.log(error)
             );
     }
 
     activate(data: any) {
-        console.log("!!! ", data);
         switch (data.action) {
             case "test":
-                this._router.navigate(["/admin/subject", data.entity_id, "test"], {queryParams: {token:data.entityColumns[1]}});
+                this._router.navigate(["/admin/subject", data.entity_id, "test"], {queryParams: {token: data.entityColumns[1]}});
                 break;
             case "timeTable":
-                this._router.navigate(["/admin/subject", data.entity_id, "timeTable"], {queryParams: {token:data.entityColumns[1]}});
+                this._router.navigate(["/admin/subject", data.entity_id, "timeTable"], {queryParams: {token: data.entityColumns[1]}});
                 break;
             case "edit":
                 this.editCase(data);
@@ -204,20 +203,22 @@ export class SubjectComponent implements OnInit {
             .then((data: any) => {
                 let newSubject: Subject = new Subject(data.list[0].value, data.list[1].value);
                 this.crudService.insertData(this.entity, newSubject)
-                    .subscribe(response=> {
+                    .subscribe(() => {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
-                        this.configAdd.list.forEach((item)=>{item.value=""});
+                        this.configAdd.list.forEach(item => {
+                            item.value = "";
+                        });
                         this.refreshData(data.action);
                     });
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     };
 
     editCase(data: any) {
         this.configEdit.list.forEach((item, i) => {
-            item.value = data.entityColumns[i+1]
+            item.value = data.entityColumns[i + 1];
         });
         this.configEdit.id = data.entity_id;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
@@ -226,13 +227,13 @@ export class SubjectComponent implements OnInit {
             .then((data: any) => {
                 let editedSubject: Subject = new Subject(data.list[0].value, data.list[1].value);
                 this.crudService.updateData(this.entity, data.id, editedSubject)
-                    .subscribe(()=> {
+                    .subscribe(() => {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
                         this.successEventModal();
                         this.refreshData(data.action);
                     });
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 
@@ -245,8 +246,8 @@ export class SubjectComponent implements OnInit {
         modalRefDel.result
             .then(() => {
                 this.deleteSubject(this.entity, data.entity_id);
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 }

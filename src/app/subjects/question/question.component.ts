@@ -1,8 +1,8 @@
-import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
-import {Location} from '@angular/common';
-import {Router, ActivatedRoute, Params} from '@angular/router';
-import {CRUDService}  from '../../shared/services/crud.service';
-import {SubjectService}  from '../../shared/services/subject.service';
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Location} from "@angular/common";
+import {Router, ActivatedRoute, Params} from "@angular/router";
+import {CRUDService}  from "../../shared/services/crud.service";
+import {SubjectService}  from "../../shared/services/subject.service";
 
 import {
     configAddQuestion,
@@ -11,23 +11,23 @@ import {
     headersQuestion,
     actionsQuestion,
     modalInfoConfig
-} from '../../shared/constant';
+} from "../../shared/constant";
 import {Question} from "../../shared/classes/question";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Subscription} from "rxjs";
 
 @Component({
-    selector: 'question-container',
-    templateUrl: 'question.component.html'
+    selector: "question-container",
+    templateUrl: "question.component.html"
 })
 
 export class QuestionComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription;
 
-    //common variables
+    // common variables
     public entity: string = "question";
     public errorMessage: string;
     public entityTitle: string = "Завдання для тесту: ";
@@ -39,7 +39,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     public successEventModal = successEventModal;
     public config: any = {action: "create"};
 
-    //variable for pagination
+    // variable for pagination
     public page: number = 1;
     public limit: number = 5;
     public entityDataLength: number;
@@ -47,7 +47,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     public maxSize: number = 5;
     public selectLimit: string = "Виберіть кількість завдань на сторінці";
 
-    //varibles for addedit
+    // varibles for addedit
     public configAdd = configAddQuestion;
     public configEdit = configEditQuestion;
     public modalInfoConfig: any = modalInfoConfig;
@@ -65,14 +65,13 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal) {
         this.subscription = route.queryParams.subscribe(
             data => {
-                this.testName = data['name'];
+                this.testName = data["name"];
             });
     }
 
-    @ViewChild ('imgSrc') imgSrc: ElementRef;
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
-            this.test_id = +params['id'];
+            this.test_id = +params["id"];
             this.getCountRecordsByTest();
         });
     }
@@ -106,7 +105,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     this.getRecordsRangeByTest();
                 },
                 error => this.errorMessage = <any>error
-            )
+            );
     }
 
     getRecordsRangeByTest(): void {
@@ -139,7 +138,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
 
     changeLimit(limit: number): void {
-        console.log("this limit" + limit);
         this.limit = limit;
         this.offset = 0;
         this.page = 1;
@@ -147,7 +145,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
 
     pageChange(num: number) {
-        console.log("page change num", num);
         if (!num) {
             this.page = 1;
             return;
@@ -156,18 +153,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.offset = (this.page - 1) * this.limit;
         this.getRecordsRangeByTest();
     }
-
-    // openFile(inputImage) {
-    //     let input = inputImage.target.files;
-    //     let reader = new FileReader();
-    //     reader.onload = function(){
-    //         let dataURL = reader.result;
-    //         console.log(dataURL);
-    //         let image = <HTMLInputElement>document.getElementById('img');
-    //         image.src = dataURL;
-    //     };
-    //     reader.readAsDataURL(input.files[0]);
-    // }
 
     refreshData(action: string) {
         if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
@@ -181,6 +166,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
     createCase() {
         this.configEdit.list[0].value = "";
+        this.configEdit.img[0].value = "";
         this.configAdd.select[0].selected = "";
         this.configAdd.select[1].selected = "";
         this.configAdd.select[0].selectItem = this.levels;
@@ -193,20 +179,20 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     data.list[0].value,
                     data.select[0].selected,
                     data.select[1].selectItem.indexOf(data.select[1].selected),
-                    data.img[0].value = this.imgSrc.nativeElement.src,
+                    data.img[0].value,
                     this.test_id
                 );
                 this.crudService.insertData(this.entity, newQuestion)
                     .subscribe(() => {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
-                        this.configAdd.list.forEach((item)=> {
-                            item.value = ""
+                        this.configAdd.list.forEach((item) => {
+                            item.value = "";
                         });
                         this.refreshData(data.action);
                     });
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     };
 
@@ -217,6 +203,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.configEdit.select[1].selected = data.entityColumns[3];
         this.configEdit.select[0].selectItem = this.levels;
         this.configAdd.select[1].selectItem = this.choise;
+        this.configAdd.img[0].value = data.entityColumns[4];
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
@@ -229,13 +216,13 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     this.test_id
                 );
                 this.crudService.updateData(this.entity, data.id, editedQuestion)
-                    .subscribe(()=> {
+                    .subscribe(() => {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
                         this.successEventModal();
                         this.refreshData(data.action);
                     });
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 
@@ -248,8 +235,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
         modalRefDel.result
             .then(() => {
                 this.deleteQuestion(this.entity, data.entity_id);
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 

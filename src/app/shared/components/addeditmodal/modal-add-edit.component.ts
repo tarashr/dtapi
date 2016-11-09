@@ -13,4 +13,14 @@ export class ModalAddEditComponent {
     constructor(private activeModal: NgbActiveModal) {
     }
 
+    openFile($event) {
+        let input = $event.target;
+        let reader = new FileReader();
+        reader.onload =  () => {
+            let dataURL = reader.result;
+            this.config.img[0].value = dataURL;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+
 }

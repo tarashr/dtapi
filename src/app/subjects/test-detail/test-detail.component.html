@@ -20,8 +20,9 @@
               [tableData]="entityData"
               (activate)="activate($event)">
     </dt-table>
-    Загальна кількість завдань в тесті: {{tasksTest}} <br>
-    Необхідно додати: {{restTasks}}
+    <div *ngIf="entityData.length">
+        Загальна кількість завдань в тесті: {{tasksTest}} <br>
+    </div>
     <div *ngIf="!entityData.length" class="alert alert-info" role="alert">
         Для вибраного тесту немає детальнішого опису
     </div>
