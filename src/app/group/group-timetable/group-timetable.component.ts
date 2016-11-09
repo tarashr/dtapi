@@ -60,8 +60,7 @@ export class GroupTimetableComponent implements OnInit {
     };
 
     ngOnInit() {
-        this.getGroupTimeTables();
-        this.getSubjects();
+        this.getRecords();
     }
 
     getGroupTimeTables() {
@@ -75,6 +74,7 @@ export class GroupTimetableComponent implements OnInit {
                             }
                         }
                     }
+                    console.log(JSON.stringify(data));
                     this.createTableConfig(data);
                 },
                 error => console.log("error: ", error));
@@ -84,10 +84,13 @@ export class GroupTimetableComponent implements OnInit {
         this.location.back();
     }
 
-    getSubjects() {
+    getRecords() {
         this.crudService.getRecords(this.subjectEntity)
             .subscribe(
-                data => this.subjects = data,
+                data => {
+                    this.subjects = data;
+                    this.getGroupTimeTables();
+                },
                 error=>console.log("error: ", error)
             )
     }
@@ -185,7 +188,6 @@ export class GroupTimetableComponent implements OnInit {
     }
 
     deleteCase(data){
-        console.log(data);
         this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
