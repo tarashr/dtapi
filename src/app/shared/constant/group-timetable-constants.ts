@@ -1,9 +1,9 @@
 // Constants for table.component
 export const headersGroupTimeTable = [
     {name: "№", className: "col-xs-12 col-sm-1"},
-    {name: "Назва предмету", className: "col-xs-12 col-sm-4"},
-    {name: "Дата проведення тестування", className: "col-xs-12 col-sm-3"},
-    {name: "", className: "col-xs-12 col-sm-4"}
+    {name: "Назва предмету", className: "col-xs-12 col-sm-5"},
+    {name: "Дата проведення тестування", className: "col-xs-12 col-sm-4"},
+    {name: "", className: "col-xs-12 col-sm-2"}
 ];
 
 export const actionsGroupTimeTable = [

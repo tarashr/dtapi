@@ -10,7 +10,7 @@ export const headersGroup = [
 export const actionsGroup = [
     {
         title: "Результати тустування групи",
-        action: "",
+        action: "viewTestResult",
         glyphicon: "glyphicon glyphicon-list-alt",
         btnClassName: "btn btn-default btn-sm"
     },
