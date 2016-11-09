@@ -10,6 +10,7 @@ import {TestComponent} from "./app/subjects/tests/test.component";
 import {FacultyComponent} from "./app/faculty/faculty.component";
 import {StatisticComponent} from "./app/statistic/statistic.component";
 import {GroupComponent} from "./app/group/group.component";
+import {GroupTimetableComponent} from "./app/group/group-timetable/group-timetable.component";
 import {AdminUserComponent} from "./app/admin-user/admin-user.component";
 import {SpecialityComponent} from "./app/speciality/speciality.component";
 import {StudentComponent} from "./app/student/student.component";
@@ -52,6 +53,7 @@ const appRoutes: Routes = [
             {path: "speciality", component: SpecialityComponent},
             {path: "faculty", component: FacultyComponent},
             {path: "group", component: GroupComponent},
+            {path: "group/groupTimetable", component: GroupTimetableComponent},
             {path: "faculty/:id/groups", component: GroupComponent},
             {path: "adminUser", component: AdminUserComponent},
             {path: "student", component: StudentComponent},

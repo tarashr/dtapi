@@ -15,7 +15,9 @@
             (searchRun)="findEntity($event)"
             (selectRun)="changeLimit($event)">
     </entity-bar>
-    <p *ngIf="noRecords">Записів не знайдено</p>
+    <div *ngIf="noRecords" class="alert alert-warning" role="alert">
+        За даними критеріями груп не знайдено
+    </div>
     <dt-table *ngIf="!noRecords"
               [page]="page"
               [limit]="limit"

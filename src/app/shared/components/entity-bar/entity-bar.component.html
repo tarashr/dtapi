@@ -9,7 +9,7 @@
                        (input)="find(inputSearch.value)">
             </div>
         </form>
-        <form *ngIf="listOfOptions1 || listOfOptions2" class="navbar-form navbar-left">
+        <form *ngIf="listOfOptions1 && listOfOptions2" class="navbar-form navbar-left">
             <div class="form-group">
                 <select *ngIf="listOfOptions1"
                         #select1

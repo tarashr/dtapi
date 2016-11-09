@@ -72,7 +72,6 @@ export class TestComponent implements OnInit, OnDestroy {
 
     goBack(): void {
         this.location.back();
-
     }
 
     getTestBySubjectId() {
