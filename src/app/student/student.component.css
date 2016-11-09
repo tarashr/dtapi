@@ -28,12 +28,10 @@
 .student-foto{
     display: inline-block;
     float: left;
-    /*border: 1px solid black;*/
 }
 
 .student-data1{
     display: inline-block;
-    /*border: 1px solid black;*/
     float:	left;
     text-align:right;
     padding: 10px;
@@ -41,7 +39,6 @@
 
 .student-data2{
     display: inline-block;
-    /*border: 1px solid black;*/
     float:	left;
     text-align:right;
     padding: 10px;
@@ -52,30 +49,43 @@ label {
     margin: 10px 0 10px 0;
 }
 
-.inputStudentData{
+.input-student-data {
     margin: 10px 0 10px 0;
 }
 
 .button-save-student-profile{
     margin: 0 auto 0 auto;
     text-align: center;
-    alignment: ce;
+    alignment: center;
 }
 
-.buttonCreateRefresh{
+.button-create-refresh {
     margin: auto;
     text-align: center;
+    width: 100%;
+    clear:both;
+    ;
 }
 
-.positionLeft{
+.position-left {
     float: right;
     margin-right: 10px;
 }
 
-.selectGroup{
+.select-group {
     clear:both;
-    width: 157px;
     padding: 2px;
     height: 24px;
-    /*text-align:right;*/
+    width: 50%;
 }
+
+div.student-datas  input{
+    width: 50%;
+}
+
+.profile-foto{
+    width: 100%;
+    border-radius: 15%;
+    border: 1px solid #e7e7e7;
+}
+
