@@ -1,4 +1,5 @@
 import {Component, ViewChild, OnInit, ElementRef} from "@angular/core";
+import {Router, ActivatedRoute, Params} from "@angular/router";
 import {Location} from "@angular/common";
 import {Group} from "../shared/classes/group";
 import {Faculty} from "../shared/classes/faculty";
@@ -6,19 +7,18 @@ import {Student} from "../shared/classes/student";
 import {CRUDService} from "../shared/services/crud.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
-import {NgForm} from "@angular/forms";
-// import {Router, ActivatedRoute, Params} from "@angular/router";
 
 import {
     modalInfoConfig,
+    delRecord,
     successEventModal
 } from "../shared/constant";
 
 @Component({
     templateUrl: "student-new-profile.component.html",
     styleUrls: ["student.component.css"],
-    // directives: [ImageActionsComponent]
 })
+
 export class StudentNewProfileComponent implements OnInit {
 
     public student: Student [] = [];
@@ -27,10 +27,8 @@ export class StudentNewProfileComponent implements OnInit {
     public facultyEntity: string = "Faculty";
     public facultys: Faculty [] = [];
     public idFaculty: number;
-    // public curFaculty: number;
     public groupEntity: string = "Group";
     public groups: Group[] = [];
-    // public groupName: string = "";
     public user_id: number;
     public passwordStatus: boolean = false;
     public passwordStatusText: string = "text";
@@ -39,23 +37,19 @@ export class StudentNewProfileComponent implements OnInit {
     public statusView: boolean = false;
     public editSaveButtonStatus: boolean = false;
     public modalInfoConfig: any = modalInfoConfig;
-    public foto_src: string = "";
+    public delRecord = delRecord;
 
-    @ViewChild("inputFoto") inputFoto;
-    @ViewChild("inputFotoStud") inputFotoStud;
+    @ViewChild("fotoSrc") fotoSrc: ElementRef;
 
     constructor(private _commonService: CRUDService,
                 private location: Location,
-                private modalService: NgbModal,
-                private element: ElementRef) {
-
+                private modalService: NgbModal) {
     }
 
     public successEventModal = successEventModal;
 
     ngOnInit() {
         this.dataForView();
-        // this.getGroupName();
     }
 
     goBack(): void {
@@ -106,7 +100,7 @@ export class StudentNewProfileComponent implements OnInit {
         this._commonService.getGroupsByFaculty(this.idFaculty)
             .subscribe(data => {
                     if (data.response === "no records") {
-                        this.groups.push(new Group("Для даного факультету не зареэстровано жодноъ групи"));
+                        this.groups.push(new Group("Для даного факультету не зареєстровано жодної групи"));
                     } else {this.groups = data; }
                 },
                 error => console.log("error: ", error)
@@ -127,8 +121,7 @@ export class StudentNewProfileComponent implements OnInit {
                     this.newStudent[0].student_fname = this.student[0].student_fname;
                     this.newStudent[0].group_id = this.student[0].group_id;
                     this.newStudent[0].plain_password = this.student[0].plain_password;
-                    console.log("this.inputFoto : ", this.inputFotoStud.src);
-                    this.newStudent[0].photo = this.inputFoto;
+                    this.newStudent[0].photo = this.fotoSrc.nativeElement.src;
                     this._commonService.insertData(this.entity, this.newStudent[0])
                         .subscribe(data => {
                                 console.log("data : ", data);
@@ -148,62 +141,28 @@ export class StudentNewProfileComponent implements OnInit {
         }
     }
 
-
     infoCase(data: any) {
         this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
         modalRefDel.componentInstance.config = this.modalInfoConfig;
-        /*modalRefDel.result
+        modalRefDel.result
          .then(() => {
          this.delRecord(this.entity, data.entity_id);
          }, () => {
          return;
-         })*/
+         });
     }
-
-    /* fileChange(input) {
-     let input = event.target;
-
-     let reader = new FileReader();
-     reader.onload = function(){
-     var dataURL = reader.result;
-     var output = document.getElementById("output");
-     output.src = dataURL;
-     };
-     reader.readAsDataURL(input.files[0]);*/
-
-
-    /*changeListner(event) {
-     let reader = new FileReader();
-     let image = this.element.nativeElement.querySelector("#output");
-
-     reader.onload = function(e) {
-     image.src = e.target.result;
-     };
-
-     reader.readAsDataURL(event.target.files[0]);
-     }*/
 
     openFile(event) {
         let input = event.target;
-
         let reader = new FileReader();
         reader.onload = function () {
-            // let dataURL = reader.result;
-            // let output = document.getElementById("output");
-            // output.src = dataURL;
-            let dataURL = reader.result;
-            // document.getElementById("output") = dataURL;
-            console.log("dataURL : ", dataURL);
-            // this.input.src = dataURL;
-            // this.foto_src = dataURL;
-            // this.inputFotoStud.src = dataURL;
-            // console.log("this.input.src : ", this.input.src);
+            let mysrc = <HTMLInputElement>document.getElementById("output");
+            mysrc.src = reader.result;
         };
         reader.readAsDataURL(input.files[0]);
-        // console.log("reader.readAsDataURL(input.files[0]): ", reader.readAsDataURL(input.files[0]));
     }
 
 }
