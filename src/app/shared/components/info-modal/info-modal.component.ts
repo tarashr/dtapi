@@ -6,7 +6,7 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
     templateUrl: "info-modal.component.html",
     styleUrls: ["info-modal.component.css"]
 })
-export class InfoModalComponent{
+export class InfoModalComponent {
 
     @Input() config: any;
 

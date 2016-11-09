@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {Faculty} from "../shared/classes/faculty";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
@@ -6,8 +6,7 @@ import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {CRUDService} from "../shared/services/crud.service.ts";
 import {
-    configAddFaculty,
-    configEditFaculty,
+    configAddFaculty, configEditFaculty, modalInfoConfig,
     maxSize,
     changeLimit,
     pageChange,
@@ -17,9 +16,8 @@ import {
     findEntity,
     refreshData,
     successEventModal,
-    headersFaculty,
-    actionsFaculty,
-    modalInfoConfig
+    headersFaculty, actionsFaculty,
+    addTitle, searchTitle, entityTitle, selectLimitTitle
 } from "../shared/constant";
 
 @Component({
@@ -36,14 +34,14 @@ export class FacultyComponent implements OnInit {
     public actions: any = actionsFaculty;
 
     // constants for view
-    public addTitle: string = "Створити новий факультет";
-    public searchTitle: string = "Введіть дані для пошуку";
-    public entityTitle: string = "Факультети";
-    public selectLimitTitle: string = "Виберіть кількість факультетів на сторінці";
+    public addTitle: string = addTitle;
+    public searchTitle: string = searchTitle;
+    public entityTitle: string = entityTitle;
+    public selectLimitTitle: string = selectLimitTitle;
     //
 
     public entityData: any[] = [];
-    private entityDataLength: number;
+    public entityDataLength: number;
     public entity: string = "faculty";
     public limit: number = 5;
     public search: string = "";
@@ -61,8 +59,8 @@ export class FacultyComponent implements OnInit {
     public delRecord = delRecord;
     public refreshData = refreshData;
     public successEventModal = successEventModal;
-    getRecordsRange = getRecordsRange;
-    findEntity = findEntity;
+    public getRecordsRange = getRecordsRange;
+    public findEntity = findEntity;
 
     ngOnInit() {
         this.getCountRecords();
