@@ -24,8 +24,7 @@ import {
 } from "../shared/constant";
 
 @Component({
-    templateUrl:"speciality.component.html",
-    styleUrls:["speciality.component.css"]
+    templateUrl:"speciality.component.html"
 })
 export class SpecialityComponent implements OnInit{
 

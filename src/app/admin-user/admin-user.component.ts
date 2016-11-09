@@ -24,8 +24,7 @@ import {
 
 
 @Component({
-    templateUrl: "admin-user.component.html",
-    styleUrls: ["admin-user.component.css"]
+    templateUrl: "admin-user.component.html"
 })
 export class AdminUserComponent implements OnInit {
 
