@@ -53,7 +53,6 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     public testDetails: any[] = [];
     public subject_id;
     public entityTest = [];
-    public subscribtion;
     public testName;
     public level: number [] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -87,8 +86,8 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         this.subjectService.getTestsBySubjectId(this.entityTestName, this.subject_id)
             .subscribe(
                 data => {
-                    data.forEach((item) => {
-                        if (item.test_id === this.test_id) {
+                    data.forEach(item => {
+                        if (item.test_id == this.test_id) {
                             this.tasksTest = item.tasks;
                         }
                     });
@@ -156,7 +155,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     }
 
     createCase() {
-        this.configAdd.list.forEach((item) => {
+        this.configAdd.list.forEach(item => {
             item.value = "";
         });
         this.configAdd.select[0].selected = "";
@@ -176,7 +175,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                if (+this.tasksTest >= +(this.tasksTestDetail + +data.list[1].value)) {
+                if (+this.tasksTest >= +(this.tasksTestDetail + +data.list[0].value)) {
                     let newTestDetail: TestDetail = new TestDetail(
                         data.select[0].selected,
                         data.list[0].value,
@@ -218,7 +217,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
-                if (+this.tasksTest >= +(this.tasksTestDetail + +data.list[1].value)) {
+                if (+this.tasksTest >= +(this.tasksTestDetail + +data.list[0].value)) {
                     let editedTestDetail: TestDetail = new TestDetail(
                         data.select[0].selected,
                         data.list[0].value,

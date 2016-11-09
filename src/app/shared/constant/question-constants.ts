@@ -48,7 +48,7 @@ export const configEditQuestion = {
     ],
     action: "edit",
     labelBtn: "Редагувати",
-    id:"",
+    id: "",
     img: [
         {imgName: "Вкладення", value: "", title: "attachment", type: "file"}
     ],

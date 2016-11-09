@@ -16,7 +16,7 @@ export class ModalAddEditComponent {
     openFile($event) {
         let input = $event.target;
         let reader = new FileReader();
-        reader.onload =  ()=> {
+        reader.onload =  () => {
             let dataURL = reader.result;
             this.config.img[0].value = dataURL;
         };

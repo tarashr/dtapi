@@ -1,8 +1,8 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Location} from '@angular/common';
-import {Router, ActivatedRoute, Params} from '@angular/router';
-import {CRUDService}  from '../../shared/services/crud.service';
-import {SubjectService}  from '../../shared/services/subject.service';
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Location} from "@angular/common";
+import {Router, ActivatedRoute, Params} from "@angular/router";
+import {CRUDService}  from "../../shared/services/crud.service";
+import {SubjectService}  from "../../shared/services/subject.service";
 
 import {
     configAddQuestion,
@@ -11,23 +11,23 @@ import {
     headersQuestion,
     actionsQuestion,
     modalInfoConfig
-} from '../../shared/constant';
+} from "../../shared/constant";
 import {Question} from "../../shared/classes/question";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Subscription} from "rxjs";
 
 @Component({
-    selector: 'question-container',
-    templateUrl: 'question.component.html'
+    selector: "question-container",
+    templateUrl: "question.component.html"
 })
 
 export class QuestionComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription;
 
-    //common variables
+    // common variables
     public entity: string = "question";
     public errorMessage: string;
     public entityTitle: string = "Завдання для тесту: ";
@@ -39,7 +39,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     public successEventModal = successEventModal;
     public config: any = {action: "create"};
 
-    //variable for pagination
+    // variable for pagination
     public page: number = 1;
     public limit: number = 5;
     public entityDataLength: number;
@@ -47,7 +47,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     public maxSize: number = 5;
     public selectLimit: string = "Виберіть кількість завдань на сторінці";
 
-    //varibles for addedit
+    // varibles for addedit
     public configAdd = configAddQuestion;
     public configEdit = configEditQuestion;
     public modalInfoConfig: any = modalInfoConfig;
@@ -65,13 +65,13 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal) {
         this.subscription = route.queryParams.subscribe(
             data => {
-                this.testName = data['name'];
+                this.testName = data["name"];
             });
     }
 
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
-            this.test_id = +params['id'];
+            this.test_id = +params["id"];
             this.getCountRecordsByTest();
         });
     }
@@ -105,7 +105,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     this.getRecordsRangeByTest();
                 },
                 error => this.errorMessage = <any>error
-            )
+            );
     }
 
     getRecordsRangeByTest(): void {
@@ -186,13 +186,13 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     .subscribe(() => {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
-                        this.configAdd.list.forEach((item)=> {
-                            item.value = ""
+                        this.configAdd.list.forEach((item) => {
+                            item.value = "";
                         });
                         this.refreshData(data.action);
                     });
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     };
 
@@ -216,13 +216,13 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     this.test_id
                 );
                 this.crudService.updateData(this.entity, data.id, editedQuestion)
-                    .subscribe(()=> {
+                    .subscribe(() => {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
                         this.successEventModal();
                         this.refreshData(data.action);
                     });
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 
@@ -235,8 +235,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
         modalRefDel.result
             .then(() => {
                 this.deleteQuestion(this.entity, data.entity_id);
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 
