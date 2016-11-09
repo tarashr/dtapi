@@ -1,8 +1,8 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Location} from '@angular/common';
-import {Router, ActivatedRoute, Params} from '@angular/router';
-import {CRUDService}  from '../../shared/services/crud.service';
-import {SubjectService}  from '../../shared/services/subject.service';
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Location} from "@angular/common";
+import {Router, ActivatedRoute, Params} from "@angular/router";
+import {CRUDService}  from "../../shared/services/crud.service";
+import {SubjectService}  from "../../shared/services/subject.service";
 import {
     configAddTestDetail,
     configEditTestDetail,
@@ -10,23 +10,23 @@ import {
     headersTestDetail,
     actionsTestDetail,
     modalInfoConfig
-} from '../../shared/constant';
+} from "../../shared/constant";
 import {TestDetail} from "../../shared/classes/test-detail";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Subscription} from "rxjs";
 
 @Component({
-    selector: 'test-detail-container',
-    templateUrl: 'test-detail.component.html'
+    selector: "test-detail-container",
+    templateUrl: "test-detail.component.html"
 })
 
 export class TestDetailComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription;
 
-    //common variables
+    // common variables
     public entity: string = "testDetail";
     public entityTestName: string = "test";
     public errorMessage: string;
@@ -40,7 +40,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     private config: any = {action: "create"};
     public modalInfoConfig: any = modalInfoConfig;
 
-    //varibles for addedit
+    // varibles for addedit
     public configAdd = configAddTestDetail;
     public configEdit = configEditTestDetail;
 
@@ -55,7 +55,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     public entityTest = [];
     public subscribtion;
     public testName;
-    public level:number[] = [1,2,3,4,5,6,7,8,9,10];
+    public level: number [] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -65,14 +65,14 @@ export class TestDetailComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal) {
         this.subscription = route.queryParams.subscribe(
             data => {
-                this.subject_id = data['token'];
-                this.testName = data['name'];
+                this.subject_id = data["token"];
+                this.testName = data["name"];
             });
     }
 
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
-            this.test_id = +params['id'];
+            this.test_id = +params["id"];
         });
         this.getTasks();
         this.getTestDetailsByTest();
@@ -88,12 +88,12 @@ export class TestDetailComponent implements OnInit, OnDestroy {
             .subscribe(
                 data => {
                     data.forEach((item) => {
-                        if(item.test_id == this.test_id) {
+                        if (item.test_id === this.test_id) {
                             this.tasksTest = item.tasks;
                         }
                     });
                 },
-                error=>console.log("error: ", error)
+                error => console.log("error: ", error)
             );
     }
 
@@ -109,7 +109,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
                     let tempArr: any[] = [];
                     let numberOfOrder: number;
                     if (data.length) {
-                        data.forEach((item, i)=> {
+                        data.forEach((item, i) => {
                             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                             let testDetail: any = {};
                             testDetail.entity_id = item.id;
@@ -126,7 +126,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
                         this.entityData = tempArr;
                     }
                 },
-                error=>console.log("error: ", error)
+                error => console.log("error: ", error)
             );
     }
 
@@ -142,7 +142,6 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     }
 
     activate(data: any) {
-        console.log("!!! ", data);
         switch (data.action) {
             case "edit":
                 this.editCase(data);
@@ -157,8 +156,8 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     }
 
     createCase() {
-        this.configAdd.list.forEach((item)=> {
-            item.value = ""
+        this.configAdd.list.forEach((item) => {
+            item.value = "";
         });
         this.configAdd.select[0].selected = "";
         this.configAdd.select[0].selectItem = [];
@@ -193,8 +192,8 @@ export class TestDetailComponent implements OnInit, OnDestroy {
                     this.modalInfoConfig.infoString = `Перевищено максимальну кількість завдань`;
                     this.successEventModal();
                 }
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     };
 
@@ -225,7 +224,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
                         data.list[0].value,
                         data.list[1].value);
                     this.crudService.updateData(this.entity, data.id, editedTestDetail)
-                        .subscribe(()=> {
+                        .subscribe(() => {
                             this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
                             this.successEventModal();
                             this.getTestDetailsByTest();
@@ -234,8 +233,8 @@ export class TestDetailComponent implements OnInit, OnDestroy {
                     this.modalInfoConfig.infoString = `Перевищено максимальну кількість завдань`;
                     this.successEventModal();
                 }
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 
@@ -248,8 +247,8 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         modalRefDel.result
             .then(() => {
                 this.deleteTestDetail(this.entity, data.entity_id);
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 }

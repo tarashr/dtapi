@@ -1,34 +1,35 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Location} from '@angular/common';
-import {Router, ActivatedRoute, Params} from '@angular/router';
-import {CRUDService}  from '../../shared/services/crud.service';
-import {SubjectService}  from '../../shared/services/subject.service';
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Location} from "@angular/common";
+import {Router, ActivatedRoute, Params} from "@angular/router";
+import {CRUDService}  from "../../shared/services/crud.service";
+import {SubjectService}  from "../../shared/services/subject.service";
 import {
     configAddTest,
     configEditTest,
     successEventModal,
     actionsTest,
     headersTest,
-    modalInfoConfig} from '../../shared/constant';
+    modalInfoConfig
+} from "../../shared/constant";
 import {Test} from "../../shared/classes/test";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Subscription} from "rxjs";
 
 @Component({
-    selector: 'test-container',
-    templateUrl: 'test.component.html'
+    selector: "test-container",
+    templateUrl: "test.component.html"
 })
 
 export class TestComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription;
 
-    //common variables
+    // common variables
     public entity: string = "test";
     public errorMessage: string;
-    public subjectName:string;
+    public subjectName: string;
     public pageTitle: string = `Тести по предмету: `;
     public subject_id;
     public page: number = 1;
@@ -39,7 +40,7 @@ export class TestComponent implements OnInit, OnDestroy {
     private config: any = {action: "create"};
     public modalInfoConfig: any = modalInfoConfig;
 
-    //varibles for addedit
+    // varibles for addedit
     public configAdd = configAddTest;
     public configEdit = configEditTest;
 
@@ -55,13 +56,13 @@ export class TestComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal) {
         this.subscription = route.queryParams.subscribe(
             data => {
-                this.subjectName = data['token'];
+                this.subjectName = data["token"];
             });
     }
 
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
-            this.subject_id = +params['id']; // (+) converts string 'id' to a number
+            this.subject_id = +params["id"];
             this.getTestBySubjectId();
         });
     }
@@ -81,7 +82,7 @@ export class TestComponent implements OnInit, OnDestroy {
                     let tempArr: any[] = [];
                     let numberOfOrder: number;
                     if (data.length) {
-                        data.forEach((item, i)=> {
+                        data.forEach((item, i) => {
                             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                             let test: any = {};
                             test.entity_id = item.test_id;
@@ -98,13 +99,13 @@ export class TestComponent implements OnInit, OnDestroy {
                         });
                         this.entityData = tempArr;
                         for (let i = 0; i < this.entityData.length; i++) {
-                            this.entityData[i].entityColumns[5] == "1" ?
+                            this.entityData[i].entityColumns[5] === "1" ?
                                 this.entityData[i].entityColumns.splice(5, 1, "Доступно") :
                                 this.entityData[i].entityColumns.splice(5, 1, "Не доступно");
                         }
                     }
                 },
-                error=>console.log("error: ", error)
+                error => console.log("error: ", error)
             );
     }
 
@@ -120,13 +121,17 @@ export class TestComponent implements OnInit, OnDestroy {
     }
 
     activate(data: any) {
-        console.log("!!! ", data);
         switch (data.action) {
             case "testDetail":
-                this.router.navigate(["/admin/subject/test", data.entity_id, "testDetail"], {queryParams: {token:this.subject_id, name:data.entityColumns[1]}});
+                this.router.navigate(["/admin/subject/test", data.entity_id, "testDetail"], {
+                    queryParams: {
+                        token: this.subject_id,
+                        name: data.entityColumns[1]
+                    }
+                });
                 break;
             case "question":
-                this.router.navigate(["/admin/subject/test", data.entity_id, "question"], {queryParams: {name:data.entityColumns[1]}});
+                this.router.navigate(["/admin/subject/test", data.entity_id, "question"], {queryParams: {name: data.entityColumns[1]}});
                 break;
             case "edit":
                 this.editCase(data);
@@ -141,8 +146,8 @@ export class TestComponent implements OnInit, OnDestroy {
     }
 
     createCase() {
-        this.configAdd.list.forEach((item)=> {
-            item.value = ""
+        this.configAdd.list.forEach((item) => {
+            item.value = "";
         });
         this.configAdd.select[0].selected = "";
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
@@ -161,14 +166,14 @@ export class TestComponent implements OnInit, OnDestroy {
                         this.successEventModal();
                         this.getTestBySubjectId();
                     });
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     };
 
     editCase(data) {
         this.configEdit.list.forEach((item, i) => {
-            item.value = data.entityColumns[i+1]
+            item.value = data.entityColumns[i + 1];
         });
         this.configEdit.id = data.entity_id;
         this.configEdit.select[0].selected = data.entityColumns[5];
@@ -182,13 +187,13 @@ export class TestComponent implements OnInit, OnDestroy {
                     data.list[3].value,
                     data.select[0].selectItem.indexOf(data.select[0].selected));
                 this.crudService.updateData(this.entity, data.id, editedTest)
-                    .subscribe(()=> {
+                    .subscribe(() => {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
                         this.successEventModal();
                         this.getTestBySubjectId();
                     });
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 
@@ -201,8 +206,8 @@ export class TestComponent implements OnInit, OnDestroy {
         modalRefDel.result
             .then(() => {
                 this.deleteTest(this.entity, data.entity_id);
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 }
