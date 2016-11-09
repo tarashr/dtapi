@@ -25,8 +25,7 @@ import {
 } from "../shared/constant";
 
 @Component({
-    templateUrl: "group.component.html",
-    styleUrls: ["group.component.css"]
+    templateUrl: "group.component.html"
 })
 export class GroupComponent implements OnInit {
 

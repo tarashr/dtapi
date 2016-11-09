@@ -1,7 +1,8 @@
 import {Component} from "@angular/core";
 
 import {User} from "../shared/classes/user";
-import {LoginService} from "./../shared/services/login.service";
+import {LoginService} from "../shared/services/login.service";
+import {background} from "../shared/constant";
 
 @Component({
     selector: "login-form",
@@ -12,6 +13,7 @@ import {LoginService} from "./../shared/services/login.service";
 export class LoginComponent {
 
     public user: User = new User();
+    private background: string = background;
 
     constructor(private loginService: LoginService) {
     }

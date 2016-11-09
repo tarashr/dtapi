@@ -54,6 +54,7 @@ export class StudentComponent implements OnInit {
 
     public groupId: number;
     public groupName: string;
+    public noRecords: boolean = false;
 
     public groupEntity: string = "Group";
     public groups: Group[] = [];
@@ -114,7 +115,7 @@ export class StudentComponent implements OnInit {
         this.crudService.getStudentsByGroup(this.groupId)
             .subscribe(data => {
                 if (data.response === "no records") {
-                    this.entityData = [];
+                    this.noRecords = true;
                     return;
                 }
                 this.page = 1;

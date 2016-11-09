@@ -10,7 +10,10 @@
             (searchRun)="findEntity($event)"
             (selectRun)="changeLimit($event)">
     </entity-bar>
-    <dt-table *ngIf="entityData.length>0"
+    <div *ngIf="noRecords" class="alert alert-info" role="alert">
+        Для даної групи студентів не знайдено
+    </div>
+    <dt-table *ngIf="entityData.length"
               [page]="page"
               [limit]="limit"
               [headers]="headers"
