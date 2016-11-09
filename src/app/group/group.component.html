@@ -7,6 +7,7 @@
             [entityDataLength]="entityDataLength"
             [listOfOptions1]="facultiesNamesIDs"
             [listOfOptions2]="specialitiesNamesIDs"
+            [isSelectedBy]="isSelectedBy"
             [defaultOption1]="defaultFacultySelect"
             [defaultOption2]="defaultSpecialitySelect"
             (activate)="activate($event)"
@@ -15,7 +16,7 @@
             (searchRun)="findEntity($event)"
             (selectRun)="changeLimit($event)">
     </entity-bar>
-    <div *ngIf="noRecords" class="alert alert-warning" role="alert">
+    <div *ngIf="noRecords" class="alert alert-info" role="alert">
         За даними критеріями груп не знайдено
     </div>
     <dt-table *ngIf="!noRecords"
