@@ -51,7 +51,7 @@ export class TimeTableComponent implements OnInit {
     public groupsById = [];
     public groups = [];
     public entityGroup = "group";
-    public timeTableWithGroupId = [];
+    public timeTables = [];
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -95,7 +95,7 @@ export class TimeTableComponent implements OnInit {
             .subscribe(
                 data => {
                     if (data.length) {
-                        this.timeTableWithGroupId = data;
+                        this.timeTables = data;
                         for (let i = 0; i < data.length; i++) {
                             this.groupsId[i] = data[i].group_id;
                         }
@@ -112,13 +112,13 @@ export class TimeTableComponent implements OnInit {
             .subscribe(
                 data => {
                     this.groupsById = data;
-                    for (let i = 0; i < this.timeTableWithGroupId.length; i++) {
+                    for (let i = 0; i < this.timeTables.length; i++) {
                         for (let j = 0; j < this.groupsById.length; j++) {
-                            if (this.timeTableWithGroupId[i].group_id === this.groupsById[j].group_id) {
-                                this.timeTableWithGroupId[j].group_name = this.groupsById[j].group_name;
+                            if (this.timeTables[i].group_id === this.groupsById[j].group_id) {
+                                this.timeTables[j].group_name = this.groupsById[j].group_name;
                             }
                         }
-                        this.createTableConfig(this.timeTableWithGroupId),
+                        this.createTableConfig(this.timeTables),
                             error=>console.log("error: ", error)
                     }
                 }
@@ -128,8 +128,8 @@ export class TimeTableComponent implements OnInit {
     private createTableConfig = (data: any)=> {
         let tempArr: any[] = [];
         let numberOfOrder: number;
-        if (this.timeTableWithGroupId.length) {
-            this.timeTableWithGroupId.forEach((item, i)=> {
+        if (this.timeTables.length) {
+            this.timeTables.forEach((item, i)=> {
                 numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                 let timetable: any = {};
                 timetable.entity_id = item.timetable_id;

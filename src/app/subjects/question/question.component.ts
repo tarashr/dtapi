@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
@@ -69,7 +69,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
             });
     }
 
-    @ViewChild ('imgSrc') imgSrc: ElementRef;
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
             this.test_id = +params['id'];
@@ -139,7 +138,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
 
     changeLimit(limit: number): void {
-        console.log("this limit" + limit);
         this.limit = limit;
         this.offset = 0;
         this.page = 1;
@@ -147,7 +145,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
 
     pageChange(num: number) {
-        console.log("page change num", num);
         if (!num) {
             this.page = 1;
             return;
@@ -156,18 +153,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.offset = (this.page - 1) * this.limit;
         this.getRecordsRangeByTest();
     }
-
-    // openFile(inputImage) {
-    //     let input = inputImage.target.files;
-    //     let reader = new FileReader();
-    //     reader.onload = function(){
-    //         let dataURL = reader.result;
-    //         console.log(dataURL);
-    //         let image = <HTMLInputElement>document.getElementById('img');
-    //         image.src = dataURL;
-    //     };
-    //     reader.readAsDataURL(input.files[0]);
-    // }
 
     refreshData(action: string) {
         if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
@@ -181,6 +166,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
     createCase() {
         this.configEdit.list[0].value = "";
+        this.configEdit.img[0].value = "";
         this.configAdd.select[0].selected = "";
         this.configAdd.select[1].selected = "";
         this.configAdd.select[0].selectItem = this.levels;
@@ -193,7 +179,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     data.list[0].value,
                     data.select[0].selected,
                     data.select[1].selectItem.indexOf(data.select[1].selected),
-                    data.img[0].value = this.imgSrc.nativeElement.src,
+                    data.img[0].value,
                     this.test_id
                 );
                 this.crudService.insertData(this.entity, newQuestion)
@@ -217,6 +203,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.configEdit.select[1].selected = data.entityColumns[3];
         this.configEdit.select[0].selectItem = this.levels;
         this.configAdd.select[1].selectItem = this.choise;
+        this.configAdd.img[0].value = data.entityColumns[4];
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
