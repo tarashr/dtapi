@@ -31,9 +31,9 @@ export class StudentNewProfileComponent implements OnInit {
     public groupEntity: string = "Group";
     public groups: Group[] = [];
     public user_id: number;
-    public passwordStatus: boolean = false;
-    public passwordStatusText: string = "text";
-    public passwordButtonName: string = "Приховати пароль";
+    public passwordStatus: boolean = true;
+    public passwordStatusText: string = "password";
+    // public passwordButtonName: string = "Приховати пароль";
     public editSaveButtonName: string = "Зберегти дані";
     public editSaveButtonStatus: boolean = false;
     public modalInfoConfig: any = modalInfoConfig;
@@ -57,11 +57,11 @@ export class StudentNewProfileComponent implements OnInit {
 
     showPassword() {
         if (this.passwordStatus) {
-            this.passwordButtonName = "Приховати пароль";
+           // this.passwordButtonName = "Приховати пароль";
             this.passwordStatusText = "text";
         }
         else {
-            this.passwordButtonName = "Показати пароль";
+            // this.passwordButtonName = "Показати пароль";
             this.passwordStatusText = "password";
         }
         this.passwordStatus = !this.passwordStatus;

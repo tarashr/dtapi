@@ -48,7 +48,7 @@
                                                                  [type]="passwordStatusText"
                                                                  [(ngModel)]="stud.plain_password"
                                                                  required>
-                    <span *ngIf="stud.plain_password" class="glyphicon glyphicon-eye-open password-eye" (mouseover)="showPassword()" (mouseout)="showPassword()"></span>
+                    <span class="glyphicon glyphicon-eye-open password-eye" (mouseover)="showPassword()" (mouseout)="showPassword()"></span>
                 </div>
                 <div><label for="gradebook_id">№ залікової книжки:</label><input id="gradebook_id"
                                                                                  class="input-student-data"
