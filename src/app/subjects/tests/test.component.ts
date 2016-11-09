@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
@@ -14,19 +14,23 @@ import {Test} from "../../shared/classes/test";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'test-container',
     templateUrl: 'test.component.html'
 })
 
-export class TestComponent implements OnInit {
+export class TestComponent implements OnInit, OnDestroy {
+
+    private subscription: Subscription;
 
     //common variables
     public entity: string = "test";
     public errorMessage: string;
-    public pageTitle: string = "Тести по предмету";
-    public subject_id: number;
+    public subjectName:string;
+    public pageTitle: string = `Тести по предмету: `;
+    public subject_id;
     public page: number = 1;
     public limit: number = 0;
     public headers: any = headersTest;
@@ -49,6 +53,10 @@ export class TestComponent implements OnInit {
                 private subjectService: SubjectService,
                 private location: Location,
                 private modalService: NgbModal) {
+        this.subscription = route.queryParams.subscribe(
+            data => {
+                this.subjectName = data['token'];
+            });
     }
 
     ngOnInit() {
@@ -58,9 +66,12 @@ export class TestComponent implements OnInit {
         });
     }
 
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+
     goBack(): void {
         this.location.back();
-
     }
 
     getTestBySubjectId() {
@@ -112,10 +123,10 @@ export class TestComponent implements OnInit {
         console.log("!!! ", data);
         switch (data.action) {
             case "testDetail":
-                this.router.navigate(["/admin/subject/test", data.entity_id, "testDetail"]);
+                this.router.navigate(["/admin/subject/test", data.entity_id, "testDetail"], {queryParams: {token:this.subject_id, name:data.entityColumns[1]}});
                 break;
             case "question":
-                this.router.navigate(["/admin/subject/test", data.entity_id, "question"]);
+                this.router.navigate(["/admin/subject/test", data.entity_id, "question"], {queryParams: {name:data.entityColumns[1]}});
                 break;
             case "edit":
                 this.editCase(data);

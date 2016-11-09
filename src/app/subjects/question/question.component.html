@@ -1,30 +1,81 @@
 <div class="entity-container">
-    <entity-bar
-            [entityTitle]="entityTitle"
-            [searchTitle]="searchTitle"
-            [selectLimit]="selectLimit"
-            [entityDataLength]="entityDataLength"
-            (activate)="activate($event)"
-            (searchRun)="findEntity($event)"
-            (selectRun)="changeLimit($event)">
-    </entity-bar>
-    <dt-table *ngIf="entityData.length>0"
-              [page]="page"
-              [limit]="limit"
-              [headers]="headers"
-              [actions]="actions"
-              [tableData]="entityData"
-              (activate)="activate($event)">
-    </dt-table>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-text ">{{entityTitle}}{{testName}}</div>
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <a class="btn btn-default" (click)="createCase()" [title]="addTitle">Додати </a>
+                    <select class="form-control" name="count"
+                            #select
+                            [title]="selectLimit"
+                            (input)="changeLimit(select.value)">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option [value]="entityDataLength">Всі</option>
+                    </select>
+                    <button type="button" class="btn btn-secondary"
+                            (click)="goBack()">Назад
+                    </button>
+                </div>
+            </form>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <ul class="list-group entity-list">
+            <li class="list-group-item row hidden-xs">
+                <div class="col-xs-12 col-sm-1"><b>№</b></div>
+                <div class="col-xs-12 col-sm-2"><b>Завдання</b></div>
+                <div class="col-xs-12 col-sm-1"><b>Рівень</b></div>
+                <div class="col-xs-12 col-sm-1"><b>Тип</b></div>
+                <div class="col-xs-12 col-sm-4"><b>Вкладення</b></div>
+                <div class="col-xs-12 col-sm-2"></div>
+            </li>
+            <li *ngFor="let entity of entityData; let i = index" class="list-group-item row">
+                <div class="col-xs-12 col-sm-1">
+                    <span class="visible-xs-inline-block">№:</span>
+                    <span class="align-xs">{{entity.entityColumns[0]}}</span>
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <span class="visible-xs-inline-block">Завдання:</span>
+                    <span class="align-xs">{{entity.entityColumns[1]}}</span>
+                </div>
+                <div class="col-xs-12 col-sm-1">
+                    <span class="visible-xs-inline-block">Рівень:</span>
+                    <span class="align-xs">{{entity.entityColumns[2]}}</span>
+                </div>
+                <div class="col-xs-12 col-sm-1">
+                    <span class="visible-xs-inline-block">Тип:</span>
+                    <span class="align-xs">{{entity.entityColumns[3]}}</span>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <span class="visible-xs-inline-block">Вкладення:</span>
+                    <span class="align-xs">
+                        <img id="img" [src]="entity.entityColumns[4]" alt="Зображення для тесту" #imgSrc width="100%">
+                    </span>
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <a class="btn btn-default btn-sm" role="button" title="Редагувати завдання"
+                       (click)="editCase(entity)">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </a>
+                    <a class="btn btn-danger btn-sm" role="button" title="Видалити завдання"
+                       (click)="deleteCase(entity)">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
     <ngb-pagination
             *ngIf="entityDataLength"
-            [hidden]="searchCriteria.length || limit>=entityDataLength"
+            [hidden]="limit>=entityDataLength"
             [pageSize]="limit"
             [collectionSize]="entityDataLength"
             [(page)]="page"
             [rotate]="true"
             (pageChange)="pageChange($event)"
-            [maxSize]="paginationSize"
+            [maxSize]="maxSize"
             [ellipses]="true"
             [boundaryLinks]="true">
     </ngb-pagination>

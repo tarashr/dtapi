@@ -1,53 +1,58 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
 import {SubjectService}  from '../../shared/services/subject.service';
+
 import {
     configAddQuestion,
     configEditQuestion,
     successEventModal,
     headersQuestion,
     actionsQuestion,
-    modalInfoConfig} from '../../shared/constant';
+    modalInfoConfig
+} from '../../shared/constant';
 import {Question} from "../../shared/classes/question";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'question-container',
     templateUrl: 'question.component.html'
 })
 
-export class QuestionComponent implements OnInit {
+export class QuestionComponent implements OnInit, OnDestroy {
+
+    private subscription: Subscription;
 
     //common variables
-    public entity: string = "task";
+    public entity: string = "question";
     public errorMessage: string;
-    public entityTitle: string = "Завдання";
+    public entityTitle: string = "Завдання для тесту: ";
+    public testName: string;
 
     public test_id: number;
     public headers: any = headersQuestion;
     public actions: any = actionsQuestion;
     public successEventModal = successEventModal;
-    private config: any = {action: "create"};
+    public config: any = {action: "create"};
 
     //variable for pagination
     public page: number = 1;
     public limit: number = 5;
-    private entityDataLength: number;
+    public entityDataLength: number;
     public offset: number = 0;
     public maxSize: number = 5;
-    public paginationSize = this.maxSize;
-
-    // variable for search
-    public searchCriteria: string = "";
     public selectLimit: string = "Виберіть кількість завдань на сторінці";
 
     //varibles for addedit
     public configAdd = configAddQuestion;
     public configEdit = configEditQuestion;
+    public modalInfoConfig: any = modalInfoConfig;
+    public levels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+    public choise = ["Простий вибір", "Мультивибір"];
 
     // variables for common component
     public entityData: any[] = [];
@@ -58,8 +63,13 @@ export class QuestionComponent implements OnInit {
                 private subjectService: SubjectService,
                 private location: Location,
                 private modalService: NgbModal) {
+        this.subscription = route.queryParams.subscribe(
+            data => {
+                this.testName = data['name'];
+            });
     }
 
+    @ViewChild ('imgSrc') imgSrc: ElementRef;
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
             this.test_id = +params['id'];
@@ -67,9 +77,25 @@ export class QuestionComponent implements OnInit {
         });
     }
 
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+
     goBack(): void {
         this.location.back();
 
+    }
+
+    deleteQuestion(entity, id: number): void {
+        this.offset = (this.page - 1) * this.limit;
+        this.crudService
+            .delRecord(entity, id)
+            .subscribe(
+                () => {
+                    this.refreshData("delete");
+                },
+                error => this.errorMessage = <any>error
+            );
     }
 
     getCountRecordsByTest() {
@@ -90,6 +116,7 @@ export class QuestionComponent implements OnInit {
                     let tempArr: any[] = [];
                     let numberOfOrder: number;
                     if (data.length) {
+                        console.log("range" + data.length);
                         data.forEach((item, i) => {
                             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                             let question: any = {};
@@ -112,6 +139,7 @@ export class QuestionComponent implements OnInit {
     }
 
     changeLimit(limit: number): void {
+        console.log("this limit" + limit);
         this.limit = limit;
         this.offset = 0;
         this.page = 1;
@@ -119,6 +147,7 @@ export class QuestionComponent implements OnInit {
     }
 
     pageChange(num: number) {
+        console.log("page change num", num);
         if (!num) {
             this.page = 1;
             return;
@@ -127,6 +156,18 @@ export class QuestionComponent implements OnInit {
         this.offset = (this.page - 1) * this.limit;
         this.getRecordsRangeByTest();
     }
+
+    // openFile(inputImage) {
+    //     let input = inputImage.target.files;
+    //     let reader = new FileReader();
+    //     reader.onload = function(){
+    //         let dataURL = reader.result;
+    //         console.log(dataURL);
+    //         let image = <HTMLInputElement>document.getElementById('img');
+    //         image.src = dataURL;
+    //     };
+    //     reader.readAsDataURL(input.files[0]);
+    // }
 
     refreshData(action: string) {
         if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
@@ -138,19 +179,78 @@ export class QuestionComponent implements OnInit {
         this.getCountRecordsByTest();
     }
 
-    activate(data: any) {
-        console.log("!!! ", data);
-        switch (data.action) {
-            case "edit":
-                // this.editCase(data);
-                break;
-            case "delete":
-                // this.deleteCase(data);
-                break;
-            case "create":
-                // this.createCase();
-                break;
-        }
+    createCase() {
+        this.configEdit.list[0].value = "";
+        this.configAdd.select[0].selected = "";
+        this.configAdd.select[1].selected = "";
+        this.configAdd.select[0].selectItem = this.levels;
+        this.configAdd.select[1].selectItem = this.choise;
+        const modalRefAdd = this.modalService.open(ModalAddEditComponent);
+        modalRefAdd.componentInstance.config = this.configAdd;
+        modalRefAdd.result
+            .then((data: any) => {
+                let newQuestion: Question = new Question(
+                    data.list[0].value,
+                    data.select[0].selected,
+                    data.select[1].selectItem.indexOf(data.select[1].selected),
+                    data.img[0].value = this.imgSrc.nativeElement.src,
+                    this.test_id
+                );
+                this.crudService.insertData(this.entity, newQuestion)
+                    .subscribe(() => {
+                        this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
+                        this.successEventModal();
+                        this.configAdd.list.forEach((item)=> {
+                            item.value = ""
+                        });
+                        this.refreshData(data.action);
+                    });
+            }, ()=> {
+                return
+            });
+    };
+
+    editCase(data: any) {
+        this.configEdit.list[0].value = data.entityColumns[1];
+        this.configEdit.id = data.entity_id;
+        this.configEdit.select[0].selected = data.entityColumns[2];
+        this.configEdit.select[1].selected = data.entityColumns[3];
+        this.configEdit.select[0].selectItem = this.levels;
+        this.configAdd.select[1].selectItem = this.choise;
+        const modalRefEdit = this.modalService.open(ModalAddEditComponent);
+        modalRefEdit.componentInstance.config = this.configEdit;
+        modalRefEdit.result
+            .then((data: any) => {
+                let editedQuestion: Question = new Question(
+                    data.list[0].value,
+                    data.select[0].selected,
+                    data.select[1].selectItem.indexOf(data.select[1].selected),
+                    data.img[0].value,
+                    this.test_id
+                );
+                this.crudService.updateData(this.entity, data.id, editedQuestion)
+                    .subscribe(()=> {
+                        this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
+                        this.successEventModal();
+                        this.refreshData(data.action);
+                    });
+            }, ()=> {
+                return
+            });
+    }
+
+    deleteCase(data) {
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.action = "confirm";
+        this.modalInfoConfig.title = "Видалення";
+        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
+        modalRefDel.componentInstance.config = this.modalInfoConfig;
+        modalRefDel.result
+            .then(() => {
+                this.deleteQuestion(this.entity, data.entity_id);
+            }, ()=> {
+                return
+            });
     }
 
 }

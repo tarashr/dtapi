@@ -23,19 +23,19 @@ export const actionsTimeTable = [
 
 // Constants for add-edit-modal component
 export const configAddTimeTable = {
-    title: "Додати новий розклад проведення тестування",
+    title: "Додати нову подію у розклад",
     list: [
-        {name: "Дата", value: "", title: "date", type: "data"},
+        {name: "Дата", value: "", title: "date", type: "data", placeholder: "Встановіть дату у форматі РРРР-ММ-ДД"},
     ],
     action: "create",
-    labelBtn: "Зареєструвати",
+    labelBtn: "Додати",
     select: [
         {selectName: "Групи", selectItem: [], selected: ""}
     ]
 };
 
 export const configEditTimeTable = {
-    title: "Редагувати розклад проведення тестування",
+    title: "Додати подію",
     list: [
         {name: "Дата", value: "", title: "date", type: "date"},
     ],

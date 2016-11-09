@@ -1,7 +1,7 @@
 <div class="entity-container">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
-            <div class="navbar-text">{{pageTitle}}</div>
+            <div class="navbar-text">{{pageTitle}}{{testName}}</div>
             <form class="navbar-form navbar-right">
                 <div class="form-group">
                     <a class="btn btn-default" (click)="createCase()" [title]="addTitle">Додати </a>
@@ -20,6 +20,8 @@
               [tableData]="entityData"
               (activate)="activate($event)">
     </dt-table>
+    Загальна кількість завдань в тесті: {{tasksTest}} <br>
+    Необхідно додати: {{restTasks}}
     <div *ngIf="!entityData.length" class="alert alert-info" role="alert">
         Для вибраного тесту немає детальнішого опису
     </div>

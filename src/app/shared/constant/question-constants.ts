@@ -3,7 +3,7 @@ export const headersQuestion = [
     {name: "№", className: "col-xs-12 col-sm-1"},
     {name: "Завдання", className: "col-xs-12 col-sm-3"},
     {name: "Рівень", className: "col-xs-12 col-sm-1"},
-    {name: "Тип", className: "col-xs-12 col-sm-2"},
+    {name: "Тип", className: "col-xs-12 col-sm-1"},
     {name: "Вкладення", className: "col-xs-12 col-sm-3"},
     {name: "", className: "col-xs-12 col-sm-2"}
 ];
@@ -27,23 +27,34 @@ export const actionsQuestion = [
 export const configAddQuestion = {
     title: "Додати нове завдання",
     list: [
-        {name: "Завдання", value: "", title: "task", type: "text"},
-        {name: "Рівень", value: "", title: "level", type: "number"},
-        {name: "Тип", value: "", title: "type", type: ""},
-        {name: "Вкладення", value: "", title: "level", type: ""}
+        {name: "Завдання", value: "", title: "task", type: "text", placeholder: "Опис завдання для тесту"},
     ],
     action: "create",
-    labelBtn: "Додати"
+    labelBtn: "Додати",
+    img: [
+        {imgName: "Вкладення", value: "", title: "attachment", type: "file"}
+    ],
+    select: [
+        {selectName: "Рівень", selectItem: [], selected: ""},
+        {selectName: "Тип", selectItem: [], selected: ""}
+
+    ]
 };
 
 export const configEditQuestion = {
     title: "Редагувати завдання",
     list: [
-        {name: "Завдання", value: "", title: "task", type: "text"},
-        {name: "Рівень", value: "", title: "level", type: "number"},
-        {name: "Тип", value: "", title: "type", type: ""},
-        {name: "Вкладення", value: "", title: "level", type: ""}
+        {name: "Завдання", value: "", title: "task", type: "text"}
     ],
     action: "edit",
-    labelBtn: "Редагувати"
+    labelBtn: "Редагувати",
+    id:"",
+    img: [
+        {imgName: "Вкладення", value: "", title: "attachment", type: "file"}
+    ],
+    select: [
+        {selectName: "Рівень", selectItem: [], selected: ""},
+        {selectName: "Тип", selectItem: ["Мультивибір", "Простий вибір"], selected: ""}
+
+    ]
 };
