@@ -26,22 +26,26 @@ export const actionsTestDetail = [
 export const configAddTestDetail = {
     title: "Додати новий параметр тесту",
     list: [
-        {name: "Рівень", value: "", title: "level", type: "number"},
-        {name: "Кількість завдань", value: "", title: "tasks", type: "number"},
-        {name: "Кількість балів", value: "", title: "rate", type: "number"}
+        {name: "Кількість завдань", value: "", title: "tasks", type: "number", placeholder: "Вкажіть кількість завдань"},
+        {name: "Кількість балів", value: "", title: "rate", type: "number", placeholder: "Вкажіть кількість балів"}
     ],
     action: "create",
-    labelBtn: "Зареєструвати"
+    labelBtn: "Додати",
+    select: [
+        {selectName: "Рівень", selectItem: [], selected: ""}
+    ]
 };
 
 export const configEditTestDetail = {
     title: "Редагувати параметр тесту",
     list: [
-        {name: "Рівень", value: "", title: "level", type: "number"},
         {name: "Кількість завдань", value: "", title: "tasks", type: "number"},
         {name: "Кількість балів", value: "", title: "rate", type: "number"}
     ],
     action: "edit",
     labelBtn: "Редагувати",
-    id: ""
+    id: "",
+    select: [
+        {selectName: "Рівень", selectItem: [], selected: ""}
+    ]
 };

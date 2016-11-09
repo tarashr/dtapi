@@ -71,7 +71,7 @@ export class StudentComponent implements OnInit {
 
     ngOnInit() {
         this.getCountRecords();
-        this.getRecordsRange();
+        // this.getRecordsRange();
     }
 
     private createTableConfig = (data: any) => {
@@ -90,7 +90,7 @@ export class StudentComponent implements OnInit {
     getRecordsRange() {
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
-                data => {
+                    data => {
                     this.entityData2 =  data;
                     this.getGroupName();
                 },

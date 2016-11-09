@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
@@ -15,6 +15,7 @@ import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EntityManagerBody} from "../../shared/classes/entity-manager-body";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'timetable-container',
@@ -22,6 +23,8 @@ import {EntityManagerBody} from "../../shared/classes/entity-manager-body";
 })
 
 export class TimeTableComponent implements OnInit {
+
+    private subscription: Subscription;
 
     //common variables
     public entity: string = "timeTable"
@@ -56,7 +59,7 @@ export class TimeTableComponent implements OnInit {
                 private subjectService: SubjectService,
                 private location: Location,
                 private modalService: NgbModal) {
-        route.queryParams.subscribe(
+        this.subscription = route.queryParams.subscribe(
             data => {
                 this.subjectName = data['token'];
                 console.log(this.subjectName);
@@ -73,6 +76,10 @@ export class TimeTableComponent implements OnInit {
 
     goBack(): void {
         this.location.back();
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 
     getGroups() {
@@ -168,7 +175,6 @@ export class TimeTableComponent implements OnInit {
             }
         });
     }
-
 
     createCase() {
         this.configAdd.list.forEach((item)=> {

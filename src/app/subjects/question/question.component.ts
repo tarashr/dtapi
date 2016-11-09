@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
 import {SubjectService}  from '../../shared/services/subject.service';
+
 import {
     configAddQuestion,
     configEditQuestion,
@@ -15,13 +16,16 @@ import {Question} from "../../shared/classes/question";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'question-container',
     templateUrl: 'question.component.html'
 })
 
-export class QuestionComponent implements OnInit {
+export class QuestionComponent implements OnInit, OnDestroy {
+
+    private subscription: Subscription;
 
     //common variables
     public entity: string = "question";
@@ -33,24 +37,22 @@ export class QuestionComponent implements OnInit {
     public headers: any = headersQuestion;
     public actions: any = actionsQuestion;
     public successEventModal = successEventModal;
-    private config: any = {action: "create"};
+    public config: any = {action: "create"};
 
     //variable for pagination
     public page: number = 1;
     public limit: number = 5;
-    private entityDataLength: number;
+    public entityDataLength: number;
     public offset: number = 0;
     public maxSize: number = 5;
-    public paginationSize = this.maxSize;
-
-    // variable for search
-    public searchCriteria: string = "";
     public selectLimit: string = "Виберіть кількість завдань на сторінці";
 
     //varibles for addedit
     public configAdd = configAddQuestion;
     public configEdit = configEditQuestion;
     public modalInfoConfig: any = modalInfoConfig;
+    public levels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+    public choise = ["Простий вибір", "Мультивибір"];
 
     // variables for common component
     public entityData: any[] = [];
@@ -61,18 +63,22 @@ export class QuestionComponent implements OnInit {
                 private subjectService: SubjectService,
                 private location: Location,
                 private modalService: NgbModal) {
-        route.queryParams.subscribe(
+        this.subscription = route.queryParams.subscribe(
             data => {
                 this.testName = data['name'];
-                console.log(this.testName);
             });
     }
 
+    @ViewChild ('imgSrc') imgSrc: ElementRef;
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
             this.test_id = +params['id'];
             this.getCountRecordsByTest();
         });
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 
     goBack(): void {
@@ -110,6 +116,7 @@ export class QuestionComponent implements OnInit {
                     let tempArr: any[] = [];
                     let numberOfOrder: number;
                     if (data.length) {
+                        console.log("range" + data.length);
                         data.forEach((item, i) => {
                             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                             let question: any = {};
@@ -132,6 +139,7 @@ export class QuestionComponent implements OnInit {
     }
 
     changeLimit(limit: number): void {
+        console.log("this limit" + limit);
         this.limit = limit;
         this.offset = 0;
         this.page = 1;
@@ -139,6 +147,7 @@ export class QuestionComponent implements OnInit {
     }
 
     pageChange(num: number) {
+        console.log("page change num", num);
         if (!num) {
             this.page = 1;
             return;
@@ -148,16 +157,17 @@ export class QuestionComponent implements OnInit {
         this.getRecordsRangeByTest();
     }
 
-    openFile($event) {
-        let input = $event.target;
-        var reader = new FileReader();
-        reader.onload = function(){
-            var dataURL = reader.result;
-            var img = document.getElementById('img');
-            // img.src = dataURL;
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
+    // openFile(inputImage) {
+    //     let input = inputImage.target.files;
+    //     let reader = new FileReader();
+    //     reader.onload = function(){
+    //         let dataURL = reader.result;
+    //         console.log(dataURL);
+    //         let image = <HTMLInputElement>document.getElementById('img');
+    //         image.src = dataURL;
+    //     };
+    //     reader.readAsDataURL(input.files[0]);
+    // }
 
     refreshData(action: string) {
         if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
@@ -166,25 +176,28 @@ export class QuestionComponent implements OnInit {
         } else if (this.entityData.length > 1) {
             this.offset = (this.page - 1) * this.limit;
         }
-        this.getRecordsRangeByTest();
+        this.getCountRecordsByTest();
     }
 
     createCase() {
-        this.configAdd.list.forEach((item) => {
-            item.value = "";
-        });
+        this.configEdit.list[0].value = "";
+        this.configAdd.select[0].selected = "";
+        this.configAdd.select[1].selected = "";
+        this.configAdd.select[0].selectItem = this.levels;
+        this.configAdd.select[1].selectItem = this.choise;
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
                 let newQuestion: Question = new Question(
                     data.list[0].value,
-                    data.list[1].value,
-                    data.list[2].value,
-                    data.list[3].value
+                    data.select[0].selected,
+                    data.select[1].selectItem.indexOf(data.select[1].selected),
+                    data.img[0].value = this.imgSrc.nativeElement.src,
+                    this.test_id
                 );
                 this.crudService.insertData(this.entity, newQuestion)
-                    .subscribe(response=> {
+                    .subscribe(() => {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
                         this.configAdd.list.forEach((item)=> {
@@ -198,19 +211,22 @@ export class QuestionComponent implements OnInit {
     };
 
     editCase(data: any) {
-        this.configEdit.list.forEach((item, i) => {
-            item.value = data.entityColumns[i + 1]
-        });
+        this.configEdit.list[0].value = data.entityColumns[1];
         this.configEdit.id = data.entity_id;
+        this.configEdit.select[0].selected = data.entityColumns[2];
+        this.configEdit.select[1].selected = data.entityColumns[3];
+        this.configEdit.select[0].selectItem = this.levels;
+        this.configAdd.select[1].selectItem = this.choise;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
                 let editedQuestion: Question = new Question(
                     data.list[0].value,
-                    data.list[1].value,
-                    data.list[2].value,
-                    data.list[3].value
+                    data.select[0].selected,
+                    data.select[1].selectItem.indexOf(data.select[1].selected),
+                    data.img[0].value,
+                    this.test_id
                 );
                 this.crudService.updateData(this.entity, data.id, editedQuestion)
                     .subscribe(()=> {
