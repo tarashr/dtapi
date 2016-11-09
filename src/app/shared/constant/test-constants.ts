@@ -50,22 +50,22 @@ export const configEditTest = {
     labelBtn: "Редагувати",
     id: "",
     select: [
-        {selectName: "Доступність", selectItem: ["Не доступно", "Доступно"], selected: ""}
+        {selectName: "Статус", selectItem: ["Не доступно", "Доступно"], selected: ""}
     ]
 };
 
 export const configAddTest = {
     title: "Додати тест",
     list: [
-        {name: "Назва тесту", value: "", title: "name", type: "text"},
-        {name: "Кількість завдань", value: "", title: "tasks", type: "number"},
-        {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text"},
-        {name: "Кількість спроб", value: "", title: "attempts", type: "number"}
+        {name: "Назва тесту", value: "", title: "name", type: "text", placeholder: "Вкажіть назву тесту"},
+        {name: "Кількість завдань", value: "", title: "tasks", type: "number", placeholder: "Задайте кількість завдань"},
+        {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text", placeholder: "Встановіть час, хв"},
+        {name: "Кількість спроб", value: "", title: "attempts", type: "number", placeholder: "Встановіть кількість спроб"}
     ],
     action: "create",
     labelBtn: "Додати",
     select: [
-        {selectName: "Доступність", selectItem: ["Не доступно", "Доступно"], selected: ""}
+        {selectName: "Статус", selectItem: ["Не доступно", "Доступно"], selected: ""}
     ]
 };
 

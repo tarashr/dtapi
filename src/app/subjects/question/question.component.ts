@@ -50,6 +50,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
     public configAdd = configAddQuestion;
     public configEdit = configEditQuestion;
     public modalInfoConfig: any = modalInfoConfig;
+    public levels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+    public choise = ["Простий вибір", "Мультивибір"];
 
     // variables for common component
     public entityData: any[] = [];
@@ -153,11 +155,13 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.getRecordsRangeByTest();
     }
 
-    openFile($event) {
-        let input = $event.target;
+    openFile(inputImage) {
+        let input = inputImage.target.files;
+        console.log("input="+input);
         var reader = new FileReader();
         reader.onload = function(){
             var dataURL = reader.result;
+            console.log("dataUrl="+dataURL);
             var image = <HTMLImageElement>document.getElementById('img');
             image.src = dataURL;
         };
@@ -175,18 +179,20 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
 
     createCase() {
-        this.configAdd.list.forEach((item) => {
-            item.value = "";
-        });
+        this.configEdit.list[0].value = "";
+        this.configAdd.select[0].selected = "";
+        this.configAdd.select[1].selected = "";
+        this.configAdd.select[0].selectItem = this.levels;
+        this.configAdd.select[1].selectItem = this.choise;
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
                 let newQuestion: Question = new Question(
                     data.list[0].value,
-                    data.list[1].value,
-                    data.list[2].value,
-                    data.list[3].value,
+                    data.select[0].selected,
+                    data.select[1].selectItem.indexOf(data.select[1].selected),
+                    data.img[0].value,
                     this.test_id
                 );
                 this.crudService.insertData(this.entity, newQuestion)
@@ -204,19 +210,22 @@ export class QuestionComponent implements OnInit, OnDestroy {
     };
 
     editCase(data: any) {
-        this.configEdit.list.forEach((item, i) => {
-            item.value = data.entityColumns[i + 1]
-        });
+        this.configEdit.list[0].value = data.entityColumns[1];
         this.configEdit.id = data.entity_id;
+        this.configEdit.select[0].selected = data.entityColumns[2];
+        this.configEdit.select[1].selected = data.entityColumns[3];
+        this.configEdit.select[0].selectItem = this.levels;
+        this.configAdd.select[1].selectItem = this.choise;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
                 let editedQuestion: Question = new Question(
                     data.list[0].value,
-                    data.list[1].value,
-                    data.list[2].value,
-                    data.list[3].value
+                    data.select[0].selected,
+                    data.select[1].selectItem.indexOf(data.select[1].selected),
+                    data.img[0].value,
+                    this.test_id
                 );
                 this.crudService.updateData(this.entity, data.id, editedQuestion)
                     .subscribe(()=> {

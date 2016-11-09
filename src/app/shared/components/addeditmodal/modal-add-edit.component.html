@@ -7,7 +7,7 @@
 <div class="modal-body modal-body-add-edit">
     <div class="input-group input-group-add-edit" *ngFor="let item of config.list">
         <span class="input-group-addon modal-span">{{item.name}}:</span>
-        <input [type]="item.type" class="form-control modalInput"
+        <input [type]="item.type" class="form-control modalInput" [placeholder]="item.placeholder||''"
                [(ngModel)]="item.value">
     </div>
     <div *ngIf="config.select">
@@ -23,7 +23,7 @@
         <div class="input-group input-group-add-edit" *ngFor="let item of config.img">
             <span class="input-group-addon modal-span">{{item.imgName}}:</span>
             <input [type]="item.type" class="form-control modalInput"
-                   (change)="openFile($event)" id="img" accept='image/*'>
+                   id="img" accept='image/*' (input)="openFile($event)">
         </div>
     </div>
 </div>

@@ -1,15 +1,15 @@
 export class Question {
-    question_id?: number;
-    test_id?: number;
+    question_id: number;
+    test_id: number;
     question_text?: string;
-    level?: number;
+    level: number;
     type: any;
     attachment: any;
 
     constructor(question_text: string,
                 level: number,
                 type: number,
-                attachment: number,
+                attachment: any,
                 test_id?: number) {
         this.question_text = question_text;
         this.level = level;
