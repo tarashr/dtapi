@@ -64,7 +64,7 @@ export class TimeTableComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
-            this.subject_id = +params["id"]; // (+) converts string "id" to a number
+            this.subject_id = +params["id"];
         });
         this.getGroups();
     }

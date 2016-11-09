@@ -68,9 +68,9 @@ export class GroupTimetableComponent implements OnInit {
         this.groupService.getTimeTablesForGroup(this.groupId)
             .subscribe(
                 data => {
-                    for(let i in data) {
-                        for(let k in this.subjects) {
-                            if (data[i].subject_id == this.subjects[k].subject_id) {
+                    for (let i in data) {
+                        for (let k in this.subjects) {
+                            if (data[i].subject_id === this.subjects[k].subject_id) {
                                 data[i].subject_name = this.subjects[k].subject_name;
                             }
                         }
@@ -88,8 +88,8 @@ export class GroupTimetableComponent implements OnInit {
         this.crudService.getRecords(this.subjectEntity)
             .subscribe(
                 data => this.subjects = data,
-                error=>console.log("error: ", error)
-            )
+                error => console.log("error: ", error)
+            );
     }
 
     deleteGroupTimeTable(entity: string, id: number): void {
@@ -99,7 +99,7 @@ export class GroupTimetableComponent implements OnInit {
                 () => {
                     this.getGroupTimeTables();
                 },
-                error=>console.log("error: ", error)
+                error => console.log("error: ", error)
             );
     }
 
