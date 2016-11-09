@@ -7,7 +7,7 @@
     <div class="student-datas row">
         <div *ngFor="let stud of student" class="">
             <div class="student-foto col-xs-12 col-sm-3 col-md-3">
-                <img class="img-responsive position-left profile-foto" [src]="stud.photo" alt="Фото студента"
+                <img class="img-responsive img-rounded profile-foto" [src]="stud.photo" alt="Фото студента"
                      id="output" #newFotoSrc />
                 <input class="input-student-data" type="file" (change)="changeFile($event)" [disabled]="statusView">
             </div>
@@ -80,6 +80,8 @@
             <button class="button-refresh-datas" type="button" (click)="showPassword()">{{passwordButtonName}}</button>
         </div>
     </div>
+
+    <template ngbModalContainer></template>
 
 <!--
 

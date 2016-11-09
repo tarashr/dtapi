@@ -50,14 +50,14 @@ label {
 }
 
 .input-student-data {
-    margin: 10px 0 10px 0;
+    margin: 10px 20px 10px 0;
 }
 
-.button-save-student-profile{
+/*.button-save-student-profile{
     margin: 0 auto 0 auto;
     text-align: center;
     alignment: center;
-}
+}*/
 
 .button-create-refresh {
     margin: auto;
@@ -83,9 +83,13 @@ div.student-datas  input{
     width: 50%;
 }
 
-.profile-foto{
-    width: 100%;
-    border-radius: 15%;
-    border: 1px solid #e7e7e7;
+.password-eye{
+    display: inline-block;
+    cursor: pointer;
+    width: auto;
+}
+
+.password-eye-input{
+    margin: 10px 0 10px 0;
 }
 
