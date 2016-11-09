@@ -23,7 +23,7 @@
         <div class="input-group input-group-add-edit" *ngFor="let item of config.img">
             <span class="input-group-addon modal-span">{{item.imgName}}:</span>
             <input [type]="item.type" class="form-control modalInput"
-                   id="img" accept='image/*' (input)="openFile($event)">
+                    accept='image/*' >
         </div>
     </div>
 </div>

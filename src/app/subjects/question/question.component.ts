@@ -1,8 +1,9 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {CRUDService}  from '../../shared/services/crud.service';
 import {SubjectService}  from '../../shared/services/subject.service';
+
 import {
     configAddQuestion,
     configEditQuestion,
@@ -68,6 +69,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
             });
     }
 
+    @ViewChild ('imgSrc') imgSrc: ElementRef;
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
             this.test_id = +params['id'];
@@ -155,18 +157,17 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.getRecordsRangeByTest();
     }
 
-    openFile(inputImage) {
-        let input = inputImage.target.files;
-        console.log("input="+input);
-        var reader = new FileReader();
-        reader.onload = function(){
-            var dataURL = reader.result;
-            console.log("dataUrl="+dataURL);
-            var image = <HTMLImageElement>document.getElementById('img');
-            image.src = dataURL;
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
+    // openFile(inputImage) {
+    //     let input = inputImage.target.files;
+    //     let reader = new FileReader();
+    //     reader.onload = function(){
+    //         let dataURL = reader.result;
+    //         console.log(dataURL);
+    //         let image = <HTMLInputElement>document.getElementById('img');
+    //         image.src = dataURL;
+    //     };
+    //     reader.readAsDataURL(input.files[0]);
+    // }
 
     refreshData(action: string) {
         if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
@@ -192,7 +193,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     data.list[0].value,
                     data.select[0].selected,
                     data.select[1].selectItem.indexOf(data.select[1].selected),
-                    data.img[0].value,
+                    data.img[0].value = this.imgSrc.nativeElement.src,
                     this.test_id
                 );
                 this.crudService.insertData(this.entity, newQuestion)
