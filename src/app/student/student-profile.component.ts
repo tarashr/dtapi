@@ -7,10 +7,12 @@ import {Student} from "../shared/classes/student";
 import {CRUDService} from "../shared/services/crud.service";
 import {EntityManagerBody} from "../shared/classes/entity-manager-body";
 import {Observable} from "rxjs/Rx";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
 
 import {
     modalInfoConfig,
-    delRecord,
+    // delRecord,
     successEventModal
 } from "../shared/constant";
 
@@ -39,13 +41,18 @@ export class StudentProfileComponent implements OnInit {
     public statusView: boolean = true;
     private studentDataPart1: Array <any>;
     private studentDataPart2: Array <any>;
+    public modalInfoConfig: any = modalInfoConfig;
+    // public delRecord = delRecord;
+    public successEventModal = successEventModal;
+
+
 
     @ViewChild("newFotoSrc") newFotoSrc: ElementRef;
-    // @ViewChild("curFacultProfile") curFacultProfile: ElementRef;
 
     constructor(private route: ActivatedRoute,
                 private _commonService: CRUDService,
-                private location: Location) {
+                private location: Location,
+                private modalService: NgbModal) {
     }
 
     ngOnInit() {
@@ -74,7 +81,12 @@ export class StudentProfileComponent implements OnInit {
         this.newStudent[0].photo = this.newFotoSrc.nativeElement.src;
         this._commonService.updateData(this.entity, this.student[0].user_id, this.newStudent[0])
             .subscribe(data => {
-                    console.log("data : ", data);
+                if (data.response === "ok") {
+                    this.modalInfoConfig.infoString = `Дані студента ${this.newStudent[0].student_surname} ${this.newStudent[0].student_name} ${this.newStudent[0].student_fname} обновленно`;
+                    this.successEventModal(); }
+                    if (data.response === "error") {
+                        this.modalInfoConfig.infoString = `Помилка обновлення. Перевірте дані`;
+                        this.successEventModal(); }
                 },
                 error => console.log("error: ", error)
             );
@@ -90,14 +102,35 @@ export class StudentProfileComponent implements OnInit {
                 this.student = this.studentDataPart1;
                 this.student[0].email = this.studentDataPart2[0].email;
                 this.student[0].username = this.studentDataPart2[0].username;
-                this.getGroupFacultyNameById(this.student[0].group_id);
-
+                let studGroupId: Array <number> = [];
+                studGroupId.push(this.student[0].group_id);
+                let dataEnt = new EntityManagerBody(this.groupEntity, studGroupId);
+                this._commonService.getEntityValues(dataEnt)
+                    .subscribe(data => {
+                        this.groups = data;
+                        this.student[0].group_name = this.groups[0].group_name;
+                        let studFacultyId: Array <number> = [];
+                        studFacultyId.push(this.groups[0].group_id);
+                        let dataEnt = new EntityManagerBody(this.facultyEntity, studFacultyId);
+                        this._commonService.getEntityValues(dataEnt)
+                            .subscribe(data => {
+                                    this.facultys = data;
+                                    this.student[0].faculty_name = this.facultys[0].faculty_name;
+                                    console.log(" this.student[0].faculty_name :", this.student[0].faculty_name);
+                                },
+                                error => console.log("error: ", error)
+                            );
+                        },
+                        error => console.log("error: ", error)
+                    );
         },
-            err => console.error(err)
+            /*this.getGroupFacultyNameById(this.student[0].group_id);*/
+
+            error => console.log("error: ", error)
         );
     }
 
-    getGroupFacultyNameById(id: number) {
+    /*getGroupFacultyNameById(id: number) {
         let studGroupId: Array <number> = [];
         studGroupId.push(id);
         let dataEnt = new EntityManagerBody(this.groupEntity, studGroupId);
@@ -112,13 +145,17 @@ export class StudentProfileComponent implements OnInit {
                         .subscribe(data => {
                             this.facultys = data;
                                 this.curFaculty = this.facultys[0].faculty_name;
+                                console.log(" this.facultys :", this.facultys[0].faculty_name);
+                                console.log(" this.curFaculty :", this.curFaculty);
                             },
                             error => console.log("error: ", error)
                         );
+
                 },
                 error => console.log("error: ", error)
             );
-    }
+
+    }*/
 
     /*getGroupName() {
         let studGroupId: Array <number> = [];
@@ -142,8 +179,23 @@ export class StudentProfileComponent implements OnInit {
             );
     }*/
 
-   changeFile(event) {
+   /*changeFile(event) {
         let input = event.target;
+        let reader = new FileReader();
+        reader.onload = function () {
+            let mysrc = <HTMLInputElement>document.getElementById("output");
+            mysrc.src = reader.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }*/
+
+    changeFile(event) {
+        let input = event.target;
+        if (input.files[0].size > 5000000) {
+            this.modalInfoConfig.infoString = `Розмір фотографії повинен бути не більше 5Мб`;
+            console.log(" this.modalInfoConfig.infoString : ",  this.modalInfoConfig.infoString);
+            this.successEventModal();
+            return; }
         let reader = new FileReader();
         reader.onload = function () {
             let mysrc = <HTMLInputElement>document.getElementById("output");
@@ -174,4 +226,38 @@ export class StudentProfileComponent implements OnInit {
         }
         this.statusView = !this.statusView;
     }
+
+
+
+
+    deleteStudent() {
+    let delRecord = function (entity: string, id: number) {
+            // this.offset = (this.page - 1) * this.limit;
+            this.crudService.delRecord(entity, id)
+                .subscribe(() => {
+                    this.modalInfoConfig.infoString = `Видалення пройшло успішно.`;
+                    this.modalInfoConfig.action = "info";
+                    const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
+                    modalRef.componentInstance.config = this.modalInfoConfig;
+                    // this.refreshData("delete");
+                });
+        };
+
+
+        let data = this.student[0];
+        console.log("data : ", data);
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.student_surname} ${data.student_name} ${data.student_fname}?`;
+        this.modalInfoConfig.action = "confirm";
+        this.modalInfoConfig.title = "Видалення";
+        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
+        modalRefDel.componentInstance.config = this.modalInfoConfig;
+        modalRefDel.result
+            .then(() => {
+                delRecord(this.entity, data.user_id);
+            }, () => {
+                return;
+            });
+        // this.goBack();
+    }
+
 }

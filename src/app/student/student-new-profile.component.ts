@@ -133,7 +133,7 @@ export class StudentNewProfileComponent implements OnInit {
     openFile(event) {
         let input = event.target;
         if (input.files[0].size > 5000000) {
-            this.modalInfoConfig.infoString = "Розмір фотографії повинен бути не більше 5Мб";
+            this.modalInfoConfig.infoString = `Розмір фотографії повинен бути не більше 5Мб`;
             this.successEventModal();
             return; }
         let reader = new FileReader();

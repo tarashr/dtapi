@@ -25,7 +25,6 @@
                 <div><label for="faculty">Факультет:</label>
                     <select id="faculty" class="input-student-data select-group"  [(ngModel)]= curFaculty
                             required (click)="getGroupName(curFaculty)">
-                        <!--<option class="input-student-data" value="" disabled></option>-->
                         <option *ngFor="let item of facultys" class="input-student-data" [value]="item.faculty_id">
                             {{item.faculty_name}}
                         </option>
@@ -49,7 +48,7 @@
                                                                  [type]="passwordStatusText"
                                                                  [(ngModel)]="stud.plain_password"
                                                                  required>
-                    <span class="glyphicon glyphicon-eye-open password-eye" (click)="showPassword()"></span>
+                    <span *ngIf="stud.plain_password" class="glyphicon glyphicon-eye-open password-eye" (mouseover)="showPassword()" (mouseout)="showPassword()"></span>
                 </div>
                 <div><label for="gradebook_id">№ залікової книжки:</label><input id="gradebook_id"
                                                                                  class="input-student-data"

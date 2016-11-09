@@ -79,9 +79,9 @@ export class StudentComponent implements OnInit {
     // public errorMessage: string;
 
     ngOnInit() {
-        if(this.groupId){
+        if (this.groupId) {
             this.entityTitle = `Студенти групи: ${this.groupName}`;
-            this.getStudentsByGroup()
+            this.getStudentsByGroup();
         } else {
             this.getCountRecords();
         }
