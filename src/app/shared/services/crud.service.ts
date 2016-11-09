@@ -103,4 +103,10 @@ export class CRUDService {
             .catch(this.handleError);
     }
 
+    getStudentsByGroup(group_id: number): Observable<any> {
+        return this._http
+            .get(`${this.hostUrlBase}/student/getStudentsByGroup/${group_id}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
 }

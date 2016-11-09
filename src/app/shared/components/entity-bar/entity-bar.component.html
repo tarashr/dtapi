@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default entity-bar">
+<nav *ngIf="!isSelectedBy" class="navbar navbar-default entity-bar">
     <div class="container-fluid">
         <div class="navbar-text">{{entityTitle}}</div>
         <form class="navbar-form navbar-left">
@@ -43,6 +43,14 @@
                     <option [value]="entityDataLength">Всі</option>
                 </select>
             </div>
+        </form>
+    </div>
+</nav>
+<nav *ngIf="isSelectedBy" class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-text">{{entityTitle}}</div>
+        <form class="navbar-form navbar-right">
+            <button type="button" class="btn btn-secondary" (click)="goBack()">Назад</button>
         </form>
     </div>
 </nav>
