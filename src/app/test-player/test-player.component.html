@@ -1,28 +1,7 @@
-<div class="container">
-    <div class="row">
-        <div class="col-xs-6 info">
-            Залишилось запитань: 6 з 10 (60%)
-            <div class="progress hidden-xs">
-                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                     style="width: 60%;">
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-6 info">
-            Залишилось часу: <b class="time">00:05:30</b> (45%)
-            <div class="progress hidden-xs">
-                <div class="progress-bar progress-bar-warning " role="progressbar" aria-valuenow="45" aria-valuemin="0"
-                     aria-valuemax="100" style="width: 45%;">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="container" *ngIf="show">
     <div class="row">
         <ng-container *ngFor="let question of questions; let i=index">
-            <div class="col-xs-12 col-md-10 info" *ngIf="(i+1)===activeQuestion">
+            <div class="col-xs-12 col-md-10 info" *ngIf="i===activeQuestion">
                 <div>
                     <h4 class="text-right">Запитання №{{i+1}}</h4>
                     <div class="question-img">
@@ -30,10 +9,12 @@
                              alt="Картинка для питання">
                     </div>
                     <h3 class="question-text">{{question.question_text}}</h3>
-                    <ul>
+                    <ul class="answers">
                         <li *ngFor="let answer of question.answers">
                             <label (click)="toggleAnswer($event, answer.answer_id, i)">
-                                <input type="checkbox" name="answer" [value]="answer.answer_id">
+                                <input type="checkbox" name="answer"
+                                       [value]="answer.answer_id"
+                                       [checked]="question.chosenAnswer[answer.answer_id]">
                                 <img *ngIf="answer.attachment.length>0"
                                      [src]="answer.attachment"
                                      alt="картинка для відповіді">{{answer.answer_text}}
@@ -56,15 +37,9 @@
             <button *ngFor="let button of navButtons; let j=index"
                     type="button"
                     [ngClass]="button.className"
-                    (click)="changeActiveQuestion(j+1)">{{button.name}}
+                    (click)="changeActiveQuestion(j)">{{button.name}}
             </button>
         </div>
     </div>
 </div>
-<!--<div class="container">-->
-<!--<div class="row">-->
-<!--<div class="col-xs-12 info text-center">-->
-<!--<h2>Тихо! Іде тестування...</h2>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
+<template ngbModalContainer></template>

@@ -4,6 +4,17 @@
 
 .info {
     padding-bottom: 15px;
+    background-color:#f9f9f9;
+    border: 5px solid #fff;
+}
+
+.nom-qua{
+    margin-top:2px;
+    margin-bottom:2px;
+}
+
+.answers li {
+    list-style: none;
 }
 
 .question-img {
