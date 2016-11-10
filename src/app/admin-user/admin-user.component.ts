@@ -120,6 +120,7 @@ export class AdminUserComponent implements OnInit {
     };
 
     editCase(data: any) {
+        let editData = data;
         this.configEdit.list.forEach((item, i) => {
             item.value = data.entityColumns[i + 1];
         });
@@ -140,6 +141,7 @@ export class AdminUserComponent implements OnInit {
                     data.list[2].value = "";
                     data.list[3].value = "";
                     this.modalInfoConfig.infoString = `Введені паролі не співпадають, спробуйте ще раз`;
+                    this.editCase(editData);
                     this.successEventModal();
                 }
             }, () => {

@@ -287,7 +287,7 @@ export class GroupComponent implements OnInit {
                 break;
             case "viewStudents":
                 this._router.navigate(
-                    ["/admin/student"],
+                    ["/admin/student/byGroup"],
                     {queryParams: {groupId: data.entity_id, groupName: data.entityColumns[1]}}
                 );
                 break;
