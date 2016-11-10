@@ -31,13 +31,19 @@ import {EntityBarComponent}      from "./app/shared/components/entity-bar/entity
 import {TableComponent}          from "./app/shared/components/table/table.component";
 import {InfoModalComponent}      from "./app/shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent}   from "./app/shared/components/addeditmodal/modal-add-edit.component";
-import {TestDetailComponent}   from "./app/subjects/test-detail/test-detail.component";
-import {QuestionComponent}     from "./app/subjects/question/question.component";
+import { TestDetailComponent }   from "./app/subjects/test-detail/test-detail.component";
+import { QuestionComponent }     from "./app/subjects/question/question.component";
+import { AnswerComponent } from "./app/subjects/answer/answer.component";
+
 import {TestsTabsetComponent}    from "./app/studentpart/teststabset/tests-tabset.component";
 import {TestPlayerComponent}     from "./app/test-player/test-player.component";
 import {UserProfileComponent}    from "./app/studentpart/profile/user-profile.component";
 import {GroupService} from "./app/shared/services/group.service";
 import {TestPlayerService} from "./app/shared/services/test-player.service";
+import {TestListComponent} from "./app/studentpart/test-list/test-list.component";
+import {TestListSheduleComponent} from "./app/studentpart/test-list-shedule/test-list-shedule.component";
+
+
 
 @NgModule({
     imports: [
@@ -72,7 +78,11 @@ import {TestPlayerService} from "./app/shared/services/test-player.service";
         UserProfileComponent,
         TimeTableComponent,
         TestDetailComponent,
-        QuestionComponent
+        QuestionComponent,
+        AnswerComponent,
+		TestListComponent,
+        TestListSheduleComponent
+
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: "/"},

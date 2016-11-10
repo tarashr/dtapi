@@ -32,6 +32,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     public errorMessage: string;
     public entityTitle: string = "Завдання для тесту: ";
     public testName: string;
+    public noRecords: boolean = false;
 
     public test_id: number;
     public headers: any = headersQuestion;
@@ -72,8 +73,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
             this.test_id = +params["id"];
-            this.getCountRecordsByTest();
         });
+        this.getCountRecordsByTest();
     }
 
     ngOnDestroy() {
@@ -83,6 +84,10 @@ export class QuestionComponent implements OnInit, OnDestroy {
     goBack(): void {
         this.location.back();
 
+    }
+
+    goToAnswer(data) {
+        this.router.navigate(["/admin/subject/test/question", data.entity_id, "answer"], {queryParams: {nameOfQuestion: data.entityColumns[1]}});
     }
 
     deleteQuestion(entity, id: number): void {
@@ -108,30 +113,37 @@ export class QuestionComponent implements OnInit, OnDestroy {
             );
     }
 
+    private createTableConfig = (data: any) => {
+        let tempArr: any[] = [];
+        let numberOfOrder: number;
+        if (data.length) {
+            this.noRecords = false;
+            data.forEach((item, i) => {
+                numberOfOrder = i + 1 + (this.page - 1) * this.limit;
+                let question: any = {};
+                question.entity_id = item.question_id;
+                question.entityColumns = [
+                    numberOfOrder,
+                    item.question_text,
+                    item.level,
+                    item.type,
+                    item.attachment
+                ];
+                question.actions = this.actions;
+                tempArr.push(question);
+            });
+            this.entityData = tempArr;
+        }
+    }
+
     getRecordsRangeByTest(): void {
         this.subjectService.getRecordsRangeByTest(this.test_id, this.limit, this.offset)
             .subscribe(
                 data => {
-                    let tempArr: any[] = [];
-                    let numberOfOrder: number;
-                    if (data.length) {
-                        console.log("range" + data.length);
-                        data.forEach((item, i) => {
-                            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-                            let question: any = {};
-                            question.entity_id = item.question_id;
-                            question.entityColumns = [
-                                numberOfOrder,
-                                item.question_text,
-                                item.level,
-                                item.type,
-                                item.attachment
-                            ];
-                            question.actions = this.actions;
-                            tempArr.push(question);
-                        });
-                        this.entityData = tempArr;
+                    if (data.response === "no records") {
+                        this.noRecords = true;
                     }
+                    this.createTableConfig(data);
                 },
                 error => this.errorMessage = <any>error
             );
@@ -165,8 +177,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
 
     createCase() {
-        this.configEdit.list[0].value = "";
-        this.configEdit.img[0].value = "";
+        this.configAdd.list[0].value = "";
+        this.configAdd.img[0].value = "";
         this.configAdd.select[0].selected = "";
         this.configAdd.select[1].selected = "";
         this.configAdd.select[0].selectItem = this.levels;
@@ -186,9 +198,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     .subscribe(() => {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
-                        this.configAdd.list.forEach((item) => {
-                            item.value = "";
-                        });
                         this.refreshData(data.action);
                     });
             }, () => {
@@ -239,7 +248,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 return;
             });
     }
-
 }
 
 

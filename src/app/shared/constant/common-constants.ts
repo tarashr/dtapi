@@ -12,6 +12,7 @@ export const getTestDetailsByTestUrl: string = baseUrl + "testDetail/getTestDeta
 export const getQuestionsByLevelRandUrl: string = baseUrl + "question/getQuestionsByLevelRand"; // + test_id + level + number
 export const getRecordsRangeByTestUrl: string = baseUrl + "question/getRecordsRangeByTest"; // + test_id + limit + offset
 export const countRecordsByTestUrl: string = baseUrl + "question/countRecordsByTest"; // + test_id
+export const getAnswerByQuestionUrl: string = baseUrl + "answer/getAnswersByQuestion"; // + test_id
 
 // Pagination
 export const maxSize: number = 5;

@@ -89,13 +89,6 @@ export class CRUDService {
             .catch(this.handleError);
     }
 
-    getGroupsBySpeciality(faculty_id: number): Observable<any> {
-        return this._http
-            .get(`${this.hostUrlBase}group/getGroupsBySpeciality/${faculty_id}`)
-            .map(this.successResponse)
-            .catch(this.handleError);
-    }
-
     getRecordsBySearch(entity: string, search: string) {
         return this._http
             .get(`${this.hostUrlBase}${entity}/getRecordsBySearch/${search}`)
@@ -103,10 +96,40 @@ export class CRUDService {
             .catch(this.handleError);
     }
 
+    getTimeTableForGroup(groupId: number|string): Observable<any> {
+        return this._http
+            .get(`${this.hostUrlBase}timeTable/getTimeTablesForGroup/${groupId}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    getTestsBySubject(groupId: number|string): Observable<any> {
+        return this._http
+            .get(`${this.hostUrlBase}timeTable/getTimeTablesForGroup/${groupId}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    getTime(): Observable<any> {
+        return this._http
+            .get(`${this.hostUrlBase}TestPlayer/getTimeStamp`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+     getGroupsBySpeciality(faculty_id: number): Observable<any> {
+        return this._http
+            .get(`${this.hostUrlBase}group/getGroupsBySpeciality/${faculty_id}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
     getStudentsByGroup(group_id: number): Observable<any> {
         return this._http
             .get(`${this.hostUrlBase}/student/getStudentsByGroup/${group_id}`)
             .map(this.successResponse)
             .catch(this.handleError);
     }
+
+   
 }
+

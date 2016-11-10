@@ -1,0 +1,55 @@
+<div class="entity-container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-text ">{{entityTitle}}{{nameOfQuestion}}</div>
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <a class="btn btn-default" (click)="createCase()" [title]="addTitle">Додати </a>
+                    <button type="button" class="btn btn-secondary"
+                            (click)="goBack()">Назад
+                    </button>
+                </div>
+            </form>
+        </div>
+    </nav>
+    <div class="container-fluid" *ngIf="!noRecords">
+        <ul class="list-group entity-list">
+            <li class="list-group-item row hidden-xs">
+                <div class="col-xs-12 col-sm-3">Текст відповіді</div>
+                <div class="col-xs-12 col-sm-3 text-center">Вкладення</div>
+                <div class="col-xs-12 col-sm-3 text-center">Правильна відповідь</div>
+                <div class="col-xs-12 col-sm-3"></div>
+            </li>
+            <li *ngFor="let entity of entityData" class="list-group-item row">
+                <div class="col-xs-12 col-sm-3">
+                    <span class="visible-xs-inline-block">Текст відповіді:</span>
+                    <span class="align-xs">{{entity.answer_text}}</span>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <span class="visible-xs-inline-block">Вкладення:</span>
+                    <span class="align-xs">
+                        <img [src]="entity.attachment" alt="Зображення для тесту" width="100%">
+                    </span>
+                </div>
+                <div class="col-xs-12 col-sm-3 text-center">
+                    <span class="visible-xs-inline-block">Правильна відповідь:</span>
+                    <span class="align-xs">{{entity.true_answer}}</span>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                    <a class="btn btn-default btn-sm" role="button" title="Редагувати завдання"
+                       (click)="editCase(entity)">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </a>
+                    <a class="btn btn-danger btn-sm" role="button" title="Видалити завдання"
+                       (click)="deleteCase(entity)">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div *ngIf="noRecords" class="text-center" role="alert">
+        Для вибраного завдання відповіді немає
+    </div>
+</div>
+<template ngbModalContainer></template>

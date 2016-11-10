@@ -72,6 +72,7 @@ export class GroupTimetableComponent implements OnInit {
                         return;
                     }
                     for (let i in data) {
+                        this.noRecords = false;
                         for (let k in this.subjects) {
                             if (data[i].subject_id === this.subjects[k].subject_id) {
                                 data[i].subject_name = this.subjects[k].subject_name;

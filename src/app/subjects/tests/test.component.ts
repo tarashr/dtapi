@@ -27,11 +27,11 @@ export class TestComponent implements OnInit, OnDestroy {
     private subscription: Subscription;
 
     // common variables
+    public pageTitle: string = `Тести по предмету: `;
     public entity: string = "test";
     public errorMessage: string;
     public subjectName: string;
-    public pageTitle: string = `Тести по предмету: `;
-    public subject_id;
+    public subject_id: number;
     public page: number = 1;
     public limit: number = 0;
     public headers: any = headersTest;
@@ -39,6 +39,7 @@ export class TestComponent implements OnInit, OnDestroy {
     public successEventModal = successEventModal;
     private config: any = {action: "create"};
     public modalInfoConfig: any = modalInfoConfig;
+    public noRecords: boolean = false;
 
     // varibles for addedit
     public configAdd = configAddTest;
@@ -63,8 +64,8 @@ export class TestComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
             this.subject_id = +params["id"];
-            this.getTestBySubjectId();
         });
+        this.getTestBySubjectId();
     }
 
     ngOnDestroy() {
@@ -75,35 +76,43 @@ export class TestComponent implements OnInit, OnDestroy {
         this.location.back();
     }
 
+    private createTableConfig = (data: any) => {
+        let tempArr: any[] = [];
+        let numberOfOrder: number;
+        if (data.length) {
+            this.noRecords = false;
+            data.forEach((item, i) => {
+                numberOfOrder = i + 1 + (this.page - 1) * this.limit;
+                let test: any = {};
+                test.entity_id = item.test_id;
+                test.entityColumns = [
+                    numberOfOrder,
+                    item.test_name,
+                    item.tasks,
+                    item.time_for_test,
+                    item.attempts,
+                    item.enabled
+                ];
+                test.actions = this.actions;
+                tempArr.push(test);
+            });
+            this.entityData = tempArr;
+            for (let i = 0; i < this.entityData.length; i++) {
+                this.entityData[i].entityColumns[5] === "1" ?
+                    this.entityData[i].entityColumns.splice(5, 1, "Доступно") :
+                    this.entityData[i].entityColumns.splice(5, 1, "Не доступно");
+            }
+        }
+    }
+
     getTestBySubjectId() {
         this.subjectService.getTestsBySubjectId(this.entity, this.subject_id)
             .subscribe(
                 data => {
-                    let tempArr: any[] = [];
-                    let numberOfOrder: number;
-                    if (data.length) {
-                        data.forEach((item, i) => {
-                            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-                            let test: any = {};
-                            test.entity_id = item.test_id;
-                            test.entityColumns = [
-                                numberOfOrder,
-                                item.test_name,
-                                item.tasks,
-                                item.time_for_test,
-                                item.attempts,
-                                item.enabled
-                            ];
-                            test.actions = this.actions;
-                            tempArr.push(test);
-                        });
-                        this.entityData = tempArr;
-                        for (let i = 0; i < this.entityData.length; i++) {
-                            this.entityData[i].entityColumns[5] === "1" ?
-                                this.entityData[i].entityColumns.splice(5, 1, "Доступно") :
-                                this.entityData[i].entityColumns.splice(5, 1, "Не доступно");
-                        }
+                    if (data.response === "no records") {
+                        this.noRecords = true;
                     }
+                    this.createTableConfig(data);
                 },
                 error => console.log("error: ", error)
             );
@@ -198,7 +207,7 @@ export class TestComponent implements OnInit, OnDestroy {
     }
 
     deleteCase(data) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});

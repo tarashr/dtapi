@@ -10,8 +10,9 @@ import {
     getQuestionsByLevelRandUrl,
     getRecordsRangeByTestUrl,
     countRecordsByTestUrl,
-    baseUrl
-}  from "../../shared/constants";
+    baseUrl,
+    getAnswerByQuestionUrl
+}  from "../../shared/constant";
 
 @Injectable()
 export class SubjectService {
@@ -67,6 +68,12 @@ export class SubjectService {
 
     countRecordsByTest(test_id: number): Observable <any> {
         return this.http.get(`${countRecordsByTestUrl}/${test_id}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    getAnswerByQuestion(question_id: number): Observable <any> {
+        return this.http.get(`${getAnswerByQuestionUrl}/${question_id}`)
             .map(this.successResponse)
             .catch(this.handleError);
     }
