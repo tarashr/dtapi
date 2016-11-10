@@ -39,7 +39,7 @@ export class TimeTableComponent implements OnInit, OnDestroy {
     public successEventModal = successEventModal;
     private config: any = {action: "create"};
     public modalInfoConfig: any = modalInfoConfig;
-    public noRecords:boolean = false;
+    public noRecords: boolean = false;
 
     // varibles for addedit
     public configAdd = configAddTimeTable;
@@ -82,7 +82,7 @@ export class TimeTableComponent implements OnInit, OnDestroy {
         this.subjectService.getTimeTableForSubject(this.entity, this.subject_id)
             .subscribe(
                 data => {
-                    if (data.response === "no records"){
+                    if (data.response === "no records") {
                         this.noRecords = true;
                     }
                     if (data.length) {
@@ -128,7 +128,7 @@ export class TimeTableComponent implements OnInit, OnDestroy {
             );
     }
 
-    deleteTimeTable(entity:string, id: number): void {
+    deleteTimeTable(entity: string, id: number): void {
         this.crudService
             .delRecord(this.entity, id)
             .subscribe(

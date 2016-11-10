@@ -39,7 +39,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     public successEventModal = successEventModal;
     private config: any = {action: "create"};
     public modalInfoConfig: any = modalInfoConfig;
-    public noRecords:boolean = false;
+    public noRecords: boolean = false;
 
     // varibles for addedit
     public configAdd = configAddTestDetail;
@@ -89,7 +89,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
                 data => {
                     if (data.length) {
                         data.forEach(item => {
-                            if (item.test_id == this.test_id) {
+                            if (+item.test_id === this.test_id) {
                                 this.tasksTest = item.tasks;
                             }
                         });
@@ -104,33 +104,37 @@ export class TestDetailComponent implements OnInit, OnDestroy {
 
     }
 
+    private createTableConfig = (data: any) => {
+        let tempArr: any[] = [];
+        let numberOfOrder: number;
+        if (data.length) {
+            this.noRecords = false;
+            data.forEach((item, i) => {
+                numberOfOrder = i + 1 + (this.page - 1) * this.limit;
+                let testDetail: any = {};
+                testDetail.entity_id = item.id;
+                testDetail.entityColumns = [
+                    numberOfOrder,
+                    item.level,
+                    item.tasks,
+                    item.rate
+                ];
+
+                testDetail.actions = this.actions;
+                tempArr.push(testDetail);
+            });
+            this.entityData = tempArr;
+        }
+    }
+
     getTestDetailsByTest() {
         this.subjectService.getTestDetailsByTest(this.test_id)
             .subscribe(
                 data => {
-                    if (data.response === "no records"){
+                    if (data.response === "no records") {
                         this.noRecords = true;
                     }
-                    let tempArr: any[] = [];
-                    let numberOfOrder: number;
-                    if (data.length) {
-                        this.noRecords = false;
-                        data.forEach((item, i) => {
-                            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-                            let testDetail: any = {};
-                            testDetail.entity_id = item.id;
-                            testDetail.entityColumns = [
-                                numberOfOrder,
-                                item.level,
-                                item.tasks,
-                                item.rate
-                            ];
-
-                            testDetail.actions = this.actions;
-                            tempArr.push(testDetail);
-                        });
-                        this.entityData = tempArr;
-                    }
+                    this.createTableConfig(data);
                 },
                 error => console.log("error: ", error)
             );
@@ -166,16 +170,17 @@ export class TestDetailComponent implements OnInit, OnDestroy {
             item.value = "";
         });
         this.configAdd.select[0].selected = "";
-        this.configAdd.select[0].selectItem = [];
         this.configAdd.select[0].selectItem = this.level;
         this.tasksTestDetail = 0;
         this.subjectService.getTestDetailsByTest(this.test_id)
             .subscribe(
                 res => {
-                    this.testDetails = res;
-                    this.testDetails.forEach((item) => {
-                        this.tasksTestDetail += (+item.tasks);
-                    });
+                    if (res.length) {
+                        this.testDetails = res;
+                        this.testDetails.forEach((item) => {
+                            this.tasksTestDetail += (+item.tasks);
+                        });
+                    }
                 },
                 error => this.errorMessage = <any>error);
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);

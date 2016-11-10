@@ -32,7 +32,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     public errorMessage: string;
     public entityTitle: string = "Завдання для тесту: ";
     public testName: string;
-    public noRecords:boolean = false;
+    public noRecords: boolean = false;
 
     public test_id: number;
     public headers: any = headersQuestion;
@@ -113,6 +113,29 @@ export class QuestionComponent implements OnInit, OnDestroy {
             );
     }
 
+    private createTableConfig = (data: any) => {
+        let tempArr: any[] = [];
+        let numberOfOrder: number;
+        if (data.length) {
+            this.noRecords = false;
+            data.forEach((item, i) => {
+                numberOfOrder = i + 1 + (this.page - 1) * this.limit;
+                let question: any = {};
+                question.entity_id = item.question_id;
+                question.entityColumns = [
+                    numberOfOrder,
+                    item.question_text,
+                    item.level,
+                    item.type,
+                    item.attachment
+                ];
+                question.actions = this.actions;
+                tempArr.push(question);
+            });
+            this.entityData = tempArr;
+        }
+    }
+
     getRecordsRangeByTest(): void {
         this.subjectService.getRecordsRangeByTest(this.test_id, this.limit, this.offset)
             .subscribe(
@@ -120,26 +143,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     if (data.response === "no records") {
                         this.noRecords = true;
                     }
-                    let tempArr: any[] = [];
-                    let numberOfOrder: number;
-                    if (data.length) {
-                        this.noRecords = false;
-                        data.forEach((item, i) => {
-                            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-                            let question: any = {};
-                            question.entity_id = item.question_id;
-                            question.entityColumns = [
-                                numberOfOrder,
-                                item.question_text,
-                                item.level,
-                                item.type,
-                                item.attachment
-                            ];
-                            question.actions = this.actions;
-                            tempArr.push(question);
-                        });
-                        this.entityData = tempArr;
-                    }
+                    this.createTableConfig(data);
                 },
                 error => this.errorMessage = <any>error
             );
@@ -244,7 +248,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 return;
             });
     }
-
 }
 
 
