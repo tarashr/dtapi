@@ -1,7 +1,8 @@
-<div *ngIf="groupId !== undefined">
-    <dt-table *ngIf="entityData.length>0"
-              [headers]="headers"
-              [actions]="actions"
-              [tableData]="entityData">
-    </dt-table>
-</div>
+<dt-table *ngIf="entityData.length>0"
+          [headers]="headers"
+          [actions]="actions"
+          [tableData]="entityData">
+</dt-table>
+
+
+<h2 *ngIf="entityData.length==0"> Немає запланованих тестів</h2>

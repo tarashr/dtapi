@@ -26,7 +26,6 @@ export class TestPlayerComponent implements OnInit{
         if (!userRole && userRole != "student") {
             this._router.navigate(["/login"]);
         }
-        console.log('we in test-player')
     }
 
 }

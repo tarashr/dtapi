@@ -1,7 +1,7 @@
 <ngb-tabset>
     <ngb-tab title="Доступні">
         <template ngbTabContent>
-            <h3>Cписок доступних тестувань для групи "{{groupName}}({{groupId}})"</h3>
+            <h3>Cписок доступних тестувань для групи "{{groupName}}"</h3>
             <test-list
                     [groupId] = "groupId">
             </test-list>
@@ -15,7 +15,6 @@
 
                 <test-list-shedule
                         [groupId] = "groupId">
-
                 </test-list-shedule>
 
 			</div>
@@ -24,44 +23,7 @@
     <ngb-tab title="Пройдені">
         <template ngbTabContent>
             <h3>Результати тестувань</h3>
-            <div class="container-fluid">
-                <ul class="list-group entity-list">
-                    <li class="list-group-item row bg-warning hidden-xs">
-
-                        <div class=" col-md-3 text-center"><b>Назва тесту</b></div>
-                        <div class=" col-md-2 text-center"><b>Дата проведення</b></div>
-                        <div class=" col-md-3 text-center"><b>Результат</b></div>
-                        <div class=" col-md-2 text-center"><b>Час початку</b></div>
-                        <div class=" col-md-2 text-center"><b>Час закінчення</b></div>
-                    </li>
-                    <li class="list-group-item row">
-
-                        <div class=" col-md-3 text-center">Basic level</div>
-                        <div class=" col-md-2 text-center">2016-09-22</div>
-                        <div class=" col-md-3 text-center"><b>8 із 22 балів</b></div>
-                        <div class=" col-md-2 text-center">20:34:54</div>
-                        <div class=" col-md-2 text-center">20:35:34</div>
-                    </li>
-                    <li class="list-group-item row">
-
-                        <div class=" col-md-3 text-center">Basic level</div>
-                        <div class=" col-md-2 text-center">2016-09-22</div>
-                        <div class=" col-md-3 text-center"><b>8 із 22 балів</b></div>
-                        <div class=" col-md-2 text-center">20:34:54</div>
-                        <div class=" col-md-2 text-center">20:35:34</div>
-                    </li>
-                    <li class="list-group-item row">
-
-                        <div class=" col-md-3 text-center">Basic level</div>
-                        <div class=" col-md-2 text-center">2016-09-22</div>
-                        <div class=" col-md-3 text-center"><b>8 із 22 балів</b></div>
-                        <div class=" col-md-2 text-center">20:34:54</div>
-                        <div class=" col-md-2 text-center">20:35:34</div>
-                    </li>
-
-
-                </ul>
-            </div>
+            Ви ще не тестувалися...
         </template>
     </ngb-tab>
 </ngb-tabset>
