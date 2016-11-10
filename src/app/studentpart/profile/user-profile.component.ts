@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { CRUDService } from "../../shared/services/crud.service";
 import { LoginService } from "../../shared/services/login.service";
@@ -34,7 +34,7 @@ export class UserProfileComponent implements OnInit{
     ) { }
 
     private success(response:any){
-        if (response.response==="non logged") {
+        if (response.response === "non logged") {
             this._router.navigate(["/login"]);
         }
     }
@@ -42,7 +42,6 @@ export class UserProfileComponent implements OnInit{
     ngOnInit() {
 
         let userId:number = +sessionStorage.getItem("userId");
-
         this.getStudentProfile(userId);
     }
 

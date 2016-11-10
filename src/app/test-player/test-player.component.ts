@@ -14,7 +14,7 @@ import {modalInfoConfig} from "../shared/constant";
 export class TestPlayerComponent implements OnInit {
 
     private modalInfoConfig = modalInfoConfig;
-    private testId: number = 3;
+    private testId: number = 2;
 
     private navButtons: any[];
 
@@ -100,6 +100,7 @@ export class TestPlayerComponent implements OnInit {
                     modalRef.componentInstance.config = this.modalInfoConfig;
                 });
         }
+
         else {
             if (this.activeQuestion === this.questions.length - 1) {
                 for (let i = 0; i < this.navButtons.length; i++) {
@@ -126,6 +127,8 @@ export class TestPlayerComponent implements OnInit {
     toggleAnswer(event: any, answerId: number, numberOfQuestion: number) {
         this.questions[numberOfQuestion].chosenAnswer[answerId] = !this.questions[numberOfQuestion].chosenAnswer[answerId];
         event.stopImmediatePropagation();
+
+
     }
 
 }

@@ -25,7 +25,7 @@ export const actionsGroupTimeTable = [
 export const configAddGroupTimeTable = {
     title: "Назначити тестування",
     list: [
-        {name: "Дата", value: "", title: "date", type: "data"},
+        {name: "Дата", value: "", title: "date", type: "data", placeholder: "РРРР-ММ-ДД"},
     ],
     action: "create",
     labelBtn: "Назначити",

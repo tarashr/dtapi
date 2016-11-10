@@ -16,7 +16,7 @@
             (searchRun)="findEntity($event)"
             (selectRun)="changeLimit($event)">
     </entity-bar>
-    <div *ngIf="noRecords" class="alert alert-info" role="alert">
+    <div *ngIf="noRecords" class="text-center">
         За даними критеріями груп не знайдено
     </div>
     <dt-table *ngIf="!noRecords"
