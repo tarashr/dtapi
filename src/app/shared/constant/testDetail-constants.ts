@@ -1,7 +1,7 @@
 // Constants for table.component
 export const headersTestDetail = [
     {name: "№", className: "col-xs-12 col-sm-1 text-center"},
-    {name: "Рівень", className: "col-xs-12 col-sm-2"},
+    {name: "Рівень", className: "col-xs-12 col-sm-2 text-center"},
     {name: "Кількість завдань", className: "col-xs-12 col-sm-3 text-center"},
     {name: "Кількість балів", className: "col-xs-12 col-sm-3 text-center"},
     {name: "", className: "col-xs-12 col-sm-3 text-center"}
