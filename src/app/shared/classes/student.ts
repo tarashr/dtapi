@@ -10,6 +10,8 @@ export class Student {
     student_fname: string;
     group_id: number;
     group_name?: string;
+    faculty_name?: string;
+    faculty_id?: number;
     photo?: string;
     plain_password: string;
 }

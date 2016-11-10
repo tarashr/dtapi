@@ -56,7 +56,6 @@ const appRoutes: Routes = [
             {path: "faculty", component: FacultyComponent},
             {path: "group", component: GroupComponent},
             {path: "group/groupTimetable", component: GroupTimetableComponent},
-            {path: "faculty/:id/groups", component: GroupComponent},
             {path: "adminUser", component: AdminUserComponent},
             {path: "student", component: StudentComponent},
             {path: "student/student-new-profile", component: StudentNewProfileComponent},

@@ -13,7 +13,7 @@
                 <a
                         *ngFor="let button of actions"
                         [ngClass]="button.btnClassName"
-                        [title]="button.title+': ' + entity.entityColumns[0]"
+                        [title]="button.title+': ' + entity.entityColumns[1]"
                         (click)="run(entity, button.action)">
                     <span [ngClass]="button.glyphicon"></span>
                 </a>

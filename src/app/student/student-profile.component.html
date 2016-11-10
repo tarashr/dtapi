@@ -7,7 +7,7 @@
     <div class="student-datas row">
         <div *ngFor="let stud of student" class="">
             <div class="student-foto col-xs-12 col-sm-3 col-md-3">
-                <img class="img-responsive position-left profile-foto" [src]="stud.photo" alt="Фото студента"
+                <img class="img-responsive img-rounded profile-foto" [src]="stud.photo" alt="Фото студента"
                      id="output" #newFotoSrc />
                 <input class="input-student-data" type="file" (change)="changeFile($event)" [disabled]="statusView">
             </div>
@@ -25,44 +25,36 @@
                                                                    [disabled]="statusView"
                                                                    [(ngModel)]="stud.student_fname"
                                                                    required></div>
-
-                <div><label for="faculty">Факультет:</label><input id="faculty" class="input-student-data"
-                                                             [(ngModel)]="curFaculty" [disabled]="statusView"
-                                                             required></div>
-                <div><label for="group">Група:</label><input id="group" class="input-student-data"
-                                                                   [(ngModel)]="stud.group_name" [disabled]="statusView"
-                                                                   required></div>
-
-                <!--
                 <div><label for="faculty">Факультет:</label>
-                    <select id="faculty" class="input-student-data select-group"   [disabled]="statusView"
-                            required (change)="getGroupFacultyNameById(curFaculty)" [(ngModel)]="curFaculty">
-                       <option *ngFor="let item of facultys" class="input-student-data" [(ngModel)]="item.faculty_id">
+                    <select id="faculty" class="input-student-data select-group" [disabled]="statusView" [(ngModel)]="stud.faculty_name" required>
+                        <option *ngFor="let item of facultys" class="input-student-data" [value]="item.faculty_id">
                             {{item.faculty_name}}
                         </option>
                     </select>
                 </div>
 
-
-                <div><label for="group2">Група:</label>
-                    <select id="group2" class="input-student-data select-group" [(ngModel)]="stud.group_id"
-                            [disabled]="statusView" required>
-                        <option *ngFor="let item of groups" class="input-student-data" [(ngModel)]="item.group_id">
+                <div><label for="group">Група:</label>
+                    <select id="group" class="input-student-data select-group" [disabled]="statusView" [(ngModel)]="stud.group_id"
+                            required>
+                        <option *ngFor="let item of groups" class="input-student-data" [value]="item.group_id">
                             {{item.group_name}}
                         </option>
                     </select>
-                </div>-->
-
-
+                </div>
             </div>
             <div class="student-data2 col-xs-12 col-sm-5 col-md-5">
                 <div><label for="login">Логін:</label><input id="login" class="input-student-data"
                                                              [(ngModel)]="stud.username" [disabled]="statusView"
                                                              required></div>
-                <div><label for="password">Пароль:</label><input id="password" class="input-student-data"
+                <div><label for="password">Пароль:</label><input id="password"
+                                                                 class="input-student-data password-eye-input"
                                                                  [type]="passwordStatusText"
                                                                  [(ngModel)]="stud.plain_password"
-                                                                 [disabled]="statusView" required></div>
+                                                                 [disabled]="statusView"
+                                                                 required>
+                    <span class="glyphicon glyphicon-eye-open password-eye" (mouseover)="showPassword()" (mouseout)="showPassword()"></span>
+                </div>
+
                 <div><label for="gradebook_id">№ залікової книжки:</label><input id="gradebook_id"
                                                                                  class="input-student-data"
                                                                                  [(ngModel)]="stud.gradebook_id"
@@ -74,10 +66,10 @@
             </div>
         </div>
         <div class="button-create-refresh">
-            <button class="button-save-student-profile" type="button" (click)="editSaveStudentProfile()">
+            <button class="btn btn-default" type="submit" (click)="editSaveStudentProfile()" role="button">
                 {{editSaveButtonName}}
             </button>
-            <button class="button-refresh-datas" type="button" (click)="showPassword()">{{passwordButtonName}}</button>
+            <button class="btn btn-default" type="submit" (click) = deleteStudent() role="button">Видалити студента</button>
         </div>
     </div>
 
@@ -143,7 +135,5 @@
         </div>
     </div> -->
 </div>
-
-
 
 <template ngbModalContainer></template>

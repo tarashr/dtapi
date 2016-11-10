@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {Student} from "../shared/classes/student";
 import {Group} from "../shared/classes/group";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
@@ -52,12 +52,22 @@ export class StudentComponent implements OnInit {
     public page: number = 1;
     public offset: number = 0;
 
+    public groupId: number;
+    public groupName: string;
+    public noRecords: boolean = false;
+
     public groupEntity: string = "Group";
     public groups: Group[] = [];
 
     constructor(private crudService: CRUDService,
+                private route: ActivatedRoute,
                 private _router: Router,
                 private modalService: NgbModal) {
+        route.queryParams.subscribe(
+            data => {
+                this.groupId = data["groupId"];
+                this.groupName = data["groupName"];
+            });
     }
 
     public changeLimit = changeLimit;
@@ -70,8 +80,12 @@ export class StudentComponent implements OnInit {
     // public errorMessage: string;
 
     ngOnInit() {
-        this.getCountRecords();
-        // this.getRecordsRange();
+        if (this.groupId) {
+            this.entityTitle = `Студенти групи: ${this.groupName}`;
+            this.getStudentsByGroup();
+        } else {
+            this.getCountRecords();
+        }
     }
 
     private createTableConfig = (data: any) => {
@@ -95,6 +109,20 @@ export class StudentComponent implements OnInit {
                     this.getGroupName();
                 },
                 error => console.log("error: ", error));
+    }
+
+    getStudentsByGroup() {
+        this.crudService.getStudentsByGroup(this.groupId)
+            .subscribe(data => {
+                if (data.response === "no records") {
+                    this.noRecords = true;
+                    return;
+                }
+                this.page = 1;
+                this.entityData2 = data;
+                this.getGroupName();
+
+            }, error => console.log("error: ", error));
     }
 
     getGroupName(): void {

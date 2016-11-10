@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
-import {Router, ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ActivatedRoute} from "@angular/router";
+import {Location} from "@angular/common";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 import {CRUDService} from "../../shared/services/crud.service";
 import {GroupService} from "../../shared/services/group.service";
@@ -15,7 +15,6 @@ import {
     configEditGroupTimeTable,
     modalInfoConfig,
     refreshData,
-    delRecord,
     successEventModal
 } from "../../shared/constant";
 
@@ -28,6 +27,7 @@ export class GroupTimetableComponent implements OnInit {
 
     public pageTitle: string = "Розклад тестування для групи: ";
     public entity: string = "timeTable";
+    public noRecords: boolean = false;
     public entityData: any[] = [];
     public groupId: number;
     public groupName: string;
@@ -46,7 +46,7 @@ export class GroupTimetableComponent implements OnInit {
     public refreshData = refreshData;
     public successEventModal = successEventModal;
 
-    constructor(private router: Router,
+    constructor(
                 private route: ActivatedRoute,
                 private crudService: CRUDService,
                 private groupService: GroupService,
@@ -67,6 +67,10 @@ export class GroupTimetableComponent implements OnInit {
         this.groupService.getTimeTablesForGroup(this.groupId)
             .subscribe(
                 data => {
+                    if (data.response === "no records") {
+                        this.noRecords = true;
+                        return;
+                    }
                     for (let i in data) {
                         for (let k in this.subjects) {
                             if (data[i].subject_id === this.subjects[k].subject_id) {
@@ -74,7 +78,6 @@ export class GroupTimetableComponent implements OnInit {
                             }
                         }
                     }
-                    console.log(JSON.stringify(data));
                     this.createTableConfig(data);
                 },
                 error => console.log("error: ", error));
@@ -129,8 +132,8 @@ export class GroupTimetableComponent implements OnInit {
     }
 
     createCase() {
-        this.configAdd.list.forEach((item)=> {
-            item.value = ""
+        this.configAdd.list.forEach((item) => {
+            item.value = "";
         });
         this.configAdd.select[0].selected = "";
         this.configAdd.select[0].selectItem = [];
@@ -148,12 +151,12 @@ export class GroupTimetableComponent implements OnInit {
                     data.select[0].selected
                 );
                 this.crudService.insertData(this.entity, newGroupTimeTable)
-                    .subscribe(response=> {
+                    .subscribe(response => {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
                         this.getGroupTimeTables();
                     });
-            }, ()=> {
+            }, () => {
                 return;
             });
     }
@@ -177,17 +180,17 @@ export class GroupTimetableComponent implements OnInit {
                     data.select[0].selected
                 );
                 this.crudService.updateData(this.entity, data.id, editedGroupTimeTable)
-                    .subscribe(()=> {
+                    .subscribe(() => {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
                         this.successEventModal();
                         this.getGroupTimeTables();
                     });
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 
-    deleteCase(data){
+    deleteCase(data) {
         this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
@@ -196,15 +199,15 @@ export class GroupTimetableComponent implements OnInit {
         modalRefDel.result
             .then(() => {
                 this.deleteGroupTimeTable(this.entity, data.entity_id);
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 
     private createTableConfig = (data: any) => {
         let tempArr: any[] = [];
         let numberOfOrder: number;
-        if(data.length){
+        if (data.length) {
             data.forEach((item, i) => {
                 numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                 let groupTimetable: any = {};

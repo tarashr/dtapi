@@ -9,12 +9,6 @@ export const headersGroup = [
 
 export const actionsGroup = [
     {
-        title: "Результати тустування групи",
-        action: "",
-        glyphicon: "glyphicon glyphicon-list-alt",
-        btnClassName: "btn btn-default btn-sm"
-    },
-    {
         title: "Переглянути студентів групи",
         action: "viewStudents",
         glyphicon: "glyphicon glyphicon-user",

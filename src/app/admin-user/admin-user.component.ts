@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {Component, OnInit} from "@angular/core";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add-edit.component";
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
-import {User} from '../shared/classes/user';
+import {User} from "../shared/classes/user";
 import {CRUDService} from "../shared/services/crud.service.ts";
 import {
     configAddAdminUser,
@@ -21,12 +20,11 @@ import {
     headersAdminUser,
     actionsAdminUser,
     modalInfoConfig
-} from "../shared/constant"
+} from "../shared/constant";
 
 
 @Component({
-    templateUrl: 'admin-user.component.html',
-    styleUrls: ['admin-user.component.css']
+    templateUrl: "admin-user.component.html"
 })
 export class AdminUserComponent implements OnInit {
 
@@ -36,14 +34,10 @@ export class AdminUserComponent implements OnInit {
     public paginationSize = maxSize;
     public headers: any = headersAdminUser;
     public actions: any = actionsAdminUser;
-
-    //constants for view
     public addTitle: string = "Додати адміністратора";
-   // src/app/admin_user/admin-user.component.ts
     public searchTitle: string = "Введіть дані для пошуку";
     public entityTitle: string = "Адміністратори";
     public selectLimit: string = "Виберіть кількість записів на сторінці";
-
     public entityData: any[] = [];
     private entityDataLength: number;
     public entity: string = "AdminUser";
@@ -53,7 +47,6 @@ export class AdminUserComponent implements OnInit {
     public offset: number = 0;
 
     constructor(private crudService: CRUDService,
-                private _router: Router,
                 private modalService: NgbModal) {
     };
 
@@ -71,10 +64,10 @@ export class AdminUserComponent implements OnInit {
         this.getCountRecords();
     }
 
-    private createTableConfig = (data: any)=> {
+    private createTableConfig = (data: any) => {
         let tempArr: any[] = [];
         let numberOfOrder: number;
-        data.forEach((item, i)=> {
+        data.forEach((item, i )=> {
             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
             let adminUser: any = {};
             adminUser.entity_id = item.id;
@@ -106,9 +99,9 @@ export class AdminUserComponent implements OnInit {
                 if (data.list[2].value === data.list[3].value) {
                     let newAdminUser: User = new User(data.list[0].value, data.list[1].value, data.list[2].value);
                     this.crudService.insertData(this.entity, newAdminUser)
-                        .subscribe(response=> {
-                            this.configAdd.list.forEach((item)=> {
-                                item.value = ""
+                        .subscribe(response => {
+                            this.configAdd.list.forEach((item) => {
+                                item.value = "";
                             });
                             this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                             this.successEventModal();
@@ -121,14 +114,14 @@ export class AdminUserComponent implements OnInit {
                     this.createCase();
                     this.successEventModal();
                 }
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     };
 
     editCase(data: any) {
-        this.configEdit.list.forEach((item, i)=> {
-            item.value = data.entityColumns[i + 1]
+        this.configEdit.list.forEach((item, i) => {
+            item.value = data.entityColumns[i + 1];
         });
         this.configEdit.id = data.entity_id;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
@@ -138,7 +131,7 @@ export class AdminUserComponent implements OnInit {
                 if (data.list[2].value === data.list[3].value) {
                     let editedAdminUser: User = new User(data.list[0].value, data.list[1].value, data.list[2].value);
                     this.crudService.updateData(this.entity, data.id, editedAdminUser)
-                        .subscribe(response=> {
+                        .subscribe(response => {
                             this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
                             this.successEventModal();
                             this.refreshData(data.action);
@@ -149,8 +142,8 @@ export class AdminUserComponent implements OnInit {
                     this.modalInfoConfig.infoString = `Введені паролі не співпадають, спробуйте ще раз`;
                     this.successEventModal();
                 }
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 
@@ -163,8 +156,8 @@ export class AdminUserComponent implements OnInit {
         modalRefDel.result
             .then(() => {
                 this.delRecord(this.entity, data.entity_id);
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 

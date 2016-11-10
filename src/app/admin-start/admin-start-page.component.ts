@@ -1,5 +1,4 @@
-import {Component, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
+import {Component} from "@angular/core";
 
 import {LoginService} from "../shared/services/login.service.ts";
 
@@ -10,11 +9,7 @@ import {LoginService} from "../shared/services/login.service.ts";
 })
 export class AdminStartPageComponent {
 
-    constructor(private _loginService: LoginService,
-                private _router: Router) {
-    }
-
-    ngOnInit() {
+    constructor(private _loginService: LoginService) {
     }
 
     logout() {

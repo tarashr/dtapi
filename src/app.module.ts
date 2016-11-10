@@ -39,6 +39,7 @@ import {TestsTabsetComponent}    from "./app/studentpart/teststabset/tests-tabse
 import {TestPlayerComponent}     from "./app/test-player/test-player.component";
 import {UserProfileComponent}    from "./app/studentpart/profile/user-profile.component";
 import {GroupService} from "./app/shared/services/group.service";
+import {TestPlayerService} from "./app/shared/services/test-player.service";
 
 @NgModule({
     imports: [
@@ -84,7 +85,8 @@ import {GroupService} from "./app/shared/services/group.service";
         SubjectService,
         HttpModule,
         AuthAdminGuard,
-        AuthStudentGuard
+        AuthStudentGuard,
+        TestPlayerService
     ],
     entryComponents: [ModalAddEditComponent, InfoModalComponent],
     bootstrap: [AppComponent]

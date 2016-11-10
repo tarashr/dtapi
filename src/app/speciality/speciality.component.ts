@@ -24,8 +24,7 @@ import {
 } from "../shared/constant";
 
 @Component({
-    templateUrl:'speciality.component.html',
-    styleUrls:['speciality.component.css']
+    templateUrl:"speciality.component.html"
 })
 export class SpecialityComponent implements OnInit{
 
@@ -38,8 +37,8 @@ export class SpecialityComponent implements OnInit{
 
 
     public addTitle: string = "Створити новий факультет";
-    public searchTitle:string = "Введіть дані для пошуку";
-    public entityTitle:string = "Спеціальності";
+    public searchTitle: string = "Введіть дані для пошуку";
+    public entityTitle: string = "Спеціальності";
     public selectLimit: string = "Виберіть кількість записів на сторінці";
 
     public entityData: any[] = [];
@@ -64,14 +63,14 @@ export class SpecialityComponent implements OnInit{
     public getRecordsRange = getRecordsRange;
     public findEntity = findEntity;
 
-    ngOnInit(){
+    ngOnInit() {
         this.getCountRecords();
     }
 
-    private createTableConfig = (data: any)=> {
+    private createTableConfig = (data: any )=> {
         let tempArr: any[] = [];
         let numberOfOrder: number;
-        data.forEach((item, i)=> {
+        data.forEach((item, i) => {
             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
             let speciality: any = {};
             speciality.entity_id = item.speciality_id;
@@ -84,7 +83,9 @@ export class SpecialityComponent implements OnInit{
     activate(data: any) {
         switch (data.action) {
             case "viewGroup":
-                this._router.navigate(["/admin/group"]);
+                this._router.navigate(
+                    ["/admin/group"],
+                    {queryParams: {specialityId: data.entity_id, specialityName: data.entityColumns[2]}});
                 break;
             case "create":
                 this.createCase();
@@ -106,20 +107,20 @@ export class SpecialityComponent implements OnInit{
             .then((data: any) => {
                 let newSpeciality: Speciality = new Speciality(data.list[0].value, data.list[1].value);
                 this.crudService.insertData(this.entity, newSpeciality)
-                    .subscribe(response=> {
-                        this.configAdd.list.forEach((item)=>{item.value=""});
+                    .subscribe(response => {
+                        this.configAdd.list.forEach((item) => item.value = "");
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
                         this.refreshData(data.action);
                     });
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     };
 
-    editCase(data:any){
-        this.configEdit.list.forEach((item, i)=> {
-            item.value = data.entityColumns[i + 1]
+    editCase(data: any) {
+        this.configEdit.list.forEach((item, i) => {
+            item.value = data.entityColumns[i + 1];
         });
         this.configEdit.id = data.entity_id;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
@@ -128,17 +129,17 @@ export class SpecialityComponent implements OnInit{
             .then((data: any) => {
                 let editedSpeciality: Speciality = new Speciality(data.list[0].value, data.list[1].value);
                 this.crudService.updateData(this.entity, data.id, editedSpeciality)
-                    .subscribe(response=> {
+                    .subscribe(response => {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
                         this.successEventModal();
                         this.refreshData(data.action);
                     });
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 
-    deleteCase(data:any){
+    deleteCase(data: any) {
         this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
@@ -147,8 +148,8 @@ export class SpecialityComponent implements OnInit{
         modalRefDel.result
             .then(() => {
                 this.delRecord(this.entity, data.entity_id);
-            }, ()=> {
-                return
+            }, () => {
+                return;
             });
     }
 

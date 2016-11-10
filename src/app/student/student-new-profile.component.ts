@@ -27,17 +27,18 @@ export class StudentNewProfileComponent implements OnInit {
     public facultyEntity: string = "Faculty";
     public facultys: Faculty [] = [];
     public idFaculty: number;
+    public curFaculty: string;
     public groupEntity: string = "Group";
     public groups: Group[] = [];
     public user_id: number;
-    public passwordStatus: boolean = false;
-    public passwordStatusText: string = "text";
-    public passwordButtonName: string = "Приховати пароль";
+    public passwordStatus: boolean = true;
+    public passwordStatusText: string = "password";
+    // public passwordButtonName: string = "Приховати пароль";
     public editSaveButtonName: string = "Зберегти дані";
-    public statusView: boolean = false;
     public editSaveButtonStatus: boolean = false;
     public modalInfoConfig: any = modalInfoConfig;
     public delRecord = delRecord;
+    public successEventModal = successEventModal;
 
     @ViewChild("fotoSrc") fotoSrc: ElementRef;
 
@@ -45,8 +46,6 @@ export class StudentNewProfileComponent implements OnInit {
                 private location: Location,
                 private modalService: NgbModal) {
     }
-
-    public successEventModal = successEventModal;
 
     ngOnInit() {
         this.dataForView();
@@ -58,30 +57,20 @@ export class StudentNewProfileComponent implements OnInit {
 
     showPassword() {
         if (this.passwordStatus) {
-            this.passwordButtonName = "Приховати пароль";
+           // this.passwordButtonName = "Приховати пароль";
             this.passwordStatusText = "text";
         }
         else {
-            this.passwordButtonName = "Показати пароль";
+            // this.passwordButtonName = "Показати пароль";
             this.passwordStatusText = "password";
         }
         this.passwordStatus = !this.passwordStatus;
     }
 
-    editSaveStudentProfile() {
-        if (this.statusView) {
-            this.editSaveButtonName = "Зберегти дані";
-        }
-        else {
-            this.createNewStudent();
-            this.editSaveButtonName = "Редагувати дані";
-        }
-        this.statusView = !this.statusView;
-    }
-
     dataForView(): void {
         this.student[0] = new Student();
         this.newStudent[0] = new Student();
+        this.curFaculty = "";
         this.getFacultyName();
     }
 
@@ -122,9 +111,17 @@ export class StudentNewProfileComponent implements OnInit {
                     this.newStudent[0].group_id = this.student[0].group_id;
                     this.newStudent[0].plain_password = this.student[0].plain_password;
                     this.newStudent[0].photo = this.fotoSrc.nativeElement.src;
+
                     this._commonService.insertData(this.entity, this.newStudent[0])
                         .subscribe(data => {
-                                console.log("data : ", data);
+                                if (data.response === "ok") {
+                                    this.modalInfoConfig.infoString = `Створено профіль студента ${this.newStudent[0].student_surname} ${this.newStudent[0].student_name} ${this.newStudent[0].student_fname}`;
+                                this.successEventModal();
+                                    this.dataForView(); }
+                                if (data.response === "Failed to validate array") {
+                                    this.modalInfoConfig.infoString = `Перевірте правильність введених даних`;
+                                    this.successEventModal();
+                                }
                             },
                             error => console.log("error: ", error)
                         );
@@ -133,30 +130,12 @@ export class StudentNewProfileComponent implements OnInit {
             );
     }
 
-    activate(data: any) {
-        switch (data.action) {
-            case "delete":
-                this.infoCase(data);
-                break;
-        }
-    }
-
-    infoCase(data: any) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
-        this.modalInfoConfig.action = "confirm";
-        this.modalInfoConfig.title = "Видалення";
-        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
-        modalRefDel.componentInstance.config = this.modalInfoConfig;
-        modalRefDel.result
-         .then(() => {
-         this.delRecord(this.entity, data.entity_id);
-         }, () => {
-         return;
-         });
-    }
-
     openFile(event) {
         let input = event.target;
+        if (input.files[0].size > 5000000) {
+            this.modalInfoConfig.infoString = `Розмір фотографії повинен бути не більше 5Мб`;
+            this.successEventModal();
+            return; }
         let reader = new FileReader();
         reader.onload = function () {
             let mysrc = <HTMLInputElement>document.getElementById("output");
