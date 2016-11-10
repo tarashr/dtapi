@@ -79,7 +79,7 @@ import {TestListSheduleComponent} from "./app/studentpart/test-list-shedule/test
         TimeTableComponent,
         TestDetailComponent,
         QuestionComponent,
-        AnswerComponent
+        AnswerComponent,
 		TestListComponent,
         TestListSheduleComponent
 
