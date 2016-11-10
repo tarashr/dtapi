@@ -53,12 +53,6 @@ label {
     margin: 10px 20px 10px 0;
 }
 
-/*.button-save-student-profile{
-    margin: 0 auto 0 auto;
-    text-align: center;
-    alignment: center;
-}*/
-
 .button-create-refresh {
     margin: auto;
     text-align: center;
@@ -87,6 +81,10 @@ div.student-datas  input{
     display: inline-block;
     cursor: pointer;
     width: auto;
+    position: relative;
+    right: 25px;
+    color: #aaaaaa;
+    margin: 10px 0 10px 0;
 }
 
 .password-eye-input{
