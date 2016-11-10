@@ -19,7 +19,7 @@
                 <div><label for="name">Ім'я:</label><input id="name" class="input-student-data"
                                                            [(ngModel)]="stud.student_name"
                                                            required></div>
-                <div><label for="fname">По батькові:</label><input id="fname" class="input-student-data"
+                <div><label for="fname">По-батькові:</label><input id="fname" class="input-student-data"
                                                                    [(ngModel)]="stud.student_fname"
                                                                    required></div>
                 <div><label for="faculty">Факультет:</label>
@@ -48,13 +48,13 @@
                                                                  [type]="passwordStatusText"
                                                                  [(ngModel)]="stud.plain_password"
                                                                  required>
-                    <span class="glyphicon glyphicon-eye-open password-eye" (mouseover)="showPassword()" (mouseout)="showPassword()"></span>
+                    <span class="glyphicon glyphicon-eye-open password-eye" (click)="showPassword()"></span>
                 </div>
                 <div><label for="gradebook_id">№ залікової книжки:</label><input id="gradebook_id"
                                                                                  class="input-student-data"
                                                                                  [(ngModel)]="stud.gradebook_id"
                                                                                  required></div>
-                <div><label for="email" required pattern="\S+@[a-z]+.[a-z]+">Електронна адреса:</label><input id="email"
+                <div><label for="email">Електронна адреса:</label><input id="email"
                                                                                                               class="input-student-data"
                                                                                                               [(ngModel)]="stud.email"
                                                                                                               required>
@@ -64,16 +64,11 @@
         <div class="button-create-refresh">
             <button class="btn btn-default" type="submit" (click)="createNewStudent()" role="button">Зберегти дані
             </button>
-            <!-- <button class="btn btn-default" type="button" (click)="editSaveStudentProfile()">
-                {{editSaveButtonName}}
-            </button> -->
             <button class="btn btn-default" type="submit" (click)="dataForView()" role="button">Очистити форму</button>
-            <!-- <button class="btn btn-default" type="submit" (click)="showPassword()" role="button">
-                {{passwordButtonName}}
-            </button> -->
         </div>
     </div>
 </div>
+
 <template ngbModalContainer></template>
 
 

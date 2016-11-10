@@ -6,7 +6,6 @@ import {Faculty} from "../shared/classes/faculty";
 import {Student} from "../shared/classes/student";
 import {CRUDService} from "../shared/services/crud.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
 
 import {
     modalInfoConfig,
@@ -33,12 +32,12 @@ export class StudentNewProfileComponent implements OnInit {
     public user_id: number;
     public passwordStatus: boolean = true;
     public passwordStatusText: string = "password";
-    // public passwordButtonName: string = "Приховати пароль";
     public editSaveButtonName: string = "Зберегти дані";
     public editSaveButtonStatus: boolean = false;
     public modalInfoConfig: any = modalInfoConfig;
     public delRecord = delRecord;
     public successEventModal = successEventModal;
+    private maxFileSize: number = 5000000;
 
     @ViewChild("fotoSrc") fotoSrc: ElementRef;
 
@@ -57,11 +56,9 @@ export class StudentNewProfileComponent implements OnInit {
 
     showPassword() {
         if (this.passwordStatus) {
-           // this.passwordButtonName = "Приховати пароль";
             this.passwordStatusText = "text";
         }
         else {
-            // this.passwordButtonName = "Показати пароль";
             this.passwordStatusText = "password";
         }
         this.passwordStatus = !this.passwordStatus;
@@ -132,7 +129,7 @@ export class StudentNewProfileComponent implements OnInit {
 
     openFile(event) {
         let input = event.target;
-        if (input.files[0].size > 5000000) {
+        if (input.files[0].size > this.maxFileSize) {
             this.modalInfoConfig.infoString = `Розмір фотографії повинен бути не більше 5Мб`;
             this.successEventModal();
             return; }
@@ -143,5 +140,4 @@ export class StudentNewProfileComponent implements OnInit {
         };
         reader.readAsDataURL(input.files[0]);
     }
-
 }

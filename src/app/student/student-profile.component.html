@@ -21,22 +21,22 @@
                                                            [disabled]="statusView"
                                                            [(ngModel)]="stud.student_name"
                                                            required></div>
-                <div><label for="fname">По батькові:</label><input id="fname" class="input-student-data"
+                <div><label for="fname">По-батькові:</label><input id="fname" class="input-student-data"
                                                                    [disabled]="statusView"
                                                                    [(ngModel)]="stud.student_fname"
                                                                    required></div>
                 <div><label for="faculty">Факультет:</label>
-                    <select id="faculty" class="input-student-data select-group" [disabled]="statusView" [(ngModel)]="stud.faculty_name" required>
-                        <option *ngFor="let item of facultys" class="input-student-data" [value]="item.faculty_id">
+                    <select *ngIf ="facultys" id="faculty" class="input-student-data select-group" required [disabled]="statusView" #facCurrent (change)="getGroupByFaculty(facCurrent.value)">
+                        <option *ngFor="let item of facultys" class="input-student-data" [value]="item.faculty_id" [selected]="item.faculty_id == stud.faculty_id" >
                             {{item.faculty_name}}
                         </option>
                     </select>
                 </div>
 
                 <div><label for="group">Група:</label>
-                    <select id="group" class="input-student-data select-group" [disabled]="statusView" [(ngModel)]="stud.group_id"
-                            required>
-                        <option *ngFor="let item of groups" class="input-student-data" [value]="item.group_id">
+                    <select #groupId *ngIf ="groups" id="group" class="input-student-data select-group" (input) = "studGroupId(groupId.value)"
+                            required [disabled]="statusView">
+                        <option *ngFor="let item of groups" class="input-student-data" [value]="item.group_id" [selected]="item.group_id == stud.group_id">
                             {{item.group_name}}
                         </option>
                     </select>
@@ -52,7 +52,7 @@
                                                                  [(ngModel)]="stud.plain_password"
                                                                  [disabled]="statusView"
                                                                  required>
-                    <span class="glyphicon glyphicon-eye-open password-eye" (mouseover)="showPassword()" (mouseout)="showPassword()"></span>
+                   <span class="glyphicon glyphicon-eye-open password-eye" (click)="showPassword()"></span>
                 </div>
 
                 <div><label for="gradebook_id">№ залікової книжки:</label><input id="gradebook_id"
@@ -72,68 +72,7 @@
             <button class="btn btn-default" type="submit" (click) = deleteStudent() role="button">Видалити студента</button>
         </div>
     </div>
-
-<!--
-
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="active"><a href="#tab1" data-toggle="tab">Доступні</a></li>
-        <li><a href="#tab2" data-toggle="tab">Заплановані</a></li>
-        <li><a href="#tab3" data-toggle="tab">Пройдені</a></li>
-    </ul>
-
-    <div class="tab-content">
-        <div class="tab-pane fade in active" id="tab1">
-            <h3>Cписок доступних тестувань для групи "ЕК-00-02"</h3>
-            <ul>
-                <li>Предмет: Асемблер Назва тесту: Основи. Дата проведення: 2016-10-24</li>
-                <li>Предмет: Асемблер Назва тесту: Елементарний рівень. Дата проведення: 2016-10-24</li>
-            </ul>
-        </div>
-        <div class="tab-pane fade" id="tab2">
-            <h3>Список тестувань які плануються для групи "ЕК-00-02"</h3>
-            <ul>
-                <li>Предмет: Асемблер Назва тесту: Основи. Дата проведення: 2016-10-24</li>
-                <li>Предмет: Асемблер Назва тесту: Елементарний рівень. Дата проведення: 2016-10-24</li>
-                <li>Предмет: Асемблер Назва тесту: Елементарний рівень. Дата проведення: 2016-10-24</li>
-            </ul>
-        </div>
-        <div class="tab-pane fade" id="tab3">
-            <h3 class="bg-warning">Результати тестувань</h3>
-            <ul class="list-group">
-                <li class="list-group-item row bg-warning hidden-xs">
-                    <div class=" col-md-3 text-center">
-                        <b>Назва тесту</b>
-                    </div>
-                    <div class=" col-md-2 text-center">
-                        <b>Дата проведення</b>
-                    </div>
-                    <div class=" col-md-3 text-center">
-                        <b>Результат</b>
-                    </div>
-                    <div class=" col-md-2 text-center">
-                        <b>Час початку</b>
-                    </div>
-                    <div class=" col-md-2 text-center">
-                        <b>Час закінчення</b>
-                    </div>
-                </li>
-                <li class="list-group-item row">
-                    <div class=" col-md-3 text-center">Basic level</div>
-                    <div class=" col-md-2 text-center">2016-10-22</div>
-                    <div class=" col-md-3 text-center"><b>12 із 22 балів</b></div>
-                    <div class=" col-md-2 text-center">20:34:54</div>
-                    <div class=" col-md-2 text-center">20:35:34</div>
-                </li>
-                <li class="list-group-item row">
-                    <div class=" col-md-3 text-center">Elementary level</div>
-                    <div class=" col-md-2 text-center">2016-11-22</div>
-                    <div class=" col-md-3 text-center"><b>8 із 22 балів</b></div>
-                    <div class=" col-md-2 text-center">20:34:54</div>
-                    <div class=" col-md-2 text-center">20:35:34</div>
-                </li>
-            </ul>
-        </div>
-    </div> -->
 </div>
+
 
 <template ngbModalContainer></template>

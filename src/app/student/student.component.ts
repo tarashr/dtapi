@@ -17,12 +17,7 @@ import {
     headersStudentAdmin,
     actionsStudentAdmin,
     modalInfoConfig
-    // findEntity,
-    // getRecordsRange,
-    // changeLimit
 } from "../shared/constant";
-
-/*import {Observable} from "rxjs";*/
 
 @Component({
     templateUrl: "student.component.html",
@@ -45,7 +40,7 @@ export class StudentComponent implements OnInit {
 
     public entityData: any[] = [];
     private entityDataLength: number;
-    public entityData2: Student[];
+    public studentDataForView: Student[];
     public entity: string = "student";
     public limit: number = 5;
     public search: string = "";
@@ -75,9 +70,6 @@ export class StudentComponent implements OnInit {
     public delRecord = delRecord;
     public refreshData = refreshData;
     public getCountRecords = getCountRecords;
-    // public findEntity = findEntity;
-    // public getRecordsRange = getRecordsRange;
-    // public errorMessage: string;
 
     ngOnInit() {
         if (this.groupId) {
@@ -105,7 +97,7 @@ export class StudentComponent implements OnInit {
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                     data => {
-                    this.entityData2 =  data;
+                    this.studentDataForView =  data;
                     this.getGroupName();
                 },
                 error => console.log("error: ", error));
@@ -119,7 +111,7 @@ export class StudentComponent implements OnInit {
                     return;
                 }
                 this.page = 1;
-                this.entityData2 = data;
+                this.studentDataForView = data;
                 this.getGroupName();
 
             }, error => console.log("error: ", error));
@@ -127,7 +119,7 @@ export class StudentComponent implements OnInit {
 
     getGroupName(): void {
         let groupId: number[] = [];
-        let data2 = this.entityData2;
+        let data2 = this.studentDataForView;
         for (let i in data2) {
             groupId.push(data2[i].group_id);
         }
@@ -136,13 +128,13 @@ export class StudentComponent implements OnInit {
             .subscribe(
                 groups => {
                     this.groups = groups;
-                    for (let j in this.entityData2)
+                    for (let j in this.studentDataForView)
                         for (let i in this.groups) {
-                            if (this.entityData2[j].group_id === this.groups[i].group_id) {
-                                this.entityData2[j].group_name = this.groups[i].group_name;
+                            if (this.studentDataForView[j].group_id === this.groups[i].group_id) {
+                                this.studentDataForView[j].group_name = this.groups[i].group_name;
                             }
                         }
-                    this.createTableConfig(this.entityData2);
+                    this.createTableConfig(this.studentDataForView);
                 },
                 error => console.log("error: ", error)
             );
@@ -150,7 +142,7 @@ export class StudentComponent implements OnInit {
 
     findEntity(searchTerm: string) {
         this.search = searchTerm;
-        if (this.search.length === 0) {
+        if (!this.search.length) {
             this.offset = 0;
             this.page = 1;
             this.getCountRecords();
@@ -163,7 +155,7 @@ export class StudentComponent implements OnInit {
                     return;
                 }
                 this.page = 1;
-                this.entityData2 = data;
+                this.studentDataForView = data;
                 this.getGroupName();
 
             }, error => console.log("error: ", error));
