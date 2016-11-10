@@ -87,11 +87,13 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         this.subjectService.getTestsBySubjectId(this.entityTestName, this.subject_id)
             .subscribe(
                 data => {
-                    data.forEach(item => {
-                        if (item.test_id == this.test_id) {
-                            this.tasksTest = item.tasks;
-                        }
-                    });
+                    if (data.length) {
+                        data.forEach(item => {
+                            if (item.test_id == this.test_id) {
+                                this.tasksTest = item.tasks;
+                            }
+                        });
+                    }
                 },
                 error => console.log("error: ", error)
             );
@@ -112,6 +114,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
                     let tempArr: any[] = [];
                     let numberOfOrder: number;
                     if (data.length) {
+                        this.noRecords = false;
                         data.forEach((item, i) => {
                             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                             let testDetail: any = {};
@@ -250,6 +253,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         modalRefDel.result
             .then(() => {
                 this.deleteTestDetail(this.entity, data.entity_id);
+                this.getTestDetailsByTest();
             }, () => {
                 return;
             });

@@ -1,4 +1,3 @@
-
 import {Component, OnInit, OnDestroy} from "@angular/core";
 import {Location} from "@angular/common";
 import {Router, ActivatedRoute, Params} from "@angular/router";
@@ -33,7 +32,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
     public errorMessage: string;
     public entityTitle: string = "Відповіді до завдання №: ";
     public numberOfQuestion;
-    public noRecords:boolean = false;
+    public noRecords: boolean = false;
 
     public question_id: number;
     public headers: any = headersQuestion;
@@ -92,10 +91,13 @@ export class AnswerComponent implements OnInit, OnDestroy {
         this.subjectService.getAnswerByQuestion(this.question_id)
             .subscribe(
                 data => {
-                    if(data.response === "no records"){
+                    if (data.response === "no records") {
                         this.noRecords = true;
                     }
+                    if (data.length) {
                         this.entityData = data;
+                        this.noRecords = false;
+                    }
                 },
                 error => console.log("error: ", error)
             );

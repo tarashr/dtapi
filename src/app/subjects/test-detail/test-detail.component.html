@@ -12,7 +12,7 @@
             </form>
         </div>
     </nav>
-    <dt-table *ngIf="entityData.length"
+    <dt-table *ngIf="!noRecords"
               [limit]="limit"
               [page]="page"
               [headers]="headers"
@@ -20,7 +20,7 @@
               [tableData]="entityData"
               (activate)="activate($event)">
     </dt-table>
-    <div *ngIf="entityData.length">
+    <div *ngIf="!noRecords">
         Загальна кількість завдань в тесті: {{tasksTest}} <br>
     </div>
     <div *ngIf="noRecords" class="text-center">

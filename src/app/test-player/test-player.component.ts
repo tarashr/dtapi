@@ -35,13 +35,11 @@ export class TestPlayerComponent implements OnInit {
     ngOnInit() {
         this.subjectService.getTestDetailsByTest(this.testId)
             .subscribe(testDetails => {
-                console.log(JSON.stringify(testDetails, null, 2));
                 this.testDetails = testDetails;
                 testDetails.forEach((data) => {
                     this.tasksCount += +data.tasks;
                     this.maxUserRate += +data.tasks * +data.rate;
                 });
-                console.log(this.maxUserRate);
                 testDetails.forEach((item) => {
                     this.subjectService.getQuestionsByLevelRand(item.test_id, item.level, item.tasks)
                         .subscribe(response => {

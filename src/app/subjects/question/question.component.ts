@@ -117,12 +117,13 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.subjectService.getRecordsRangeByTest(this.test_id, this.limit, this.offset)
             .subscribe(
                 data => {
-                    if(data.response === "no records"){
+                    if (data.response === "no records") {
                         this.noRecords = true;
                     }
                     let tempArr: any[] = [];
                     let numberOfOrder: number;
                     if (data.length) {
+                        this.noRecords = false;
                         data.forEach((item, i) => {
                             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                             let question: any = {};

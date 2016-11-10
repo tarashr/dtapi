@@ -80,12 +80,13 @@ export class TestComponent implements OnInit, OnDestroy {
         this.subjectService.getTestsBySubjectId(this.entity, this.subject_id)
             .subscribe(
                 data => {
-                    if(data.response === "no records"){
+                    if (data.response === "no records"){
                         this.noRecords = true;
                     }
                     let tempArr: any[] = [];
                     let numberOfOrder: number;
                     if (data.length) {
+                        this.noRecords = false;
                         data.forEach((item, i) => {
                             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                             let test: any = {};

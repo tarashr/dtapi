@@ -12,7 +12,7 @@
             </form>
         </div>
     </nav>
-    <div class="container-fluid">
+    <div class="container-fluid" *ngIf="!noRecords">
         <ul class="list-group entity-list">
             <li class="list-group-item row hidden-xs">
                 <div class="col-xs-12 col-sm-3">Текст відповіді</div>
