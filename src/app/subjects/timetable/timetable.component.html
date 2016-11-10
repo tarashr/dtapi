@@ -20,7 +20,7 @@
               [tableData]="entityData"
               (activate)="activate($event)">
     </dt-table>
-    <div *ngIf="!entityData.length" class="alert alert-info" role="alert">
+    <div *ngIf="noRecords" class="text-center">
         Для вибраного предмету розклад не сформований
     </div>
 </div>

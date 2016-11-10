@@ -39,6 +39,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     public successEventModal = successEventModal;
     private config: any = {action: "create"};
     public modalInfoConfig: any = modalInfoConfig;
+    public noRecords:boolean = false;
 
     // varibles for addedit
     public configAdd = configAddTestDetail;
@@ -105,6 +106,9 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         this.subjectService.getTestDetailsByTest(this.test_id)
             .subscribe(
                 data => {
+                    if (data.response === "no records"){
+                        this.noRecords = true;
+                    }
                     let tempArr: any[] = [];
                     let numberOfOrder: number;
                     if (data.length) {

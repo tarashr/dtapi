@@ -39,6 +39,7 @@ export class TestComponent implements OnInit, OnDestroy {
     public successEventModal = successEventModal;
     private config: any = {action: "create"};
     public modalInfoConfig: any = modalInfoConfig;
+    public noRecords:boolean = false;
 
     // varibles for addedit
     public configAdd = configAddTest;
@@ -63,8 +64,8 @@ export class TestComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
             this.subject_id = +params["id"];
-            this.getTestBySubjectId();
         });
+        this.getTestBySubjectId();
     }
 
     ngOnDestroy() {
@@ -79,6 +80,9 @@ export class TestComponent implements OnInit, OnDestroy {
         this.subjectService.getTestsBySubjectId(this.entity, this.subject_id)
             .subscribe(
                 data => {
+                    if(data.response === "no records"){
+                        this.noRecords = true;
+                    }
                     let tempArr: any[] = [];
                     let numberOfOrder: number;
                     if (data.length) {

@@ -32,7 +32,8 @@ import {TableComponent}          from "./app/shared/components/table/table.compo
 import {InfoModalComponent}      from "./app/shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent}   from "./app/shared/components/addeditmodal/modal-add-edit.component";
 import { TestDetailComponent }   from "./app/subjects/test-detail/test-detail.component";
-import { QuestionComponent }     from "./app/subjects/question/question.component"
+import { QuestionComponent }     from "./app/subjects/question/question.component";
+import { AnswerComponent } from "./app/subjects/answer/answer.component";
 
 import {TestsTabsetComponent}    from "./app/studentpart/teststabset/tests-tabset.component";
 import {TestPlayerComponent}     from "./app/test-player/test-player.component";
@@ -72,7 +73,8 @@ import {GroupService} from "./app/shared/services/group.service";
         UserProfileComponent,
         TimeTableComponent,
         TestDetailComponent,
-        QuestionComponent
+        QuestionComponent,
+        AnswerComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: "/"},

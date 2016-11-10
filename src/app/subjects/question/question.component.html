@@ -24,15 +24,15 @@
     <div class="container-fluid">
         <ul class="list-group entity-list">
             <li class="list-group-item row hidden-xs">
-                <div class="col-xs-12 col-sm-1"><b>№</b></div>
-                <div class="col-xs-12 col-sm-2"><b>Завдання</b></div>
-                <div class="col-xs-12 col-sm-1"><b>Рівень</b></div>
-                <div class="col-xs-12 col-sm-1"><b>Тип</b></div>
-                <div class="col-xs-12 col-sm-4"><b>Вкладення</b></div>
+                <div class="col-xs-12 col-sm-1 text-center">№</div>
+                <div class="col-xs-12 col-sm-2">Завдання</div>
+                <div class="col-xs-12 col-sm-1 text-center">Рівень</div>
+                <div class="col-xs-12 col-sm-1 text-center">Тип</div>
+                <div class="col-xs-12 col-sm-4 text-center">Вкладення</div>
                 <div class="col-xs-12 col-sm-2"></div>
             </li>
             <li *ngFor="let entity of entityData; let i = index" class="list-group-item row">
-                <div class="col-xs-12 col-sm-1">
+                <div class="col-xs-12 col-sm-1 text-center">
                     <span class="visible-xs-inline-block">№:</span>
                     <span class="align-xs">{{entity.entityColumns[0]}}</span>
                 </div>
@@ -40,21 +40,25 @@
                     <span class="visible-xs-inline-block">Завдання:</span>
                     <span class="align-xs">{{entity.entityColumns[1]}}</span>
                 </div>
-                <div class="col-xs-12 col-sm-1">
+                <div class="col-xs-12 col-sm-1 text-center">
                     <span class="visible-xs-inline-block">Рівень:</span>
                     <span class="align-xs">{{entity.entityColumns[2]}}</span>
                 </div>
-                <div class="col-xs-12 col-sm-1">
+                <div class="col-xs-12 col-sm-1 text-center">
                     <span class="visible-xs-inline-block">Тип:</span>
                     <span class="align-xs">{{entity.entityColumns[3]}}</span>
                 </div>
-                <div class="col-xs-12 col-sm-4">
+                <div class="col-xs-12 col-sm-4 text-center">
                     <span class="visible-xs-inline-block">Вкладення:</span>
                     <span class="align-xs">
-                        <img id="img" [src]="entity.entityColumns[4]" alt="Зображення для тесту" #imgSrc width="100%">
+                        <img [src]="entity.entityColumns[4]" alt="Зображення для тесту" width="100%">
                     </span>
                 </div>
-                <div class="col-xs-12 col-sm-2">
+                <div class="col-xs-12 col-sm-2 text-center">
+                    <a class="btn btn-default btn-sm" role="button" title="Перейти до відповіді"
+                       (click)="goToAnswer(entity)">
+                        <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                    </a>
                     <a class="btn btn-default btn-sm" role="button" title="Редагувати завдання"
                        (click)="editCase(entity)">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
@@ -79,7 +83,7 @@
             [ellipses]="true"
             [boundaryLinks]="true">
     </ngb-pagination>
-    <div *ngIf="!entityData.length" class="alert alert-info" role="alert">
+    <div *ngIf="noRecords" class="text-center">
         Для вибраного тесту завдань немає
     </div>
 </div>

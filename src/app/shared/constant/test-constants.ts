@@ -2,9 +2,9 @@
 export const headersTest = [
     {name: "№", className: "col-xs-12 col-sm-1"},
     {name: "Назва тесту", className: "col-xs-12 col-sm-2"},
-    {name: "Завдань", className: "col-xs-12 col-sm-1"},
-    {name: "Тривалість", className: "col-xs-12 col-sm-2"},
-    {name: "Cпроб", className: "col-xs-12 col-sm-1"},
+    {name: "Завдань", className: "col-xs-12 col-sm-1 text-center"},
+    {name: "Тривалість", className: "col-xs-12 col-sm-2 text-center"},
+    {name: "Cпроб", className: "col-xs-12 col-sm-1 text-center"},
     {name: "Статус", className: "col-xs-12 col-sm-2"},
     {name: "", className: "col-xs-12 col-sm-3"}
 ];

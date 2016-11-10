@@ -16,7 +16,7 @@ export const actionsSubject = [
     {
         title: "Розклад тестів",
         action: "timeTable",
-        glyphicon: "glyphicon glyphicon-th",
+        glyphicon: "glyphicon glyphicon-calendar",
         btnClassName: "btn btn-default btn-sm"
     },
     {
