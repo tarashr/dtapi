@@ -185,7 +185,6 @@ export class GroupComponent implements OnInit, OnDestroy {
                         } else {
                             this.entityDataWithNames =  data;
                             this.getFacultyName();
-                            console.log(this.entityDataWithNames);
                         }
                     },
                     error => console.log("error: ", error));
