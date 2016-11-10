@@ -1,118 +1,29 @@
-﻿<ngb-tabset>
+<ngb-tabset>
     <ngb-tab title="Доступні">
         <template ngbTabContent>
-            <h3>Cписок доступних тестувань</h3>
-
-
-            <div class="row">
-                <div class="col-xs-9">
-                    Предмет: <b>Асемблер</b> Назва тесту: <b>Основи</b><br>
-                    Дата проведення: 2016-10-26
-                </div>
-                <div class="col-xs-3">
-
-
-                    <button class="btn btn-default text-right"
-                            routerLink="/student/test-player"
-                            routerLinkActive="active">
-									<span aria-hidden="true" class="glyphicon glyphicon glyphicon-play">
-										Тестуватися
-									</span>
-                    </button>
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-xs-9">
-                    Предмет: <b>Асемблер</b> Назва тесту: <b>Елементарний рівень</b><br>
-                    Дата проведення: 2016-10-26
-                </div>
-                <div class="col-xs-3">
-                    <button class="btn btn-default text-right"
-							routerLink="/student/test-player"
-                            routerLinkActive="active">
-									<span aria-hidden="true" class="glyphicon glyphicon glyphicon-play">
-										Тестуватися
-									</span>
-                    </button>
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-xs-9">
-                    Предмет: <b>Асемблер</b> Назва тесту: <b>Середній рівень</b><br>
-                    Дата проведення: 2016-10-26
-                </div>
-                <div class="col-xs-3">
-                    <button class="btn btn-default text-right" 
-							routerLink="/student/test-player"
-                            routerLinkActive="active">
-									<span aria-hidden="true" class="glyphicon glyphicon glyphicon-play">
-										Тестуватися
-									</span>
-                    </button>
-                </div>
-            </div>
+            <h3>Cписок доступних тестувань для групи "{{groupName}}"</h3>
+            <test-list
+                    [groupId] = "groupId">
+            </test-list>
         </template>
     </ngb-tab>
 
     <ngb-tab title="Заплановані">
         <template ngbTabContent>
-            <h3>Cписок тестувань які плануються для групи "{{usergroup_name}}"</h3>
+            <h3>Cписок тестувань які плануються для групи "{{groupName}}"</h3>
             <div class="row">
-                <div class="col-xs-12">
-                    Предмет: <b>Асемблер</b> Назва тесту: <b>Середній рівень</b><br>
-                    Дата проведення: 2016-10-26
-                </div>
-                <br><hr>
-                <div class="col-xs-12">
-                    Предмет: <b>Асемблер</b> Назва тесту: <b>Середній рівень</b><br>
-                    Дата проведення: 2016-10-26
-                </div>
-            </div>
+
+                <test-list-shedule
+                        [groupId] = "groupId">
+                </test-list-shedule>
+
+			</div>
         </template>
     </ngb-tab>
     <ngb-tab title="Пройдені">
         <template ngbTabContent>
             <h3>Результати тестувань</h3>
-            <div class="container-fluid">
-                <ul class="list-group entity-list">
-                    <li class="list-group-item row bg-warning hidden-xs">
-
-                        <div class=" col-md-3 text-center"><b>Назва тесту</b></div>
-                        <div class=" col-md-2 text-center"><b>Дата проведення</b></div>
-                        <div class=" col-md-3 text-center"><b>Результат</b></div>
-                        <div class=" col-md-2 text-center"><b>Час початку</b></div>
-                        <div class=" col-md-2 text-center"><b>Час закінчення</b></div>
-                    </li>
-                    <li class="list-group-item row">
-
-                        <div class=" col-md-3 text-center">Basic level</div>
-                        <div class=" col-md-2 text-center">2016-09-22</div>
-                        <div class=" col-md-3 text-center"><b>8 із 22 балів</b></div>
-                        <div class=" col-md-2 text-center">20:34:54</div>
-                        <div class=" col-md-2 text-center">20:35:34</div>
-                    </li>
-                    <li class="list-group-item row">
-
-                        <div class=" col-md-3 text-center">Basic level</div>
-                        <div class=" col-md-2 text-center">2016-09-22</div>
-                        <div class=" col-md-3 text-center"><b>8 із 22 балів</b></div>
-                        <div class=" col-md-2 text-center">20:34:54</div>
-                        <div class=" col-md-2 text-center">20:35:34</div>
-                    </li>
-                    <li class="list-group-item row">
-
-                        <div class=" col-md-3 text-center">Basic level</div>
-                        <div class=" col-md-2 text-center">2016-09-22</div>
-                        <div class=" col-md-3 text-center"><b>8 із 22 балів</b></div>
-                        <div class=" col-md-2 text-center">20:34:54</div>
-                        <div class=" col-md-2 text-center">20:35:34</div>
-                    </li>
-
-
-                </ul>
-            </div>
+            Ви ще не тестувалися...
         </template>
     </ngb-tab>
 </ngb-tabset>

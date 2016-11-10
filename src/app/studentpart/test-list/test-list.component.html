@@ -1,0 +1,7 @@
+<dt-table *ngIf="entityData.length>0"
+		  [headers]="headers"
+		  [actions]="actions"
+		  [tableData]="entityData"
+		  (activate)="activate($event)">
+</dt-table>
+<template ngbModalContainer></template>

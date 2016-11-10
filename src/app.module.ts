@@ -40,6 +40,10 @@ import {TestPlayerComponent}     from "./app/test-player/test-player.component";
 import {UserProfileComponent}    from "./app/studentpart/profile/user-profile.component";
 import {GroupService} from "./app/shared/services/group.service";
 import {TestPlayerService} from "./app/shared/services/test-player.service";
+import {TestListComponent} from "./app/studentpart/test-list/test-list.component";
+import {TestListSheduleComponent} from "./app/studentpart/test-list-shedule/test-list-shedule.component";
+
+
 
 @NgModule({
     imports: [
@@ -76,6 +80,9 @@ import {TestPlayerService} from "./app/shared/services/test-player.service";
         TestDetailComponent,
         QuestionComponent,
         AnswerComponent
+		TestListComponent,
+        TestListSheduleComponent
+
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: "/"},
