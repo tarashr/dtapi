@@ -86,6 +86,7 @@ export class TimeTableComponent implements OnInit, OnDestroy {
                         this.noRecords = true;
                     }
                     if (data.length) {
+                        this.noRecords = false;
                         for (let i = 0; i < data.length; i++) {
                             for (let j = 0; j < this.groups.length; j++) {
                                 if (data[i].group_id === this.groups[j].group_id) {
@@ -226,6 +227,7 @@ export class TimeTableComponent implements OnInit, OnDestroy {
         modalRefDel.result
             .then(() => {
                 this.deleteTimeTable(this.entity, data.entity_id);
+                this.getTimeTableForSubject();
             }, () => {
                 return;
             });

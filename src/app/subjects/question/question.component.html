@@ -8,6 +8,7 @@
                     <select class="form-control" name="count"
                             #select
                             [title]="selectLimit"
+                            [disabled]="noRecords"
                             (input)="changeLimit(select.value)">
                         <option value="5">5</option>
                         <option value="10">10</option>
@@ -21,7 +22,7 @@
             </form>
         </div>
     </nav>
-    <div class="container-fluid">
+    <div class="container-fluid" *ngIf="!noRecords">
         <ul class="list-group entity-list">
             <li class="list-group-item row hidden-xs">
                 <div class="col-xs-12 col-sm-1 text-center">№</div>
@@ -72,7 +73,7 @@
         </ul>
     </div>
     <ngb-pagination
-            *ngIf="entityDataLength"
+            *ngIf="!noRecords"
             [hidden]="limit>=entityDataLength"
             [pageSize]="limit"
             [collectionSize]="entityDataLength"

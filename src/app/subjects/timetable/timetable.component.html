@@ -12,7 +12,7 @@
             </form>
         </div>
     </nav>
-    <dt-table *ngIf="entityData.length"
+    <dt-table *ngIf="!noRecords"
               [limit]="limit"
               [page]="page"
               [headers]="headers"
