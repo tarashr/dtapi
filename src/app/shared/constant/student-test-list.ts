@@ -16,3 +16,17 @@ export const actionsStudentTestList = [
         btnClassName: "btn btn-default btn-sm"
     }
 ];
+
+export const activeTests = [{
+    test_name: "",
+    subject_id: "",
+    subjectName: "",
+    test_id: "",
+    enabled: ""
+}];
+
+export const activeTimeTable = [{
+    group_id: this.groupId,
+    subject_id: "",
+    event_date: ""
+}];
