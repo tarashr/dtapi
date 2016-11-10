@@ -1,5 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {Router} from "@angular/router";
+import {Component, OnInit, Input} from "@angular/core";
 import {CRUDService} from "../../shared/services/crud.service";
 import {SubjectService} from "../../shared/services/subject.service";
 import {StudentPageService} from "../../shared/services/student-page.service";
@@ -51,7 +50,7 @@ export class TestListSheduleComponent implements OnInit {
                                     .subscribe(dataTests=> {
                                         this.activeTests = dataTests;
                                         for (let j = 0; j < this.activeTests.length; j++) {
-                                            if ((this.dateNow < this.activeTimeTable[i].event_date)&&(this.activeTests[j].enabled=="1")){
+                                            if ((this.dateNow < this.activeTimeTable[i].event_date)&&(this.activeTests[j].enabled === "1")){
                                                 this.entityData.push({
                                                     entityColumns: [
                                                         newSubjectName,

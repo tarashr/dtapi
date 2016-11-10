@@ -29,23 +29,12 @@ export class StudentPageService {
     };
 
     getTimeStamp() {
+
         var myDate = new Date();
         var formatDate = myDate.getFullYear() + '-' + ('0' + (myDate.getMonth() + 1)).slice(-2) +
             '-' + ('0' + myDate.getDate()).slice(-2);
         return formatDate;
     }
 
-    sortTableData(tableData) {
-        tableData.sort(function (a, b) {
-            if (a.entityColumns[1] > b.entityColumns[1]) {
-                return 1;
-            }
-            if (a.entityColumns[1] < b.entityColumns[1]) {
-                return -1;
-            }
-            return 0;
-        });
-        return tableData;
-    }
 
 }
