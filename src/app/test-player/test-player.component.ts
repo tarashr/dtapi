@@ -14,7 +14,7 @@ import {modalInfoConfig} from "../shared/constant";
 export class TestPlayerComponent implements OnInit {
 
     private modalInfoConfig = modalInfoConfig;
-    private testId: number = 13;
+    private testId: number = 3;
 
     private navButtons: any[];
 
@@ -47,6 +47,7 @@ export class TestPlayerComponent implements OnInit {
                             response.forEach(question => {
                                 question.chosenAnswer = {};
                                 question.rate = item.rate;
+                                question.type === "1" ? question.type = "radio" : question.type = "checkbox";
                                 this.questions.push(question);
                             });
                             if (this.questionCount === this.tasksCount) {
@@ -125,10 +126,18 @@ export class TestPlayerComponent implements OnInit {
     }
 
     toggleAnswer(event: any, answerId: number, numberOfQuestion: number) {
-        this.questions[numberOfQuestion].chosenAnswer[answerId] = !this.questions[numberOfQuestion].chosenAnswer[answerId];
+        if (this.questions[numberOfQuestion].type === "checkbox") {
+            this.questions[numberOfQuestion].chosenAnswer[answerId] = !this.questions[numberOfQuestion].chosenAnswer[answerId];
+        }
+        else {
+            if (!this.questions[numberOfQuestion].chosenAnswer[answerId]) {
+                for (let key in this.questions[numberOfQuestion].chosenAnswer) {
+                    this.questions[numberOfQuestion].chosenAnswer[key] = false;
+                }
+                this.questions[numberOfQuestion].chosenAnswer[answerId] = true;
+            }
+        }
         event.stopImmediatePropagation();
-
-
     }
 
 }

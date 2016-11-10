@@ -11,9 +11,10 @@
                     <h3 class="question-text">{{question.question_text}}</h3>
                     <ul class="answers">
                         <li *ngFor="let answer of question.answers">
-                            <label (click)="toggleAnswer($event, answer.answer_id, i)">
-                                <input type="checkbox" name="answer"
+                            <label>
+                                <input [type]="question.type" name="answer"
                                        [value]="answer.answer_id"
+                                       (click)="toggleAnswer($event, answer.answer_id, i)"
                                        [checked]="question.chosenAnswer[answer.answer_id]">
                                 <img *ngIf="answer.attachment.length>0"
                                      [src]="answer.attachment"
