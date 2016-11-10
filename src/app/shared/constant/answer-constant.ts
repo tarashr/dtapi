@@ -39,7 +39,7 @@ export const configEditAnswer = {
     title: "Редагувати завдання",
     list: [
         {name: "Текст відповіді", value: "", title: "answer", type: "text"},
-        {name: "Результат", value: "", title: "true_answer", type: "number"}
+        {name: "Правильна відповідь", value: "", title: "true_answer", type: "number"}
     ],
     action: "edit",
     labelBtn: "Редагувати",

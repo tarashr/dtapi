@@ -54,7 +54,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     public testDetails: any[] = [];
     public subject_id;
     public entityTest = [];
-    public testName;
+    public testName: string;
     public level: number [] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     constructor(private crudService: CRUDService,
