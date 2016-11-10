@@ -23,6 +23,7 @@ export class TestListSheduleComponent implements OnInit {
         event_date: ""
     }];
 
+
     public dateNow = "";
 
     public headers = [
@@ -42,12 +43,15 @@ export class TestListSheduleComponent implements OnInit {
     }
 
     ngOnInit() {
+
         this.getTimeStamp();
         this.getTimeTable();
 
     }
 
     getTimeTable() {
+        this.timeTable.length = 0;
+        this.tests.length = 0;
         this._commonService.getTimeTableForGroup(this.groupId)
             .subscribe(data=> {
                 this.timeTable = data;
@@ -55,20 +59,19 @@ export class TestListSheduleComponent implements OnInit {
                 for (let i = 0; i < this.timeTable.length; i++) {
                     let idSubject = +this.timeTable[i].subject_id;
                     let eventDate = this.timeTable[i].event_date;
-                    this._subjectService.getTestsBySubjectId("Subject", idSubject)
+                    this._subjectService.getTestsBySubjectId("subject", idSubject)
                         .subscribe(data=> {
-                            this.tests = data
-                            this.getTestList(this.tests, eventDate);
+                            this.tests = data;
+                            this.getTestList(eventDate);
                         })
                 }
             })
     }
 
-    getTestList(data, eventDate) {
-        this.tests = data;
+    getTestList(eventDate) {
 
         for (let i = 0; i < this.tests.length; i++) {
-            this._commonService.getRecordById("Subject", this.tests[i].subject_id)
+            this._commonService.getRecordById("subject", this.tests[i].subject_id)
                 .subscribe(subject=> {
                         this.tests[i].subjectName = subject[0].subject_name;
                         if (eventDate > this.dateNow) {

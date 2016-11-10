@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, OnChanges} from '@angular/core';
 import {CRUDService} from "../../shared/services/crud.service";
 import {SubjectService} from "../../shared/services/subject.service";
 
@@ -7,17 +7,18 @@ import {SubjectService} from "../../shared/services/subject.service";
     templateUrl: './test-list.component.html'
 })
 
-export class TestListComponent implements OnInit {
+export class TestListComponent implements OnChanges {
+
     @Input() groupId;
 
-    public tests = [{
+    public activeTests = [{
         test_name: "...",
         subject_id: "...",
         subjectName: "...",
         test_id: ""
     }];
 
-    public timeTable = [{
+    public activeTimeTable = [{
         group_id: this.groupId,
         subject_id: "",
         event_date: ""
@@ -49,10 +50,15 @@ export class TestListComponent implements OnInit {
                 private _subjectService: SubjectService) {
     }
 
-    ngOnInit() {
-        this.getTimeStamp();
-        this.getTimeTable();
 
+    ngOnChanges(groupId) {
+
+        if (this.groupId !== undefined) {
+            console.log("Group Id=" + this.groupId);
+
+            this.getTimeStamp();
+            this.getTimeTable();
+        }
     }
 
     activate(data) {
@@ -60,71 +66,59 @@ export class TestListComponent implements OnInit {
     }
 
     getTimeTable() {
+        this.entityData.length = 0;
         this._commonService.getTimeTableForGroup(this.groupId)
-            .subscribe(data=> {
-                this.timeTable = data;
+            .subscribe(data1=> {this.activeTimeTable = data1;
+                   
+                for (let i = 0; i < this.activeTimeTable.length; i++) {
+                     console.log("timetable="+this.activeTimeTable[i]);
+					this._subjectService.getTestsBySubjectId("subject", +this.activeTimeTable[i].subject_id)
+                        .subscribe(dataTests=> {
+                            this.activeTests = dataTests;
+								for (let j = 0; j < this.activeTests.length; j++)
+								{
+									this.entityData.push({
+							entityColumns: [
+								this.activeTimeTable[i].subject_id,
+								this.activeTests[j].test_name,
+								this.activeTimeTable[i].event_date],
 
-                for (let i = 0; i < this.timeTable.length; i++) {
-                    let idSubject = +this.timeTable[i].subject_id;
-                    let eventDate = this.timeTable[i].event_date;
-                    this._subjectService.getTestsBySubjectId("Subject", idSubject)
-                        .subscribe(data=> {
-                            this.tests = data
-                            this.getTestList(this.tests, eventDate);
+								})
+								}
+							console.log("activeTests="+this.activeTests);
                         })
+						
+					
                 }
-            })
+
+
+                this.entityData.sort(function (a, b) {
+                    if (a.entityColumns[1] > b.entityColumns[1]) {return 1;}
+                    if (a.entityColumns[1] < b.entityColumns[1]) {return -1;}
+                    return 0;
+                });
+
+                }
+            )
     }
 
-    getTestList(data, eventDate) {
-        this.tests = data;
 
-        for (let i = 0; i < this.tests.length; i++) {
-            this._commonService.getRecordById("Subject", this.tests[i].subject_id)
-                .subscribe(subject=> {
-                        this.tests[i].subjectName = subject[0].subject_name;
-                    if (eventDate == this.dateNow) {
-                        this.entityData.push({
-                            entityColumns: [
-                                subject[0].subject_name,
-                                this.tests[i].test_name,
-                                eventDate],
-                            entity_id: this.tests[i].test_id
-                        })
-                    }
-
-                        this.entityData.sort(function (a, b) {
-                            if (a.entityColumns[1] > b.entityColumns[1]) {
-                                return 1;
-                            }
-                            if (a.entityColumns[1] < b.entityColumns[1]) {
-                                return -1;
-                            }
-                            return 0;
-                        });
-
-                    }
-                )
-        }
-    }
-
-   getTimeStamp() {
-
-       var myDate = new Date();
-       var yy = myDate.getFullYear();
-       var mm = myDate.getMonth()+1;
-       var dd = "0"+myDate.getDate();
-       this.dateNow = yy + "-" + mm + "-" + dd;
-       /*     this._commonService.getTime()
-            .subscribe(time=> {
-                this.dateNow = time;
-                this.dateNow.curtime += +this.dateNow.offset;
-                console.log("this.dateNow.curtime = " + this.dateNow.curtime);
-                var newTime = new Date(this.dateNow.curtime);
-                var myDate = newTime.getFullYear() + "-" + newTime.getMonth() + "-" + newTime.getDate();
-                console.log("time = " + newTime);
-                console.log("my time = " + myDate)
-            })*/
+    getTimeStamp() {
+        var myDate = new Date();
+        var yy = myDate.getFullYear();
+        var mm = myDate.getMonth()+1;
+        var dd = "0"+myDate.getDate();
+        this.dateNow = yy + "-" + mm + "-" + dd;
+        /*     this._commonService.getTime()
+         .subscribe(time=> {
+         this.dateNow = time;
+         this.dateNow.curtime += +this.dateNow.offset;
+         console.log("this.dateNow.curtime = " + this.dateNow.curtime);
+         var newTime = new Date(this.dateNow.curtime);
+         var myDate = newTime.getFullYear() + "-" + newTime.getMonth() + "-" + newTime.getDate();
+         console.log("time = " + newTime);
+         console.log("my time = " + myDate)
+         })*/
     }
 
 }
