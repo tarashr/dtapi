@@ -45,7 +45,7 @@ export class GroupComponent implements OnInit {
 
     public entityData: any[] = [];
     private entityDataLength: number;
-    public entityData2: Group[];
+    public entityDataWithNames: Group[];
     public entity: string = "group";
     public limit: number = 5;
     public search: string = "";
@@ -124,7 +124,7 @@ export class GroupComponent implements OnInit {
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                 data => {
-                    this.entityData2 =  data;
+                    this.entityDataWithNames =  data;
                     this.getFacultyName();
                 },
                 error => console.log("error: ", error));
@@ -144,7 +144,7 @@ export class GroupComponent implements OnInit {
                         if (data.response === "no records") {
                             this.noRecords = true;
                         } else {
-                            this.entityData2 =  data;
+                            this.entityDataWithNames =  data;
                             this.getFacultyName();
                         }
                     },
@@ -166,7 +166,7 @@ export class GroupComponent implements OnInit {
                         if (data.response === "no records") {
                             this.noRecords = true;
                         } else {
-                            this.entityData2 =  data;
+                            this.entityDataWithNames =  data;
                             this.getFacultyName();
                         }
                     },
@@ -176,7 +176,7 @@ export class GroupComponent implements OnInit {
 
     getFacultyName(): void {
         let facultyId: number[] = [];
-        let data2 = this.entityData2;
+        let data2 = this.entityDataWithNames;
         for (let i in data2) {
             facultyId.push(data2[i].faculty_id);
         }
@@ -185,10 +185,10 @@ export class GroupComponent implements OnInit {
             .subscribe(
                 response => {
                     this.faculties = response;
-                    for (let i in this.entityData2) {
+                    for (let i in this.entityDataWithNames) {
                         for (let k in this.faculties) {
-                            if (this.entityData2[i].faculty_id === this.faculties[k].faculty_id) {
-                                this.entityData2[i].faculty_name = this.faculties[k].faculty_name;
+                            if (this.entityDataWithNames[i].faculty_id === this.faculties[k].faculty_id) {
+                                this.entityDataWithNames[i].faculty_name = this.faculties[k].faculty_name;
                             }
                         }
                     }
@@ -200,7 +200,7 @@ export class GroupComponent implements OnInit {
 
     getSpecialityName(): void {
         let specialityId: number[] = [];
-        let data2 = this.entityData2;
+        let data2 = this.entityDataWithNames;
         for (let i in data2) {
             specialityId.push(data2[i].speciality_id);
         }
@@ -209,14 +209,14 @@ export class GroupComponent implements OnInit {
             .subscribe(
                 response => {
                     this.specialities = response;
-                    for (let i in this.entityData2) {
+                    for (let i in this.entityDataWithNames) {
                         for (let k in this.specialities) {
-                            if (this.entityData2[i].speciality_id === this.specialities[k].speciality_id) {
-                                this.entityData2[i].speciality_name = this.specialities[k].speciality_name;
+                            if (this.entityDataWithNames[i].speciality_id === this.specialities[k].speciality_id) {
+                                this.entityDataWithNames[i].speciality_name = this.specialities[k].speciality_name;
                             }
                         }
                     }
-                    this.createTableConfig(this.entityData2);
+                    this.createTableConfig(this.entityDataWithNames);
                 },
                 error => console.log("error: ", error)
             );

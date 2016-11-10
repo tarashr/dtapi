@@ -14,7 +14,7 @@ import {modalInfoConfig} from "../shared/constant";
 export class TestPlayerComponent implements OnInit {
 
     private modalInfoConfig = modalInfoConfig;
-    private testId: number = 3;
+    private testId: number = 2;
 
     private navButtons: any[];
 
