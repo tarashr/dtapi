@@ -31,7 +31,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
     public entity: string = "answer";
     public errorMessage: string;
     public entityTitle: string = "Відповіді до завдання №: ";
-    public numberOfQuestion;
+    public nameOfQuestion: string;
     public noRecords: boolean = false;
 
     public question_id: number;
@@ -56,7 +56,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal) {
         this.subscription = route.queryParams.subscribe(
             data => {
-                this.numberOfQuestion = data["numberOfQuestion"];
+                this.nameOfQuestion = data["nameOfQuestion"];
             });
     }
 

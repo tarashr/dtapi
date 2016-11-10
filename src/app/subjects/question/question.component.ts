@@ -87,7 +87,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
 
     goToAnswer(data) {
-        this.router.navigate(["/admin/subject/test/question", data.entity_id, "answer"], {queryParams: {numberOfQuestion: data.entityColumns[0]}});
+        this.router.navigate(["/admin/subject/test/question", data.entity_id, "answer"], {queryParams: {nameOfQuestion: data.entityColumns[1]}});
     }
 
     deleteQuestion(entity, id: number): void {
