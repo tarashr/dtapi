@@ -62,7 +62,7 @@ export class TestListComponent implements OnChanges {
                     this.activeTimeTable = data;
 
                     for (let i = 0; i < this.activeTimeTable.length; i++) {
-                        let dateSuccsess = (this.dateNow === this.activeTimeTable[i].event_date);
+					  if (this.dateNow === this.activeTimeTable[i].event_date){
                         this._commonService.getRecordById("subject", this.activeTimeTable[i].subject_id)
                             .subscribe(subject=> {
                                 var newSubjectName = subject[0].subject_name;
@@ -70,7 +70,7 @@ export class TestListComponent implements OnChanges {
                                     .subscribe(dataTests=> {
                                         this.activeTests = dataTests;
                                         for (let j = 0; j < this.activeTests.length; j++) {
-                                            if (dateSuccsess && this.activeTests[j].enabled === "1"){
+                                            if (this.activeTests[j].enabled === "1"){
                                                 this.entityData.push({
                                                     entityColumns: [
                                                         newSubjectName,
@@ -83,6 +83,7 @@ export class TestListComponent implements OnChanges {
                                     })
 
                             })
+							}
                     }
                 }
             )
