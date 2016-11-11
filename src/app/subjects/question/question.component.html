@@ -1,27 +1,13 @@
 <div class="entity-container">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-text ">{{entityTitle}}{{testName}}</div>
-            <form class="navbar-form navbar-right">
-                <div class="form-group">
-                    <a class="btn btn-default" (click)="createCase()" [title]="addTitle">Додати </a>
-                    <select class="form-control" name="count"
-                            #select
-                            [title]="selectLimit"
-                            [disabled]="noRecords"
-                            (input)="changeLimit(select.value)">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option [value]="entityDataLength">Всі</option>
-                    </select>
-                    <button type="button" class="btn btn-secondary"
-                            (click)="goBack()">Назад
-                    </button>
-                </div>
-            </form>
-        </div>
-    </nav>
+    <test-bar
+            [pageTitle]="entityTitle"
+            [entityName]="testName"
+            [isSelect]="isSelect"
+            [noRecords]="noRecords"
+            [selectLimit]="selectLimit"
+            (activate)="activate($event)"
+            (selectRun)="changeLimit($event)">
+    </test-bar>
     <div class="container-fluid" *ngIf="!noRecords">
         <ul class="list-group entity-list">
             <li class="list-group-item row hidden-xs">

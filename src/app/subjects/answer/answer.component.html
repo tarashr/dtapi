@@ -1,17 +1,11 @@
 <div class="entity-container">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-text ">{{entityTitle}}{{nameOfQuestion}}</div>
-            <form class="navbar-form navbar-right">
-                <div class="form-group">
-                    <a class="btn btn-default" (click)="createCase()" [title]="addTitle">Додати </a>
-                    <button type="button" class="btn btn-secondary"
-                            (click)="goBack()">Назад
-                    </button>
-                </div>
-            </form>
-        </div>
-    </nav>
+    <test-bar
+            [entityName]="nameOfQuestion"
+            [pageTitle]="entityTitle"
+            [addTitle]="addTitle"
+            (activate)="activate($event)">
+
+    </test-bar>
     <div class="container-fluid" *ngIf="!noRecords">
         <ul class="list-group entity-list">
             <li class="list-group-item row hidden-xs">

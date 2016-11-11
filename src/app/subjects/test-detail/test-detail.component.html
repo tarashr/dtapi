@@ -1,17 +1,10 @@
 <div class="entity-container">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-text">{{pageTitle}}{{testName}}</div>
-            <form class="navbar-form navbar-right">
-                <div class="form-group">
-                    <a class="btn btn-default" (click)="createCase()" [title]="addTitle">Додати </a>
-                </div>
-                <button type="button" class="btn btn-secondary"
-                        (click)="goBack()">Назад
-                </button>
-            </form>
-        </div>
-    </nav>
+    <test-bar
+            [entityName]="entityTestName"
+            [pageTitle]="pageTitle"
+            [addTitle]="addTitle"
+            (activate)="activate($event)"
+    ></test-bar>
     <dt-table *ngIf="!noRecords"
               [limit]="limit"
               [page]="page"

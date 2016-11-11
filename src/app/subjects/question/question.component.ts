@@ -39,6 +39,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     public actions: any = actionsQuestion;
     public successEventModal = successEventModal;
     public config: any = {action: "create"};
+    public isSelect: boolean = true;
 
     // variable for pagination
     public page: number = 1;
@@ -174,6 +175,10 @@ export class QuestionComponent implements OnInit, OnDestroy {
             this.offset = (this.page - 1) * this.limit;
         }
         this.getCountRecordsByTest();
+    }
+
+    activate() {
+        this.createCase();
     }
 
     createCase() {

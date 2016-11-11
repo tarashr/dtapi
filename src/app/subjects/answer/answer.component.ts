@@ -103,6 +103,10 @@ export class AnswerComponent implements OnInit, OnDestroy {
             );
     }
 
+    activate() {
+        this.createCase();
+    }
+
     createCase() {
         this.configAdd.list[0].value = "";
         this.configAdd.list[1].value = "";
