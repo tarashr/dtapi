@@ -1,6 +1,5 @@
 import {Component, OnInit, Input} from "@angular/core";
 import {CRUDService} from "../../shared/services/crud.service";
-import {SubjectService} from "../../shared/services/subject.service";
 import {StudentPageService} from "../../shared/services/student-page.service";
 import {headersStudentTestList, activeTests, activeTimeTable} from "../../shared/constant/student-test-list";
 
@@ -25,13 +24,12 @@ export class TestListSheduleComponent implements OnInit {
 
 
     constructor(private _commonService: CRUDService,
-                private _studentService: StudentPageService,
-                private _subjectService: SubjectService) {
+                private _studentService: StudentPageService) {
     }
 
     ngOnInit() {
 
-        this.dateNow = this._studentService.getTimeStamp();
+        this.getTimeFromServer();
         this.getTimeTable();
 
     }
@@ -43,28 +41,23 @@ export class TestListSheduleComponent implements OnInit {
                     this.activeTimeTable = data1;
 
                     for (let i = 0; i < this.activeTimeTable.length; i++) {
-                        this._commonService.getRecordById("subject", this.activeTimeTable[i].subject_id)
-                            .subscribe(subject=> {
-                                var newSubjectName = subject[0].subject_name;
-                                this._subjectService.getTestsBySubjectId("subject", +this.activeTimeTable[i].subject_id)
-                                    .subscribe(dataTests=> {
-                                        this.activeTests = dataTests;
-                                        for (let j = 0; j < this.activeTests.length; j++) {
-                                            if ((this.dateNow < this.activeTimeTable[i].event_date)&&(this.activeTests[j].enabled === "1")){
-                                                this.entityData.push({
-                                                    entityColumns: [
-                                                        newSubjectName,
-                                                        this.activeTests[j].test_name,
-                                                        this.activeTimeTable[i].event_date]
-                                                })
-                                            }
-                                        }
-                                    })
-                            })
+                        if (this.dateNow < this.activeTimeTable[i].event_date) {
+                            this.entityData = this._studentService.getTests(
+                                this.activeTimeTable[i],
+                                this.entityData);
+                        }
                     }
                 }
             )
     }
 
+    getTimeFromServer(){
+        this._commonService.getTime()
+            .subscribe(data=> {
+                let today = data;
+                today.curtime += today.offset;
+                this.dateNow = this._studentService.getTimeStamp(today.curtime);
+            })
+    }
 }
 

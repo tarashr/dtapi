@@ -1,36 +1,41 @@
-import {Injectable} from '@angular/core';
-import {Headers, Http, Response} from '@angular/http';
-import {Observable} from 'rxjs';
-import {Router} from "@angular/router";
-import '../rxjs-operators';
-import {
-    baseUrl
-}  from "../../shared/constants";
-
+import {Injectable} from "@angular/core";
+import {CRUDService} from "../../shared/services/crud.service";
+import {SubjectService} from "../../shared/services/subject.service";
 @Injectable()
 export class StudentPageService {
 
-    private headers = new Headers({'Content-Type': 'application/json'});
-    private hostUrlBase: string = baseUrl;
-    private successResponse = (response: Response)=>response.json();
-
-    constructor(private http: Http,
-                private router: Router) {
+    constructor(private _commonService: CRUDService,
+                private _subjectService: SubjectService
+) {
     }
 
-    private handleError = (error: any)=> {
-        let errMsg = (error.message) ? error.message :
-            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-        if (error.status == "403") {
-            sessionStorage.removeItem("userRole");
-            this.router.navigate(['/login'])
-        }
-        return Observable.throw(errMsg);
-    };
+    getTests(timeTableRecord, entityDataRecord){
+        var testRecords =[];
+        this._commonService.getRecordById("subject", timeTableRecord.subject_id)
+            .subscribe(subject=> {
+                var newSubjectName = subject[0].subject_name;
+                this._subjectService.getTestsBySubjectId("subject", +timeTableRecord.subject_id)
+                    .subscribe(dataTests=> {
+                        testRecords = dataTests;
+                        for (let j = 0; j < testRecords.length; j++) {
+                            if (testRecords[j].enabled === "1") {
+                                entityDataRecord.push({
+                                    entityColumns: [
+                                        newSubjectName,
+                                        testRecords[j].test_name,
+                                        timeTableRecord.event_date]
 
-    getTimeStamp() {
+                                })
+                            }
+                        }
+                    })
 
-        var myDate = new Date();
+            });
+        return entityDataRecord;
+    }
+
+    getTimeStamp(miliseconds) {
+        var myDate = new Date(miliseconds/10);
         var formatDate = myDate.getFullYear() + '-' + ('0' + (myDate.getMonth() + 1)).slice(-2) +
             '-' + ('0' + myDate.getDate()).slice(-2);
         return formatDate;

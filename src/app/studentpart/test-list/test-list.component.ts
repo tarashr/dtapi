@@ -2,7 +2,6 @@ import {Component, Input, OnChanges} from "@angular/core";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router} from "@angular/router";
 import {CRUDService} from "../../shared/services/crud.service";
-import {SubjectService} from "../../shared/services/subject.service";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {StudentPageService} from "../../shared/services/student-page.service";
 import {headersStudentTestList, actionsStudentTestList,activeTests, activeTimeTable} from "../../shared/constant/student-test-list";
@@ -37,16 +36,13 @@ export class TestListComponent implements OnChanges {
     constructor(private _commonService: CRUDService,
                 private _router: Router,
                 private _studentService: StudentPageService,
-                private _subjectService: SubjectService,
                 private modalService: NgbModal) {
     }
 
 
     ngOnChanges(groupId) {
-
-        if (this.groupId !== undefined) {
-            this.dateNow = this._studentService.getTimeStamp();
-
+        if (this.groupId) {
+            this.getTimeFromServer();
             this.getTimeTable();
         }
     }
@@ -60,29 +56,13 @@ export class TestListComponent implements OnChanges {
         this._commonService.getTimeTableForGroup(this.groupId)
             .subscribe(data=> {
                     this.activeTimeTable = data;
-
-                    for (let i = 0; i < this.activeTimeTable.length; i++) {
-                        let dateSuccsess = (this.dateNow === this.activeTimeTable[i].event_date);
-                        this._commonService.getRecordById("subject", this.activeTimeTable[i].subject_id)
-                            .subscribe(subject=> {
-                                var newSubjectName = subject[0].subject_name;
-                                this._subjectService.getTestsBySubjectId("subject", +this.activeTimeTable[i].subject_id)
-                                    .subscribe(dataTests=> {
-                                        this.activeTests = dataTests;
-                                        for (let j = 0; j < this.activeTests.length; j++) {
-                                            if (dateSuccsess && this.activeTests[j].enabled === "1"){
-                                                this.entityData.push({
-                                                    entityColumns: [
-                                                        newSubjectName,
-                                                        this.activeTests[j].test_name,
-                                                        this.activeTimeTable[i].event_date]
-
-                                                })
-                                        }
-                                        }
-                                    })
-
-                            })
+                    let countLines = this.activeTimeTable.length;
+                    for (let i = 0; i < countLines; i++) {
+                        if (this.dateNow === this.activeTimeTable[i].event_date){
+                            this.entityData = this._studentService.getTests(
+                                this.activeTimeTable[i],
+                                this.entityData);
+                    }
                     }
                 }
             )
@@ -102,4 +82,13 @@ export class TestListComponent implements OnChanges {
             });
     }
 
+    getTimeFromServer(){
+        this._commonService.getTime()
+            .subscribe(data=> {
+                let today = data;
+                today.curtime += today.offset;
+                this.dateNow = this._studentService.getTimeStamp(today.curtime);
+
+            })
+    }
 }
