@@ -14,5 +14,6 @@ export * from "./timeTable-constants";
 export * from "./question-constants";
 export * from "./studentAdmin-constants";
 export * from "./answer-constant";
+export * from "./test-player.constant";
 
 

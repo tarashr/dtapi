@@ -78,10 +78,8 @@ export class LoginService {
             .catch(this.handleError)
             .subscribe(this.successLogout,
                 () => {
-                    sessionStorage.removeItem("userRole");
-                    sessionStorage.removeItem("userId");
                     this.modalInfoConfig.infoString = this.badLogoutMessage;
-                    this.modalInfoConfig.action = "info";
+                    this.modalInfoConfig.action = "confirm";
                     this.modalInfoConfig.title = "Попередження!";
                     const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
                     modalRef.componentInstance.config = this.modalInfoConfig;
@@ -89,6 +87,8 @@ export class LoginService {
                         .then(() => {
                             return;
                         }, () => {
+                            sessionStorage.removeItem("userRole");
+                            sessionStorage.removeItem("userId");
                             this._router.navigate(["/login"]);
                         });
                 });

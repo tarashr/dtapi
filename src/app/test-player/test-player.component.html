@@ -22,12 +22,17 @@
                             </label>
                         </li>
                     </ul>
-                    <p class="text-right">
+                    <p class="text-left">
                         <button type="button" class="btn btn-primary" (click)="skipQuestion(activeQuestion+1)">
                             Пропустити
                         </button>
                         <button type="button" class="btn btn-success" (click)="answerQuestion()">
                             Відповісти
+                        </button>
+                    </p>
+                    <p class="text-right">
+                        <button type="button" class="btn btn-danger" (click)="finishTest()">
+                            Завершити тест
                         </button>
                     </p>
                 </div>
@@ -38,7 +43,7 @@
             <button *ngFor="let button of navButtons; let j=index"
                     type="button"
                     [ngClass]="button.className"
-                    (click)="changeActiveQuestion(j)">{{button.name}}
+                    (click)="changeActiveQuestion(j)">{{button.label}}
             </button>
         </div>
     </div>

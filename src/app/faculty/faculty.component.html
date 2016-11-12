@@ -9,7 +9,7 @@
             (searchRun)="findEntity($event)"
             (selectRun)="changeLimit($event)">
     </entity-bar>
-    <dt-table *ngIf="entityData.length>0"
+    <dt-table *ngIf="entityData.length"
               [page]="page"
               [limit]="limit"
               [headers]="headers"
