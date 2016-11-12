@@ -87,8 +87,8 @@ export class FacultyComponent implements OnInit {
         switch (data.action) {
             case "group":
                 this._router.navigate(
-                    ["/admin/group"],
-                    {queryParams: {facultyId: data.entity_id, facultyName: data.entityColumns[1]}});
+                    ["/admin/group/byFaculty"],
+                    {queryParams: {facultyId: data.entity_id}});
                 break;
             case "create":
                 this.createCase();

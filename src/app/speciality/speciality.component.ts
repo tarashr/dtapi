@@ -84,8 +84,8 @@ export class SpecialityComponent implements OnInit{
         switch (data.action) {
             case "viewGroup":
                 this._router.navigate(
-                    ["/admin/group"],
-                    {queryParams: {specialityId: data.entity_id, specialityName: data.entityColumns[2]}});
+                    ["/admin/group/bySpeciality"],
+                    {queryParams: {specialityId: data.entity_id}});
                 break;
             case "create":
                 this.createCase();

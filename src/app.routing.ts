@@ -55,9 +55,12 @@ const appRoutes: Routes = [
             {path: "speciality", component: SpecialityComponent},
             {path: "faculty", component: FacultyComponent},
             {path: "group", component: GroupComponent},
+            {path: "group/byFaculty", component: GroupComponent},
+            {path: "group/bySpeciality", component: GroupComponent},
             {path: "group/groupTimetable", component: GroupTimetableComponent},
             {path: "adminUser", component: AdminUserComponent},
             {path: "student", component: StudentComponent},
+            {path: "student/byGroup", component: StudentComponent},
             {path: "student/student-new-profile", component: StudentNewProfileComponent},
             {path: "student/student-profile/:id", component: StudentProfileComponent},
             {path: "**", redirectTo: "statistic", pathMatch: "full"}

@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {Router, ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs";
 import {Student} from "../shared/classes/student";
 import {Group} from "../shared/classes/group";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
@@ -49,6 +50,7 @@ export class StudentComponent implements OnInit {
 
     public groupId: number;
     public groupName: string;
+    private subscription: Subscription;
     public noRecords: boolean = false;
 
     public groupEntity: string = "Group";
@@ -58,7 +60,7 @@ export class StudentComponent implements OnInit {
                 private route: ActivatedRoute,
                 private _router: Router,
                 private modalService: NgbModal) {
-        route.queryParams.subscribe(
+        this.subscription = route.queryParams.subscribe(
             data => {
                 this.groupId = data["groupId"];
                 this.groupName = data["groupName"];
@@ -128,12 +130,13 @@ export class StudentComponent implements OnInit {
             .subscribe(
                 groups => {
                     this.groups = groups;
-                    for (let j in this.studentDataForView)
+                    for (let j in this.studentDataForView) {
                         for (let i in this.groups) {
                             if (this.studentDataForView[j].group_id === this.groups[i].group_id) {
                                 this.studentDataForView[j].group_name = this.groups[i].group_name;
                             }
                         }
+                    }
                     this.createTableConfig(this.studentDataForView);
                 },
                 error => console.log("error: ", error)
@@ -187,5 +190,9 @@ export class StudentComponent implements OnInit {
             }, () => {
                 return;
             });
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 }
