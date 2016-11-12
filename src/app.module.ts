@@ -45,7 +45,6 @@ import {TestListSheduleComponent} from "./app/studentpart/test-list-shedule/test
 import {TestBarComponent} from "./app/shared/components/test-bar/test-bar.component";
 
 
-
 @NgModule({
     imports: [
         BrowserModule,

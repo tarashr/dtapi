@@ -10,6 +10,7 @@ import {successEventModal, modalInfoConfig} from "../../../shared/constant";
 export class ModalAddEditComponent {
 
     @Input() config: any;
+    @Input() placeholder: string;
     public maxSizeOfPictures: number = 1000000;
     public modalInfoConfig: any = modalInfoConfig;
     public successEventModal: any = successEventModal;

@@ -178,7 +178,7 @@ export class TimeTableComponent implements OnInit, OnDestroy {
                 this.substituteNameGroupWithId(data);
                 let newTimeTable: TimeTable = new TimeTable(
                     data.select[0].selected,
-                    data.list[0].value,
+                    data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`||data.list[0].value,
                     this.subject_id);
                 this.crudService.insertData(this.entity, newTimeTable)
                     .subscribe(() => {
@@ -192,7 +192,7 @@ export class TimeTableComponent implements OnInit, OnDestroy {
     };
 
     editCase(data) {
-        this.configEdit.list[0].value = data.entityColumns[2];
+        this.configEdit.list[0].value = "";
         this.configEdit.select[0].selected = data.entityColumns[1];
         this.configEdit.id = data.entity_id;
         this.configEdit.select[0].selectItem = [];
@@ -201,12 +201,14 @@ export class TimeTableComponent implements OnInit, OnDestroy {
         });
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
+        modalRefEdit.componentInstance.placeholder = data.entityColumns[2];
         modalRefEdit.result
             .then((data: any) => {
                 this.substituteNameGroupWithId(data);
                 let editedTimeTable: TimeTable = new TimeTable(
                     data.select[0].selected,
-                    data.list[0].value);
+                    data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`||data.list[0].value,
+                );
                 this.crudService.updateData(this.entity, data.id, editedTimeTable)
                     .subscribe(() => {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
