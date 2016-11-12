@@ -87,10 +87,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
     }
 
-    goToAnswer(data) {
-        this.router.navigate(["/admin/subject/test/question", data.entity_id, "answer"], {queryParams: {nameOfQuestion: data.entityColumns[1]}});
-    }
-
     deleteQuestion(entity, id: number): void {
         this.offset = (this.page - 1) * this.limit;
         this.crudService
@@ -130,7 +126,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     item.type,
                     item.attachment
                 ];
-                question.actions = this.actions;
                 tempArr.push(question);
             });
             this.entityData = tempArr;
@@ -177,13 +172,27 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.getCountRecordsByTest();
     }
 
-    activate() {
-        this.createCase();
+    activate(data: any) {
+        switch (data.action) {
+            case "answer":
+                this.router.navigate(["/admin/subject/test/question", data.entity_id, "answer"],
+                    {queryParams: {nameOfQuestion: data.entityColumns[1]}});
+                break;
+            case "edit":
+                this.editCase(data);
+                break;
+            case "delete":
+                this.deleteCase(data);
+                break;
+            case "create":
+                this.createCase();
+                break;
+        }
     }
 
     createCase() {
         this.configAdd.list[0].value = "";
-        this.configAdd.img[0].value = "";
+        this.configAdd.img.value = "";
         this.configAdd.select[0].selected = "";
         this.configAdd.select[1].selected = "";
         this.configAdd.select[0].selectItem = this.levels;
@@ -196,7 +205,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     data.list[0].value,
                     data.select[0].selected,
                     data.select[1].selectItem.indexOf(data.select[1].selected),
-                    data.img[0].value,
+                    data.img.value,
                     this.test_id
                 );
                 this.crudService.insertData(this.entity, newQuestion)
@@ -217,7 +226,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.configEdit.select[1].selected = data.entityColumns[3];
         this.configEdit.select[0].selectItem = this.levels;
         this.configAdd.select[1].selectItem = this.choise;
-        this.configAdd.img[0].value = data.entityColumns[4];
+        this.configAdd.img.value = data.entityColumns[4];
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
@@ -226,7 +235,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     data.list[0].value,
                     data.select[0].selected,
                     data.select[1].selectItem.indexOf(data.select[1].selected),
-                    data.img[0].value,
+                    data.img.value,
                     this.test_id
                 );
                 this.crudService.updateData(this.entity, data.id, editedQuestion)

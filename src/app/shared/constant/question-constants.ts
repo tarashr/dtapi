@@ -10,6 +10,12 @@ export const headersQuestion = [
 
 export const actionsQuestion = [
     {
+        title: "Перейти до відповіді",
+        action: "answer",
+        glyphicon: "glyphicon glyphicon-list-alt",
+        btnClassName: "btn btn-default btn-sm"
+    },
+    {
         title: "Редагувати завдання",
         action: "edit",
         glyphicon: "glyphicon glyphicon-edit",
@@ -31,9 +37,7 @@ export const configAddQuestion = {
     ],
     action: "create",
     labelBtn: "Додати",
-    img: [
-        {imgName: "Вкладення", value: "", title: "attachment", type: "file"}
-    ],
+    img: {imgName: "Вкладення", value: "", title: "attachment", type: "file"},
     select: [
         {selectName: "Рівень", selectItem: [], selected: ""},
         {selectName: "Тип", selectItem: [], selected: ""}
@@ -49,9 +53,7 @@ export const configEditQuestion = {
     action: "edit",
     labelBtn: "Редагувати",
     id: "",
-    img: [
-        {imgName: "Вкладення", value: "", title: "attachment", type: "file"}
-    ],
+    img: {imgName: "Вкладення", value: "", title: "attachment", type: "file"},
     select: [
         {selectName: "Рівень", selectItem: [], selected: ""},
         {selectName: "Тип", selectItem: ["Мультивибір", "Простий вибір"], selected: ""}

@@ -13,6 +13,7 @@ export class TableComponent implements OnInit {
     @Input() page: number;
     @Input() limit: number;
     @Output() activate = new EventEmitter();
+    public isImage: boolean = false;
 
     constructor() {
     }

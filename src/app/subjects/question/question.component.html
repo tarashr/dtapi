@@ -8,55 +8,13 @@
             (activate)="activate($event)"
             (selectRun)="changeLimit($event)">
     </test-bar>
-    <div class="container-fluid" *ngIf="!noRecords">
-        <ul class="list-group entity-list">
-            <li class="list-group-item row hidden-xs">
-                <div class="col-xs-12 col-sm-1 text-center">№</div>
-                <div class="col-xs-12 col-sm-2">Завдання</div>
-                <div class="col-xs-12 col-sm-1 text-center">Рівень</div>
-                <div class="col-xs-12 col-sm-1 text-center">Тип</div>
-                <div class="col-xs-12 col-sm-4 text-center">Вкладення</div>
-                <div class="col-xs-12 col-sm-2"></div>
-            </li>
-            <li *ngFor="let entity of entityData; let i = index" class="list-group-item row">
-                <div class="col-xs-12 col-sm-1 text-center">
-                    <span class="visible-xs-inline-block">№:</span>
-                    <span class="align-xs">{{entity.entityColumns[0]}}</span>
-                </div>
-                <div class="col-xs-12 col-sm-2">
-                    <span class="visible-xs-inline-block">Завдання:</span>
-                    <span class="align-xs">{{entity.entityColumns[1]}}</span>
-                </div>
-                <div class="col-xs-12 col-sm-1 text-center">
-                    <span class="visible-xs-inline-block">Рівень:</span>
-                    <span class="align-xs">{{entity.entityColumns[2]}}</span>
-                </div>
-                <div class="col-xs-12 col-sm-1 text-center">
-                    <span class="visible-xs-inline-block">Тип:</span>
-                    <span class="align-xs">{{entity.entityColumns[3]}}</span>
-                </div>
-                <div class="col-xs-12 col-sm-4 text-center">
-                    <span class="visible-xs-inline-block">Вкладення:</span>
-                    <span class="align-xs">
-                        <img [src]="entity.entityColumns[4]" alt="Зображення для тесту" width="200px">
-                    </span>
-                </div>
-                <div class="col-xs-12 col-sm-2 text-center">
-                    <a class="btn btn-default btn-sm" role="button" title="Перейти до відповіді"
-                       (click)="goToAnswer(entity)">
-                        <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-                    </a>
-                    <a class="btn btn-default btn-sm" role="button" title="Редагувати завдання"
-                       (click)="editCase(entity)">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    </a>
-                    <a class="btn btn-danger btn-sm" role="button" title="Видалити завдання"
-                       (click)="deleteCase(entity)">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </a>
-                </div>
-            </li>
-        </ul>
+    <div *ngIf="!noRecords">
+        <dt-table *ngIf="!noRecords"
+                  [headers]="headers"
+                  [actions]="actions"
+                  [tableData]="entityData"
+                  (activate)="activate($event)">
+        </dt-table>
     </div>
     <ngb-pagination
             *ngIf="!noRecords"
