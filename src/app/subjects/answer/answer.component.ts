@@ -30,13 +30,17 @@ export class AnswerComponent implements OnInit, OnDestroy {
     // common variables
     public entity: string = "answer";
     public errorMessage: string;
-    public entityTitle: string = "Відповіді до завдання №: ";
-    public nameOfQuestion: string;
+    public entityTitle: string = "Відповіді до завдання: ";
     public noRecords: boolean = false;
     public page: number = 1;
-    public limit: number = 0;
 
+    public test_id: number;
     public question_id: number;
+    public limit: number = 20;
+    public offset: number = 0;
+    public questionEntity: string = "question";
+    public questionArr: any[] = [];
+    public nameOfQuestion: string = "";
     public headers: any = headersAnswer;
     public actions: any = actionsAnswer;
     public successEventModal = successEventModal;
@@ -63,8 +67,9 @@ export class AnswerComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal) {
         this.subscription = route.queryParams.subscribe(
             data => {
-                this.nameOfQuestion = data["nameOfQuestion"];
+                this.test_id = data["test_id"];
             });
+        this.getQuestionRangeByTest();
     }
 
     ngOnInit() {
@@ -80,6 +85,20 @@ export class AnswerComponent implements OnInit, OnDestroy {
 
     goBack(): void {
         this.location.back();
+
+    }
+
+    getQuestionRangeByTest(): void {
+        this.subjectService.getRecordsRangeByTest(this.test_id, this.limit, this.offset)
+            .subscribe(
+                data => {
+                    this.questionArr = data.filter((item) => {
+                        return item.question_id == this.question_id;
+                    });
+                    this.nameOfQuestion = this.questionArr[0].question_text;
+                },
+                error => this.errorMessage = <any>error
+            )
 
     }
 
@@ -143,6 +162,9 @@ export class AnswerComponent implements OnInit, OnDestroy {
     }
 
     createCase() {
+        let isTrue = this.entityData.some(item => {
+            return this.selectAnswer.indexOf(item.entityColumns[2]) === 1;
+        });
         this.configAdd.list[0].value = "";
         this.configAdd.select[0].selected = "";
         this.configAdd.img.value = "";
@@ -151,24 +173,35 @@ export class AnswerComponent implements OnInit, OnDestroy {
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                let newAnswer: Answer = new Answer(
-                    data.img.value,
-                    data.list[0].value,
-                    data.select[0].selectItem.indexOf(data.select[0].selected),
-                    this.question_id
-                );
-                this.crudService.insertData(this.entity, newAnswer)
-                    .subscribe(() => {
-                        this.modalInfoConfig.infoString = `Відповідь успішно створено`;
-                        this.successEventModal();
-                        this.getAnswerByQuestion();
-                    });
+                if (this.questionArr[0].type == "0"
+                    && !isTrue
+                    || this.questionArr[0].type == "1"
+                    || data.select[0].selectItem.indexOf(data.select[0].selected) == 0) {
+                    let newAnswer: Answer = new Answer(
+                        data.img.value,
+                        data.list[0].value,
+                        data.select[0].selectItem.indexOf(data.select[0].selected),
+                        this.question_id
+                    );
+                    this.crudService.insertData(this.entity, newAnswer)
+                        .subscribe(() => {
+                            this.modalInfoConfig.infoString = `Відповідь успішно створено`;
+                            this.successEventModal();
+                            this.getAnswerByQuestion();
+                        });
+                } else {
+                    this.modalInfoConfig.infoString = `Дозволено вказувати тільки одну правильну відповідь`;
+                    this.successEventModal();
+                }
             }, () => {
                 return;
             });
     };
 
     editCase(data: any) {
+        let isTrue = this.entityData.some(item => {
+            return this.selectAnswer.indexOf(item.entityColumns[2]) === 1;
+        });
         this.configEdit.list[0].value = data.entityColumns[0];
         this.configEdit.select[0].selected = data.entityColumns[2];
         this.configEdit.img.value = data.entityColumns[1];
@@ -178,18 +211,26 @@ export class AnswerComponent implements OnInit, OnDestroy {
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
-                let editedAnswer: Answer = new Answer(
-                    data.img.value,
-                    data.list[0].value,
-                    data.select[0].selectItem.indexOf(data.select[0].selected),
-                    this.question_id
-                );
-                this.crudService.updateData(this.entity, data.id, editedAnswer)
-                    .subscribe(() => {
-                        this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
-                        this.successEventModal();
-                        this.getAnswerByQuestion();
-                    });
+                if (this.questionArr[0].type == "0"
+                    && !isTrue
+                    || this.questionArr[0].type == "1"
+                    || data.select[0].selectItem.indexOf(data.select[0].selected) == 0) {
+                    let editedAnswer: Answer = new Answer(
+                        data.img.value,
+                        data.list[0].value,
+                        data.select[0].selectItem.indexOf(data.select[0].selected),
+                        this.question_id
+                    );
+                    this.crudService.updateData(this.entity, data.id, editedAnswer)
+                        .subscribe(() => {
+                            this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
+                            this.successEventModal();
+                            this.getAnswerByQuestion();
+                        });
+                } else {
+                    this.modalInfoConfig.infoString = `Дозволено вказувати тільки одну правильну відповідь`;
+                    this.successEventModal();
+                }
             }, () => {
                 return;
             });

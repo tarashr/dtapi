@@ -180,7 +180,11 @@ export class QuestionComponent implements OnInit, OnDestroy {
         switch (data.action) {
             case "answer":
                 this.router.navigate(["/admin/subject/test/question", data.entity_id, "answer"],
-                    {queryParams: {nameOfQuestion: data.entityColumns[1]}});
+                    {
+                        queryParams: {
+                            test_id: this.test_id
+                        }
+                    });
                 break;
             case "edit":
                 this.editCase(data);
