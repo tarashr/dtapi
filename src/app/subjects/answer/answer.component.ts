@@ -181,7 +181,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
                 let editedAnswer: Answer = new Answer(
                     data.img.value,
                     data.list[0].value,
-                    data.select[0].selectItem.indexOf(data.select.selected),
+                    data.select[0].selectItem.indexOf(data.select[0].selected),
                     this.question_id
                 );
                 this.crudService.updateData(this.entity, data.id, editedAnswer)

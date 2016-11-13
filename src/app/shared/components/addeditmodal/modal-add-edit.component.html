@@ -26,6 +26,9 @@
             <span class="input-group-addon modal-span">{{config.img.imgName}}:</span>
             <input [type]="config.img.type" class="form-control modalInput" (change)="openFile($event)"
                    accept='image/*'>
+            <div *ngIf="config.action == 'edit'" class="input-group-addon remove-image" title="Видалити зображення">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="removeImage()"></span>
+            </div>
         </div>
     </div>
     <div class="input-group input-group-add-edit" *ngIf="config.list[0].name == 'Дата'">

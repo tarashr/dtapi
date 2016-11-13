@@ -13,3 +13,7 @@
 .open-modal-btn {
     display: inline-block;
 }
+
+.remove-image span:hover {
+    color: red;
+}
