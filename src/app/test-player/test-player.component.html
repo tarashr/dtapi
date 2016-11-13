@@ -1,5 +1,23 @@
 <div class="container" *ngIf="show">
     <div class="row">
+        <div class="col-xs-6 info">
+            Залишилось запитань: {{unAnsweredQuestionCount}} з {{tasksCount}} ({{unAnsweredQuestionPercent+'%'}})
+            <div class="progress hidden-xs">
+                <div class="progress-bar" [ngStyle]="{'width': unAnsweredQuestionPercent+'%'}">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 info">
+            Залишилось часу: <b class="time">{{timer.hours}}:{{timer.min}}:{{timer.sec}}</b> ({{leftTimePercent+'%'}})
+            <div class="progress hidden-xs">
+                <div class="progress-bar progress-bar-warning" [ngStyle]="{'width': leftTimePercent+'%'}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" *ngIf="show">
+    <div class="row">
         <ng-container *ngFor="let question of questions; let i=index">
             <div class="col-xs-12 col-md-10 info" *ngIf="i===activeQuestion">
                 <div>

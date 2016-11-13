@@ -11,6 +11,7 @@ import {TestPlayerNavButton} from "../shared/classes/test-player-nav-buttons";
 import {TestDetail} from "../shared/classes/test-detail";
 import {TestPlayerAnswers} from "../shared/classes/test-player-answers";
 import {TestPlayerDtapiResult} from "../shared/classes/test-player-dtapi-result";
+import Timer = NodeJS.Timer;
 
 @Component({
     templateUrl: "test-player.component.html",
@@ -27,6 +28,13 @@ export class TestPlayerComponent implements OnInit {
     private questions: TestPlayerQuestions[] = [];
     private tasksCount: number = 0;
     private questionCount: number = 0;
+    private unAnsweredQuestionCount: number = 0;
+    private unAnsweredQuestionPercent: number = 100;
+    private leftTimePercent: number = 100;
+    private timeForTest: number;
+    private restOfTime: number;
+    private timer: any = {hours: 0, min: 0, sec: 0};
+    private timerId: Timer;
     private show: boolean = false;
     private testDetails: TestDetail[];
     private maxUserRate: number = 0;
@@ -39,6 +47,8 @@ export class TestPlayerComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.testPlayerService.resetSessionData()
+            .subscribe();
         this.subjectService.getTestDetailsByTest(this.testId)
             .subscribe((testDetails: TestDetail[]) => {
                 this.testDetails = testDetails;
@@ -46,6 +56,7 @@ export class TestPlayerComponent implements OnInit {
                     this.tasksCount += +data.tasks;
                     this.maxUserRate += +data.tasks * +data.rate;
                 });
+                this.unAnsweredQuestionCount = this.tasksCount;
                 testDetails.forEach((item: TestDetail) => {
                     this.subjectService.getQuestionsByLevelRand(item.test_id, item.level, item.tasks)
                         .subscribe((response: TestPlayerQuestions[]) => {
@@ -69,7 +80,22 @@ export class TestPlayerComponent implements OnInit {
                                             });
                                             elem.answers = answers;
                                             if (j === this.questions.length - 1) {
-                                                this.show = true;
+                                                this.testPlayerService.getTestRecord(this.testId)
+                                                    .subscribe(testRecord => {
+                                                        this.timeForTest = +testRecord[0].time_for_test * 60;
+                                                        this.restOfTime = this.timeForTest;
+                                                        this.testPlayerService.getTimeStamp()
+                                                            .subscribe(timeStamp => {
+                                                                timeStamp.curtime = +timeStamp.unix_timestamp + +timeStamp.offset;
+                                                                timeStamp.curtime = +timeStamp.curtime + this.timeForTest + 10;
+                                                                this.show = true;
+                                                                this.testPlayerService.saveEndTime(timeStamp)
+                                                                    .subscribe();
+                                                                this.timerId = setInterval(() => {
+                                                                    this.startTimer();
+                                                                }, 1000);
+                                                            });
+                                                    });
                                             }
                                         });
                                 });
@@ -78,6 +104,22 @@ export class TestPlayerComponent implements OnInit {
                 });
             });
     };
+
+    startTimer() {
+        this.restOfTime--;
+        this.leftTimePercent = Math.round(this.restOfTime / this.timeForTest * 100);
+        if (this.restOfTime < 0) {
+            clearInterval(this.timerId);
+            this.checkAnswers();
+            return;
+        }
+        this.timer.hours = this.restOfTime / 3600 ^ 0;
+        this.timer.min = (this.restOfTime - this.timer.hours * 60) / 60 ^ 0;
+        this.timer.sec = (this.restOfTime - this.timer.hours * 3600 - this.timer.min * 60);
+        this.timer.hours < 10 ? this.timer.hours = `0${this.timer.hours}` : null;
+        this.timer.min < 10 ? this.timer.min = `0${this.timer.min}` : null;
+        this.timer.sec < 10 ? this.timer.sec = `0${this.timer.sec}` : null;
+    }
 
     skipQuestion(numberOfQuestion: number) {
         if (numberOfQuestion === this.questions.length) {
@@ -90,10 +132,15 @@ export class TestPlayerComponent implements OnInit {
                 }
             }
         } else this.changeActiveQuestion(this.activeQuestion + 1);
-    };
+    }
+    ;
 
     answerQuestion() {
-        this.navButtons[this.activeQuestion].answered = true;
+        if (!this.navButtons[this.activeQuestion].answered) {
+            this.navButtons[this.activeQuestion].answered = true;
+            this.unAnsweredQuestionCount--;
+            this.unAnsweredQuestionPercent = Math.round(this.unAnsweredQuestionCount / this.tasksCount * 100);
+        }
         let allAnswered = this.navButtons.every((question) => {
             return question.answered;
         });
@@ -118,7 +165,8 @@ export class TestPlayerComponent implements OnInit {
                 this.changeActiveQuestion(this.activeQuestion + 1);
             }
         }
-    };
+    }
+    ;
 
     changeActiveQuestion(num: number) {
         if (num === this.activeQuestion) return;
@@ -153,22 +201,24 @@ export class TestPlayerComponent implements OnInit {
         let confirmFinishTestModalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
         confirmFinishTestModalRef.componentInstance.config = confirmFinishTestModal;
         confirmFinishTestModalRef.result
-            .then(() => {
-                this.testPlayerService.checkSAnswers(this.questions)
-                    .subscribe((results: TestPlayerDtapiResult[]) => {
-                        let userRate = this.testPlayerService.getUserRate(results, this.questions);
-                        let infoUserRateModal: ConfigModalInfo = new ConfigModalInfo(`Кількість набраних Вами балів становить: ${userRate} з ${this.maxUserRate} максимально можливих`,
-                            "info",
-                            "Результат тестування!");
-                        let infoAboutUserRateModalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
-                        infoAboutUserRateModalRef.componentInstance.config = infoUserRateModal;
-                        infoAboutUserRateModalRef.result
-                            .then(null, () => {
-                                this.location.back();
-                            });
-                    });
-            }, null);
+            .then(() => this.checkAnswers(), null);
 
+    }
+
+    checkAnswers() {
+        this.testPlayerService.checkSAnswers(this.questions)
+            .subscribe((results: TestPlayerDtapiResult[]) => {
+                let userRate = this.testPlayerService.getUserRate(results, this.questions);
+                let infoUserRateModal: ConfigModalInfo = new ConfigModalInfo(`Кількість набраних Вами балів становить: ${userRate} з ${this.maxUserRate} максимально можливих`,
+                    "info",
+                    "Результат тестування!");
+                let infoAboutUserRateModalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
+                infoAboutUserRateModalRef.componentInstance.config = infoUserRateModal;
+                infoAboutUserRateModalRef.result
+                    .then(null, () => {
+                        this.location.back();
+                    });
+            });
     }
 
 }

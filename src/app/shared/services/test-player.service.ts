@@ -2,7 +2,16 @@ import {Injectable} from "@angular/core";
 import {Http, Response, Headers} from "@angular/http";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs";
-import {getAnswersByQuestionTestPlayerUrl, checkSAnswerUrl, navButtonConstClassName}  from "../constant";
+import {
+    getAnswersByQuestionTestPlayerUrl,
+    checkSAnswerUrl,
+    navButtonConstClassName,
+    getTimeStampUrl,
+    saveEndTimeUrl,
+    getEndTimeUrl,
+    resetSessionDataUrl,
+    getTestRecordUrl
+}  from "../constant";
 import {TestPlayerNavButton} from "../classes/test-player-nav-buttons";
 import {TestPlayerQuestions} from "../classes/test-player-questions";
 import {TestPlayerDtapiResult} from "../classes/test-player-dtapi-result";
@@ -12,6 +21,11 @@ export class TestPlayerService {
 
     private getAnswersByQuestionUrl: string = getAnswersByQuestionTestPlayerUrl;
     private checkSAnswerUrl: string = checkSAnswerUrl;
+    private getTimeStampUrl: string = getTimeStampUrl;
+    private saveEndTimeUrl: string = saveEndTimeUrl;
+    private getEndTimeUrl: string = getEndTimeUrl;
+    private getTestRecordUrl: string = getTestRecordUrl;
+    private resetSessionDataUrl: string = resetSessionDataUrl;
     private navButtonConstClassName: string = navButtonConstClassName;
     private headersCheckSAnswer = new Headers({"content-type": "application/json"});
 
@@ -42,6 +56,41 @@ export class TestPlayerService {
         let body = this.createBodyCheck(questions);
         return this.http
             .post(this.checkSAnswerUrl, JSON.stringify(body), {headers: this.headersCheckSAnswer})
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    getTestRecord(testId: number) {
+        return this.http
+            .get(`${this.getTestRecordUrl}${testId}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    getTimeStamp(): Observable<any> {
+        return this.http
+            .get(`${this.getTimeStampUrl}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    saveEndTime(body: any): Observable<any> {
+        return this.http
+            .post(this.saveEndTimeUrl, JSON.stringify(body), {headers: this.headersCheckSAnswer})
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    getEndTime(): Observable<any> {
+        return this.http
+            .get(`${this.getEndTimeUrl}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
+    resetSessionData(): Observable<any> {
+        return this.http
+            .get(`${this.resetSessionDataUrl}`)
             .map(this.successResponse)
             .catch(this.handleError);
     }
@@ -83,6 +132,4 @@ export class TestPlayerService {
         });
         return bodyCheck;
     };
-
-
 }
