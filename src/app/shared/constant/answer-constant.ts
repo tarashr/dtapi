@@ -26,13 +26,9 @@ export const configAddAnswer = {
     title: "Додати нову відповідь",
     list: [
         {name: "Текст відповіді", value: "", title: "answer_text", type: "text", placeholder: "Відповідь для тесту"},
-        {
-            name: "Правильна відповідь",
-            value: "",
-            title: "true_answer",
-            type: "text",
-            placeholder: "1-правильна, 0-не правильна"
-        }
+    ],
+    select: [
+        {selectName: "Правильна відповідь", selectItem: [], selected: ""}
     ],
     action: "create",
     labelBtn: "Додати",
@@ -43,7 +39,9 @@ export const configEditAnswer = {
     title: "Редагувати завдання",
     list: [
         {name: "Текст відповіді", value: "", title: "answer", type: "text"},
-        {name: "Правильна відповідь", value: "", title: "true_answer", type: "number"}
+    ],
+    select: [
+        {selectName: "Правильна відповідь", selectItem: [], selected: ""}
     ],
     action: "edit",
     labelBtn: "Редагувати",

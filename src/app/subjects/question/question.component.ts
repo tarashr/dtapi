@@ -54,7 +54,11 @@ export class QuestionComponent implements OnInit, OnDestroy {
     public configEdit = configEditQuestion;
     public modalInfoConfig: any = modalInfoConfig;
     public levels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-    public choise = ["Простий вибір", "Мультивибір"];
+    public selectTypes = ["Простий вибір", "Мультивибір"];
+    public selectType = {
+        "0": "Простий вибір",
+        "1": "Мультивибір"
+    };
 
     // variables for common component
     public entityData: any[] = [];
@@ -123,7 +127,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     numberOfOrder,
                     item.question_text,
                     item.level,
-                    item.type,
+                    this.selectType[item.type],
                     item.attachment
                 ];
                 tempArr.push(question);
@@ -196,7 +200,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.configAdd.select[0].selected = "";
         this.configAdd.select[1].selected = "";
         this.configAdd.select[0].selectItem = this.levels;
-        this.configAdd.select[1].selectItem = this.choise;
+        this.configAdd.select[1].selectItem = this.selectTypes;
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
@@ -225,8 +229,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.configEdit.select[0].selected = data.entityColumns[2];
         this.configEdit.select[1].selected = data.entityColumns[3];
         this.configEdit.select[0].selectItem = this.levels;
-        this.configAdd.select[1].selectItem = this.choise;
-        this.configAdd.img.value = data.entityColumns[4];
+        this.configEdit.select[1].selectItem = this.selectTypes;
+        this.configEdit.img.value = data.entityColumns[4];
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
@@ -250,7 +254,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
 
     deleteCase(data) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видалити ${data.entityColumns[0]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});

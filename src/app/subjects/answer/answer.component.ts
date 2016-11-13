@@ -49,6 +49,11 @@ export class AnswerComponent implements OnInit, OnDestroy {
 
     // variables for table
     public entityData: any[] = [];
+    public answer: {} = {
+        "0": "Не правильно",
+        "1": "Правильно"
+    };
+    public selectAnswer: string[] = ["Не правильно", "Правильно"];
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -99,7 +104,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
                 answer.entityColumns = [
                     item.answer_text,
                     item.attachment,
-                    item.true_answer
+                    this.answer[item.true_answer]
                 ];
                 tempArr.push(answer);
             });
@@ -139,8 +144,9 @@ export class AnswerComponent implements OnInit, OnDestroy {
 
     createCase() {
         this.configAdd.list[0].value = "";
-        this.configAdd.list[1].value = "";
+        this.configAdd.select[0].selected = "";
         this.configAdd.img.value = "";
+        this.configAdd.select[0].selectItem = this.selectAnswer;
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
@@ -148,7 +154,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
                 let newAnswer: Answer = new Answer(
                     data.img.value,
                     data.list[0].value,
-                    data.list[1].value,
+                    data.select[0].selectItem.indexOf(data.select[0].selected),
                     this.question_id
                 );
                 this.crudService.insertData(this.entity, newAnswer)
@@ -164,9 +170,10 @@ export class AnswerComponent implements OnInit, OnDestroy {
 
     editCase(data: any) {
         this.configEdit.list[0].value = data.entityColumns[0];
-        this.configEdit.list[1].value = data.entityColumns[2];
+        this.configEdit.select[0].selected = data.entityColumns[2];
         this.configEdit.img.value = data.entityColumns[1];
         this.configEdit.id = data.entity_id;
+        this.configEdit.select[0].selectItem = this.selectAnswer;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
@@ -174,7 +181,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
                 let editedAnswer: Answer = new Answer(
                     data.img.value,
                     data.list[0].value,
-                    data.list[1].value,
+                    data.select[0].selectItem.indexOf(data.select.selected),
                     this.question_id
                 );
                 this.crudService.updateData(this.entity, data.id, editedAnswer)
