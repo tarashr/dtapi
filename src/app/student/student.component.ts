@@ -13,7 +13,7 @@ import {
     changeLimit,
     pageChange,
     delRecord,
-    refreshData,
+    // refreshData,
     getCountRecords,
     headersStudentAdmin,
     actionsStudentAdmin,
@@ -70,7 +70,7 @@ export class StudentComponent implements OnInit {
     public changeLimit = changeLimit;
     public pageChange = pageChange;
     public delRecord = delRecord;
-    public refreshData = refreshData;
+    // public refreshData = refreshData;
     public getCountRecords = getCountRecords;
 
     ngOnInit() {
@@ -96,6 +96,7 @@ export class StudentComponent implements OnInit {
     };
 
     getRecordsRange() {
+        this.noRecords = false;
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                     data => {
@@ -112,6 +113,7 @@ export class StudentComponent implements OnInit {
                     this.noRecords = true;
                     return;
                 }
+                this.noRecords = false;
                 this.page = 1;
                 this.studentDataForView = data;
                 this.getGroupName();
@@ -154,6 +156,7 @@ export class StudentComponent implements OnInit {
         this.crudService.getRecordsBySearch(this.entity, this.search)
             .subscribe(data => {
                 if (data.response === "no records") {
+                    this.noRecords = true;
                     this.entityData = [];
                     return;
                 }
@@ -191,6 +194,29 @@ export class StudentComponent implements OnInit {
                 return;
             });
     }
+
+    refreshData(action: string) {
+        if (this.groupId) {
+            this.entityTitle = `Студенти групи: ${this.groupName}`;
+            this.getStudentsByGroup();
+        } else {
+            if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
+                this.offset = (this.page - 2) * this.limit;
+                this.page -= 1;
+            } else if (this.entityData.length > 1) {
+                this.offset = (this.page - 1) * this.limit;
+            }
+
+            this.crudService.getCountRecords(this.entity)
+                .subscribe(
+                    data => {
+                        this.entityDataLength = +data.numberOfRecords;
+                        this.getRecordsRange();
+                    },
+                    error => console.log(error)
+                );
+        }
+    };
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
