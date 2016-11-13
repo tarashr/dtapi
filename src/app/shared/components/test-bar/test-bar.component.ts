@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges} from "@angular/core";
+import {Component, Input, Output, EventEmitter, OnInit} from "@angular/core";
 import {Location} from "@angular/common";
 
 @Component({
@@ -6,7 +6,7 @@ import {Location} from "@angular/common";
     templateUrl: "test-bar.component.html",
     styleUrls: ["test-bar.component.css"]
 })
-export class TestBarComponent implements OnInit, OnChanges {
+export class TestBarComponent implements OnInit {
 
     @Input() addTitle: string;
     @Input() pageTitle: string;
@@ -14,7 +14,6 @@ export class TestBarComponent implements OnInit, OnChanges {
     @Input() isSelect: boolean;
     @Input() selectLimit: string;
     @Input() noRecords: boolean;
-    public name: string = "";
     @Output() activate = new EventEmitter();
     @Output() selectRun = new EventEmitter();
     private config: any = {action: "create"};
@@ -23,13 +22,6 @@ export class TestBarComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
-        if (this.entityName !== undefined) {
-            this.name = this.entityName;
-            console.log("bar"+JSON.stringify(this.name));
-        }
     }
 
     addEntity(data: any) {

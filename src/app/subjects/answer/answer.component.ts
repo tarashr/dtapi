@@ -40,7 +40,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
     public offset: number = 0;
     public questionEntity: string = "question";
     public questionArr: any[] = [];
-    public nameOfQuestion: string = "";
+    public nameOfQuestion: string;
     public headers: any = headersAnswer;
     public actions: any = actionsAnswer;
     public successEventModal = successEventModal;
@@ -69,7 +69,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
             data => {
                 this.test_id = data["test_id"];
             });
-        this.getQuestionRangeByTest();
+
     }
 
     ngOnInit() {
@@ -77,10 +77,11 @@ export class AnswerComponent implements OnInit, OnDestroy {
             this.question_id = +params["id"];
         });
         this.getAnswerByQuestion();
+        this.getQuestionRangeByTest();
     }
 
     ngOnDestroy() {
-        this.subscription.unsubscribe();
+        // this.subscription.unsubscribe();
     }
 
     goBack(): void {
