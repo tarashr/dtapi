@@ -223,9 +223,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-            debugger;
                 if (+this.tasksTest >= +(this.tasksTestDetail + +data.list[0].value)) {
-                    debugger;
                     let newTestDetail: TestDetail = new TestDetail(
                         data.select[0].selected,
                         data.list[0].value,
@@ -246,14 +244,12 @@ export class TestDetailComponent implements OnInit, OnDestroy {
             });
     };
 
-
     editCase(data) {
         let restLevels: number[] = [];
         this.configEdit.list[0].value = data.entityColumns[2];
         this.configEdit.list[1].value = data.entityColumns[3];
         this.configEdit.select[0].selected = data.entityColumns[1];
         restLevels = this.getRestLevels(restLevels);
-        debugger;
         restLevels.push(+this.configEdit.select[0].selected);
         this.configEdit.select[0].selectItem = restLevels;
         this.tasksTestDetail = 0;
