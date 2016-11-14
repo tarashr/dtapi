@@ -81,7 +81,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        // this.subscription.unsubscribe();
+        this.subscription.unsubscribe();
     }
 
     goBack(): void {

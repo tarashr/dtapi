@@ -54,7 +54,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     public testDetails: any[] = [];
     public subject_id;
     public entityTest = [];
-    public testName: string;
+    public nameOfTest: string;
     public level: number [] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     constructor(private crudService: CRUDService,
@@ -66,7 +66,6 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         this.subscription = route.queryParams.subscribe(
             data => {
                 this.subject_id = data["token"];
-                this.testName = data["name"];
             });
     }
 
@@ -76,6 +75,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         });
         this.getTasks();
         this.getTestDetailsByTest();
+        this.getTestBySubjectId();
     }
 
     ngOnDestroy() {
@@ -102,6 +102,19 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     goBack(): void {
         this.location.back();
 
+    }
+
+    getTestBySubjectId() {
+        this.subjectService.getTestsBySubjectId(this.entityTestName, this.subject_id)
+            .subscribe(
+                data => {
+                    let testArr = data.filter((item) => {
+                        return item.test_id == this.test_id;
+                    });
+                    this.nameOfTest = testArr[0].test_name;
+                },
+                error => console.log("error: ", error)
+            );
     }
 
     private createTableConfig = (data: any) => {

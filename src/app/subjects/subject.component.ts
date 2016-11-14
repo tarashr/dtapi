@@ -176,10 +176,10 @@ export class SubjectComponent implements OnInit {
     activate(data: any) {
         switch (data.action) {
             case "test":
-                this._router.navigate(["/admin/subject", data.entity_id, "test"], {queryParams: {token: data.entityColumns[1]}});
+                this._router.navigate(["/admin/subject", data.entity_id, "test"]);
                 break;
             case "timeTable":
-                this._router.navigate(["/admin/subject", data.entity_id, "timeTable"], {queryParams: {token: data.entityColumns[1]}});
+                this._router.navigate(["/admin/subject", data.entity_id, "timeTable"]);
                 break;
             case "edit":
                 this.editCase(data);

@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Location} from "@angular/common";
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import {CRUDService}  from "../../shared/services/crud.service";
@@ -14,21 +14,18 @@ import {TimeTable} from "../../shared/classes/timetable";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {EntityManagerBody} from "../../shared/classes/entity-manager-body";
-import {Subscription} from "rxjs";
 
 @Component({
     selector: "timetable-container",
     templateUrl: "timetable.component.html"
 })
 
-export class TimeTableComponent implements OnInit, OnDestroy {
-
-    private subscription: Subscription;
+export class TimeTableComponent implements OnInit {
 
     // common variables
     public entity: string = "timeTable";
-    public subjectName: string;
+    public nameOfSubject: string;
+    public subjectEntity: string = "subject";
     public errorMessage: string;
     public pageTitle: string = "Розклад тестів по предмету: ";
     public subject_id: number;
@@ -57,10 +54,6 @@ export class TimeTableComponent implements OnInit, OnDestroy {
                 private subjectService: SubjectService,
                 private location: Location,
                 private modalService: NgbModal) {
-        this.subscription = route.queryParams.subscribe(
-            data => {
-                this.subjectName = data["token"];
-            });
     }
 
     ngOnInit() {
@@ -68,14 +61,24 @@ export class TimeTableComponent implements OnInit, OnDestroy {
             this.subject_id = +params["id"];
         });
         this.getGroups();
+        this.getSubjectName();
     }
 
     goBack(): void {
         this.location.back();
     }
 
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
+    getSubjectName() {
+        this.crudService.getRecords(this.subjectEntity)
+            .subscribe(
+                data => {
+                    let subjectArr = data.filter((item) => {
+                        return item.subject_id == this.subject_id;
+                    });
+                    this.nameOfSubject = subjectArr[0].subject_name;
+                },
+                error => console.log("error: ", error)
+            );
     }
 
     getTimeTableForSubject() {

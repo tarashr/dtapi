@@ -31,9 +31,10 @@ export class QuestionComponent implements OnInit, OnDestroy {
     public entity: string = "question";
     public errorMessage: string;
     public entityTitle: string = "Завдання для тесту: ";
-    public testName: string;
+    public nameOfTest: string;
     public noRecords: boolean = false;
-
+    public subject_id: number;
+    public entityTestName: string;
     public test_id: number;
     public headers: any = headersQuestion;
     public actions: any = actionsQuestion;
@@ -71,7 +72,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal) {
         this.subscription = route.queryParams.subscribe(
             data => {
-                this.testName = data["name"];
+                this.subject_id = +data["subject_id"];
             });
     }
 
@@ -80,6 +81,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
             this.test_id = +params["id"];
         });
         this.getCountRecordsByTest();
+        this.getTestBySubjectId();
     }
 
     ngOnDestroy() {
@@ -89,6 +91,19 @@ export class QuestionComponent implements OnInit, OnDestroy {
     goBack(): void {
         this.location.back();
 
+    }
+
+    getTestBySubjectId() {
+        this.subjectService.getTestsBySubjectId(this.entityTestName, this.subject_id)
+            .subscribe(
+                data => {
+                    let testArr = data.filter((item) => {
+                        return item.test_id == this.test_id;
+                    });
+                    this.nameOfTest = testArr[0].test_name;
+                },
+                error => console.log("error: ", error)
+            );
     }
 
     deleteQuestion(entity, id: number): void {
