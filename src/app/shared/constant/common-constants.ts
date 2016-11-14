@@ -1,4 +1,5 @@
 export const baseUrl: string = "http://dtapi.local/";
+
 export const getAnswersByQuestionTestPlayerUrl: string = baseUrl + "SAnswer/getAnswersByQuestion/";
 export const checkSAnswerUrl: string = baseUrl + "SAnswer/checkAnswers";
 
