@@ -153,7 +153,7 @@ export class GroupTimetableComponent implements OnInit {
                 );
                 this.crudService.insertData(this.entity, newGroupTimeTable)
                     .subscribe(response => {
-                        this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
+                        this.modalInfoConfig.infoString = `Тестування назначено`;
                         this.successEventModal();
                         this.getGroupTimeTables();
                     });

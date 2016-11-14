@@ -35,14 +35,14 @@
         <span class="input-group-addon modal-span">{{config.list[0].name}}:</span>
         <input
                 class="form-control"
-                placeholder={{placeholder||config.list[0].placeholder}}
+                placeholder={{config.list[0].placeholder}}
                 name="dp"
                 [(ngModel)]= "config.list[0].value"
                 ngbDatepicker
                 #d="ngbDatepicker"
                 required>
         <div class="input-group-addon" (click)="d.toggle()">
-            <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-calendar"  style="width: 1.2rem; height: 1rem; cursor: pointer;" aria-hidden="true"></span>
         </div>
     </div>
 </div>

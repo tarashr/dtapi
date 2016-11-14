@@ -185,7 +185,7 @@ export class TimeTableComponent implements OnInit {
                     this.subject_id);
                 this.crudService.insertData(this.entity, newTimeTable)
                     .subscribe(() => {
-                        this.modalInfoConfig.infoString = `Новий розклад для групи ${data.select[0].selected} успішно створено`;
+                        this.modalInfoConfig.infoString = `Тестування назначено`;
                         this.successEventModal();
                         this.getTimeTableForSubject();
                     });
@@ -212,7 +212,6 @@ export class TimeTableComponent implements OnInit {
         });
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
-        modalRefEdit.componentInstance.placeholder = data.entityColumns[2];
         modalRefEdit.result
             .then((data: any) => {
                 this.substituteNameGroupWithId(data);
