@@ -181,7 +181,7 @@ export class TimeTableComponent implements OnInit {
                 this.substituteNameGroupWithId(data);
                 let newTimeTable: TimeTable = new TimeTable(
                     data.select[0].selected,
-                    data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`||data.list[0].value,
+                    data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`,
                     this.subject_id);
                 this.crudService.insertData(this.entity, newTimeTable)
                     .subscribe(() => {
@@ -195,7 +195,15 @@ export class TimeTableComponent implements OnInit {
     };
 
     editCase(data) {
-        this.configEdit.list[0].value = "";
+
+        let nDate = new Date(data.entityColumns[2]);
+        let newDate = {
+            "year": nDate.getFullYear(),
+            "month": nDate.getMonth() + 1,
+            "day": nDate.getDate()
+        };
+
+        this.configEdit.list[0].value = newDate;
         this.configEdit.select[0].selected = data.entityColumns[1];
         this.configEdit.id = data.entity_id;
         this.configEdit.select[0].selectItem = [];
@@ -210,7 +218,7 @@ export class TimeTableComponent implements OnInit {
                 this.substituteNameGroupWithId(data);
                 let editedTimeTable: TimeTable = new TimeTable(
                     data.select[0].selected,
-                    data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`||data.list[0].value,
+                    data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`,
                 );
                 this.crudService.updateData(this.entity, data.id, editedTimeTable)
                     .subscribe(() => {

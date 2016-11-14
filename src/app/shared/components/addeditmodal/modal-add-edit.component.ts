@@ -33,7 +33,7 @@ export class ModalAddEditComponent {
         reader.readAsDataURL(input.files[0]);
     }
 
-    removeImage(){
+    removeImage() {
         this.config.img.value = "";
     }
 

@@ -148,7 +148,7 @@ export class GroupTimetableComponent implements OnInit {
                 this.substituteNameSubjectsWithId(data);
                 let newGroupTimeTable: TimeTable = new TimeTable(
                     this.groupId,
-                    data.list[0].value,
+                    data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`,
                     data.select[0].selected
                 );
                 this.crudService.insertData(this.entity, newGroupTimeTable)
@@ -163,7 +163,13 @@ export class GroupTimetableComponent implements OnInit {
     }
 
     editCase(data) {
-        this.configEdit.list[0].value = data.entityColumns[2];
+        let nDate = new Date(data.entityColumns[2]);
+        let newDate = {
+            "year": nDate.getFullYear(),
+            "month": nDate.getMonth() + 1,
+            "day": nDate.getDate()
+        };
+        this.configEdit.list[0].value = newDate;
         this.configEdit.select[0].selected = data.entityColumns[1];
         this.configEdit.id = data.entity_id;
         this.configEdit.select[0].selectItem = [];
@@ -177,7 +183,7 @@ export class GroupTimetableComponent implements OnInit {
                 this.substituteNameSubjectsWithId(data);
                 let editedGroupTimeTable: TimeTable = new TimeTable(
                     this.groupId,
-                    data.list[0].value,
+                    data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`,
                     data.select[0].selected
                 );
                 this.crudService.updateData(this.entity, data.id, editedGroupTimeTable)

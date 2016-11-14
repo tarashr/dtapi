@@ -37,7 +37,7 @@ export const configAddTimeTable = {
 export const configEditTimeTable = {
     title: "Додати подію",
     list: [
-        {name: "Дата", value: {}||"", title: "date", type: "text"},
+        {name: "Дата", value: {} , title: "date", type: "text"},
     ],
     action: "edit",
     labelBtn: "Редагувати",

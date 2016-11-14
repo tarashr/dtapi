@@ -37,7 +37,7 @@ export const configAddGroupTimeTable = {
 export const configEditGroupTimeTable = {
     title: "Редагувати тестування",
     list: [
-        {name: "Дата", value: "", title: "date", type: "date"},
+        {name: "Дата", value: {}, title: "date", type: "date"},
     ],
     action: "edit",
     labelBtn: "Редагувати",
