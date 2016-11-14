@@ -75,9 +75,12 @@ export class TestListComponent implements OnChanges {
                                                     entityColumns: [
                                                         newSubjectName,
                                                         this.activeTests[j].test_name,
-                                                        this.activeTimeTable[i].event_date]
+                                                        this.activeTimeTable[i].event_date],
+                                                        entity_id :  this.activeTests[j].test_id
 
-                                                })
+
+                                                },
+                                                )
                                         }
                                         }
                                     })
@@ -97,7 +100,9 @@ export class TestListComponent implements OnChanges {
         modalRefDel.componentInstance.config = this.modalInfoConfig;
         modalRefDel.result
             .then(() => {
-                this._router.navigate(["/student/test-player"]);
+                this._router.navigate(["/student/test-player"],
+                    {queryParams: {testId: data.entity_id}}
+                    );
             }, () => {
                 return;
             });
