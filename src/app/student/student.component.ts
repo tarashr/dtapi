@@ -81,13 +81,13 @@ export class StudentComponent implements OnInit {
     }
 
     showStudentsByGroup(groupId) {
-        let groupIds: number[] = [];
-        groupIds.push(groupId);
-        let dataEnt = new EntityManagerBody(this.groupEntity, groupIds);
-        this.crudService.getEntityValues(dataEnt)
+        // let groupIds: number[] = [];
+        // groupIds.push(groupId);
+        // let dataEnt = new EntityManagerBody(this.groupEntity, groupIds);
+        this.crudService.getRecordById(this.groupEntity, groupId)
             .subscribe(
-                groups => {
-                    this.groupName = groups[0].group_name;
+                res => {
+                    this.groupName = res[0].group_name;
                     this.entityTitle = `Студенти групи: ${this.groupName}`;
                 },
                 error => console.log("error: ", error)
