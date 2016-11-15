@@ -268,7 +268,7 @@ export class GroupComponent implements OnInit, OnDestroy {
             case "viewStudents":
                 this._router.navigate(
                     ["/admin/student/byGroup"],
-                    {queryParams: {groupId: data.entity_id, groupName: data.entityColumns[1]}}
+                    {queryParams: {groupId: data.entity_id}}
                 );
                 break;
             case "create":

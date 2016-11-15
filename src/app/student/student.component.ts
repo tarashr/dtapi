@@ -63,7 +63,6 @@ export class StudentComponent implements OnInit {
         this.subscription = route.queryParams.subscribe(
             data => {
                 this.groupId = data["groupId"];
-                this.groupName = data["groupName"];
             });
     }
 
@@ -75,11 +74,25 @@ export class StudentComponent implements OnInit {
 
     ngOnInit() {
         if (this.groupId) {
-            this.entityTitle = `Студенти групи: ${this.groupName}`;
-            this.getStudentsByGroup();
+            this.showStudentsByGroup(this.groupId);
         } else {
             this.getCountRecords();
         }
+    }
+
+    showStudentsByGroup(groupId) {
+        let groupIds: number[] = [];
+        groupIds.push(groupId);
+        let dataEnt = new EntityManagerBody(this.groupEntity, groupIds);
+        this.crudService.getEntityValues(dataEnt)
+            .subscribe(
+                groups => {
+                    this.groupName = groups[0].group_name;
+                    this.entityTitle = `Студенти групи: ${this.groupName}`;
+                },
+                error => console.log("error: ", error)
+            );
+        this.getStudentsByGroup();
     }
 
     private createTableConfig = (data: any) => {
