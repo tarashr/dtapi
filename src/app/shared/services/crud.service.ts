@@ -117,19 +117,18 @@ export class CRUDService {
             .catch(this.handleError);
     }
 
-     getGroupsBySpeciality(faculty_id: number): Observable<any> {
+    getGroupsBySpeciality(faculty_id: number): Observable<any> {
         return this._http
             .get(`${this.hostUrlBase}group/getGroupsBySpeciality/${faculty_id}`)
             .map(this.successResponse)
             .catch(this.handleError);
     }
+
     getStudentsByGroup(group_id: number): Observable<any> {
         return this._http
             .get(`${this.hostUrlBase}/student/getStudentsByGroup/${group_id}`)
             .map(this.successResponse)
             .catch(this.handleError);
     }
-
-   
 }
 

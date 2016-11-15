@@ -32,6 +32,16 @@
         <form class="navbar-form navbar-right">
             <div class="form-group">
                 <a class="btn btn-default" (click)="modal(config)" [title]="addTitle">Додати </a>
+                <select class="form-control" name="count"
+                        #select
+                        [title]="selectLimit"
+                        (input)="changeLimit(select.value)"
+                        [disabled]="inputSearch.value.length">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option [value]="entityDataLength">Всі</option>
+                </select>
             </div>
         </form>
     </div>

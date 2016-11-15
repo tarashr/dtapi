@@ -2,8 +2,8 @@
     margin: 1px 2px;
 }
 
-.info {
-    padding-bottom: 15px;
+.row div.info {
+    padding: 5px 15px;
     background-color:#f9f9f9;
     border: 5px solid #fff;
 }
@@ -15,6 +15,10 @@
 
 .answers li {
     list-style: none;
+}
+
+.answers img{
+    max-height: 160px;
 }
 
 .question-img {

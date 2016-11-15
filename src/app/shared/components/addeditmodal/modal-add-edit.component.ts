@@ -1,6 +1,7 @@
 import {Component, Input} from "@angular/core";
 import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {successEventModal, modalInfoConfig} from "../../../shared/constant";
+import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: "modal-add-edit",
@@ -36,4 +37,14 @@ export class ModalAddEditComponent {
         this.config.img.value = "";
     }
 
+    // for datepicker
+    isWeekend(date: NgbDateStruct) {
+        const d = new Date(date.year, date.month - 1, date.day);
+        return d.getDay() === 0 || d.getDay() === 6;
+    }
+
+    isDisabled(date: NgbDateStruct, current: {month: number}) {
+        return date.month !== current.month;
+    }
+    // the end
 }

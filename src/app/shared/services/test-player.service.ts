@@ -10,7 +10,8 @@ import {
     saveEndTimeUrl,
     getEndTimeUrl,
     resetSessionDataUrl,
-    getTestRecordUrl
+    getTestRecordUrl,
+    countTestPassesByStudentUrl
 }  from "../constant";
 import {TestPlayerNavButton} from "../classes/test-player-nav-buttons";
 import {TestPlayerQuestions} from "../classes/test-player-questions";
@@ -26,6 +27,7 @@ export class TestPlayerService {
     private getEndTimeUrl: string = getEndTimeUrl;
     private getTestRecordUrl: string = getTestRecordUrl;
     private resetSessionDataUrl: string = resetSessionDataUrl;
+    private countTestPassesByStudentUrl: string = countTestPassesByStudentUrl;
     private navButtonConstClassName: string = navButtonConstClassName;
     private headersCheckSAnswer = new Headers({"content-type": "application/json"});
 
@@ -74,11 +76,12 @@ export class TestPlayerService {
             .catch(this.handleError);
     }
 
-    saveEndTime(body: any): Observable<any> {
-        return this.http
+    saveEndTime(body: any) {
+        this.http
             .post(this.saveEndTimeUrl, JSON.stringify(body), {headers: this.headersCheckSAnswer})
             .map(this.successResponse)
-            .catch(this.handleError);
+            .catch(this.handleError)
+            .subscribe();
     }
 
     getEndTime(): Observable<any> {
@@ -88,9 +91,18 @@ export class TestPlayerService {
             .catch(this.handleError);
     }
 
-    resetSessionData(): Observable<any> {
-        return this.http
+    resetSessionData() {
+        this.http
             .get(`${this.resetSessionDataUrl}`)
+            .map(this.successResponse)
+            .catch(this.handleError)
+            .subscribe();
+    }
+
+
+    countTestPassesByStudent(studentId: string | number, testId: string | number): Observable<any> {
+        return this.http
+            .get(`${this.countTestPassesByStudentUrl}/${studentId}/${testId}`)
             .map(this.successResponse)
             .catch(this.handleError);
     }
@@ -100,7 +112,7 @@ export class TestPlayerService {
             {answered: false, label: "01", active: true, className: `${navButtonConstClassName} btn-warning`}];
         for (let i = 1; i < countOfButtons; i++) {
             navButtons.push(new TestPlayerNavButton());
-            navButtons[i].label = i + 1 < 10 ? `0${i + 1}` : `${i + 1}`;
+            navButtons[i].label = this.leftPad(i + 1);
             navButtons[i].className = `${navButtonConstClassName} btn-primary`;
         }
         return navButtons;
@@ -109,7 +121,7 @@ export class TestPlayerService {
     getUserRate(results: TestPlayerDtapiResult[], questions: TestPlayerQuestions[]): number {
         let userRate: number = 0;
         results.forEach((result) => {
-            if (result.true === 0) return;
+            if (!result.true) return;
             questions.forEach((question) => {
                 if (result.question_id === question.question_id) {
                     userRate += +question.rate;
@@ -132,4 +144,53 @@ export class TestPlayerService {
         });
         return bodyCheck;
     };
+
+    createBodyResult(studentId: number|string,
+                     testId: number|string,
+                     startTime: number,
+                     endTime: number,
+                     userRate: number,
+                     results: any[],
+                     questions: TestPlayerQuestions[]): any {
+        let bodyResult: any = {};
+        bodyResult.true_answers = "";
+        bodyResult.answers = "";
+        bodyResult.student_id = studentId;
+        bodyResult.test_id = testId;
+        let date = new Date(startTime * 1000);
+        let dateEnd = new Date(endTime * 1000);
+        bodyResult.session_date = `${this.leftPad(date.getFullYear())}-${this.leftPad(date.getMonth() + 1)}-${this.leftPad(date.getDate())}`;
+        bodyResult.start_time = `${this.leftPad(date.getHours())}:${this.leftPad(date.getMinutes())}:${this.leftPad(date.getSeconds())}`;
+        bodyResult.end_time = `${this.leftPad(dateEnd.getHours())}:${this.leftPad(dateEnd.getMinutes())}:${this.leftPad(dateEnd.getSeconds())}`;
+        bodyResult.result = userRate;
+        bodyResult.questions = [];
+        if (!results.length) {
+            bodyResult.questions = questions.map(item => {
+                return {question_id: item.question_id};
+            });
+        } else {
+            bodyResult.questions = questions.map((item) => {
+                let question: any = {};
+                question.question_id = item.question_id;
+                question.answers = [];
+                for (let key in item.chosenAnswer) {
+                    if (item.chosenAnswer[key]) {
+                        question.answers.push(key);
+                    }
+                }
+                results.forEach(result => {
+                    if (result.question_id === item.question_id) {
+                        question.true = result.true;
+                    }
+                });
+                return question;
+            });
+        }
+        bodyResult.questions = JSON.stringify(bodyResult.questions);
+        return bodyResult;
+    }
+
+    leftPad(num: number): string {
+        return num < 10 ? `0${num}` : `${num}`;
+    }
 }
