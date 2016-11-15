@@ -6,6 +6,8 @@
     align-items: center;
     flex-direction: column;
     color: #fff;
+    background: url("./assets/background.jpg") center no-repeat;
+    background-size: cover;
 }
 
 .btn.btn-default.submit-btn {
