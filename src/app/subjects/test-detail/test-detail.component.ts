@@ -178,7 +178,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    getSumOfTasks(){
+    getSumOfTasks() {
         this.subjectService.getTestDetailsByTest(this.test_id)
             .subscribe(
                 res => {
@@ -199,12 +199,12 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         if (this.entityData.length) {
             this.entityData.forEach((item) => {
                 addedLevels.push(+item.entityColumns[1]);
-            })
+            });
         }
         restLevels = this.level.filter(item => {
             return ! addedLevels.some(num => {
                 return num == item;
-            })
+            });
         });
         return restLevels;
     }
