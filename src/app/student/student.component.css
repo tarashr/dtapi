@@ -91,3 +91,7 @@ div.student-datas  input{
     margin: 10px 0 10px 0;
 }
 
+div.input-foto input{
+    width: 100%;
+}
+
