@@ -13,7 +13,7 @@
     <div *ngIf="noRecords" class="text-center">
         Для даної групи студентів не знайдено
     </div>
-    <dt-table *ngIf="entityData.length"
+    <dt-table *ngIf="!noRecords"
               [page]="page"
               [limit]="limit"
               [headers]="headers"

@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var helpers = require('./helpers');
 
 module.exports = {
@@ -28,8 +29,8 @@ module.exports = {
                 loader: 'html'
             },
             {
-                test: /\.(png|jpg|gif|svg|woff|woff2|ttf|eot|ico)$/,
-                loader: 'file?name=assets/img[name].[hash].[ext]'
+                test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
+                loader: 'file-loader?name=assets/[name].[hash].[ext]'
             },
             {
                 test: /\.css$/,
@@ -57,6 +58,13 @@ module.exports = {
             jQuery: 'jquery',
             $: 'jquery',
             jquery: 'jquery'
-        })
+        }),
+
+        new CopyWebpackPlugin([
+            {
+                from: 'src/assets/img/background.jpg',
+                to: 'assets/background.jpg'
+            }
+        ])
     ]
 };

@@ -8,7 +8,6 @@ import {Faculty} from "../shared/classes/faculty";
 import {Speciality} from "../shared/classes/speciality";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add-edit.component";
-import {EntityManagerBody} from "../shared/classes/entity-manager-body";
 import {CRUDService} from "../shared/services/crud.service.ts";
 import {
     configAddGroup,
@@ -18,7 +17,6 @@ import {
     pageChange,
     getCountRecords,
     delRecord,
-    refreshData,
     successEventModal,
     headersGroup,
     actionsGroup,
@@ -70,6 +68,13 @@ export class GroupComponent implements OnInit, OnDestroy {
     public defaultFacultySelect: string = "Виберіть факультет";
     public defaultSpecialitySelect: string = "Виберіть спеціальність";
 
+    public changeLimit = changeLimit;
+    public pageChange = pageChange;
+    public getCountRecords = getCountRecords;
+    public delRecord = delRecord;
+    public successEventModal = successEventModal;
+    public sortHide: boolean = false;
+
     constructor(private crudService: CRUDService,
                 private _router: Router,
                 private route: ActivatedRoute,
@@ -80,14 +85,6 @@ export class GroupComponent implements OnInit, OnDestroy {
                 this.facultyId = data["facultyId"];
             });
     };
-
-    public changeLimit = changeLimit;
-    public pageChange = pageChange;
-    public getCountRecords = getCountRecords;
-    public delRecord = delRecord;
-    public refreshData = refreshData;
-    public successEventModal = successEventModal;
-    public sortHide: boolean = false;
 
     ngOnInit() {
         this.getFacultiesList();
@@ -262,6 +259,12 @@ export class GroupComponent implements OnInit, OnDestroy {
 
     activate(data: any) {
         switch (data.action) {
+            case "viewResult":
+                this._router.navigate(
+                    ["/admin/group/groupResult"],
+                    {queryParams: {groupId: data.entity_id}}
+                );
+                break;
             case "viewTimetable":
                 this._router.navigate(
                     ["/admin/group/groupTimetable"],
@@ -271,7 +274,7 @@ export class GroupComponent implements OnInit, OnDestroy {
             case "viewStudents":
                 this._router.navigate(
                     ["/admin/student/byGroup"],
-                    {queryParams: {groupId: data.entity_id, groupName: data.entityColumns[1]}}
+                    {queryParams: {groupId: data.entity_id}}
                 );
                 break;
             case "create":
@@ -382,6 +385,35 @@ export class GroupComponent implements OnInit, OnDestroy {
                 return;
             });
     }
+
+    refreshData(action: string) {
+        if (this.specialityId) {
+            this.isSelectedBy = true;
+            this.entityTitle = `Групи спеціальності: ${this.specialityName}`;
+            this.getGroupsBySpeciality(this.specialityId);
+        } else if (this.facultyId) {
+            this.isSelectedBy = true;
+            this.entityTitle = `Групи факультету: ${this.facultyName}`;
+            this.getGroupsByFaculty(this.facultyId);
+        }
+        else {
+            if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
+                this.offset = (this.page - 2) * this.limit;
+                this.page -= 1;
+            } else if (this.entityData.length > 1) {
+                this.offset = (this.page - 1) * this.limit;
+            }
+
+            this.crudService.getCountRecords(this.entity)
+                .subscribe(
+                    data => {
+                        this.entityDataLength = +data.numberOfRecords;
+                        this.getRecordsRange();
+                    },
+                    error => console.log(error)
+                );
+        }
+    };
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
