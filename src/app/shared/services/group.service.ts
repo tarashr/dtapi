@@ -38,4 +38,10 @@ export class GroupService {
             .catch(this.handleError);
     }
 
+    getTestResult(testId: number, groupId: number): Observable<any> {
+        return this.http
+            .get(`${this.hostUrlBase}Result/getRecordsByTestGroupDate/${testId}/${groupId}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
 }

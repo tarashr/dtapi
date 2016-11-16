@@ -18,6 +18,7 @@ import {FacultyComponent}        from "./app/faculty/faculty.component";
 import {GroupComponent}          from "./app/group/group.component";
 import {GroupTimetableComponent} from "./app/group/group-timetable/group-timetable.component";
 import {GroupResultComponent}    from "./app/group/group-result/group-result.component";
+import {GroupTestResultComponent} from "./app/group/group-test-result/group-test-result.component";
 import {SpecialityComponent}     from "./app/speciality/speciality.component";
 import {AdminUserComponent}      from "./app/admin-user/admin-user.component";
 import {StudentComponent}        from "./app/student/student.component";
@@ -65,6 +66,7 @@ import {TestBarComponent} from "./app/shared/components/test-bar/test-bar.compon
         GroupComponent,
         GroupTimetableComponent,
         GroupResultComponent,
+        GroupTestResultComponent,
         AdminUserComponent,
         SpecialityComponent,
         StudentComponent,

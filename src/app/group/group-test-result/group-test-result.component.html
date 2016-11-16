@@ -1,0 +1,22 @@
+<div class="entity-container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-text">{{pageTitle}}</div>
+            <form class="navbar-form navbar-right">
+                <button type="button" class="btn btn-default">Друк</button>
+                <button type="button" class="btn btn-secondary"
+                        (click)="goBack()">Назад
+                </button>
+            </form>
+        </div>
+    </nav>
+    <dt-table *ngIf="!noRecords"
+              [limit]="limit"
+              [page]="page"
+              [headers]="headers"
+              [tableData]="entityData">
+    </dt-table>
+    <div *ngIf="noRecords" class="text-center">
+        Немає результатів тестування для даної групи
+    </div>
+</div>

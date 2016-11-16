@@ -13,7 +13,7 @@ import {EntityManagerBody} from "../../shared/classes/entity-manager-body";
 })
 export class GroupResultComponent implements OnInit {
 
-    public pageTitle: string = "Результати тестування групи ";
+    public pageTitle: string;
 
     public page: number = 1;
     public limit: number = 0;
@@ -29,6 +29,7 @@ export class GroupResultComponent implements OnInit {
     public entityDataWithNames: any ;
     public headers: any = headersGroupResult;
     public actions: any = actionsGroupResult;
+
     private subscription: Subscription;
 
     constructor(private _router: Router,
@@ -50,8 +51,8 @@ export class GroupResultComponent implements OnInit {
     createTitle() {
         this.crudService.getRecordById(this.groupEntity, this.groupId)
             .subscribe(
-                res => {
-                    this.groupName = res[0].group_name;
+                data => {
+                    this.groupName = data[0].group_name;
                     this.pageTitle = `Перелік тестів зданих групою ${this.groupName}`;
                 },
                 error => console.log("error: ", error)
@@ -64,28 +65,28 @@ export class GroupResultComponent implements OnInit {
                 data => {
                     if (data.response === "no records") {
                         this.noRecords = true;
-                        return;
+                    } else {
+                        this.noRecords = false;
+                        let ids = [];
+                        data.forEach(item => {
+                            ids.push(item.test_id);
+                        });
+                        let entityManagerTests = new EntityManagerBody(this.testEntity, ids);
+                        this.getTestsDetails(entityManagerTests);
                     }
-                    this.noRecords = false;
-                    let ids = [];
-                    data.forEach(item => {
-                        ids.push(item.test_id);
-                    });
-                    let entityManagerTests = new EntityManagerBody(this.testEntity, ids);
-                    this.getTestsDetails(entityManagerTests);
                 },
                 error => console.log("error: ", error)
             );
     }
 
 
-    getTestsDetails(data: EntityManagerBody): void {
-        this.crudService.getEntityValues(data)
+    getTestsDetails(param: EntityManagerBody): void {
+        this.crudService.getEntityValues(param)
             .subscribe(
-                res => {
-                    this.entityDataWithNames = res;
+                data => {
+                    this.entityDataWithNames = data;
                     let ids = [];
-                    res.forEach(item => {
+                    data.forEach(item => {
                         ids.push(item.subject_id);
                     });
                     let entityManagerSubjects = new EntityManagerBody(this.subjectEntity, ids);
@@ -95,17 +96,17 @@ export class GroupResultComponent implements OnInit {
             );
     }
 
-    getSubjectNames(data: EntityManagerBody): void {
-        this.crudService.getEntityValues(data)
+    getSubjectNames(param: EntityManagerBody): void {
+        this.crudService.getEntityValues(param)
             .subscribe(
-                res => {
-                    this.substitudeNameWithId(res);
+                data => {
+                    this.getNamesByIds(data);
                 },
                 error => console.log("error: ", error)
             );
     }
 
-    substitudeNameWithId(data: any): void {
+    getNamesByIds(data: any): void {
         for (let i in this.entityDataWithNames) {
             for (let k in data) {
                 if (this.entityDataWithNames[i].subject_id === data[k].subject_id) {
@@ -120,8 +121,8 @@ export class GroupResultComponent implements OnInit {
         switch (data.action) {
             case "viewTestResult":
                 this._router.navigate(
-                    ["/admin/group/groupTimetable"],
-                    {queryParams: {groupId: data.entity_id}}
+                    ["/admin/group/groupTestResult"],
+                    {queryParams: {testId: data.entity_id, groupId: this.groupId}}
                 );
                 break;
         }
