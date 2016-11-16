@@ -40,11 +40,15 @@ export class GroupTestResultComponent implements OnInit {
             });
     };
 
-    ngOnInit(){
+    ngOnInit() {
         this.getRecords();
     }
 
-    getRecords() {
+    print(): void {
+        window.print();
+    }
+
+    getRecords(): void {
         this.groupService.getTestResult(this.testId, this.groupId)
             .subscribe(
                 data => {
@@ -65,7 +69,7 @@ export class GroupTestResultComponent implements OnInit {
             );
     }
 
-    getStudentName(param: EntityManagerBody) {
+    getStudentName(param: EntityManagerBody): void {
         this.crudService.getEntityValues(param)
             .subscribe(
                 data => {
@@ -82,7 +86,6 @@ export class GroupTestResultComponent implements OnInit {
                 }
             }
         }
-        console.log(this.entityDataWithNames);
         this.createTableConfig(this.entityDataWithNames);
     }
 
