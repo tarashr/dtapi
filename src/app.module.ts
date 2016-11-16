@@ -66,7 +66,7 @@ import {TestBarComponent} from "./app/shared/components/test-bar/test-bar.compon
         AdminUserComponent,
         SpecialityComponent,
         StudentComponent,
-        StudentNewProfileComponent,
+        // StudentNewProfileComponent,
         StudentProfileComponent,
         EntityBarComponent,
         TableComponent,

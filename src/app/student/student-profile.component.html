@@ -4,75 +4,89 @@
                 (click)="goBack()">Назад
         </button>
     </div>
-    <div class="student-datas row">
-        <div *ngFor="let stud of student" class="">
-            <div class="student-foto col-xs-12 col-sm-3 col-md-3">
-                <img class="img-responsive img-rounded profile-foto" [src]="stud.photo" alt="Фото студента"
-                     id="output" #newFotoSrc />
-                <input class="input-student-data" type="file" (change)="changeFile($event)" [disabled]="statusView">
-            </div>
+    <form #myform="ngForm" novalidate>
+        <div class="student-datas row">
+            <!-- <div *ngFor="let stud of student" class=""> -->
+                <div class="student-foto col-xs-12 col-sm-3 col-md-3">
+                    <img class="img-responsive img-rounded profile-foto" [src]="student.photo" alt="Фото студента"
+                         id="output" #newFotoSrc />
+                    <input class="input-student-data" type="file" name="file" (change)="changeFile($event)" [disabled]="statusView" ngModel>
+                </div>
 
             <div class="student-data1 col-xs-12 col-sm-4 col-md-4">
-                <div><label for="surname">Прізвище:</label><input id="surname" class="input-student-data"
+                <div><label for="surname">Прізвище:</label><input id="surname" name="surname" class="input-student-data"
                                                                   [disabled]="statusView"
-                                                                  [(ngModel)]="stud.student_surname"
-                                                                  required></div>
-                <div><label for="name">Ім'я:</label><input id="name" class="input-student-data"
+                                                                  [(ngModel)]="student.student_surname"
+                                                                  #surname="ngModel" required></div>
+                <div><label for="name">Ім'я:</label><input id="name" class="input-student-data" name="name"
                                                            [disabled]="statusView"
-                                                           [(ngModel)]="stud.student_name"
+                                                           [(ngModel)]="student.student_name" #name="ngModel"
                                                            required></div>
-                <div><label for="fname">По-батькові:</label><input id="fname" class="input-student-data"
+                <div><label for="fname">По-батькові:</label><input id="fname" class="input-student-data" name="fname"
                                                                    [disabled]="statusView"
-                                                                   [(ngModel)]="stud.student_fname"
+                                                                   [(ngModel)]="student.student_fname" #fname="ngModel"
                                                                    required></div>
-                <div><label for="faculty">Факультет:</label>
-                    <select *ngIf ="facultys" id="faculty" class="input-student-data select-group" required [disabled]="statusView" #facCurrent (change)="getGroupByFaculty(facCurrent.value)">
-                        <option *ngFor="let item of facultys" class="input-student-data" [value]="item.faculty_id" [selected]="item.faculty_id == stud.faculty_id" >
-                            {{item.faculty_name}}
-                        </option>
-                    </select>
-                </div>
+                <div><label for="faculty">Факультет:</label><input id="faculty" class="input-student-data" name="name"
+                                                                   [disabled]="statusView"
+                                                                   [(ngModel)]="student.faculty_name" ngModel
+                                                                       required></div>
+                        <!-- <select *ngIf ="facultys" id="faculty" class="input-student-data select-group" name="faculty" required [disabled]="statusView" #facCurrent (change)="getGroupByFaculty(facCurrent.value)">
+                            <option *ngFor="let item of facultys" class="input-student-data" [value]="item.faculty_id" [selected]="item.faculty_id == student.faculty_id" >
+                                {{item.faculty_name}}
+                            </option>
+                        </select> -->
 
-                <div><label for="group">Група:</label>
-                    <select #groupId *ngIf ="groups" id="group" class="input-student-data select-group" (input) = "studGroupId(groupId.value)"
-                            required [disabled]="statusView">
-                        <option *ngFor="let item of groups" class="input-student-data" [value]="item.group_id" [selected]="item.group_id == stud.group_id">
-                            {{item.group_name}}
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="student-data2 col-xs-12 col-sm-5 col-md-5">
-                <div><label for="login">Логін:</label><input id="login" class="input-student-data"
-                                                             [(ngModel)]="stud.username" [disabled]="statusView"
-                                                             required></div>
-                <div><label for="password">Пароль:</label><input id="password"
-                                                                 class="input-student-data password-eye-input"
-                                                                 [type]="passwordStatusText"
-                                                                 [(ngModel)]="stud.plain_password"
+                    <div><label for="group">Група:</label><input id="group" class="input-student-data" name="name"
                                                                  [disabled]="statusView"
-                                                                 required>
-                   <span class="glyphicon glyphicon-eye-open password-eye" (click)="showPassword()"></span>
-                </div>
+                                                                 [(ngModel)]="student.group_name" ngModel
+                                                                 required></div>
 
-                <div><label for="gradebook_id">№ залікової книжки:</label><input id="gradebook_id"
-                                                                                 class="input-student-data"
-                                                                                 [(ngModel)]="stud.gradebook_id"
-                                                                                 [disabled]="statusView" required></div>
-                <div><label for="email" required>Електронна адреса:</label><input id="email" class="input-student-data"
-                                                                                  [(ngModel)]="stud.email"
-                                                                                  [disabled]="statusView" required>
+                        <!-- <select #groupId *ngIf ="groups" id="group" class="input-student-data select-group" name="group" (input) = "studGroupId(groupId.value)"
+                                required [disabled]="statusView">
+                            <option *ngFor="let item of groups" class="input-student-data" [value]="item.group_id" [selected]="item.group_id == student.group_id">
+                                {{item.group_name}}
+                            </option>
+                        </select> -->
                 </div>
+                <div class="student-data2 col-xs-12 col-sm-5 col-md-5">
+                    <div><label for="login">Логін:</label><input id="login" class="input-student-data" name="login"
+                                                                 [(ngModel)]="student.username" [disabled]="statusView" ngModel
+                                                                 required></div>
+                    <div><label for="password">Пароль:</label><input id="password"
+                                                                     class="input-student-data password-eye-input" name="password"
+                                                                     [type]="passwordStatusText"
+                                                                     [(ngModel)]="student.plain_password" ngModel
+                                                                     [disabled]="statusView"
+                                                                     required>
+                       <span class="glyphicon glyphicon-eye-open password-eye" (click)="showPassword()"></span>
+                    </div>
+
+                    <div><label for="gradebook_id">№ залікової книжки:</label><input id="gradebook_id"
+                                                                                     class="input-student-data" name="gradebook"
+                                                                                     [(ngModel)]="student.gradebook_id" ngModel
+                                                                                     [disabled]="statusView" required></div>
+                    <div><label for="email" required>Електронна адреса:</label><input id="email" class="input-student-data" name="email"
+                                                                                      [(ngModel)]="student.email" ngModel
+                                                                                      [disabled]="statusView" required>
+                    </div>
+                </div>
+            <div class="button-create-refresh">
+                <button class="btn btn-default" type="submit" (click)="editSaveStudentProfile()" role="button">
+                    {{editSaveButtonName}}
+                </button>
+                <button class="btn btn-default" type="submit" (click) = deleteStudent() role="button">Видалити студента</button>
             </div>
         </div>
-        <div class="button-create-refresh">
-            <button class="btn btn-default" type="submit" (click)="editSaveStudentProfile()" role="button">
-                {{editSaveButtonName}}
-            </button>
-            <button class="btn btn-default" type="submit" (click) = deleteStudent() role="button">Видалити студента</button>
-        </div>
-    </div>
+    </form>
 </div>
 
+
+<div>
+    <h3>Form:</h3>
+    {{myform.value | json}}
+    <h3>Student:</h3>
+    {{student | json}}
+
+</div>
 
 <template ngbModalContainer></template>

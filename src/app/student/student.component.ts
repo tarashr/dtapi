@@ -167,7 +167,7 @@ export class StudentComponent implements OnInit {
     activate(data: any) {
         switch (data.action) {
             case "create":
-                this._router.navigate(["/admin/student/student-new-profile"]);
+                this._router.navigate(["/admin/student/student-profile"]);
                 break;
             case "view":
                 this._router.navigate(["/admin/student/student-profile", data.entity_id]);
