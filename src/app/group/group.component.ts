@@ -259,6 +259,12 @@ export class GroupComponent implements OnInit, OnDestroy {
 
     activate(data: any) {
         switch (data.action) {
+            case "viewResult":
+                this._router.navigate(
+                    ["/admin/group/groupResult"],
+                    {queryParams: {groupId: data.entity_id}}
+                );
+                break;
             case "viewTimetable":
                 this._router.navigate(
                     ["/admin/group/groupTimetable"],

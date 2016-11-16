@@ -11,6 +11,7 @@ import {FacultyComponent} from "./app/faculty/faculty.component";
 import {StatisticComponent} from "./app/statistic/statistic.component";
 import {GroupComponent} from "./app/group/group.component";
 import {GroupTimetableComponent} from "./app/group/group-timetable/group-timetable.component";
+import {GroupResultComponent} from "./app/group/group-result/group-result.component";
 import {AdminUserComponent} from "./app/admin-user/admin-user.component";
 import {SpecialityComponent} from "./app/speciality/speciality.component";
 import {StudentComponent} from "./app/student/student.component";
@@ -57,6 +58,7 @@ const appRoutes: Routes = [
             {path: "group", component: GroupComponent},
             {path: "group/byFaculty", component: GroupComponent},
             {path: "group/bySpeciality", component: GroupComponent},
+            {path: "group/groupResult", component: GroupResultComponent},
             {path: "group/groupTimetable", component: GroupTimetableComponent},
             {path: "adminUser", component: AdminUserComponent},
             {path: "student", component: StudentComponent},

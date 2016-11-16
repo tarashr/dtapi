@@ -81,9 +81,6 @@ export class StudentComponent implements OnInit {
     }
 
     showStudentsByGroup(groupId) {
-        // let groupIds: number[] = [];
-        // groupIds.push(groupId);
-        // let dataEnt = new EntityManagerBody(this.groupEntity, groupIds);
         this.crudService.getRecordById(this.groupEntity, groupId)
             .subscribe(
                 res => {

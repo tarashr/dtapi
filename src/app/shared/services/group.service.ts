@@ -3,7 +3,6 @@ import {Router} from "@angular/router";
 import {Http, Response}  from "@angular/http";
 import {Observable}      from "rxjs/Observable";
 import {baseUrl}         from "../constants.ts";
-import {EntityManagerBody} from "../classes/entity-manager-body";
 
 @Injectable()
 export class GroupService {
@@ -31,4 +30,12 @@ export class GroupService {
             .map(this.successResponse)
             .catch(this.handleError);
     }
+
+    getTestByGroup(groupId: number): Observable<any> {
+        return this.http
+            .get(`${this.hostUrlBase}Result/getResultTestIdsByGroup/${groupId}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
 }
