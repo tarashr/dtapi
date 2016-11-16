@@ -15,7 +15,6 @@ import {
     modalInfoConfig,
     successEventModal
 } from "../shared/constant";
-import {NULL_EXPR} from "@angular/compiler/src/output/output_ast";
 
 @Component({
     templateUrl: "student-profile.component.html",
