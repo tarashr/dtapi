@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Location} from "@angular/common";
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import {CRUDService}  from "../../shared/services/crud.service";
@@ -14,21 +14,18 @@ import {TimeTable} from "../../shared/classes/timetable";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {EntityManagerBody} from "../../shared/classes/entity-manager-body";
-import {Subscription} from "rxjs";
 
 @Component({
     selector: "timetable-container",
     templateUrl: "timetable.component.html"
 })
 
-export class TimeTableComponent implements OnInit, OnDestroy {
-
-    private subscription: Subscription;
+export class TimeTableComponent implements OnInit {
 
     // common variables
     public entity: string = "timeTable";
-    public subjectName: string;
+    public nameOfSubject: string;
+    public subjectEntity: string = "subject";
     public errorMessage: string;
     public pageTitle: string = "Розклад тестів по предмету: ";
     public subject_id: number;
@@ -57,10 +54,6 @@ export class TimeTableComponent implements OnInit, OnDestroy {
                 private subjectService: SubjectService,
                 private location: Location,
                 private modalService: NgbModal) {
-        this.subscription = route.queryParams.subscribe(
-            data => {
-                this.subjectName = data["token"];
-            });
     }
 
     ngOnInit() {
@@ -68,14 +61,24 @@ export class TimeTableComponent implements OnInit, OnDestroy {
             this.subject_id = +params["id"];
         });
         this.getGroups();
+        this.getSubjectName();
     }
 
     goBack(): void {
         this.location.back();
     }
 
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
+    getSubjectName() {
+        this.crudService.getRecords(this.subjectEntity)
+            .subscribe(
+                data => {
+                    let subjectArr = data.filter((item) => {
+                        return item.subject_id == this.subject_id;
+                    });
+                    this.nameOfSubject = subjectArr[0].subject_name;
+                },
+                error => console.log("error: ", error)
+            );
     }
 
     getTimeTableForSubject() {
@@ -178,11 +181,11 @@ export class TimeTableComponent implements OnInit, OnDestroy {
                 this.substituteNameGroupWithId(data);
                 let newTimeTable: TimeTable = new TimeTable(
                     data.select[0].selected,
-                    data.list[0].value,
+                    data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`,
                     this.subject_id);
                 this.crudService.insertData(this.entity, newTimeTable)
                     .subscribe(() => {
-                        this.modalInfoConfig.infoString = `Новий розклад для групи ${data.select[0].selected} успішно створено`;
+                        this.modalInfoConfig.infoString = `Тестування назначено`;
                         this.successEventModal();
                         this.getTimeTableForSubject();
                     });
@@ -192,7 +195,15 @@ export class TimeTableComponent implements OnInit, OnDestroy {
     };
 
     editCase(data) {
-        this.configEdit.list[0].value = data.entityColumns[2];
+
+        let nDate = new Date(data.entityColumns[2]);
+        let newDate = {
+            "year": nDate.getFullYear(),
+            "month": nDate.getMonth() + 1,
+            "day": nDate.getDate()
+        };
+
+        this.configEdit.list[0].value = newDate;
         this.configEdit.select[0].selected = data.entityColumns[1];
         this.configEdit.id = data.entity_id;
         this.configEdit.select[0].selectItem = [];
@@ -206,7 +217,8 @@ export class TimeTableComponent implements OnInit, OnDestroy {
                 this.substituteNameGroupWithId(data);
                 let editedTimeTable: TimeTable = new TimeTable(
                     data.select[0].selected,
-                    data.list[0].value);
+                    data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`,
+                );
                 this.crudService.updateData(this.entity, data.id, editedTimeTable)
                     .subscribe(() => {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;

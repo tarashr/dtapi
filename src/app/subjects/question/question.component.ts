@@ -31,14 +31,16 @@ export class QuestionComponent implements OnInit, OnDestroy {
     public entity: string = "question";
     public errorMessage: string;
     public entityTitle: string = "Завдання для тесту: ";
-    public testName: string;
+    public nameOfTest: string;
     public noRecords: boolean = false;
-
+    public subject_id: number;
+    public entityTestName: string;
     public test_id: number;
     public headers: any = headersQuestion;
     public actions: any = actionsQuestion;
     public successEventModal = successEventModal;
     public config: any = {action: "create"};
+    public isSelect: boolean = true;
 
     // variable for pagination
     public page: number = 1;
@@ -53,7 +55,11 @@ export class QuestionComponent implements OnInit, OnDestroy {
     public configEdit = configEditQuestion;
     public modalInfoConfig: any = modalInfoConfig;
     public levels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-    public choise = ["Простий вибір", "Мультивибір"];
+    public selectTypes = ["Простий вибір", "Мультивибір"];
+    public selectType = {
+        "0": "Простий вибір",
+        "1": "Мультивибір"
+    };
 
     // variables for common component
     public entityData: any[] = [];
@@ -66,7 +72,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal) {
         this.subscription = route.queryParams.subscribe(
             data => {
-                this.testName = data["name"];
+                this.subject_id = +data["subject_id"];
             });
     }
 
@@ -75,6 +81,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
             this.test_id = +params["id"];
         });
         this.getCountRecordsByTest();
+        this.getTestBySubjectId();
     }
 
     ngOnDestroy() {
@@ -86,8 +93,17 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
     }
 
-    goToAnswer(data) {
-        this.router.navigate(["/admin/subject/test/question", data.entity_id, "answer"], {queryParams: {nameOfQuestion: data.entityColumns[1]}});
+    getTestBySubjectId() {
+        this.subjectService.getTestsBySubjectId(this.entityTestName, this.subject_id)
+            .subscribe(
+                data => {
+                    let testArr = data.filter((item) => {
+                        return item.test_id == this.test_id;
+                    });
+                    this.nameOfTest = testArr[0].test_name;
+                },
+                error => console.log("error: ", error)
+            );
     }
 
     deleteQuestion(entity, id: number): void {
@@ -126,10 +142,9 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     numberOfOrder,
                     item.question_text,
                     item.level,
-                    item.type,
+                    this.selectType[item.type],
                     item.attachment
                 ];
-                question.actions = this.actions;
                 tempArr.push(question);
             });
             this.entityData = tempArr;
@@ -176,13 +191,35 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.getCountRecordsByTest();
     }
 
+    activate(data: any) {
+        switch (data.action) {
+            case "answer":
+                this.router.navigate(["/admin/subject/test/question", data.entity_id, "answer"],
+                    {
+                        queryParams: {
+                            test_id: this.test_id
+                        }
+                    });
+                break;
+            case "edit":
+                this.editCase(data);
+                break;
+            case "delete":
+                this.deleteCase(data);
+                break;
+            case "create":
+                this.createCase();
+                break;
+        }
+    }
+
     createCase() {
         this.configAdd.list[0].value = "";
-        this.configAdd.img[0].value = "";
+        this.configAdd.img.value = "";
         this.configAdd.select[0].selected = "";
         this.configAdd.select[1].selected = "";
         this.configAdd.select[0].selectItem = this.levels;
-        this.configAdd.select[1].selectItem = this.choise;
+        this.configAdd.select[1].selectItem = this.selectTypes;
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
@@ -191,7 +228,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     data.list[0].value,
                     data.select[0].selected,
                     data.select[1].selectItem.indexOf(data.select[1].selected),
-                    data.img[0].value,
+                    data.img.value,
                     this.test_id
                 );
                 this.crudService.insertData(this.entity, newQuestion)
@@ -211,8 +248,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.configEdit.select[0].selected = data.entityColumns[2];
         this.configEdit.select[1].selected = data.entityColumns[3];
         this.configEdit.select[0].selectItem = this.levels;
-        this.configAdd.select[1].selectItem = this.choise;
-        this.configAdd.img[0].value = data.entityColumns[4];
+        this.configEdit.select[1].selectItem = this.selectTypes;
+        this.configEdit.img.value = data.entityColumns[4];
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
@@ -221,7 +258,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     data.list[0].value,
                     data.select[0].selected,
                     data.select[1].selectItem.indexOf(data.select[1].selected),
-                    data.img[0].value,
+                    data.img.value,
                     this.test_id
                 );
                 this.crudService.updateData(this.entity, data.id, editedQuestion)
@@ -236,7 +273,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
 
     deleteCase(data) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видалити ${data.entityColumns[0]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});

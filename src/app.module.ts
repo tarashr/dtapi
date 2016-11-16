@@ -42,7 +42,7 @@ import {GroupService} from "./app/shared/services/group.service";
 import {TestPlayerService} from "./app/shared/services/test-player.service";
 import {TestListComponent} from "./app/studentpart/test-list/test-list.component";
 import {TestListSheduleComponent} from "./app/studentpart/test-list-shedule/test-list-shedule.component";
-
+import {TestBarComponent} from "./app/shared/components/test-bar/test-bar.component";
 
 
 @NgModule({
@@ -81,8 +81,8 @@ import {TestListSheduleComponent} from "./app/studentpart/test-list-shedule/test
         QuestionComponent,
         AnswerComponent,
 		TestListComponent,
-        TestListSheduleComponent
-
+        TestListSheduleComponent,
+        TestBarComponent
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: "/"},

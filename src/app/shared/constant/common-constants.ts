@@ -1,6 +1,5 @@
 export const baseUrl: string = "http://ec2-35-160-47-83.us-west-2.compute.amazonaws.com/";
-export const getAnswersByQuestionTestPlayerUrl: string = baseUrl + "SAnswer/getAnswersByQuestion/";
-export const checkSAnswerUrl: string = baseUrl + "SAnswer/checkAnswers";
+
 // AUTH action
 export const loginUrl: string = baseUrl + "login/index";
 export const logoutUrl: string = baseUrl + "login/logout";

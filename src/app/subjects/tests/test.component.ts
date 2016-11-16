@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Location} from "@angular/common";
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import {CRUDService}  from "../../shared/services/crud.service";
@@ -22,7 +22,7 @@ import {Subscription} from "rxjs";
     templateUrl: "test.component.html"
 })
 
-export class TestComponent implements OnInit, OnDestroy {
+export class TestComponent implements OnInit {
 
     private subscription: Subscription;
 
@@ -30,7 +30,8 @@ export class TestComponent implements OnInit, OnDestroy {
     public pageTitle: string = `Тести по предмету: `;
     public entity: string = "test";
     public errorMessage: string;
-    public subjectName: string;
+    public nameOfSubject: string;
+    public subjectEntity: string = "subject";
     public subject_id: number;
     public page: number = 1;
     public limit: number = 0;
@@ -55,10 +56,6 @@ export class TestComponent implements OnInit, OnDestroy {
                 private subjectService: SubjectService,
                 private location: Location,
                 private modalService: NgbModal) {
-        this.subscription = route.queryParams.subscribe(
-            data => {
-                this.subjectName = data["token"];
-            });
     }
 
     ngOnInit() {
@@ -66,14 +63,24 @@ export class TestComponent implements OnInit, OnDestroy {
             this.subject_id = +params["id"];
         });
         this.getTestBySubjectId();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this.getSubjectName();
     }
 
     goBack(): void {
         this.location.back();
+    }
+
+    getSubjectName() {
+        this.crudService.getRecords(this.subjectEntity)
+            .subscribe(
+                data => {
+                    let subjectArr = data.filter((item) => {
+                        return item.subject_id == this.subject_id;
+                    });
+                    this.nameOfSubject = subjectArr[0].subject_name;
+                },
+                error => console.log("error: ", error)
+            );
     }
 
     private createTableConfig = (data: any) => {
@@ -134,13 +141,16 @@ export class TestComponent implements OnInit, OnDestroy {
             case "testDetail":
                 this.router.navigate(["/admin/subject/test", data.entity_id, "testDetail"], {
                     queryParams: {
-                        token: this.subject_id,
-                        name: data.entityColumns[1]
+                        token: this.subject_id
                     }
                 });
                 break;
             case "question":
-                this.router.navigate(["/admin/subject/test", data.entity_id, "question"], {queryParams: {name: data.entityColumns[1]}});
+                this.router.navigate(["/admin/subject/test", data.entity_id, "question"], {
+                    queryParams: {
+                        subject_id: this.subject_id
+                    }
+                });
                 break;
             case "edit":
                 this.editCase(data);

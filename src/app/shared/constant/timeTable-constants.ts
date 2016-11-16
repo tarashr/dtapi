@@ -25,7 +25,7 @@ export const actionsTimeTable = [
 export const configAddTimeTable = {
     title: "Додати нову подію у розклад",
     list: [
-        {name: "Дата", value: "", title: "date", type: "data", placeholder: "Встановіть дату у форматі РРРР-ММ-ДД"},
+        {name: "Дата", value: "", title: "date", type: "text", placeholder: "РРРР-ММ-ДД"},
     ],
     action: "create",
     labelBtn: "Додати",
@@ -37,7 +37,7 @@ export const configAddTimeTable = {
 export const configEditTimeTable = {
     title: "Додати подію",
     list: [
-        {name: "Дата", value: "", title: "date", type: "date"},
+        {name: "Дата", value: {} , title: "date", type: "text"},
     ],
     action: "edit",
     labelBtn: "Редагувати",

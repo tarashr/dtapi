@@ -54,7 +54,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     public testDetails: any[] = [];
     public subject_id;
     public entityTest = [];
-    public testName: string;
+    public nameOfTest: string;
     public level: number [] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     constructor(private crudService: CRUDService,
@@ -66,7 +66,6 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         this.subscription = route.queryParams.subscribe(
             data => {
                 this.subject_id = data["token"];
-                this.testName = data["name"];
             });
     }
 
@@ -76,6 +75,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         });
         this.getTasks();
         this.getTestDetailsByTest();
+        this.getTestBySubjectId();
     }
 
     ngOnDestroy() {
@@ -102,6 +102,19 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     goBack(): void {
         this.location.back();
 
+    }
+
+    getTestBySubjectId() {
+        this.subjectService.getTestsBySubjectId(this.entityTestName, this.subject_id)
+            .subscribe(
+                data => {
+                    let testArr = data.filter((item) => {
+                        return item.test_id == this.test_id;
+                    });
+                    this.nameOfTest = testArr[0].test_name;
+                },
+                error => console.log("error: ", error)
+            );
     }
 
     private createTableConfig = (data: any) => {
@@ -165,13 +178,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    createCase() {
-        this.configAdd.list.forEach(item => {
-            item.value = "";
-        });
-        this.configAdd.select[0].selected = "";
-        this.configAdd.select[0].selectItem = this.level;
-        this.tasksTestDetail = 0;
+    getSumOfTasks() {
         this.subjectService.getTestDetailsByTest(this.test_id)
             .subscribe(
                 res => {
@@ -183,6 +190,35 @@ export class TestDetailComponent implements OnInit, OnDestroy {
                     }
                 },
                 error => this.errorMessage = <any>error);
+        return this.tasksTestDetail;
+
+    }
+
+    getRestLevels(restLevels) {
+        let  addedLevels: number[] = [];
+        if (this.entityData.length) {
+            this.entityData.forEach((item) => {
+                addedLevels.push(+item.entityColumns[1]);
+            });
+        }
+        restLevels = this.level.filter(item => {
+            return ! addedLevels.some(num => {
+                return num == item;
+            });
+        });
+        return restLevels;
+    }
+
+    createCase() {
+        let restLevels: number[] = [];
+        this.configAdd.list.forEach(item => {
+            item.value = "";
+        });
+        this.configAdd.select[0].selected = "";
+        restLevels = this.getRestLevels(restLevels);
+        this.configAdd.select[0].selectItem = restLevels;
+        this.tasksTestDetail = 0;
+        this.getSumOfTasks();
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
@@ -209,20 +245,15 @@ export class TestDetailComponent implements OnInit, OnDestroy {
     };
 
     editCase(data) {
+        let restLevels: number[] = [];
         this.configEdit.list[0].value = data.entityColumns[2];
         this.configEdit.list[1].value = data.entityColumns[3];
         this.configEdit.select[0].selected = data.entityColumns[1];
-        this.configEdit.select[0].selectItem = this.level;
+        restLevels = this.getRestLevels(restLevels);
+        restLevels.push(+this.configEdit.select[0].selected);
+        this.configEdit.select[0].selectItem = restLevels;
         this.tasksTestDetail = 0;
-        this.subjectService.getTestDetailsByTest(this.test_id)
-            .subscribe(
-                res => {
-                    this.testDetails = res;
-                    this.testDetails.forEach((item) => {
-                        this.tasksTestDetail += (+item.tasks);
-                    });
-                },
-                error => this.errorMessage = <any>error);
+        this.getSumOfTasks();
         this.configEdit.id = data.entity_id;
         this.tasksTestDetail -= data.entityColumns[2];
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);

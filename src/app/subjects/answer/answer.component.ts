@@ -8,8 +8,8 @@ import {
     configAddAnswer,
     configEditAnswer,
     successEventModal,
-    headersQuestion,
-    actionsQuestion,
+    headersAnswer,
+    actionsAnswer,
     modalInfoConfig
 } from "../../shared/constant";
 import {Answer} from "../../shared/classes/answer";
@@ -30,13 +30,19 @@ export class AnswerComponent implements OnInit, OnDestroy {
     // common variables
     public entity: string = "answer";
     public errorMessage: string;
-    public entityTitle: string = "Відповіді до завдання №: ";
-    public nameOfQuestion: string;
+    public entityTitle: string = "Відповіді до завдання: ";
     public noRecords: boolean = false;
+    public page: number = 1;
 
+    public test_id: number;
     public question_id: number;
-    public headers: any = headersQuestion;
-    public actions: any = actionsQuestion;
+    public limit: number = 20;
+    public offset: number = 0;
+    public questionEntity: string = "question";
+    public questionArr: any[] = [];
+    public nameOfQuestion: string;
+    public headers: any = headersAnswer;
+    public actions: any = actionsAnswer;
     public successEventModal = successEventModal;
     public config: any = {action: "create"};
 
@@ -47,6 +53,11 @@ export class AnswerComponent implements OnInit, OnDestroy {
 
     // variables for table
     public entityData: any[] = [];
+    public answer: {} = {
+        "0": "Не правильно",
+        "1": "Правильно"
+    };
+    public selectAnswer: string[] = ["Не правильно", "Правильно"];
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
@@ -56,8 +67,9 @@ export class AnswerComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal) {
         this.subscription = route.queryParams.subscribe(
             data => {
-                this.nameOfQuestion = data["nameOfQuestion"];
+                this.test_id = data["test_id"];
             });
+
     }
 
     ngOnInit() {
@@ -65,6 +77,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
             this.question_id = +params["id"];
         });
         this.getAnswerByQuestion();
+        this.getQuestionRangeByTest();
     }
 
     ngOnDestroy() {
@@ -73,6 +86,20 @@ export class AnswerComponent implements OnInit, OnDestroy {
 
     goBack(): void {
         this.location.back();
+
+    }
+
+    getQuestionRangeByTest(): void {
+        this.subjectService.getRecordsRangeByTest(this.test_id, this.limit, this.offset)
+            .subscribe(
+                data => {
+                    this.questionArr = data.filter((item) => {
+                        return item.question_id == this.question_id;
+                    });
+                    this.nameOfQuestion = this.questionArr[0].question_text;
+                },
+                error => this.errorMessage = <any>error
+            )
 
     }
 
@@ -87,6 +114,24 @@ export class AnswerComponent implements OnInit, OnDestroy {
             );
     }
 
+    private createTableConfig = (data: any) => {
+        let tempArr: any[] = [];
+        if (data.length) {
+            this.noRecords = false;
+            data.forEach((item) => {
+                let answer: any = {};
+                answer.entity_id = item.answer_id;
+                answer.entityColumns = [
+                    item.answer_text,
+                    item.attachment,
+                    this.answer[item.true_answer]
+                ];
+                tempArr.push(answer);
+            });
+            this.entityData = tempArr;
+        }
+    }
+
     getAnswerByQuestion() {
         this.subjectService.getAnswerByQuestion(this.question_id)
             .subscribe(
@@ -95,7 +140,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
                         this.noRecords = true;
                     }
                     if (data.length) {
-                        this.entityData = data;
+                        this.createTableConfig(data);
                         this.noRecords = false;
                     }
                 },
@@ -103,51 +148,90 @@ export class AnswerComponent implements OnInit, OnDestroy {
             );
     }
 
+    activate(data: any) {
+        switch (data.action) {
+            case "edit":
+                this.editCase(data);
+                break;
+            case "delete":
+                this.deleteCase(data);
+                break;
+            case "create":
+                this.createCase();
+                break;
+        }
+    }
+
     createCase() {
+        let isTrue = this.entityData.some(item => {
+            return this.selectAnswer.indexOf(item.entityColumns[2]) === 1;
+        });
         this.configAdd.list[0].value = "";
-        this.configAdd.list[1].value = "";
-        this.configAdd.img[0].value = "";
+        this.configAdd.select[0].selected = "";
+        this.configAdd.img.value = "";
+        this.configAdd.select[0].selectItem = this.selectAnswer;
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                let newAnswer: Answer = new Answer(
-                    data.img[0].value,
-                    data.list[0].value,
-                    data.list[1].value,
-                    this.question_id
-                );
-                this.crudService.insertData(this.entity, newAnswer)
-                    .subscribe(() => {
-                        this.modalInfoConfig.infoString = `Відповідь успішно створено`;
-                        this.successEventModal();
-                        this.getAnswerByQuestion();
-                    });
+                if (this.questionArr[0].type == "0"
+                    && !isTrue
+                    || this.questionArr[0].type == "1"
+                    || data.select[0].selectItem.indexOf(data.select[0].selected) == 0) {
+                    let newAnswer: Answer = new Answer(
+                        data.img.value,
+                        data.list[0].value,
+                        data.select[0].selectItem.indexOf(data.select[0].selected),
+                        this.question_id
+                    );
+                    this.crudService.insertData(this.entity, newAnswer)
+                        .subscribe(() => {
+                            this.modalInfoConfig.infoString = `Відповідь успішно створено`;
+                            this.successEventModal();
+                            this.getAnswerByQuestion();
+                        });
+                } else {
+                    this.modalInfoConfig.infoString = `Дозволено вказувати тільки одну правильну відповідь`;
+                    this.successEventModal();
+                }
             }, () => {
                 return;
             });
     };
 
-    editCase(entity: any) {
-        this.configEdit.list[0].value = entity.answer_text;
-        this.configEdit.list[1].value = entity.true_answer;
-        this.configEdit.img[0].value = entity.attachment;
+    editCase(data: any) {
+        let isTrue = this.entityData.some(item => {
+            return this.selectAnswer.indexOf(item.entityColumns[2]) === 1;
+        });
+        this.configEdit.list[0].value = data.entityColumns[0];
+        this.configEdit.select[0].selected = data.entityColumns[2];
+        this.configEdit.img.value = data.entityColumns[1];
+        this.configEdit.id = data.entity_id;
+        this.configEdit.select[0].selectItem = this.selectAnswer;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
-                let editedAnswer: Answer = new Answer(
-                    data.img[0].value,
-                    data.list[0].value,
-                    data.list[1].value,
-                    this.question_id
-                );
-                this.crudService.updateData(this.entity, entity.answer_id, editedAnswer)
-                    .subscribe(() => {
-                        this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
-                        this.successEventModal();
-                        this.getAnswerByQuestion();
-                    });
+                if (this.questionArr[0].type == "0"
+                    && !isTrue
+                    || this.questionArr[0].type == "1"
+                    || data.select[0].selectItem.indexOf(data.select[0].selected) == 0) {
+                    let editedAnswer: Answer = new Answer(
+                        data.img.value,
+                        data.list[0].value,
+                        data.select[0].selectItem.indexOf(data.select[0].selected),
+                        this.question_id
+                    );
+                    this.crudService.updateData(this.entity, data.id, editedAnswer)
+                        .subscribe(() => {
+                            this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
+                            this.successEventModal();
+                            this.getAnswerByQuestion();
+                        });
+                } else {
+                    this.modalInfoConfig.infoString = `Дозволено вказувати тільки одну правильну відповідь`;
+                    this.successEventModal();
+                }
             }, () => {
                 return;
             });
@@ -161,7 +245,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
         modalRefDel.componentInstance.config = this.modalInfoConfig;
         modalRefDel.result
             .then(() => {
-                this.deleteAnswer(this.entity, data.answer_id);
+                this.deleteAnswer(this.entity, data.entity_id);
             }, () => {
                 return;
             });

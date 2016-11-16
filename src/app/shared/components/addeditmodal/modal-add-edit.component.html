@@ -5,10 +5,12 @@
     <h4 class="modal-title">{{config.title}}</h4>
 </div>
 <div class="modal-body modal-body-add-edit">
-    <div class="input-group input-group-add-edit" *ngFor="let item of config.list">
-        <span class="input-group-addon modal-span">{{item.name}}:</span>
-        <input [type]="item.type" class="form-control modalInput" [placeholder]="item.placeholder||''"
-               [(ngModel)]="item.value">
+    <div *ngIf="config.list[0].name !== 'Дата'">
+        <div class="input-group input-group-add-edit" *ngFor="let item of config.list">
+            <span class="input-group-addon modal-span">{{item.name}}:</span>
+            <input [type]="item.type" class="form-control modalInput" [placeholder]="item.placeholder||''"
+                   [(ngModel)]="item.value">
+        </div>
     </div>
     <div *ngIf="config.select">
         <div class="input-group input-group-add-edit" *ngFor="let item of config.select">
@@ -20,11 +22,38 @@
         </div>
     </div>
     <div *ngIf="config.img">
-        <div class="input-group input-group-add-edit" *ngFor="let item of config.img">
-            <span class="input-group-addon modal-span">{{item.imgName}}:</span>
-            <input [type]="item.type" class="form-control modalInput" (change)="openFile($event)"
-                    accept='image/*'>
+        <div class="input-group input-group-add-edit">
+            <span class="input-group-addon modal-span">{{config.img.imgName}}:</span>
+            <input [type]="config.img.type" class="form-control modalInput" (change)="openFile($event)"
+                   accept='image/*'>
+            <div *ngIf="config.action == 'edit'" class="input-group-addon remove-image" title="Видалити зображення">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="removeImage()"></span>
+            </div>
         </div>
+    </div>
+    <div class="input-group input-group-add-edit" *ngIf="config.list[0].name == 'Дата'">
+        <span class="input-group-addon modal-span">{{config.list[0].name}}:</span>
+        <input
+                class="form-control"
+                placeholder={{config.list[0].placeholder}}
+                name="dp"
+                [(ngModel)]="config.list[0].value"
+                ngbDatepicker
+                #d="ngbDatepicker"
+                required
+                [dayTemplate]="customDay"
+                [markDisabled]="isDisabled">
+        <div class="input-group-addon" (click)="d.toggle()">
+            <span class="glyphicon glyphicon-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"
+                  aria-hidden="true"></span>
+        </div>
+        <template #customDay let-date="date" let-currentMonth="currentMonth" let-selected="selected"
+                  let-disabled="disabled">
+  <span class="custom-day" [class.weekend]="isWeekend(date)" [class.bg-primary]="selected"
+        [class.hidden]="date.month !== currentMonth" [class.text-muted]="disabled">
+    {{ date.day }}
+  </span>
+        </template>
     </div>
 </div>
 <div class="modal-footer">

@@ -1,6 +1,14 @@
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
-import {Faculty} from "../shared/classes/faculty";
+
+import {
+    Faculty,
+    ConfigModalAddEdit,
+    ConfigTableHeader,
+    ConfigTableAction,
+    ConfigModalInfo
+} from "../shared/classes";
+
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add-edit.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -8,17 +16,13 @@ import {CRUDService} from "../shared/services/crud.service.ts";
 import {
     configAddFaculty, configEditFaculty, modalInfoConfig,
     maxSize,
-    changeLimit,
-    pageChange,
-    getCountRecords,
-    getRecordsRange,
-    delRecord,
-    findEntity,
-    refreshData,
-    successEventModal,
+    changeLimit, pageChange, getCountRecords, getRecordsRange,
+    delRecord, findEntity, refreshData, successEventModal,
     headersFaculty, actionsFaculty,
     addTitle, searchTitle, entityTitle, selectLimitTitle
 } from "../shared/constant";
+import {ConfigTableData} from "../shared/classes/configs/config-table-data";
+
 
 @Component({
     templateUrl: "faculty.component.html",
@@ -26,12 +30,12 @@ import {
 })
 export class FacultyComponent implements OnInit {
 
-    public modalInfoConfig: any = modalInfoConfig;
-    public configAdd: any = configAddFaculty;
-    public configEdit: any = configEditFaculty;
+    public modalInfoConfig: ConfigModalInfo = modalInfoConfig;
+    public configAdd: ConfigModalAddEdit = configAddFaculty;
+    public configEdit: ConfigModalAddEdit = configEditFaculty;
     public paginationSize: number = maxSize;
-    public headers: any = headersFaculty;
-    public actions: any = actionsFaculty;
+    public headers: ConfigTableHeader[] = headersFaculty;
+    public actions: ConfigTableAction[] = actionsFaculty;
 
     // constants for view
     public addTitle: string = addTitle;
@@ -66,20 +70,20 @@ export class FacultyComponent implements OnInit {
         this.getCountRecords();
     }
 
-    private createTableConfig = (data: any) => {
-        let tempArr: any[] = [];
+    private createTableConfig = (data: Faculty[]) => {
+        let tempArr: ConfigTableData[] = [];
         let numberOfOrder: number;
         data.forEach((item, i) => {
             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
             let faculty: any = {};
-            faculty.entity_id = item.faculty_id;
+            faculty.entity_id = item.faculty_id + "";
             faculty.entityColumns = [numberOfOrder, item.faculty_name, item.faculty_description];
-            tempArr.push(faculty);
+            tempArr.push(<ConfigTableData>faculty);
         });
         this.entityData = tempArr;
     };
 
-    activate(data: any) {
+    activate(data: ConfigTableData) {
         switch (data.action) {
             case "group":
                 this._router.navigate(
@@ -105,20 +109,18 @@ export class FacultyComponent implements OnInit {
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
-            .then((data: any) => {
+            .then((data: ConfigModalAddEdit) => {
                 let newFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
                 this.crudService.insertData(this.entity, newFaculty)
-                    .subscribe(response => {
+                    .subscribe(() => {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
                         this.refreshData(data.action);
                     });
-            }, () => {
-                return;
-            });
+            }, null);
     };
 
-    editCase(data: any) {
+    editCase(data: ConfigTableData) {
         this.configEdit.list.forEach((item, i) => {
             item.value = data.entityColumns[i + 1];
         });
@@ -126,20 +128,18 @@ export class FacultyComponent implements OnInit {
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
-            .then((data: any) => {
+            .then((data: ConfigModalAddEdit) => {
                 let editedFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
-                this.crudService.updateData(this.entity, data.id, editedFaculty)
+                this.crudService.updateData(this.entity, +data.id, editedFaculty)
                     .subscribe(() => {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
                         this.successEventModal();
                         this.refreshData(data.action);
                     });
-            }, () => {
-                return;
-            });
+            }, null);
     }
 
-    deleteCase(data: any) {
+    deleteCase(data: ConfigTableData) {
         this.modalInfoConfig.infoString = `Ви дійсно хочете видалити ${data.entityColumns[1]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
@@ -147,9 +147,7 @@ export class FacultyComponent implements OnInit {
         modalRefDel.componentInstance.config = this.modalInfoConfig;
         modalRefDel.result
             .then(() => {
-                this.delRecord(this.entity, data.entity_id);
-            }, () => {
-                return;
-            });
+                this.delRecord(this.entity, +data.entity_id);
+            }, null);
     }
 }
