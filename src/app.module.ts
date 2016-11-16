@@ -42,7 +42,11 @@ import {GroupService} from "./app/shared/services/group.service";
 import {TestPlayerService} from "./app/shared/services/test-player.service";
 import {TestListComponent} from "./app/studentpart/test-list/test-list.component";
 import {TestListSheduleComponent} from "./app/studentpart/test-list-shedule/test-list-shedule.component";
+
 import {TestBarComponent} from "./app/shared/components/test-bar/test-bar.component";
+
+import {NgbdAlertSelfclosing} from "./app/studentpart/alerts/alert.component";
+
 
 
 @NgModule({
@@ -82,7 +86,10 @@ import {TestBarComponent} from "./app/shared/components/test-bar/test-bar.compon
         AnswerComponent,
 		TestListComponent,
         TestListSheduleComponent,
-        TestBarComponent
+        TestBarComponent,
+        NgbdAlertSelfclosing
+
+
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: "/"},

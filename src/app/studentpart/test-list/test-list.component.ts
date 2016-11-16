@@ -2,22 +2,21 @@ import {Component, Input, OnChanges} from "@angular/core";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router} from "@angular/router";
 import {CRUDService} from "../../shared/services/crud.service";
+import {SubjectService} from "../../shared/services/subject.service";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
-import {StudentPageService} from "../../shared/services/student-page.service";
 import {headersStudentTestList, actionsStudentTestList,activeTests, activeTimeTable} from "../../shared/constant/student-test-list";
-import {modalInfoConfig
-} from "../../shared/constant";
-import {isBoolean} from "util";
+import {modalInfoConfig} from "../../shared/constant";
+
 
 @Component({
     selector: "test-list",
     templateUrl: "./test-list.component.html",
-    providers: [StudentPageService]
 })
 
 export class TestListComponent implements OnChanges {
 
     @Input() groupId;
+    @Input() upToDate;
 
     public modalInfoConfig: any = modalInfoConfig;
 
@@ -25,8 +24,7 @@ export class TestListComponent implements OnChanges {
     public activeTimeTable: any = activeTimeTable;
 
     public dateNow;
-
-
+    public countOfTests:number = 0;
 
     public headers: any = headersStudentTestList;
     public actions: any = actionsStudentTestList;
@@ -35,17 +33,19 @@ export class TestListComponent implements OnChanges {
 
     constructor(private _commonService: CRUDService,
                 private _router: Router,
-                private _studentService: StudentPageService,
+                private _subjectService: SubjectService,
                 private modalService: NgbModal) {
     }
 
-
-    ngOnChanges(groupId) {
+    ngOnChanges() {
         if (this.groupId) {
-            this.getTimeFromServer();
             this.getTimeTable();
+
         }
+
+
     }
+
 
     activate(data) {
         this.runTest(data);
@@ -53,40 +53,66 @@ export class TestListComponent implements OnChanges {
 
     getTimeTable() {
         this.entityData.length = 0;
+        this._commonService.getTime()
+            .subscribe(date=> {
+                let  today = date;
+                this.dateNow = this.getTimeStamp(+today.curtime-today.offset);
+
         this._commonService.getTimeTableForGroup(this.groupId)
             .subscribe(data=> {
                     this.activeTimeTable = data;
 
                     for (let i = 0; i < this.activeTimeTable.length; i++) {
-					  if (this.dateNow === this.activeTimeTable[i].event_date){
-                        this._commonService.getRecordById("subject", this.activeTimeTable[i].subject_id)
-                            .subscribe(subject=> {
-                                var newSubjectName = subject[0].subject_name;
-                                this._subjectService.getTestsBySubjectId("subject", +this.activeTimeTable[i].subject_id)
-                                    .subscribe(dataTests=> {
-                                        this.activeTests = dataTests;
-                                        for (let j = 0; j < this.activeTests.length; j++) {
-                                            if (this.activeTests[j].enabled === "1"){
-                                                this.entityData.push({
-                                                    entityColumns: [
-                                                        newSubjectName,
-                                                        this.activeTests[j].test_name,
-                                                        this.activeTimeTable[i].event_date],
-                                                        entity_id :  this.activeTests[j].test_id
-
-
-                                                },
-                                                )
-                                        }
-                                        }
-                                    })
-
-                            })
-							}
-
+                        if (this.upToDate) {
+                            if (this.dateNow === this.activeTimeTable[i].event_date) {
+                                this.getTestsForToday(this.activeTimeTable[i].subject_id,
+                                    this.activeTimeTable[i].event_date);
+                            }
+                        }
                     }
+                
                 }
-            )
+            );
+
+
+            });
+    }
+
+    getTestsForToday(subId, eventDate){
+        this._commonService.getRecordById("subject", subId)
+            .subscribe(subject=> {
+                var newSubjectName = subject[0].subject_name;
+                this._subjectService.getTestsBySubjectId("subject", +subId)
+                    .subscribe(dataTests=> {
+                        this.activeTests = dataTests;
+                        for (let j = 0; j < this.activeTests.length; j++) {
+                            if (this.activeTests[j].enabled ==="1"){
+                                this.countOfTests++;
+
+                                    this.entityDataPush(
+                                        newSubjectName,
+                                        this.activeTests[j].test_name,
+                                        eventDate,
+                                        this.activeTests[j].test_id
+                                    )
+
+                            }
+                        }
+
+                    })
+
+            })
+    }
+
+    entityDataPush (subName, testName, eventDate, testId){
+        this.entityData.push({
+                entityColumns: [
+                    subName,
+                    testName,
+                    eventDate],
+                entity_id :  testId
+            }
+        )
     }
 
     runTest(data: any) {
@@ -105,13 +131,13 @@ export class TestListComponent implements OnChanges {
             });
     }
 
-    getTimeFromServer(){
-        this._commonService.getTime()
-            .subscribe(data=> {
-                let today = data;
-                today.curtime += today.offset;
-                this.dateNow = this._studentService.getTimeStamp(today.curtime);
+    getTimeStamp(mili) {
+        mili = +mili * 1000;
+        let myDate = new Date(mili);
+        let formatDate = myDate.getFullYear() + '-' + ('0' + (myDate.getMonth() + 1)).slice(-2) +
+            '-' + ('0' + myDate.getDate()).slice(-2);
 
-            })
+        return formatDate;
     }
+
 }
