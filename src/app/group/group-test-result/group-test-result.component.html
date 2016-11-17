@@ -3,19 +3,42 @@
         <div class="container-fluid">
             <div class="navbar-text">{{pageTitle}}</div>
             <form class="navbar-form navbar-right">
-                <button type="button" class="btn btn-default" (click)="print()">Друк</button>
+                <button type="button" class="btn btn-default" (click)="Print()">Друк</button>
                 <button type="button" class="btn btn-secondary"
                         (click)="goBack()">Назад
                 </button>
             </form>
         </div>
     </nav>
-    <dt-table *ngIf="!noRecords"
-              [limit]="limit"
-              [page]="page"
-              [headers]="headers"
-              [tableData]="entityData">
-    </dt-table>
+    <div class="print-show print">
+        <h5>Відомість про результати тестування</h5>
+        <div class="custom-table">
+            <div class="table-row">
+                <div class="table-cell">Назва предмету: {{subjectName}}</div>
+                <div class="table-cell">Назва тесту: {{testName}}</div>
+            </div>
+            <div class="table-row">
+                <div class="table-cell">Група: {{groupName}}</div>
+                <div class="table-cell">Дата проведення тестування: </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <ul class="list-group entity-list">
+            <li class="list-group-item row hidden-xs">
+                <div *ngFor="let item of headers" [ngClass]="item.className">{{item.name}}</div>
+            </li>
+            <li class="list-group-item row" *ngFor="let entity of entityData; let i=index">
+                <div *ngFor="let item of entity.entityColumns; let j=index" [ngClass]="headers[j].className">
+                    <span class="">{{item}}</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="print-show print"><br>
+        <span class="left">"___" __________ 20__ р.</span>
+        <span class="right"> Підпис ____________ </span>
+    </div>
     <div *ngIf="noRecords" class="text-center">
         Немає результатів тестування для даної групи
     </div>

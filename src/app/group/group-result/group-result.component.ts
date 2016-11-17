@@ -122,7 +122,7 @@ export class GroupResultComponent implements OnInit {
             case "viewTestResult":
                 this._router.navigate(
                     ["/admin/group/groupTestResult"],
-                    {queryParams: {testId: data.entity_id, groupId: this.groupId}}
+                    {queryParams: {testId: data.entity_id, groupId: this.groupId, subjectId: data.subject_id}}
                 );
                 break;
         }
@@ -140,6 +140,7 @@ export class GroupResultComponent implements OnInit {
                 numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                 let groupResult: any = {};
                 groupResult.entity_id = item.test_id;
+                groupResult.subject_id = item.subject_id;
                 groupResult.entityColumns = [numberOfOrder, item.subject_name, item.test_name];
                 tempArr.push(groupResult);
             });

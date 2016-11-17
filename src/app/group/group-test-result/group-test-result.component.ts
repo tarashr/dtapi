@@ -9,7 +9,8 @@ import {headersGroupTestResult} from "../../shared/constant";
 import {CRUDService} from "../../shared/services/crud.service";
 
 @Component({
-    templateUrl: "group-test-result.component.html"
+    templateUrl: "group-test-result.component.html",
+    styleUrls: ["group-test-result.component.css"]
 })
 export class GroupTestResultComponent implements OnInit {
 
@@ -18,13 +19,21 @@ export class GroupTestResultComponent implements OnInit {
     public page: number = 1;
     public limit: number = 0;
     public noRecords: boolean = false;
+    public printClass: boolean = false;
 
     public entityData: any[] = [];
     public entityDataWithNames: any ;
     public headers: any = headersGroupTestResult;
 
     public testId: number;
+    public testName: string;
+    public testEntity: string = "Test";
     public groupId: number;
+    public groupName: string;
+    public groupEntity: string = "Group";
+    public subjectId: number;
+    public subjectName: string;
+    public subjectEntity: string = "Subject";
     public studentEntity: string = "Student";
 
     private subscription: Subscription;
@@ -37,15 +46,45 @@ export class GroupTestResultComponent implements OnInit {
             data => {
                 this.groupId = data["groupId"];
                 this.testId = data["testId"];
+                this.subjectId = data["subjectId"];
             });
     };
 
     ngOnInit() {
         this.getRecords();
+        this.getGroupName();
+        this.getTestName();
+        this.getSubjectName();
     }
 
-    print(): void {
-        window.print();
+    getGroupName() {
+        this.crudService.getRecordById(this.groupEntity, this.groupId)
+            .subscribe(
+                data => {
+                    this.groupName = data[0].group_name;
+                },
+                error => console.log("error: ", error)
+            );
+    }
+
+    getTestName() {
+        this.crudService.getRecordById(this.testEntity, this.testId)
+            .subscribe(
+                data => {
+                    this.testName = data[0].test_name;
+                },
+                error => console.log("error: ", error)
+            );
+    }
+
+    getSubjectName() {
+        this.crudService.getRecordById(this.subjectEntity, this.subjectId)
+            .subscribe(
+                data => {
+                    this.subjectName = data[0].subject_name;
+                },
+                error => console.log("error: ", error)
+            );
     }
 
     getRecords(): void {
@@ -91,6 +130,11 @@ export class GroupTestResultComponent implements OnInit {
 
     goBack(): void {
         this.location.back();
+    }
+
+    Print(): void {
+        window.print();
+        this.printClass = !this.printClass;
     }
 
     private createTableConfig = (data: any) => {
