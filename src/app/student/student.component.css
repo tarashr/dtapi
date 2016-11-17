@@ -95,3 +95,7 @@ div.input-foto input{
     width: 100%;
 }
 
+.field-error-message{
+    text-align: right;
+    margin: 0 20px 0 0;
+}

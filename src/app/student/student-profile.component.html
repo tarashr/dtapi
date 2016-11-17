@@ -4,7 +4,7 @@
                 (click)="goBack()">Назад
         </button>
     </div>
-    <form #myform="ngForm" novalidate>
+    <form #myform="ngForm">
         <div class="student-datas row">
             <!-- <div *ngFor="let stud of student" class=""> -->
                 <div class="input-foto student-foto col-xs-12 col-sm-3 col-md-3">
@@ -14,17 +14,17 @@
                 </div>
 
             <div class="student-data1 col-xs-12 col-sm-4 col-md-4">
-                <div><label for="surname">Прізвище:</label><input id="surname" name="surname" class="input-student-data"
+                <div class="form-field"><label for="surname">Прізвище:</label><input id="surname" name="surname" class="input-student-data"
                                                                   [disabled]="statusView"
-                                                                  [(ngModel)]="student.student_surname"
-                                                                  #surname="ngModel" required></div>
+                                                                  [(ngModel)]="student.student_surname" required
+                                                                  #surname="ngModel" maxlength="20" pattern="[А-Яа-я]"></div>
                 <div><label for="name">Ім'я:</label><input id="name" class="input-student-data" name="name"
                                                            [disabled]="statusView"
-                                                           [(ngModel)]="student.student_name" #name="ngModel"
+                                                           [(ngModel)]="student.student_name" #name="ngModel" pattern="[А-Яа-я]"
                                                            required></div>
                 <div><label for="fname">По-батькові:</label><input id="fname" class="input-student-data" name="fname"
                                                                    [disabled]="statusView"
-                                                                   [(ngModel)]="student.student_fname" #fname="ngModel"
+                                                                   [(ngModel)]="student.student_fname" #fname="ngModel" pattern="[А-Яа-я]"
                                                                    required></div>
                 <div><label for="faculty">Факультет:</label>
                         <select *ngIf ="facultys" id="faculty" class="input-student-data select-group" name="faculty" required [disabled]="statusView" [(ngModel)]="student.faculty_id" #faculty (change)="getGroupByFaculty(faculty.value)">
@@ -45,7 +45,7 @@
                 </div>
                 <div class="student-data2 col-xs-12 col-sm-5 col-md-5">
                     <div><label for="login">Логін:</label><input id="login" class="input-student-data" name="login"
-                                                                 [(ngModel)]="student.username" [disabled]="statusView" ngModel
+                                                                 [(ngModel)]="student.username" [disabled]="statusView" ngModel pattern="[A-Za-z]"
                                                                  required></div>
                     <div><label for="password">Пароль:</label><input id="password"
                                                                      class="input-student-data password-eye-input" name="password"
@@ -70,20 +70,29 @@
                 {{editSaveButtonName}}
             </button>
                 <button *ngIf="!action" class="btn btn-default" type="submit" (click) = deleteStudent() role="button">Видалити студента</button>
-                <button *ngIf="action" class="btn btn-default" type="submit" (click)="createNewStudent()" role="button">Зберегти дані</button>
+                <button *ngIf="action" class="btn btn-default" type="submit" (click)="createNewStudent()" role="button" [disabled]="!myform.valid">Зберегти дані</button>
                 <button *ngIf="action" class="btn btn-default" type="submit" (click)="newStudent()" role="button">Очистити форму</button>
             </div>
         </div>
     </form>
+
+    <div *ngIf="!action" class="student-profile-title">
+        <ngbd-tabset-tests
+            [groupName] = "student.group_name"
+            [groupId] = "student.group_id">
+        </ngbd-tabset-tests>
+    </div>
 </div>
 
 
-<div>
+
+ <div>
     <h3>Form:</h3>
     {{myform.value | json}}
     <h3>Student:</h3>
+    {{myform.valid | json}}
+    <h3>Student:</h3>
     {{student | json}}
-
 </div>
 
 <template ngbModalContainer></template>
