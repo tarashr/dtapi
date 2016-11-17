@@ -1,0 +1,30 @@
+.print-show {
+    display: none;
+}
+
+@media print {
+    .print-show {
+        display: inherit;
+    }
+
+    .print h5 {
+        text-align: center;
+    }
+
+    .print span.right {
+        float: right;
+    }
+
+    .custom-table {
+        display: table;
+    }
+
+    .table-row {
+        display: table-row;
+    }
+
+    .table-cell {
+        display: table-cell;
+        padding: 0 1cm 0.3cm 0;
+    }
+}

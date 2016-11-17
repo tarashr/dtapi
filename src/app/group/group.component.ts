@@ -52,16 +52,15 @@ export class GroupComponent implements OnInit, OnDestroy {
     public offset: number = 0;
 
     public facultyEntity: string = "Faculty";
-    public faculties: Faculty[] = [];
     public isSelectedBy: boolean;
     public specialityId: number;
     public specialityName: string;
     public facultyId: number;
     public facultyName: string;
     public specialityEntity: string = "Speciality";
-    public specialities: Speciality[] = [];
 
     public noRecords: boolean = false;
+    public sortHide: boolean = false;
     private subscription: Subscription;
     public facultiesNamesIDs: any[] = [];
     public specialitiesNamesIDs: any[] = [];
@@ -73,7 +72,6 @@ export class GroupComponent implements OnInit, OnDestroy {
     public getCountRecords = getCountRecords;
     public delRecord = delRecord;
     public successEventModal = successEventModal;
-    public sortHide: boolean = false;
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
@@ -91,7 +89,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     }
 
     getFacultiesList() {
-        this.crudService.getRecords("Faculty")
+        this.crudService.getRecords(this.facultyEntity)
             .subscribe(
                 data => {
                     for (let i = 0; i < data.length; i++) {
@@ -105,7 +103,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     };
 
     getSpecialityList() {
-        this.crudService.getRecords("Speciality")
+        this.crudService.getRecords(this.specialityEntity)
             .subscribe(
                 data => {
                     for (let i = 0 ; i < data.length; i++) {
@@ -226,17 +224,19 @@ export class GroupComponent implements OnInit, OnDestroy {
                 if (data.response === "no records") {
                     this.noRecords = true;
                     return;
-                }
-                this.page = 1;
-                for (let i in data) {
-                    for (let k in this.specialitiesNamesIDs) {
-                        if (data[i].speciality_id === this.specialitiesNamesIDs[k].id) {
-                            data[i].speciality_name = this.specialitiesNamesIDs[k].name;
+                } else {
+                    this.noRecords = false;
+                    this.page = 1;
+                    for (let i in data) {
+                        for (let k in this.specialitiesNamesIDs) {
+                            if (data[i].speciality_id === this.specialitiesNamesIDs[k].id) {
+                                data[i].speciality_name = this.specialitiesNamesIDs[k].name;
+                            }
                         }
-                    }
-                    for (let k in this.facultiesNamesIDs) {
-                        if (data[i].faculty_id === this.facultiesNamesIDs[k].id) {
-                            data[i].faculty_name = this.facultiesNamesIDs[k].name;
+                        for (let k in this.facultiesNamesIDs) {
+                            if (data[i].faculty_id === this.facultiesNamesIDs[k].id) {
+                                data[i].faculty_name = this.facultiesNamesIDs[k].name;
+                            }
                         }
                     }
                 }
@@ -261,14 +261,14 @@ export class GroupComponent implements OnInit, OnDestroy {
         switch (data.action) {
             case "viewResult":
                 this._router.navigate(
-                    ["/admin/group/groupResult"],
+                    ["/admin/group/groupTest"],
                     {queryParams: {groupId: data.entity_id}}
                 );
                 break;
             case "viewTimetable":
                 this._router.navigate(
                     ["/admin/group/groupTimetable"],
-                    {queryParams: {groupId: data.entity_id, groupName: data.entityColumns[1]}}
+                    {queryParams: {groupId: data.entity_id}}
                 );
                 break;
             case "viewStudents":
