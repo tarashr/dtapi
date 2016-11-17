@@ -58,7 +58,7 @@ const appRoutes: Routes = [
             {path: "group", component: GroupComponent},
             {path: "group/byFaculty", component: GroupComponent},
             {path: "group/bySpeciality", component: GroupComponent},
-            {path: "group/groupResult", component: GroupResultComponent},
+            {path: "group/groupTest", component: GroupResultComponent},
             {path: "group/groupTestResult", component: GroupTestResultComponent},
             {path: "group/groupTimetable", component: GroupTimetableComponent},
             {path: "adminUser", component: AdminUserComponent},

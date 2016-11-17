@@ -26,12 +26,13 @@ import {
 })
 export class GroupTimetableComponent implements OnInit {
 
-    public pageTitle: string = "Розклад тестування для групи: ";
+    public pageTitle: string;
     public entity: string = "timeTable";
     public noRecords: boolean = false;
     public entityData: any[] = [];
     public groupId: number;
     public groupName: string;
+    public groupEntity: string = "Group";
     public subjectEntity: string = "subject";
     public subjects: any;
 
@@ -57,12 +58,23 @@ export class GroupTimetableComponent implements OnInit {
         this.subscription = route.queryParams.subscribe(
             data => {
                 this.groupId = data["groupId"];
-                this.groupName = data["groupName"];
             });
     };
 
     ngOnInit() {
+        this.createTitle();
         this.getRecords();
+    }
+
+    createTitle() {
+        this.crudService.getRecordById(this.groupEntity, this.groupId)
+            .subscribe(
+                data => {
+                    this.groupName = data[0].group_name;
+                    this.pageTitle = `Розклад тестування для групи ${this.groupName}`;
+                },
+                error => console.log("error: ", error)
+            );
     }
 
     getGroupTimeTables() {
