@@ -60,6 +60,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     public specialityEntity: string = "Speciality";
 
     public noRecords: boolean = false;
+    public sortHide: boolean = false;
     private subscription: Subscription;
     public facultiesNamesIDs: any[] = [];
     public specialitiesNamesIDs: any[] = [];
@@ -71,7 +72,6 @@ export class GroupComponent implements OnInit, OnDestroy {
     public getCountRecords = getCountRecords;
     public delRecord = delRecord;
     public successEventModal = successEventModal;
-    public sortHide: boolean = false;
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
@@ -224,17 +224,19 @@ export class GroupComponent implements OnInit, OnDestroy {
                 if (data.response === "no records") {
                     this.noRecords = true;
                     return;
-                }
-                this.page = 1;
-                for (let i in data) {
-                    for (let k in this.specialitiesNamesIDs) {
-                        if (data[i].speciality_id === this.specialitiesNamesIDs[k].id) {
-                            data[i].speciality_name = this.specialitiesNamesIDs[k].name;
+                } else {
+                    this.noRecords = false;
+                    this.page = 1;
+                    for (let i in data) {
+                        for (let k in this.specialitiesNamesIDs) {
+                            if (data[i].speciality_id === this.specialitiesNamesIDs[k].id) {
+                                data[i].speciality_name = this.specialitiesNamesIDs[k].name;
+                            }
                         }
-                    }
-                    for (let k in this.facultiesNamesIDs) {
-                        if (data[i].faculty_id === this.facultiesNamesIDs[k].id) {
-                            data[i].faculty_name = this.facultiesNamesIDs[k].name;
+                        for (let k in this.facultiesNamesIDs) {
+                            if (data[i].faculty_id === this.facultiesNamesIDs[k].id) {
+                                data[i].faculty_name = this.facultiesNamesIDs[k].name;
+                            }
                         }
                     }
                 }
