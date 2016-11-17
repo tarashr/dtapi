@@ -33,8 +33,6 @@ export class StudentProfileComponent implements OnInit {
     public facultyEntity: string = "Faculty";
     public facultys: Array <any> = [];
 
-    // public dataForRequest: Array <any> = [];
-
     public modalInfoConfig: any = modalInfoConfig;
     public successEventModal = successEventModal;
     private maxFileSize: number = 5000000;
@@ -49,7 +47,6 @@ export class StudentProfileComponent implements OnInit {
     private subscription: Subscription;
 
     @ViewChild("newFotoSrc") newFotoSrc: ElementRef;
-
 
     constructor(private route: ActivatedRoute,
                 private _commonService: CRUDService,
