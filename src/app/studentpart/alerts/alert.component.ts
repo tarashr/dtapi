@@ -7,7 +7,8 @@ import {Subject} from 'rxjs/Subject';
 })
 export class NgbdAlertSelfclosing implements OnInit {
     private _success = new Subject<string>();
-    @Input() countOfTests;
+    
+	@Input() countOfTests;
   
     staticAlertClosed = false;
     successMessage: string;

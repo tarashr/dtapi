@@ -16,7 +16,7 @@ import {modalInfoConfig} from "../../shared/constant";
 export class TestListComponent implements OnChanges {
 
     @Input() groupId;
-    @Input() upToDate;
+
 
     public modalInfoConfig: any = modalInfoConfig;
 
@@ -63,16 +63,16 @@ export class TestListComponent implements OnChanges {
                     this.activeTimeTable = data;
 
                     for (let i = 0; i < this.activeTimeTable.length; i++) {
-                        if (this.upToDate) {
+                        
+					
                             if (this.dateNow === this.activeTimeTable[i].event_date) {
                                 this.getTestsForToday(this.activeTimeTable[i].subject_id,
                                     this.activeTimeTable[i].event_date);
                             }
-                        }
-                    }
+                      
                 
                 }
-            );
+            });
 
 
             });
@@ -88,15 +88,13 @@ export class TestListComponent implements OnChanges {
                         for (let j = 0; j < this.activeTests.length; j++) {
                             if (this.activeTests[j].enabled ==="1"){
                                 this.countOfTests++;
-
                                     this.entityDataPush(
                                         newSubjectName,
                                         this.activeTests[j].test_name,
                                         eventDate,
                                         this.activeTests[j].test_id
                                     )
-
-                            }
+							}
                         }
 
                     })
@@ -114,6 +112,7 @@ export class TestListComponent implements OnChanges {
             }
         )
     }
+	
 
     runTest(data: any) {
         this.modalInfoConfig.infoString = "Ви дійсно хочете пройти тест:\n" + data.entityColumns[1]+"?";
