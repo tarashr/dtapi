@@ -49,7 +49,7 @@ export class TestPlayerService {
 
     getAnswersByQuestion(questionId: string): Observable<any> {
         return this.http
-            .get(`${this.getAnswersByQuestionUrl}${questionId}`)
+            .get(`${this.getAnswersByQuestionUrl}/${questionId}`)
             .map(this.successResponse)
             .catch(this.handleError);
     }
@@ -64,7 +64,7 @@ export class TestPlayerService {
 
     getTestRecord(testId: number) {
         return this.http
-            .get(`${this.getTestRecordUrl}${testId}`)
+            .get(`${this.getTestRecordUrl}/${testId}`)
             .map(this.successResponse)
             .catch(this.handleError);
     }
@@ -145,31 +145,36 @@ export class TestPlayerService {
         return bodyCheck;
     };
 
-    createBodyResult(studentId: number|string,
-                     testId: number|string,
-                     startTime: number,
-                     endTime: number,
-                     userRate: number,
-                     results: any[],
-                     questions: TestPlayerQuestions[]): any {
+    createTimeForView(restOfTime: number) {
+        let hours: number = restOfTime / 3600 ^ 0;
+        let min: number = (restOfTime - hours * 60) / 60 ^ 0;
+        let sec: number = (restOfTime - hours * 3600 - min * 60);
+        return {
+            hours: this.leftPad(hours),
+            min: this.leftPad(min),
+            sec: this.leftPad(sec)
+        };
+    }
+
+    createBodyResult(bodeResultParams: any): any {
         let bodyResult: any = {};
         bodyResult.true_answers = "";
-        bodyResult.answers = "";
-        bodyResult.student_id = studentId;
-        bodyResult.test_id = testId;
-        let date = new Date(startTime * 1000);
-        let dateEnd = new Date(endTime * 1000);
+        bodyResult.answers = bodeResultParams.maxRate;
+        bodyResult.student_id = bodeResultParams.studentId;
+        bodyResult.test_id = bodeResultParams.testId;
+        let date = new Date(bodeResultParams.startTime * 1000);
+        let dateEnd = new Date(bodeResultParams.endTime * 1000);
         bodyResult.session_date = `${this.leftPad(date.getFullYear())}-${this.leftPad(date.getMonth() + 1)}-${this.leftPad(date.getDate())}`;
         bodyResult.start_time = `${this.leftPad(date.getHours())}:${this.leftPad(date.getMinutes())}:${this.leftPad(date.getSeconds())}`;
         bodyResult.end_time = `${this.leftPad(dateEnd.getHours())}:${this.leftPad(dateEnd.getMinutes())}:${this.leftPad(dateEnd.getSeconds())}`;
-        bodyResult.result = userRate;
+        bodyResult.result = bodeResultParams.userRate;
         bodyResult.questions = [];
-        if (!results.length) {
-            bodyResult.questions = questions.map(item => {
+        if (!bodeResultParams.results.length) {
+            bodyResult.questions = bodeResultParams.questions.map(item => {
                 return {question_id: item.question_id};
             });
         } else {
-            bodyResult.questions = questions.map((item) => {
+            bodyResult.questions = bodeResultParams.questions.map((item) => {
                 let question: any = {};
                 question.question_id = item.question_id;
                 question.answers = [];
@@ -178,7 +183,7 @@ export class TestPlayerService {
                         question.answers.push(key);
                     }
                 }
-                results.forEach(result => {
+                bodeResultParams.results.forEach(result => {
                     if (result.question_id === item.question_id) {
                         question.true = result.true;
                     }
@@ -191,6 +196,12 @@ export class TestPlayerService {
     }
 
     leftPad(num: number): string {
-        return num < 10 ? `0${num}` : `${num}`;
+        let result: string;
+        if (num >= 0) {
+            result = num < 10 ? `0${num}` : `${num}`;
+        } else {
+            result = Math.abs(num) < 10 ? `-0${Math.abs(num)}` : `${num}`;
+        }
+        return result;
     }
 }

@@ -24,7 +24,6 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
 
     private testId: number;
     private studentId: number;
-
     private subscription: Subscription;
 
     private navButtons: TestPlayerNavButton[];
@@ -61,27 +60,18 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.studentId = +sessionStorage.getItem("userId");
-        this.getNewTest();
+        localStorage.getItem("dTester") ? this.continueTest() : this.getNewTest();
     };
 
     startTimer() {
         this.restOfTime--;
         this.leftTimePercent = Math.round(this.restOfTime / this.timeForTest * 100);
-        if (this.restOfTime < 0) {
+        if (this.restOfTime <= 0) {
             this.leftTimePercent = 0;
-            this.checkTimer();
+            this.checkTimer(false);
             return;
         }
-        this.createTimeForView();
-    }
-
-    createTimeForView() {
-        this.timer.hours = this.restOfTime / 3600 ^ 0;
-        this.timer.min = (this.restOfTime - this.timer.hours * 60) / 60 ^ 0;
-        this.timer.sec = (this.restOfTime - this.timer.hours * 3600 - this.timer.min * 60);
-        this.timer.hours < 10 ? this.timer.hours = `0${this.timer.hours}` : null;
-        this.timer.min < 10 ? this.timer.min = `0${this.timer.min}` : null;
-        this.timer.sec < 10 ? this.timer.sec = `0${this.timer.sec}` : null;
+        this.timer = this.testPlayerService.createTimeForView(this.restOfTime);
     }
 
     skipQuestion(numberOfQuestion: number) {
@@ -96,7 +86,6 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
             }
         } else this.changeActiveQuestion(this.activeQuestion + 1);
     }
-    ;
 
     answerQuestion() {
         if (!this.navButtons[this.activeQuestion].answered) {
@@ -129,13 +118,34 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
         }
     }
 
+    createBackup() {
+        let dTester: any = {};
+        dTester.navButtons = this.navButtons;
+        dTester.maxUserRate = this.maxUserRate;
+        dTester.timeForTest = this.timeForTest;
+        let questionsJSON: string = JSON.stringify(this.questions);
+        dTester.questions = JSON.parse(questionsJSON);
+        dTester.questions.forEach(question => {
+            delete question.question_text;
+            delete question.attachment;
+            question.answers.forEach(answer => {
+                delete answer.answer_text;
+                delete answer.attachment;
+            });
+        });
+        return dTester;
+    }
+
     changeActiveQuestion(num: number) {
         if (num === this.activeQuestion) return;
-        this.navButtons[this.activeQuestion].answered ?
-            this.navButtons[this.activeQuestion].className = `${navButtonConstClassName} btn-success` :
-            this.navButtons[this.activeQuestion].className = `${navButtonConstClassName} btn-primary`;
+        localStorage.setItem("dTester", JSON.stringify(this.createBackup()));
+        this.navButtons[this.activeQuestion].active = false;
+        this.navButtons[this.activeQuestion].className = this.navButtons[this.activeQuestion].answered ?
+            `${navButtonConstClassName} btn-success` :
+            `${navButtonConstClassName} btn-primary`;
         this.activeQuestion = num;
         this.navButtons[this.activeQuestion].className = `${navButtonConstClassName} btn-warning`;
+        this.navButtons[this.activeQuestion].active = true;
     }
 
     toggleAnswer(event: any, answerId: number, numberOfQuestion: number) {
@@ -157,22 +167,31 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
 
     finishTest() {
         this.openModalInfo("Ви дійсно хочете завершити тестування?", "confirm", "Підтвердження.")
-            .then(() => this.checkTimer(), null);
+            .then(() => this.checkTimer(false), null);
     }
 
-    checkTimer() {
+    checkTimer(continueTest: boolean) {
         clearInterval(this.timerId);
         this.testPlayerService.getTimeStamp()
             .subscribe(timeEndOfTest => {
-                this.testPlayerService.getEndTime().subscribe(savedEndOfTest => {
-                    let startTime = +savedEndOfTest.unix_timestamp;
-                    let endTime = +timeEndOfTest.unix_timestamp;
-                    if (+savedEndOfTest.curtime + this.precisionTime > endTime) {
-                        this.checkAnswers(startTime, endTime);
-                    } else {
-                        this.failTestByTimer(startTime, endTime);
-                    }
-                });
+                this.testPlayerService.getEndTime()
+                    .subscribe(savedEndOfTest => {
+                        let startTime = +savedEndOfTest.unix_timestamp;
+                        let endTime = +timeEndOfTest.unix_timestamp;
+                        if (+savedEndOfTest.curtime + this.precisionTime > endTime) {
+                            if (continueTest) {
+                                this.restOfTime = +savedEndOfTest.curtime - +timeEndOfTest.unix_timestamp;
+                                this.timer = this.testPlayerService.createTimeForView(this.restOfTime);
+                                this.timerId = setInterval(() => {
+                                    this.startTimer();
+                                }, 1000);
+                            } else {
+                                this.checkAnswers(startTime, endTime);
+                            }
+                        } else {
+                            this.failTestByTimer(startTime, endTime);
+                        }
+                    });
             });
     }
 
@@ -181,7 +200,8 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
         this.questions.forEach(question => {
             question.chosenAnswer = {};
         });
-        this.saveResults(userRate, startTime, endTime, []);
+        const saveResConfig: any = {userRate, startTime, endTime, results: []};
+        this.saveResults(saveResConfig);
         this.testPlayerService.resetSessionData();
         this.openModalInfo(`Тест закінчено поза межами відведеного часу.  
         Ваша оцінка становить 0 балів.`, "info", "Результат тестування!")
@@ -195,7 +215,8 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
             .subscribe((results: TestPlayerDtapiResult[]) => {
                 let userRate = this.testPlayerService.getUserRate(results, this.questions);
                 this.testPlayerService.resetSessionData();
-                this.saveResults(userRate, startTime, endTime, results);
+                const saveResConfig: any = {userRate, startTime, endTime, results: results};
+                this.saveResults(saveResConfig);
                 this.openModalInfo(`Кількість набраних Вами балів становить: ${userRate} з ${this.maxUserRate} 
                 максимально можливих`, "info", "Результат тестування!")
                     .then(null, () => {
@@ -211,14 +232,20 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
         return modalRef.result;
     }
 
-    saveResults(userRate: number, startTime: number, endTime: number, results: any[]) {
-        let bodyResult: any = this.testPlayerService.createBodyResult(this.studentId,
-            this.testId,
-            startTime,
-            endTime,
-            userRate,
-            results,
-            this.questions);
+    saveResults(saveResConfig: any) {
+        const bodeResultParams: any = {
+            studentId: this.studentId,
+            testId: this.testId,
+            startTime: saveResConfig.startTime,
+            endTime: saveResConfig.endTime,
+            results: saveResConfig.results,
+            userRate: saveResConfig.userRate,
+            questions: this.questions,
+            maxUserRate: this.maxUserRate
+        };
+
+        let bodyResult: any = this.testPlayerService.createBodyResult(bodeResultParams);
+        localStorage.removeItem("dTester");
         this.crudService.insertData("result", bodyResult)
             .subscribe();
     }
@@ -229,7 +256,7 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
                 this.timeForTest = +testRecord[0].time_for_test * 60;
                 this.restOfTime = this.timeForTest;
                 this.tasksCount = +testRecord[0].tasks;
-                this.createTimeForView();
+                this.timer = this.testPlayerService.createTimeForView(this.restOfTime);
                 this.testPlayerService.countTestPassesByStudent(this.studentId, this.testId)
                     .subscribe(countTestPassed => {
                         if (+countTestPassed.numberOfRecords >= +testRecord[0].attempts) {
@@ -253,7 +280,7 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
                                             response.forEach((question: TestPlayerQuestions) => {
                                                 question.chosenAnswer = {};
                                                 question.rate = item.rate + "";
-                                                question.type === "1" ? question.type = "radio" : question.type = "checkbox";
+                                                question.type = question.type === "1" ? "radio" : "checkbox";
                                                 this.questions.push(question);
                                             });
                                             if (this.questionCount === this.tasksCount) {
@@ -273,10 +300,11 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
                                                                     .subscribe(timeStamp => {
                                                                         timeStamp.curtime = +timeStamp.unix_timestamp + this.timeForTest;
                                                                         this.show = true;
-                                                                        this.testPlayerService.saveEndTime(timeStamp);
                                                                         this.timerId = setInterval(() => {
                                                                             this.startTimer();
                                                                         }, 1000);
+                                                                        this.testPlayerService.saveEndTime(timeStamp);
+                                                                        localStorage.setItem("dTester", JSON.stringify(this.createBackup()));
                                                                     });
 
                                                             }
@@ -289,6 +317,48 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
                     });
 
             });
+    }
+
+    continueTest() {
+        let dTester = JSON.parse(localStorage.getItem("dTester"));
+        this.timeForTest = dTester.timeForTest;
+        this.checkTimer(true);
+        this.maxUserRate = dTester.maxUserRate;
+        this.questions = dTester.questions;
+        this.tasksCount = this.questions.length;
+        this.unAnsweredQuestionCount = this.tasksCount;
+        this.navButtons = dTester.navButtons;
+        this.navButtons.forEach((button, i) => {
+            button.active ? this.activeQuestion = i : null;
+            button.answered ? this.unAnsweredQuestionCount-- : null;
+        });
+        this.unAnsweredQuestionPercent = Math.round(this.unAnsweredQuestionCount / this.tasksCount * 100);
+        let counterQuestion: number = 0;
+        let counterAnswers: number = 0;
+        this.questions.forEach(question => {
+            this.crudService.getRecordById("question", question.question_id)
+                .subscribe(response => {
+                    question.question_text = response[0].question_text;
+                    question.attachment = response[0].attachment;
+                });
+            this.testPlayerService.getAnswersByQuestion(question.question_id)
+                .subscribe(data => {
+                    question.answers.forEach(answer => {
+                        data.forEach(elem => {
+                            if (answer.answer_id === elem.answer_id) {
+                                counterAnswers++;
+                                answer.answer_text = elem.answer_text;
+                                answer.attachment = elem.attachment;
+                                if (counterAnswers === question.answers.length) {
+                                    counterQuestion++;
+                                    counterAnswers = 0;
+                                }
+                                counterQuestion === this.questions.length ? this.show = true : null;
+                            }
+                        });
+                    });
+                });
+        });
     }
 
     ngOnDestroy() {

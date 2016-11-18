@@ -23,7 +23,7 @@
                 <div>
                     <h4 class="text-right">Запитання №{{i+1}}</h4>
                     <div class="question-img">
-                        <img *ngIf="question.attachment.length>0" [src]="question.attachment"
+                        <img *ngIf="question.attachment" [src]="question.attachment"
                              alt="Картинка для питання">
                     </div>
                     <h3 class="question-text">{{question.question_text}}</h3>
@@ -34,7 +34,7 @@
                                        [value]="answer.answer_id"
                                        (click)="toggleAnswer($event, answer.answer_id, i)"
                                        [checked]="question.chosenAnswer[answer.answer_id]">
-                                <img *ngIf="answer.attachment.length>0"
+                                <img *ngIf="answer.attachment"
                                      [src]="answer.attachment"
                                      alt="картинка для відповіді">{{answer.answer_text}}
                             </label>
