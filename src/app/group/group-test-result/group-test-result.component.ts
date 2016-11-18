@@ -19,7 +19,6 @@ export class GroupTestResultComponent implements OnInit {
     public page: number = 1;
     public limit: number = 0;
     public noRecords: boolean = false;
-    public printClass: boolean = false;
 
     public entityData: any[] = [];
     public entityDataWithNames: any ;
@@ -134,7 +133,6 @@ export class GroupTestResultComponent implements OnInit {
 
     Print(): void {
         window.print();
-        this.printClass = !this.printClass;
     }
 
     private createTableConfig = (data: any) => {
