@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {CRUDService} from "../shared/services/crud.service";
 import {StatisticData} from "../shared/classes/statistic-data";
-import {entities} from "../shared/constants";
+import {entities} from "../shared/constant";
 
 @Component({
     templateUrl: "statistic.component.html",

@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Headers, Http, Response} from '@angular/http';
 import {Router} from "@angular/router";
-import {baseUrl}         from "../constants.ts";
-import {CRUDService} from "../services/crud.service.ts";
+import {baseUrl}         from "../constant";
+import {CRUDService} from "../services/crud.service";
 import {Student} from "../classes/student";
 import {EntityManagerBody} from "../classes/entity-manager-body";
 import {Observable} from 'rxjs';

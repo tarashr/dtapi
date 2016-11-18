@@ -5,8 +5,8 @@ import {Observable} from "rxjs/Observable";
 import {InfoModalComponent} from "../components/info-modal/info-modal.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {User} from "../classes/user";
-import {loginUrl} from "../constants";
-import {logoutUrl} from "../constants";
+import {loginUrl} from "../constant";
+import {logoutUrl} from "../constant";
 import {
     modalInfoConfig,
     successEventModal,

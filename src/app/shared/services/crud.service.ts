@@ -2,7 +2,7 @@ import {Injectable}      from "@angular/core";
 import {Router} from "@angular/router";
 import {Http, Response}  from "@angular/http";
 import {Observable}      from "rxjs/Observable";
-import {baseUrl}         from "../constants.ts";
+import {baseUrl}         from "../constant";
 import {EntityManagerBody} from "../classes/entity-manager-body";
 
 @Injectable()
