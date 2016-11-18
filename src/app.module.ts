@@ -17,6 +17,8 @@ import {TimeTableComponent}      from "./app/subjects/timetable/timetable.compon
 import {FacultyComponent}        from "./app/faculty/faculty.component";
 import {GroupComponent}          from "./app/group/group.component";
 import {GroupTimetableComponent} from "./app/group/group-timetable/group-timetable.component";
+import {GroupResultComponent}    from "./app/group/group-result/group-result.component";
+import {GroupTestResultComponent} from "./app/group/group-test-result/group-test-result.component";
 import {SpecialityComponent}     from "./app/speciality/speciality.component";
 import {AdminUserComponent}      from "./app/admin-user/admin-user.component";
 import {StudentComponent}        from "./app/student/student.component";
@@ -25,7 +27,6 @@ import {AuthStudentGuard}        from "./app/shared/services/auth-student.guard.
 import {LoginService}            from "./app/shared/services/login.service";
 import {CRUDService}             from "./app/shared/services/crud.service";
 import {SubjectService}          from "./app/shared/services/subject.service";
-import {StudentNewProfileComponent} from "./app/student/student-new-profile.component";
 import {StudentProfileComponent} from "./app/student/student-profile.component";
 import {EntityBarComponent}      from "./app/shared/components/entity-bar/entity-bar.component";
 import {TableComponent}          from "./app/shared/components/table/table.component";
@@ -42,7 +43,11 @@ import {GroupService} from "./app/shared/services/group.service";
 import {TestPlayerService} from "./app/shared/services/test-player.service";
 import {TestListComponent} from "./app/studentpart/test-list/test-list.component";
 import {TestListSheduleComponent} from "./app/studentpart/test-list-shedule/test-list-shedule.component";
+
 import {TestBarComponent} from "./app/shared/components/test-bar/test-bar.component";
+
+import {NgbdAlertSelfclosing} from "./app/studentpart/alerts/alert.component";
+
 
 
 @NgModule({
@@ -63,10 +68,11 @@ import {TestBarComponent} from "./app/shared/components/test-bar/test-bar.compon
         StatisticComponent,
         GroupComponent,
         GroupTimetableComponent,
+        GroupResultComponent,
+        GroupTestResultComponent,
         AdminUserComponent,
         SpecialityComponent,
         StudentComponent,
-        StudentNewProfileComponent,
         StudentProfileComponent,
         EntityBarComponent,
         TableComponent,
@@ -80,9 +86,12 @@ import {TestBarComponent} from "./app/shared/components/test-bar/test-bar.compon
         TestDetailComponent,
         QuestionComponent,
         AnswerComponent,
-		TestListComponent,
+        TestListComponent,
         TestListSheduleComponent,
-        TestBarComponent
+        TestBarComponent,
+        NgbdAlertSelfclosing
+
+
     ],
     providers: [
         {provide: APP_BASE_HREF, useValue: "/"},

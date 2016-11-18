@@ -2,6 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {Subscription} from "rxjs";
 
 import {CRUDService} from "../../shared/services/crud.service";
 import {GroupService} from "../../shared/services/group.service";
@@ -25,12 +26,13 @@ import {
 })
 export class GroupTimetableComponent implements OnInit {
 
-    public pageTitle: string = "Розклад тестування для групи: ";
+    public pageTitle: string;
     public entity: string = "timeTable";
     public noRecords: boolean = false;
     public entityData: any[] = [];
     public groupId: number;
     public groupName: string;
+    public groupEntity: string = "Group";
     public subjectEntity: string = "subject";
     public subjects: any;
 
@@ -45,6 +47,7 @@ export class GroupTimetableComponent implements OnInit {
     public modalInfoConfig: any = modalInfoConfig;
     public refreshData = refreshData;
     public successEventModal = successEventModal;
+    private subscription: Subscription;
 
     constructor(
                 private route: ActivatedRoute,
@@ -52,15 +55,26 @@ export class GroupTimetableComponent implements OnInit {
                 private groupService: GroupService,
                 private location: Location,
                 private modalService: NgbModal) {
-        route.queryParams.subscribe(
+        this.subscription = route.queryParams.subscribe(
             data => {
                 this.groupId = data["groupId"];
-                this.groupName = data["groupName"];
             });
     };
 
     ngOnInit() {
+        this.createTitle();
         this.getRecords();
+    }
+
+    createTitle() {
+        this.crudService.getRecordById(this.groupEntity, this.groupId)
+            .subscribe(
+                data => {
+                    this.groupName = data[0].group_name;
+                    this.pageTitle = `Розклад тестування для групи ${this.groupName}`;
+                },
+                error => console.log("error: ", error)
+            );
     }
 
     getGroupTimeTables() {
@@ -82,10 +96,6 @@ export class GroupTimetableComponent implements OnInit {
                     this.createTableConfig(data);
                 },
                 error => console.log("error: ", error));
-    }
-
-    goBack(): void {
-        this.location.back();
     }
 
     getRecords() {
@@ -211,6 +221,10 @@ export class GroupTimetableComponent implements OnInit {
             });
     }
 
+    goBack(): void {
+        this.location.back();
+    }
+
     private createTableConfig = (data: any) => {
         let tempArr: any[] = [];
         let numberOfOrder: number;
@@ -225,4 +239,8 @@ export class GroupTimetableComponent implements OnInit {
             this.entityData = tempArr;
         }
     };
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
 }

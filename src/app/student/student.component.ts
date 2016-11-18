@@ -13,7 +13,7 @@ import {
     changeLimit,
     pageChange,
     delRecord,
-    refreshData,
+    // refreshData,
     getCountRecords,
     headersStudentAdmin,
     actionsStudentAdmin,
@@ -63,23 +63,33 @@ export class StudentComponent implements OnInit {
         this.subscription = route.queryParams.subscribe(
             data => {
                 this.groupId = data["groupId"];
-                this.groupName = data["groupName"];
             });
     }
 
     public changeLimit = changeLimit;
     public pageChange = pageChange;
     public delRecord = delRecord;
-    public refreshData = refreshData;
+    // public refreshData = refreshData;
     public getCountRecords = getCountRecords;
 
     ngOnInit() {
         if (this.groupId) {
-            this.entityTitle = `Студенти групи: ${this.groupName}`;
-            this.getStudentsByGroup();
+            this.showStudentsByGroup(this.groupId);
         } else {
             this.getCountRecords();
         }
+    }
+
+    showStudentsByGroup(groupId) {
+        this.crudService.getRecordById(this.groupEntity, groupId)
+            .subscribe(
+                res => {
+                    this.groupName = res[0].group_name;
+                    this.entityTitle = `Студенти групи: ${this.groupName}`;
+                },
+                error => console.log("error: ", error)
+            );
+        this.getStudentsByGroup();
     }
 
     private createTableConfig = (data: any) => {
@@ -96,6 +106,7 @@ export class StudentComponent implements OnInit {
     };
 
     getRecordsRange() {
+        this.noRecords = false;
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                     data => {
@@ -112,6 +123,7 @@ export class StudentComponent implements OnInit {
                     this.noRecords = true;
                     return;
                 }
+                this.noRecords = false;
                 this.page = 1;
                 this.studentDataForView = data;
                 this.getGroupName();
@@ -154,6 +166,7 @@ export class StudentComponent implements OnInit {
         this.crudService.getRecordsBySearch(this.entity, this.search)
             .subscribe(data => {
                 if (data.response === "no records") {
+                    this.noRecords = true;
                     this.entityData = [];
                     return;
                 }
@@ -167,7 +180,7 @@ export class StudentComponent implements OnInit {
     activate(data: any) {
         switch (data.action) {
             case "create":
-                this._router.navigate(["/admin/student/student-new-profile"]);
+                this._router.navigate(["/admin/student/student-profile"]);
                 break;
             case "view":
                 this._router.navigate(["/admin/student/student-profile", data.entity_id]);
@@ -191,6 +204,29 @@ export class StudentComponent implements OnInit {
                 return;
             });
     }
+
+    refreshData(action: string) {
+        if (this.groupId) {
+            this.entityTitle = `Студенти групи: ${this.groupName}`;
+            this.getStudentsByGroup();
+        } else {
+            if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
+                this.offset = (this.page - 2) * this.limit;
+                this.page -= 1;
+            } else if (this.entityData.length > 1) {
+                this.offset = (this.page - 1) * this.limit;
+            }
+
+            this.crudService.getCountRecords(this.entity)
+                .subscribe(
+                    data => {
+                        this.entityDataLength = +data.numberOfRecords;
+                        this.getRecordsRange();
+                    },
+                    error => console.log(error)
+                );
+        }
+    };
 
     ngOnDestroy() {
         this.subscription.unsubscribe();

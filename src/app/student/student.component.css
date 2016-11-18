@@ -51,6 +51,20 @@ label {
 
 .input-student-data {
     margin: 10px 20px 10px 0;
+
+    /*background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555;
+    display: block;
+    font-size: 14px;
+    height: 34px;
+    line-height: 1.42857;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    width: 100%;*/
 }
 
 .button-create-refresh {
@@ -91,3 +105,27 @@ div.student-datas  input{
     margin: 10px 0 10px 0;
 }
 
+div.input-foto input{
+    width: 100%;
+}
+
+.field-error-message{
+    text-align: center;
+    margin: 0 20px 0 0;
+}
+
+input.ng-invalid{
+    border-left: 5px solid red;
+}
+
+input.ng-valid{
+    border-left: 5px solid green;
+}
+
+select.ng-invalid{
+    border-left: 5px solid red;
+}
+
+select.ng-valid{
+    border-left: 5px solid green;
+}

@@ -1,29 +1,33 @@
 <ngb-tabset>
     <ngb-tab title="Доступні">
         <template ngbTabContent>
+		  <div class="row"><div class="col-xs-12">
             <h3>Cписок доступних тестувань для групи "{{groupName}}"</h3>
             <test-list
                     [groupId] = "groupId">
+
             </test-list>
+			</div></div>
         </template>
     </ngb-tab>
 
     <ngb-tab title="Заплановані">
         <template ngbTabContent>
+		 <div class="row"><div class="col-xs-12">
             <h3>Cписок тестувань які плануються для групи "{{groupName}}"</h3>
-            <div class="row">
-
+           
                 <test-list-shedule
                         [groupId] = "groupId">
                 </test-list-shedule>
-
-			</div>
+			</div></div>
         </template>
     </ngb-tab>
     <ngb-tab title="Пройдені">
         <template ngbTabContent>
+		<div class="row"><div class="col-xs-12">
             <h3>Результати тестувань</h3>
             Ви ще не тестувалися...
+		</div></div>
         </template>
     </ngb-tab>
 </ngb-tabset>

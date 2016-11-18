@@ -8,7 +8,6 @@ import {Faculty} from "../shared/classes/faculty";
 import {Speciality} from "../shared/classes/speciality";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add-edit.component";
-import {EntityManagerBody} from "../shared/classes/entity-manager-body";
 import {CRUDService} from "../shared/services/crud.service.ts";
 import {
     configAddGroup,
@@ -18,7 +17,6 @@ import {
     pageChange,
     getCountRecords,
     delRecord,
-    refreshData,
     successEventModal,
     headersGroup,
     actionsGroup,
@@ -54,21 +52,26 @@ export class GroupComponent implements OnInit, OnDestroy {
     public offset: number = 0;
 
     public facultyEntity: string = "Faculty";
-    public faculties: Faculty[] = [];
     public isSelectedBy: boolean;
     public specialityId: number;
     public specialityName: string;
     public facultyId: number;
     public facultyName: string;
     public specialityEntity: string = "Speciality";
-    public specialities: Speciality[] = [];
 
     public noRecords: boolean = false;
+    public sortHide: boolean = false;
     private subscription: Subscription;
     public facultiesNamesIDs: any[] = [];
     public specialitiesNamesIDs: any[] = [];
     public defaultFacultySelect: string = "Виберіть факультет";
     public defaultSpecialitySelect: string = "Виберіть спеціальність";
+
+    public changeLimit = changeLimit;
+    public pageChange = pageChange;
+    public getCountRecords = getCountRecords;
+    public delRecord = delRecord;
+    public successEventModal = successEventModal;
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
@@ -81,20 +84,12 @@ export class GroupComponent implements OnInit, OnDestroy {
             });
     };
 
-    public changeLimit = changeLimit;
-    public pageChange = pageChange;
-    public getCountRecords = getCountRecords;
-    public delRecord = delRecord;
-    public refreshData = refreshData;
-    public successEventModal = successEventModal;
-    public sortHide: boolean = false;
-
     ngOnInit() {
         this.getFacultiesList();
     }
 
     getFacultiesList() {
-        this.crudService.getRecords("Faculty")
+        this.crudService.getRecords(this.facultyEntity)
             .subscribe(
                 data => {
                     for (let i = 0; i < data.length; i++) {
@@ -108,7 +103,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     };
 
     getSpecialityList() {
-        this.crudService.getRecords("Speciality")
+        this.crudService.getRecords(this.specialityEntity)
             .subscribe(
                 data => {
                     for (let i = 0 ; i < data.length; i++) {
@@ -229,17 +224,19 @@ export class GroupComponent implements OnInit, OnDestroy {
                 if (data.response === "no records") {
                     this.noRecords = true;
                     return;
-                }
-                this.page = 1;
-                for (let i in data) {
-                    for (let k in this.specialitiesNamesIDs) {
-                        if (data[i].speciality_id === this.specialitiesNamesIDs[k].id) {
-                            data[i].speciality_name = this.specialitiesNamesIDs[k].name;
+                } else {
+                    this.noRecords = false;
+                    this.page = 1;
+                    for (let i in data) {
+                        for (let k in this.specialitiesNamesIDs) {
+                            if (data[i].speciality_id === this.specialitiesNamesIDs[k].id) {
+                                data[i].speciality_name = this.specialitiesNamesIDs[k].name;
+                            }
                         }
-                    }
-                    for (let k in this.facultiesNamesIDs) {
-                        if (data[i].faculty_id === this.facultiesNamesIDs[k].id) {
-                            data[i].faculty_name = this.facultiesNamesIDs[k].name;
+                        for (let k in this.facultiesNamesIDs) {
+                            if (data[i].faculty_id === this.facultiesNamesIDs[k].id) {
+                                data[i].faculty_name = this.facultiesNamesIDs[k].name;
+                            }
                         }
                     }
                 }
@@ -262,16 +259,22 @@ export class GroupComponent implements OnInit, OnDestroy {
 
     activate(data: any) {
         switch (data.action) {
+            case "viewResult":
+                this._router.navigate(
+                    ["/admin/group/groupTest"],
+                    {queryParams: {groupId: data.entity_id}}
+                );
+                break;
             case "viewTimetable":
                 this._router.navigate(
                     ["/admin/group/groupTimetable"],
-                    {queryParams: {groupId: data.entity_id, groupName: data.entityColumns[1]}}
+                    {queryParams: {groupId: data.entity_id}}
                 );
                 break;
             case "viewStudents":
                 this._router.navigate(
                     ["/admin/student/byGroup"],
-                    {queryParams: {groupId: data.entity_id, groupName: data.entityColumns[1]}}
+                    {queryParams: {groupId: data.entity_id}}
                 );
                 break;
             case "create":
@@ -382,6 +385,35 @@ export class GroupComponent implements OnInit, OnDestroy {
                 return;
             });
     }
+
+    refreshData(action: string) {
+        if (this.specialityId) {
+            this.isSelectedBy = true;
+            this.entityTitle = `Групи спеціальності: ${this.specialityName}`;
+            this.getGroupsBySpeciality(this.specialityId);
+        } else if (this.facultyId) {
+            this.isSelectedBy = true;
+            this.entityTitle = `Групи факультету: ${this.facultyName}`;
+            this.getGroupsByFaculty(this.facultyId);
+        }
+        else {
+            if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
+                this.offset = (this.page - 2) * this.limit;
+                this.page -= 1;
+            } else if (this.entityData.length > 1) {
+                this.offset = (this.page - 1) * this.limit;
+            }
+
+            this.crudService.getCountRecords(this.entity)
+                .subscribe(
+                    data => {
+                        this.entityDataLength = +data.numberOfRecords;
+                        this.getRecordsRange();
+                    },
+                    error => console.log(error)
+                );
+        }
+    };
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
