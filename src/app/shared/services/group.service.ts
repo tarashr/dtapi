@@ -44,4 +44,40 @@ export class GroupService {
             .map(this.successResponse)
             .catch(this.handleError);
     }
+
+    toNationalRate(result: number, maxResult: number): string {
+        const relResult: number = (result / maxResult) * 100;
+        if (relResult >= 0 && relResult < 60) {
+            return "Незадовільно";
+        } else if (relResult >= 60 && relResult < 74) {
+            return "Задовільно";
+        } else if (relResult >= 74 && relResult < 90) {
+            return "Добре";
+        } else if (relResult >= 90 && relResult < 100) {
+            return "Відмінно";
+        } else {
+            return "Неправильні дані";
+        }
+    }
+
+    toECTSRate(result: number, maxResult: number): string {
+        const relResult: number = (result / maxResult) * 100;
+        if (relResult >= 0 && relResult < 40) {
+            return "F";
+        } else if (relResult >= 40 && relResult < 60) {
+            return "FX";
+        } else if (relResult >= 60 && relResult < 64) {
+            return "E";
+        } else if (relResult >= 64 && relResult < 74) {
+            return "D";
+        } else if (relResult >= 74 && relResult < 82) {
+            return "C";
+        } else if (relResult >= 82 && relResult < 90) {
+            return "B";
+        } else if (relResult >= 90 && relResult < 100) {
+            return "A";
+        } else {
+            return "Неправильні дані";
+        }
+    }
 }

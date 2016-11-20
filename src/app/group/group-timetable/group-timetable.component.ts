@@ -237,6 +237,8 @@ export class GroupTimetableComponent implements OnInit {
                 tempArr.push(groupTimetable);
             });
             this.entityData = tempArr;
+        } else {
+            this.noRecords = true;
         }
     };
 
