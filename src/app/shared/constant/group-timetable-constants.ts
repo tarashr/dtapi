@@ -25,19 +25,25 @@ export const actionsGroupTimeTable = [
 export const configAddGroupTimeTable = {
     title: "Назначити тестування",
     list: [
-        {name: "Дата", value: "", title: "date", type: "data", placeholder: "РРРР-ММ-ДД"},
+        {name: "Дата початку", value: "", title: "date", type: "date"},
+        {name: "Час початку", value: "", title: "date", type: "time"},
+        {name: "Дата кінця", value: "", title: "time", type: "date"},
+        {name: "Час кінця", value: "", title: "time", type: "time"},
     ],
     action: "create",
     labelBtn: "Назначити",
     select: [
         {selectName: "Предмети", selectItem: [], selected: ""}
-    ]
+    ],
 };
 
 export const configEditGroupTimeTable = {
     title: "Редагувати тестування",
     list: [
         {name: "Дата", value: {}, title: "date", type: "date"},
+        {name: "Час початку", value: "", title: "time", type: "time"},
+        {name: "Дата", value: {}, title: "date", type: "date"},
+        {name: "Час кінця", value: "", title: "time", type: "time"}
     ],
     action: "edit",
     labelBtn: "Редагувати",

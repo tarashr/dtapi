@@ -152,6 +152,7 @@ export class GroupTimetableComponent implements OnInit {
             this.configAdd.select[0].selectItem.push(item.subject_name);
         });
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
+        console.log(this.configAdd);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
@@ -221,10 +222,6 @@ export class GroupTimetableComponent implements OnInit {
             });
     }
 
-    goBack(): void {
-        this.location.back();
-    }
-
     private createTableConfig = (data: any) => {
         let tempArr: any[] = [];
         let numberOfOrder: number;
@@ -241,6 +238,10 @@ export class GroupTimetableComponent implements OnInit {
             this.noRecords = true;
         }
     };
+
+    goBack(): void {
+        this.location.back();
+    }
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
