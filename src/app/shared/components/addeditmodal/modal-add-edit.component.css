@@ -18,6 +18,10 @@
     color: red;
 }
 
+.input-group {
+    width: 100%;
+}
+
 .custom-day {
     text-align: center;
     padding: 0.185rem 0.25rem;
@@ -25,14 +29,17 @@
     display: inline-block;
     width: 2rem;
 }
+
 .custom-day:hover {
     background-color: #e6e6e6;
 }
+
 .weekend {
     background-color: #f0ad4e;
     border-radius: 1rem;
     color: white;
 }
+
 .hidden {
     display: none;
 }

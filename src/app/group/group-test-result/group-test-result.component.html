@@ -19,7 +19,7 @@
             </div>
             <div class="table-row">
                 <div class="table-cell">Група: {{groupName}}</div>
-                <div class="table-cell">Дата проведення тестування: </div>
+                <div class="table-cell">Максимальна кількість балів: {{maxResult}}</div>
             </div>
         </div>
     </div>
@@ -32,6 +32,7 @@
                 <div *ngFor="let item of entity.entityColumns; let j=index" [ngClass]="headers[j].className">
                     <span class="">{{item}}</span>
                 </div>
+                <div class="col-xs-12  col-sm-3 print-hide">Тест здано</div>
             </li>
         </ul>
     </div>

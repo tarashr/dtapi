@@ -145,6 +145,8 @@ export class GroupResultComponent implements OnInit {
                 tempArr.push(groupResult);
             });
             this.entityData = tempArr;
+        } else {
+            this.noRecords = true;
         }
     };
 
