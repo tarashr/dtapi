@@ -11,15 +11,16 @@
                          id="output" #newFotoSrc />
                     <input type="file" name="file" (change)="changeFile($event)" [disabled]="statusView" ngModel>
                 </div>
-
+<!-- [ЇїІіА-Яа-яҐ-ґ-]+|[a-zA-z-]+)[^ЫыЭэЪъЁё] minlength="2"-->
             <div class="student-data1 col-xs-12 col-sm-4 col-md-4">
                 <div class="form-field"><label for="surname">Прізвище:</label><input id="surname" name="surname" class="input-student-data "
                                                                   [disabled]="statusView"
                                                                   [(ngModel)]="student.student_surname" required
-                                                                  #surname="ngModel" minlength="2" maxlength="20" pattern="[ЇїІіА-Яа-яҐ-ґ]+" ngModel>
-                <div *ngIf="surname.errors?.pattern" class="field-error-message">
-                    <span>Тільки літери укр.алфавіту</span>
-                </div>
+                                                                  #surname="ngModel"  maxlength="20" pattern="([ЇїІіА-Яа-яҐ-ґ-]*|[a-zA-z-]*)[^ЫыЭэЪъЁё]" ngModel>
+                    <div *ngIf="surname.errors && (surname.dirty || surname.touched)" class="field-error-message">
+                        <div [hidden]="!surname.errors?.pattern">Тільки літери укр. або анг. алфавітів</div>
+                        <div [hidden]="!surname.errors?.minlength">Мінімальна довжина 2 символи</div>
+                    </div>
                 </div>
                 <div><label for="name">Ім'я:</label><input id="name" class="input-student-data" name="name"
                                                            [disabled]="statusView"
@@ -44,7 +45,7 @@
                     </div>
                 </div>
                 <div><label for="faculty">Факультет:</label>
-                        <select *ngIf ="facultys" id="faculty" class="input-student-data select-group" name="faculty" required [disabled]="statusView" [(ngModel)]="student.faculty_id" #faculty="ngModel" (change)="getGroupByFaculty(faculty.value)" ngModel>
+                        <select *ngIf ="facultys" id="faculty" class="input-student-data select-group" name="faculty" required [disabled]="statusView" [(ngModel)]="student.faculty_id" #faculty (change)="getGroupByFaculty(faculty.value)" ngModel>
                             <option *ngFor="let item of facultys" class="input-student-data" [value]="item.faculty_id" [selected]="item.faculty_id == student.faculty_id" >
                                 {{item.faculty_name}}
                             </option>
@@ -55,9 +56,9 @@
                     </div>
 
                     <div><label for="group">Група:</label>
-                        <select id="group" class="input-student-data select-group" name="group" [(ngModel)]="student.group_id" #group  (input)="studGroupId(group.value)"
+                        <select id="group" class="input-student-data select-group" name="group" [(ngModel)]="student.group_id" #group (change)="studGroupId(group.value)" ngModel
                                 required [disabled]="statusView">
-                            <option *ngFor="let item of groups" class="input-student-data" [value]="item.group_id" [selected]="item.group_id == student.group_id">
+                            <option *ngFor="let item of groups" class="input-student-data" [value]="item.group_id" [selected]="student.group_id === item.group_id">
                                 {{item.group_name}}
                             </option>
                         </select>
