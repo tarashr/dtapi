@@ -6,7 +6,7 @@ import {Subscription} from "rxjs";
 
 import {CRUDService} from "../../shared/services/crud.service";
 import {GroupService} from "../../shared/services/group.service";
-import {TimeTable} from "../../shared/classes/timetable";
+import {TimeTable} from "../../shared/classes/group-time-table";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {
@@ -152,14 +152,17 @@ export class GroupTimetableComponent implements OnInit {
             this.configAdd.select[0].selectItem.push(item.subject_name);
         });
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
-        console.log(this.configAdd);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
                 this.substituteNameSubjectsWithId(data);
+                console.log(data);
                 let newGroupTimeTable: TimeTable = new TimeTable(
                     this.groupId,
                     data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`,
+                    data.list[1].value,
+                    data.list[2].value = `${data.list[2].value.year}-${data.list[2].value.month}-${data.list[2].value.day}`,
+                    data.list[3].value,
                     data.select[0].selected
                 );
                 this.crudService.insertData(this.entity, newGroupTimeTable)
@@ -195,6 +198,9 @@ export class GroupTimetableComponent implements OnInit {
                 let editedGroupTimeTable: TimeTable = new TimeTable(
                     this.groupId,
                     data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`,
+                    data.list[1].value,
+                    data.list[2].value = `${data.list[2].value.year}-${data.list[2].value.month}-${data.list[2].value.day}`,
+                    data.list[3].value,
                     data.select[0].selected
                 );
                 this.crudService.updateData(this.entity, data.id, editedGroupTimeTable)
