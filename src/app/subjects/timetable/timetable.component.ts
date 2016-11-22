@@ -202,7 +202,6 @@ export class TimeTableComponent implements OnInit {
             "month": nDate.getMonth() + 1,
             "day": nDate.getDate()
         };
-
         this.configEdit.list[0].value = newDate;
         this.configEdit.select[0].selected = data.entityColumns[1];
         this.configEdit.id = data.entity_id;

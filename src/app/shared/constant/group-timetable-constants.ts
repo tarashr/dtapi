@@ -25,10 +25,10 @@ export const actionsGroupTimeTable = [
 export const configAddGroupTimeTable = {
     title: "Назначити тестування",
     list: [
-        {name: "Дата початку", value: "", title: "date", type: "date"},
-        {name: "Час початку", value: "", title: "date", type: "time"},
-        {name: "Дата кінця", value: "", title: "time", type: "date"},
-        {name: "Час кінця", value: "", title: "time", type: "time"},
+        {name: "Дата початку", value: "", title: "date", type: "date", placeholder: "РРРР-ММ-ДД"},
+        {name: "Час початку", value: "", title: "date", type: "time", placeholder: "год:хв"},
+        {name: "Дата кінця", value: "", title: "time", type: "date", placeholder: "РРРР-ММ-ДД"},
+        {name: "Час кінця", value: "", title: "time", type: "time", placeholder: "год:хв"},
     ],
     action: "create",
     labelBtn: "Назначити",
@@ -40,10 +40,10 @@ export const configAddGroupTimeTable = {
 export const configEditGroupTimeTable = {
     title: "Редагувати тестування",
     list: [
-        {name: "Дата початку", value: {}, title: "date", type: "date"},
-        {name: "Час початку", value: "", title: "time", type: "time"},
-        {name: "Дата кінця", value: {}, title: "date", type: "date"},
-        {name: "Час кінця", value: "", title: "time", type: "time"}
+        {name: "Дата початку", value: {}, title: "date", type: "date", placeholder: "РРРР-ММ-ДД"},
+        {name: "Час початку", value: "", title: "time", type: "time", placeholder: "год:хв"},
+        {name: "Дата кінця", value: {}, title: "date", type: "date", placeholder: "РРРР-ММ-ДД"},
+        {name: "Час кінця", value: "", title: "time", type: "time", placeholder: "год:хв"}
     ],
     action: "edit",
     labelBtn: "Редагувати",

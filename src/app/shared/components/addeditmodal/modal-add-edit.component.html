@@ -15,14 +15,19 @@
         </div>
     </div>
         <div class="input-group input-group-add-edit" *ngFor="let item of config.list">
-            <span *ngIf="item.name !=='Дата початку' && item.name !== 'Дата кінця'" class="input-group-addon modal-span">{{item.name}}:</span>
-            <input *ngIf="item.name !=='Дата початку' && item.name !== 'Дата кінця'" [type]="item.type" class="form-control modalInput"
+            <span *ngIf="item.name !=='Дата початку' && item.name !== 'Дата кінця'" class="input-group-addon modal-span">
+                {{item.name}}:
+            </span>
+            <input *ngIf="item.name !=='Дата початку' && item.name !== 'Дата кінця'"
+                   [type]="item.type"
+                   class="form-control modalInput"
                    [placeholder]="item.placeholder||''"
                    [(ngModel)]="item.value">
             <div class="input-group" *ngIf="item.name === 'Дата початку' || item.name === 'Дата кінця'">
                 <span class="input-group-addon modal-span">{{item.name}}:</span>
                 <input
                         class="form-control"
+                        placeholder={{item.placeholder}}
                         name="dp"
                         [(ngModel)]="item.value"
                         ngbDatepicker
@@ -31,8 +36,7 @@
                         [dayTemplate]="customDay"
                         [markDisabled]="isDisabled">
                 <div class="input-group-addon" (click)="d.toggle()">
-                    <span class="glyphicon glyphicon-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"
-                          aria-hidden="true">
+                    <span class="glyphicon glyphicon-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;">
                     </span>
                 </div>
                 <template #customDay let-date="date" let-currentMonth="currentMonth" let-selected="selected"

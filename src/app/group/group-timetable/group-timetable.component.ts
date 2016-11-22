@@ -156,7 +156,6 @@ export class GroupTimetableComponent implements OnInit {
         modalRefAdd.result
             .then((data: any) => {
                 this.substituteNameSubjectsWithId(data);
-                console.log(data);
                 let newGroupTimeTable: TimeTable = new TimeTable(
                     this.groupId,
                     data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`,
@@ -177,16 +176,15 @@ export class GroupTimetableComponent implements OnInit {
     }
 
     editCase(data) {
-        console.log(data.entityColumns[2]);
-        const newStartDate = {
-            "year": data.entityColumns[2].slice(2, 6),
-            "month": data.entityColumns[2].slice(7, 9),
-            "day": data.entityColumns[2].slice(10, 12)
+        let newStartDate = {
+            "year": +data.entityColumns[2].slice(2, 6),
+            "month": +data.entityColumns[2].slice(7, 9),
+            "day": +data.entityColumns[2].slice(10, 12)
         };
-        const newEndDate = {
-            "year": data.entityColumns[2].slice(22, 26),
-            "month": data.entityColumns[2].slice(27, 29),
-            "day": data.entityColumns[2].slice(30, 32)
+        let newEndDate = {
+            "year": +data.entityColumns[2].slice(22, 26),
+            "month": +data.entityColumns[2].slice(27, 29),
+            "day": +data.entityColumns[2].slice(30, 32)
         };
         this.configEdit.list[0].value = newStartDate;
         this.configEdit.list[1].value = data.entityColumns[2].slice(13, 18);
