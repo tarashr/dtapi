@@ -122,8 +122,8 @@ export class TestPlayerService {
         };
         let bodyResult: any = this.createBodyResult(bodyResultParams);
         localStorage.removeItem("dTester");
-        // this.crudService.insertData("result", bodyResult)
-        //     .subscribe();
+        this.crudService.insertData("result", bodyResult)
+            .subscribe();
     }
 
     setBaseTestData(testId: number, studentId: number, maxUserRate: number) {
