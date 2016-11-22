@@ -32,7 +32,7 @@
                             <label>
                                 <input [type]="question.type" name="answer"
                                        [value]="answer.answer_id"
-                                       (click)="toggleAnswer($event, answer.answer_id, i)"
+                                       (click)="toggleAnswer(answer.answer_id, i)"
                                        [checked]="question.chosenAnswer[answer.answer_id]">
                                 <img *ngIf="answer.attachment"
                                      [src]="answer.attachment"
@@ -41,7 +41,8 @@
                         </li>
                     </ul>
                     <p class="text-left">
-                        <button type="button" class="btn btn-primary" (click)="skipQuestion(activeQuestion+1)">
+                        <button type="button" class="btn btn-primary" (click)="skipQuestion()"
+                                [disabled]="disableSkip">
                             Пропустити
                         </button>
                         <button type="button" class="btn btn-success" (click)="answerQuestion()">
