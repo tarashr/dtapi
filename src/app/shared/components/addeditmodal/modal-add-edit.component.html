@@ -16,13 +16,16 @@
     </div>
         <div class="input-group input-group-add-edit" *ngFor="let item of config.list">
             <span *ngIf="item.name !=='Дата початку' && item.name !== 'Дата кінця'" class="input-group-addon modal-span">{{item.name}}:</span>
+
             <input *ngIf="item.name !=='Дата початку' && item.name !== 'Дата кінця'" [type]="item.type" class="form-control modalInput"
                    [placeholder]="item.placeholder||''"
                    [(ngModel)]="item.value">
+
             <div class="input-group" *ngIf="item.name === 'Дата початку' || item.name === 'Дата кінця'">
                 <span class="input-group-addon modal-span">{{item.name}}:</span>
                 <input
                         class="form-control"
+                        placeholder="yyyy-mm-dd"
                         name="dp"
                         [(ngModel)]="item.value"
                         ngbDatepicker
