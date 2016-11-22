@@ -1,8 +1,8 @@
 // Constants for table.component
 export const headersGroupTimeTable = [
     {name: "№", className: "col-xs-12 col-sm-1"},
-    {name: "Назва предмету", className: "col-xs-12 col-sm-5"},
-    {name: "Дата проведення тестування", className: "col-xs-12 col-sm-4"},
+    {name: "Назва предмету", className: "col-xs-12 col-sm-4"},
+    {name: "Дата та час проведення тестування", className: "col-xs-12 col-sm-5"},
     {name: "", className: "col-xs-12 col-sm-2"}
 ];
 
@@ -25,19 +25,25 @@ export const actionsGroupTimeTable = [
 export const configAddGroupTimeTable = {
     title: "Назначити тестування",
     list: [
-        {name: "Дата", value: "", title: "date", type: "data", placeholder: "РРРР-ММ-ДД"},
+        {name: "Дата початку", value: "", title: "date", type: "date", placeholder: "РРРР-ММ-ДД"},
+        {name: "Час початку", value: "", title: "date", type: "time", placeholder: "год:хв"},
+        {name: "Дата кінця", value: "", title: "time", type: "date", placeholder: "РРРР-ММ-ДД"},
+        {name: "Час кінця", value: "", title: "time", type: "time", placeholder: "год:хв"},
     ],
     action: "create",
     labelBtn: "Назначити",
     select: [
         {selectName: "Предмети", selectItem: [], selected: ""}
-    ]
+    ],
 };
 
 export const configEditGroupTimeTable = {
     title: "Редагувати тестування",
     list: [
-        {name: "Дата", value: {}, title: "date", type: "date"},
+        {name: "Дата початку", value: {}, title: "date", type: "date", placeholder: "РРРР-ММ-ДД"},
+        {name: "Час початку", value: "", title: "time", type: "time", placeholder: "год:хв"},
+        {name: "Дата кінця", value: {}, title: "date", type: "date", placeholder: "РРРР-ММ-ДД"},
+        {name: "Час кінця", value: "", title: "time", type: "time", placeholder: "год:хв"}
     ],
     action: "edit",
     labelBtn: "Редагувати",

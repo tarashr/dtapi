@@ -77,6 +77,7 @@ export class StudentProfileComponent implements OnInit {
 
     newStudent() {
         this.student = new Student;
+        this.newFotoSrc.nativeElement.src = "";
         this.getFacultyName();
     }
 
@@ -123,12 +124,15 @@ export class StudentProfileComponent implements OnInit {
     }
 
     getGroupByFaculty(value: number) {
+        console.log("value: ", value);
         this._commonService.getGroupsByFaculty(value)
             .subscribe(groupData => {
+                console.log("groupData:", groupData);
                     if (groupData.response === "no records") {
                         this.groups.splice(0, this.groups.length, new Group("Для даного факультету не зареєстровано жодної групи!"));
                     } else {
                         this.groups = groupData;
+                        console.log("groups:", this.groups);
                     }
                 },
                 error => console.log("error: ", error)

@@ -6,7 +6,7 @@ import {Subscription} from "rxjs";
 
 import {CRUDService} from "../../shared/services/crud.service";
 import {GroupService} from "../../shared/services/group.service";
-import {TimeTable} from "../../shared/classes/timetable";
+import {TimeTable} from "../../shared/classes/group-time-table";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {
@@ -159,6 +159,9 @@ export class GroupTimetableComponent implements OnInit {
                 let newGroupTimeTable: TimeTable = new TimeTable(
                     this.groupId,
                     data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`,
+                    data.list[1].value,
+                    data.list[2].value = `${data.list[2].value.year}-${data.list[2].value.month}-${data.list[2].value.day}`,
+                    data.list[3].value,
                     data.select[0].selected
                 );
                 this.crudService.insertData(this.entity, newGroupTimeTable)
@@ -173,13 +176,20 @@ export class GroupTimetableComponent implements OnInit {
     }
 
     editCase(data) {
-        let nDate = new Date(data.entityColumns[2]);
-        let newDate = {
-            "year": nDate.getFullYear(),
-            "month": nDate.getMonth() + 1,
-            "day": nDate.getDate()
+        let newStartDate = {
+            "year": +data.entityColumns[2].slice(2, 6),
+            "month": +data.entityColumns[2].slice(7, 9),
+            "day": +data.entityColumns[2].slice(10, 12)
         };
-        this.configEdit.list[0].value = newDate;
+        let newEndDate = {
+            "year": +data.entityColumns[2].slice(22, 26),
+            "month": +data.entityColumns[2].slice(27, 29),
+            "day": +data.entityColumns[2].slice(30, 32)
+        };
+        this.configEdit.list[0].value = newStartDate;
+        this.configEdit.list[1].value = data.entityColumns[2].slice(13, 18);
+        this.configEdit.list[2].value = newEndDate;
+        this.configEdit.list[3].value = data.entityColumns[2].slice(33, 38);
         this.configEdit.select[0].selected = data.entityColumns[1];
         this.configEdit.id = data.entity_id;
         this.configEdit.select[0].selectItem = [];
@@ -194,6 +204,9 @@ export class GroupTimetableComponent implements OnInit {
                 let editedGroupTimeTable: TimeTable = new TimeTable(
                     this.groupId,
                     data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`,
+                    data.list[1].value,
+                    data.list[2].value = `${data.list[2].value.year}-${data.list[2].value.month}-${data.list[2].value.day}`,
+                    data.list[3].value,
                     data.select[0].selected
                 );
                 this.crudService.updateData(this.entity, data.id, editedGroupTimeTable)
@@ -221,24 +234,27 @@ export class GroupTimetableComponent implements OnInit {
             });
     }
 
-    goBack(): void {
-        this.location.back();
-    }
-
     private createTableConfig = (data: any) => {
-        let tempArr: any[] = [];
+        const tempArr: any[] = [];
         let numberOfOrder: number;
         if (data.length) {
             data.forEach((item, i) => {
                 numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-                let groupTimetable: any = {};
+                const groupTimetable: any = {};
+                const date = `З ${item.start_date} ${item.start_time.slice(0, 5)} по ${item.end_date} ${item.end_time.slice(0, 5)}`;
                 groupTimetable.entity_id = item.timetable_id;
-                groupTimetable.entityColumns = [numberOfOrder, item.subject_name, item.event_date];
+                groupTimetable.entityColumns = [numberOfOrder, item.subject_name, date];
                 tempArr.push(groupTimetable);
             });
             this.entityData = tempArr;
+        } else {
+            this.noRecords = true;
         }
     };
+
+    goBack(): void {
+        this.location.back();
+    }
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
