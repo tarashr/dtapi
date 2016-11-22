@@ -408,7 +408,7 @@ export class TestPlayerService {
     createBodyResult(bodyResultParams: any): any {
         let bodyResult: any = {};
         bodyResult.true_answers = "";
-        bodyResult.answers = bodyResultParams.maxRate;
+        bodyResult.answers = bodyResultParams.maxUserRate;
         bodyResult.student_id = bodyResultParams.studentId;
         bodyResult.test_id = bodyResultParams.testId;
         let date = new Date(bodyResultParams.startTime * 1000);
