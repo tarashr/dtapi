@@ -69,7 +69,6 @@ export class StudentComponent implements OnInit {
     public changeLimit = changeLimit;
     public pageChange = pageChange;
     public delRecord = delRecord;
-    // public refreshData = refreshData;
     public getCountRecords = getCountRecords;
 
     ngOnInit() {
