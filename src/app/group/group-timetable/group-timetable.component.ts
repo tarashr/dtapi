@@ -84,16 +84,18 @@ export class GroupTimetableComponent implements OnInit {
                     if (data.response === "no records") {
                         this.noRecords = true;
                         return;
-                    }
-                    for (let i in data) {
+                    } else {
                         this.noRecords = false;
-                        for (let k in this.subjects) {
-                            if (data[i].subject_id === this.subjects[k].subject_id) {
-                                data[i].subject_name = this.subjects[k].subject_name;
+                        for (let i in data) {
+                            for (let k in this.subjects) {
+                                if (data[i].subject_id === this.subjects[k].subject_id) {
+                                    data[i].subject_name = this.subjects[k].subject_name;
+                                }
                             }
                         }
+                        this.createTableConfig(data);
                     }
-                    this.createTableConfig(data);
+
                 },
                 error => console.log("error: ", error));
     }

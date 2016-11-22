@@ -14,8 +14,6 @@ import {CRUDService} from "../../shared/services/crud.service";
 })
 export class GroupTestResultComponent implements OnInit {
 
-    public pageTitle: string;
-
     public page: number = 1;
     public limit: number = 0;
     public noRecords: boolean = false;
@@ -62,7 +60,6 @@ export class GroupTestResultComponent implements OnInit {
             .subscribe(
                 data => {
                     this.groupName = data[0].group_name;
-                    this.pageTitle = `Результати тестування групи ${this.groupName}`;
                 },
                 error => console.log("error: ", error)
             );
@@ -97,13 +94,13 @@ export class GroupTestResultComponent implements OnInit {
                     } else {
                         this.entityDataWithNames = data;
                         this.noRecords = false;
-                        let ids = [];
+                        const ids = [];
+                        this.maxResult = data[0].answers
                         data.forEach(item => {
                             ids.push(item.student_id);
                             item.resultNational = this.groupService.toNationalRate(item.result, this.maxResult);
                             item.resultECTS = this.groupService.toECTSRate(item.result, this.maxResult);
                         });
-                        console.log(data);
                         let entityManagerStudent = new EntityManagerBody(this.studentEntity, ids);
                         this.getStudentName(entityManagerStudent);
                     }

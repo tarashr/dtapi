@@ -35,12 +35,10 @@ export class GroupComponent implements OnInit, OnDestroy {
     public headers: any = headersGroup;
     public actions: any = actionsGroup;
 
-    // constants for view
     public addTitle: string = "Створити нову групу";
     public searchTitle: string = "Введіть дані для пошуку";
     public entityTitle: string = "Групи";
     public selectLimit: string = "Виберіть кількість записів на сторінці";
-    //
 
     public entityData: any[] = [];
     private entityDataLength: number;
@@ -216,32 +214,33 @@ export class GroupComponent implements OnInit, OnDestroy {
             this.offset = 0;
             this.page = 1;
             this.getCountRecords();
-            return;
-        }
-
-        this.crudService.getRecordsBySearch(this.entity, this.search)
-            .subscribe(data => {
-                if (data.response === "no records") {
-                    this.noRecords = true;
-                    return;
-                } else {
-                    this.noRecords = false;
-                    this.page = 1;
-                    for (let i in data) {
-                        for (let k in this.specialitiesNamesIDs) {
-                            if (data[i].speciality_id === this.specialitiesNamesIDs[k].id) {
-                                data[i].speciality_name = this.specialitiesNamesIDs[k].name;
+        } else {
+            this.crudService.getRecordsBySearch(this.entity, this.search)
+                .subscribe(data => {
+                    if (data.response === "no records") {
+                        this.noRecords = true;
+                        return;
+                    } else {
+                        this.noRecords = false;
+                        this.page = 1;
+                        for (let i in data) {
+                            for (let k in this.specialitiesNamesIDs) {
+                                if (data[i].speciality_id === this.specialitiesNamesIDs[k].id) {
+                                    data[i].speciality_name = this.specialitiesNamesIDs[k].name;
+                                }
                             }
-                        }
-                        for (let k in this.facultiesNamesIDs) {
-                            if (data[i].faculty_id === this.facultiesNamesIDs[k].id) {
-                                data[i].faculty_name = this.facultiesNamesIDs[k].name;
+                            for (let k in this.facultiesNamesIDs) {
+                                if (data[i].faculty_id === this.facultiesNamesIDs[k].id) {
+                                    data[i].faculty_name = this.facultiesNamesIDs[k].name;
+                                }
                             }
                         }
                     }
-                }
-                this.createTableConfig(data);
-            }, error => console.log("error: ", error));
+                    this.createTableConfig(data);
+                }, error => console.log("error: ", error));
+        }
+
+
     };
 
     private createTableConfig = (data: any) => {
