@@ -177,13 +177,21 @@ export class GroupTimetableComponent implements OnInit {
     }
 
     editCase(data) {
-        let nDate = new Date(data.entityColumns[2]);
-        let newDate = {
-            "year": nDate.getFullYear(),
-            "month": nDate.getMonth() + 1,
-            "day": nDate.getDate()
+        console.log(data.entityColumns[2]);
+        const newStartDate = {
+            "year": data.entityColumns[2].slice(2, 6),
+            "month": data.entityColumns[2].slice(7, 9),
+            "day": data.entityColumns[2].slice(10, 12)
         };
-        this.configEdit.list[0].value = newDate;
+        const newEndDate = {
+            "year": data.entityColumns[2].slice(22, 26),
+            "month": data.entityColumns[2].slice(27, 29),
+            "day": data.entityColumns[2].slice(30, 32)
+        };
+        this.configEdit.list[0].value = newStartDate;
+        this.configEdit.list[1].value = data.entityColumns[2].slice(13, 18);
+        this.configEdit.list[2].value = newEndDate;
+        this.configEdit.list[3].value = data.entityColumns[2].slice(33, 38);
         this.configEdit.select[0].selected = data.entityColumns[1];
         this.configEdit.id = data.entity_id;
         this.configEdit.select[0].selectItem = [];
@@ -229,14 +237,15 @@ export class GroupTimetableComponent implements OnInit {
     }
 
     private createTableConfig = (data: any) => {
-        let tempArr: any[] = [];
+        const tempArr: any[] = [];
         let numberOfOrder: number;
         if (data.length) {
             data.forEach((item, i) => {
                 numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-                let groupTimetable: any = {};
+                const groupTimetable: any = {};
+                const date = `З ${item.start_date} ${item.start_time.slice(0, 5)} по ${item.end_date} ${item.end_time.slice(0, 5)}`;
                 groupTimetable.entity_id = item.timetable_id;
-                groupTimetable.entityColumns = [numberOfOrder, item.subject_name, item.event_date];
+                groupTimetable.entityColumns = [numberOfOrder, item.subject_name, date];
                 tempArr.push(groupTimetable);
             });
             this.entityData = tempArr;
