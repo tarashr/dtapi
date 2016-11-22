@@ -112,7 +112,7 @@ export class TimeTableComponent implements OnInit {
                 numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                 let timetable: any = {};
                 timetable.entity_id = item.timetable_id;
-                timetable.entityColumns = [numberOfOrder, item.group_name, item.event_date];
+                timetable.entityColumns = [numberOfOrder, item.group_name, item.start_date];
                 timetable.actions = this.actions;
                 tempArr.push(timetable);
             });

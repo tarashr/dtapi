@@ -1,4 +1,4 @@
-export const baseUrl: string = "http://dtapi.local/";
+export const baseUrl: string = "http://ec2-35-160-47-83.us-west-2.compute.amazonaws.com/";
 
 // AUTH action
 export const loginUrl: string = baseUrl + "login/index";

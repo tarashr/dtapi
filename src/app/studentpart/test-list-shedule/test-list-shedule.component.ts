@@ -39,8 +39,8 @@ export class TestListSheduleComponent implements OnInit {
                             for (let i = 0; i < this.activeTimeTable.length; i++) {
                                                                
 
-                                if ((this.activeTimeTable[i].event_date > startDay)&&
-								(this.activeTimeTable[i].event_date <= endDay))
+                                if ((this.activeTimeTable[i].start_date > startDay)&&
+								(this.activeTimeTable[i].start_date <= endDay))
 
                                 {
                                     this._commonService.getRecordById("subject", this.activeTimeTable[i].subject_id)
@@ -55,7 +55,7 @@ export class TestListSheduleComponent implements OnInit {
                                                                 entityColumns: [
                                                                     newSubjectName,
                                                                     this.activeTests[j].test_name,
-                                                                    this.activeTimeTable[i].event_date]
+                                                                    this.activeTimeTable[i].start_date]
                                                             })
                                                         }
                                                     }

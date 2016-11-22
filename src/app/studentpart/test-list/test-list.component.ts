@@ -65,9 +65,9 @@ export class TestListComponent implements OnChanges {
                     for (let i = 0; i < this.activeTimeTable.length; i++) {
                         
 					
-                            if (this.dateNow === this.activeTimeTable[i].event_date) {
+                            if (this.dateNow === this.activeTimeTable[i].start_date) {
                                 this.getTestsForToday(this.activeTimeTable[i].subject_id,
-                                    this.activeTimeTable[i].event_date);
+                                    this.activeTimeTable[i].start_date);
                             }
                       
                 
