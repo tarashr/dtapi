@@ -23,6 +23,7 @@
                    class="form-control modalInput"
                    [placeholder]="item.placeholder||''"
                    [(ngModel)]="item.value">
+
             <div class="input-group" *ngIf="item.name === 'Дата початку' || item.name === 'Дата кінця'">
                 <span class="input-group-addon modal-span">{{item.name}}:</span>
                 <input
