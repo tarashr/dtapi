@@ -28,10 +28,10 @@ export const actionsTimeTable = [
 export const configAddTimeTable = {
     title: "Додати нову подію у розклад",
     list: [
-        {name: "Дата початку", value: "", title: "date", type: "date", placeholder: "yyy-mm-dd"},
-        {name: "Час початку", value: "", title: "time", type: "time", placeholder : "hh:mm:ss"},
-        {name: "Дата кінця", value: "", title: "date", type: "date", placeholder: "yyy-mm-dd"},
-        {name: "Час кінця", value: "", title: "time", type: "time", placeholder : "hh:mm:ss"},
+        {name: "Дата початку", value: "", title: "date", type: "date", placeholder: "РРРР-ММ-ДД"},
+        {name: "Час початку", value: "", title: "date", type: "time", placeholder: "год:хв"},
+        {name: "Дата кінця", value: "", title: "time", type: "date", placeholder: "РРРР-ММ-ДД"},
+        {name: "Час кінця", value: "", title: "time", type: "time", placeholder: "год:хв"},
     ],
     action: "create",
     labelBtn: "Додати",
@@ -42,12 +42,12 @@ export const configAddTimeTable = {
 
 
 export const configEditTimeTable = {
-    title: "Додати подію",
-    list: [
-        {name: "Дата початку", value: "", title: "date", type: "date", placeholder: "yyy-mm-dd"},
-        {name: "Час початку", value: "", title: "time", type: "time", placeholder : "hh:mm:ss"},
-        {name: "Дата кінця", value: "", title: "date", type: "date", placeholder: "yyy-mm-dd"},
-        {name: "Час кінця", value: "", title: "time", type: "time", placeholder : "hh:mm:ss"},
+    title: "Редагувати дану подію",
+   list: [
+        {name: "Дата початку", value: {}, title: "date", type: "date", placeholder: "РРРР-ММ-ДД"},
+        {name: "Час початку", value: "", title: "time", type: "time", placeholder: "год:хв"},
+        {name: "Дата кінця", value: {}, title: "date", type: "date", placeholder: "РРРР-ММ-ДД"},
+        {name: "Час кінця", value: "", title: "time", type: "time", placeholder: "год:хв"}
     ],
     action: "edit",
     labelBtn: "Редагувати",

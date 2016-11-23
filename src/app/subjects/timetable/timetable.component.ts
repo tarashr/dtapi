@@ -208,18 +208,25 @@ export class TimeTableComponent implements OnInit {
     };
 
     editCase(data) {
-
-
         let nDate = new Date(data.entityColumns[2]);
-        let newDate = {
+        let startDate = {
             "year": nDate.getFullYear(),
             "month": nDate.getMonth() + 1,
             "day": nDate.getDate()
         };
-        this.configEdit.list[0].value = "";
-        this.configEdit.list[1].value = data.entityColumns[3] + ":00";
-        this.configEdit.list[2].value = "";
-        this.configEdit.list[3].value = data.entityColumns[5] + ":00";
+		
+		nDate = new Date(data.entityColumns[4]);
+        let endDate = {
+            "year": nDate.getFullYear(),
+            "month": nDate.getMonth() + 1,
+            "day": nDate.getDate()
+        };
+		
+	
+        this.configEdit.list[0].value = startDate;
+        this.configEdit.list[1].value = data.entityColumns[3];
+        this.configEdit.list[2].value = endDate;
+        this.configEdit.list[3].value = data.entityColumns[5];
 
         this.configEdit.select[0].selected = data.entityColumns[1];
         this.configEdit.id = data.entity_id;
