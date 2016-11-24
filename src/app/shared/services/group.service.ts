@@ -53,7 +53,7 @@ export class GroupService {
             return "Задовільно";
         } else if (relResult >= 74 && relResult < 90) {
             return "Добре";
-        } else if (relResult >= 90 && relResult < 100) {
+        } else if (relResult >= 90 && relResult <= 100) {
             return "Відмінно";
         } else {
             return "Неправильні дані";
@@ -74,7 +74,7 @@ export class GroupService {
             return "C";
         } else if (relResult >= 82 && relResult < 90) {
             return "B";
-        } else if (relResult >= 90 && relResult < 100) {
+        } else if (relResult >= 90 && relResult <= 100) {
             return "A";
         } else {
             return "Неправильні дані";

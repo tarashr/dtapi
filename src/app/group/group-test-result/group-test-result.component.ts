@@ -95,11 +95,11 @@ export class GroupTestResultComponent implements OnInit {
                         this.entityDataWithNames = data;
                         this.noRecords = false;
                         const ids = [];
-                        this.maxResult = data[0].answers
+                        this.maxResult = +data[0].answers
                         data.forEach(item => {
                             ids.push(item.student_id);
-                            item.resultNational = this.groupService.toNationalRate(item.result, this.maxResult);
-                            item.resultECTS = this.groupService.toECTSRate(item.result, this.maxResult);
+                            item.resultNational = this.groupService.toNationalRate(+item.result, this.maxResult);
+                            item.resultECTS = this.groupService.toECTSRate(+item.result, this.maxResult);
                         });
                         let entityManagerStudent = new EntityManagerBody(this.studentEntity, ids);
                         this.getStudentName(entityManagerStudent);
