@@ -97,13 +97,17 @@ export class AdminUserComponent implements OnInit {
         modalRefAdd.result
             .then((data: any) => {
                 if (data.list[2].value === data.list[3].value) {
-                    let newAdminUser: User = new User(data.list[0].value, data.list[1].value, data.list[2].value);
+                    let newAdminUser: User = new User(
+                        data.list[0].value,
+                        data.list[1].value,
+                        data.list[2].value,
+                        data.list[3].value);
                     this.crudService.insertData(this.entity, newAdminUser)
                         .subscribe(response => {
+                            this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                             this.configAdd.list.forEach((item) => {
                                 item.value = "";
                             });
-                            this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                             this.successEventModal();
                             this.refreshData(data.action);
                         });
@@ -130,7 +134,11 @@ export class AdminUserComponent implements OnInit {
         modalRefEdit.result
             .then((data: any) => {
                 if (data.list[2].value === data.list[3].value) {
-                    let editedAdminUser: User = new User(data.list[0].value, data.list[1].value, data.list[2].value);
+                    let editedAdminUser: User = new User(
+                        data.list[0].value,
+                        data.list[1].value,
+                        data.list[2].value,
+                        data.list[3].value);
                     this.crudService.updateData(this.entity, data.id, editedAdminUser)
                         .subscribe(response => {
                             this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
@@ -150,7 +158,7 @@ export class AdminUserComponent implements OnInit {
     }
 
     deleteCase(data: any) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
