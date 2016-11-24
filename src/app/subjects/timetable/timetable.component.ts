@@ -9,7 +9,8 @@ import {
     successEventModal,
     headersTimeTable,
     actionsTimeTable,
-    modalInfoConfig} from "../../shared/constant";
+    modalInfoConfig
+} from "../../shared/constant";
 import {TimeTable} from "../../shared/classes/timetable";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
@@ -112,7 +113,14 @@ export class TimeTableComponent implements OnInit {
                 numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                 let timetable: any = {};
                 timetable.entity_id = item.timetable_id;
-                timetable.entityColumns = [numberOfOrder, item.group_name, item.event_date];
+                timetable.entityColumns =
+                    [numberOfOrder,
+                        item.group_name,
+                        item.start_date,
+                        item.start_time.substr(0, item.start_time.length -3),
+                        item.end_date,
+                        item.end_time.substr(0, item.end_time.length -3)
+                    ];
                 timetable.actions = this.actions;
                 tempArr.push(timetable);
             });
@@ -182,7 +190,12 @@ export class TimeTableComponent implements OnInit {
                 let newTimeTable: TimeTable = new TimeTable(
                     data.select[0].selected,
                     data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`,
+                    data.list[1].value,
+                    data.list[2].value = `${data.list[2].value.year}-${data.list[2].value.month}-${data.list[2].value.day}`,
+                    data.list[3].value,
                     this.subject_id);
+
+
                 this.crudService.insertData(this.entity, newTimeTable)
                     .subscribe(() => {
                         this.modalInfoConfig.infoString = `Тестування назначено`;
@@ -195,14 +208,26 @@ export class TimeTableComponent implements OnInit {
     };
 
     editCase(data) {
-
         let nDate = new Date(data.entityColumns[2]);
-        let newDate = {
+        let startDate = {
             "year": nDate.getFullYear(),
             "month": nDate.getMonth() + 1,
             "day": nDate.getDate()
         };
-        this.configEdit.list[0].value = newDate;
+		
+		nDate = new Date(data.entityColumns[4]);
+        let endDate = {
+            "year": nDate.getFullYear(),
+            "month": nDate.getMonth() + 1,
+            "day": nDate.getDate()
+        };
+		
+	
+        this.configEdit.list[0].value = startDate;
+        this.configEdit.list[1].value = data.entityColumns[3];
+        this.configEdit.list[2].value = endDate;
+        this.configEdit.list[3].value = data.entityColumns[5];
+
         this.configEdit.select[0].selected = data.entityColumns[1];
         this.configEdit.id = data.entity_id;
         this.configEdit.select[0].selectItem = [];
@@ -217,6 +242,9 @@ export class TimeTableComponent implements OnInit {
                 let editedTimeTable: TimeTable = new TimeTable(
                     data.select[0].selected,
                     data.list[0].value = `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`,
+                    data.list[1].value,
+                    data.list[2].value = `${data.list[2].value.year}-${data.list[2].value.month}-${data.list[2].value.day}`,
+                    data.list[3].value
                 );
                 this.crudService.updateData(this.entity, data.id, editedTimeTable)
                     .subscribe(() => {

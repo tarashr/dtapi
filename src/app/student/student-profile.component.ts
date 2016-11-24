@@ -28,8 +28,8 @@ export class StudentProfileComponent implements OnInit {
     public student: Student;
     public entityUser: string = "AdminUser";
     public groupEntity: string = "Group";
-    public group: Group;
     public groups: Array <any> = [];
+    public groupError: Array <any> = ["Для даного факультету не зареєстровано жодної групи!"];
     public facultyEntity: string = "Faculty";
     public facultys: Array <any> = [];
 
@@ -47,6 +47,7 @@ export class StudentProfileComponent implements OnInit {
     private subscription: Subscription;
 
     @ViewChild("newFotoSrc") newFotoSrc: ElementRef;
+    @ViewChild("inputFile") inputFile: ElementRef;
 
     constructor(private route: ActivatedRoute,
                 private _commonService: CRUDService,
@@ -78,6 +79,7 @@ export class StudentProfileComponent implements OnInit {
     newStudent() {
         this.student = new Student;
         this.newFotoSrc.nativeElement.src = "";
+        // this.inputFile.nativeElement.value = "";
         this.getFacultyName();
     }
 
@@ -124,15 +126,13 @@ export class StudentProfileComponent implements OnInit {
     }
 
     getGroupByFaculty(value: number) {
-        console.log("value: ", value);
+        this.groups = [];
         this._commonService.getGroupsByFaculty(value)
             .subscribe(groupData => {
-                console.log("groupData:", groupData);
                     if (groupData.response === "no records") {
-                        this.groups.splice(0, this.groups.length, new Group("Для даного факультету не зареєстровано жодної групи!"));
+                        this.groups.splice(0, this.groups.length, {group_name: "Для даного факультету не зареєстровано жодної групи!", group_id: 0} );
                     } else {
                         this.groups = groupData;
-                        console.log("groups:", this.groups);
                     }
                 },
                 error => console.log("error: ", error)

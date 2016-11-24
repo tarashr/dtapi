@@ -30,83 +30,85 @@ export class TestListSheduleComponent implements OnInit {
 
     getTimeTable(startDay, endDay) {
         this.entityData.length = 0;
-        
-                
-                this._commonService.getTimeTableForGroup(this.groupId)
-                    .subscribe(data=> {
-                            this.activeTimeTable = data;
 
-                            for (let i = 0; i < this.activeTimeTable.length; i++) {
-                                                               
 
-                                if ((this.activeTimeTable[i].event_date > startDay)&&
-								(this.activeTimeTable[i].event_date <= endDay))
+        this._commonService.getTimeTableForGroup(this.groupId)
+            .subscribe(data => {
+                    this.activeTimeTable = data;
 
-                                {
-                                    this._commonService.getRecordById("subject", this.activeTimeTable[i].subject_id)
-                                        .subscribe(subject=> {
-                                            var newSubjectName = subject[0].subject_name;
-                                            this._subjectService.getTestsBySubjectId("subject", +this.activeTimeTable[i].subject_id)
-                                                .subscribe(dataTests=> {
-                                                    this.activeTests = dataTests;
-                                                    for (let j = 0; j < this.activeTests.length; j++) {
-                                                        if (this.activeTests[j].enabled) {
-                                                            this.entityData.push({
-                                                                entityColumns: [
-                                                                    newSubjectName,
-                                                                    this.activeTests[j].test_name,
-                                                                    this.activeTimeTable[i].event_date]
-                                                            })
-                                                        }
-                                                    }
-                                                })
-                                        })
-                                }
-                            }
+                    for (let i = 0; i < this.activeTimeTable.length; i++) {
+
+
+                        if ((this.activeTimeTable[i].start_date >= startDay) &&
+                            (this.activeTimeTable[i].start_date <= endDay)) {
+                            this._commonService.getRecordById("subject", this.activeTimeTable[i].subject_id)
+                                .subscribe(subject => {
+                                    let newSubjectName = subject[0].subject_name;
+                                    this._subjectService.getTestsBySubjectId("subject", +this.activeTimeTable[i].subject_id)
+                                        .subscribe(dataTests => {
+                                            this.activeTests = dataTests;
+                                            for (let j = 0; j < this.activeTests.length; j++) {
+                                                if (this.activeTests[j].enabled === "1") {
+                                                    this.entityData.push({
+                                                        entityColumns: [
+                                                            newSubjectName,
+                                                            this.activeTests[j].test_name,
+                                                            this.activeTimeTable[i].start_date]
+                                                    });
+                                                }
+                                            }
+                                        });
+                                });
                         }
-                    )
-         
+                    }
+                }
+            );
+
     }
 
-    setDate(userDay){
+    setDate(userDay) {
         this.dateUser = userDay;
-				
-		this._commonService.getTime()
+
+        this._commonService.getTime()
             .subscribe(date=> {
                 let today = date;
-				today = +today.curtime-today.offset;
+                today = +today.curtime - today.offset;
                 this.dateNow = this.getTimeStamp(today);
-		
-				let startDay = this.dateNow;
-				let endDay = this.dateNow;
-				switch (this.dateUser) {
-					case "tomorrow":
-						startDay = this.dateNow;
-						endDay = this.getTimeStamp(today + 86400);
-						break;
-					case "week":
-						startDay = this.dateNow;
-						endDay = this.getTimeStamp(today + 7*86400);;
-						break;
-					case "month":
-						startDay = this.dateNow;
-						endDay = this.getTimeStamp(today + 30*86400);
-						break;
-					default:
-						startDay = this.dateNow;
-						endDay = this.getTimeStamp(today + 365*86400);
-				}
-		
-				this.getTimeTable(startDay, endDay);
-			});
+
+                let startDay = this.dateNow;
+                let endDay = this.dateNow;
+                switch (this.dateUser) {
+                    case "today":
+                        startDay = this.dateNow;
+                        endDay = this.dateNow;
+                        break;
+                    case "tomorrow":
+                        startDay = this.getTimeStamp(today + 86400);
+                        endDay = this.getTimeStamp(today + 86400);
+                        break;
+                    case "week":
+                        startDay = this.getTimeStamp(today + 86400);
+                        endDay = this.getTimeStamp(today + 7 * 86400);
+                        break;
+                    case "month":
+                        startDay = this.getTimeStamp(today + 86400);
+                        endDay = this.getTimeStamp(today + 30 * 86400);
+                        break;
+                    default:
+                        startDay = this.getTimeStamp(today + 86400);
+                        endDay = this.getTimeStamp(today + 365 * 86400);
+                }
+
+                this.getTimeTable(startDay, endDay);
+            });
 
     }
 
     getTimeStamp(sec) {
         let mili = +sec * 1000;
         let myDate = new Date(mili);
-        let formatDate = myDate.getFullYear() + '-' + ('0' + (myDate.getMonth() + 1)).slice(-2) +
-            '-' + ('0' + myDate.getDate()).slice(-2);
+        let formatDate = myDate.getFullYear() + "-" + ("0" + (myDate.getMonth() + 1)).slice(-2) +
+            "-" + ("0" + myDate.getDate()).slice(-2);
 
         return formatDate;
     }
