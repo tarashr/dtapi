@@ -47,6 +47,7 @@ import {TestListSheduleComponent} from "./app/studentpart/test-list-shedule/test
 import {TestBarComponent} from "./app/shared/components/test-bar/test-bar.component";
 
 import {NgbdAlertSelfclosing} from "./app/studentpart/alerts/alert.component";
+import {CommonService} from "./app/shared/services/common.service";
 
 
 
@@ -102,7 +103,8 @@ import {NgbdAlertSelfclosing} from "./app/studentpart/alerts/alert.component";
         HttpModule,
         AuthAdminGuard,
         AuthStudentGuard,
-        TestPlayerService
+        TestPlayerService,
+        CommonService
     ],
     entryComponents: [ModalAddEditComponent, InfoModalComponent],
     bootstrap: [AppComponent]

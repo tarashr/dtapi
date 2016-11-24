@@ -1,15 +1,16 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {TestPlayerService} from "../shared/services/test-player.service";
 import {TestPlayerQuestions} from "../shared/classes/test-player-questions";
 import {TestPlayerNavButton} from "../shared/classes/test-player-nav-buttons";
+import {Observable} from "rxjs";
 
 @Component({
     templateUrl: "test-player.component.html",
     styleUrls: ["test-player.component.css"]
 })
 
-export class TestPlayerComponent implements OnInit {
+export class TestPlayerComponent implements OnInit, OnDestroy {
 
     private testId: number;
     private studentId: number;
@@ -68,10 +69,12 @@ export class TestPlayerComponent implements OnInit {
 
     answerQuestion() {
         this.createQuestionsProgressbarData();
+        this.questions[this.activeQuestion].answered = true;
         const allAnswered = this.allAnswered();
         if (allAnswered && !this.informedUserAboutAllQuestionAnswered) {
             this.disableSkip = true;
             this.informedUserAboutAllQuestionAnswered = true;
+            localStorage.setItem("dTester", JSON.stringify(this.createBackup()));
             this.testPlayerService.openModalInfo(`Ви відповіли на всі запитання. 
             Щоб закінчити тестування натисніть кнопку "Завершити тест"`, "info", "Повідомлення.");
         } else if (allAnswered) {
@@ -118,7 +121,9 @@ export class TestPlayerComponent implements OnInit {
 
     changeActiveQuestion(num: number) {
         if (num === this.activeQuestion) return;
+        this.questions[this.activeQuestion].active = false;
         this.activeQuestion = this.testPlayerService.changeNavButtons(num, this.navButtons, this.activeQuestion);
+        this.questions[this.activeQuestion].active = true;
         localStorage.setItem("dTester", JSON.stringify(this.createBackup()));
     }
 
@@ -128,13 +133,11 @@ export class TestPlayerComponent implements OnInit {
         if (question.type === "checkbox") {
             question.chosenAnswer[answerId] = !chosenAnswer;
         }
-        else {
-            if (!chosenAnswer) {
-                for (let key in question.chosenAnswer) {
-                    question.chosenAnswer[key] = false;
-                }
-                question.chosenAnswer[answerId] = true;
+        else if (!chosenAnswer) {
+            for (let key in question.chosenAnswer) {
+                question.chosenAnswer[key] = false;
             }
+            question.chosenAnswer[answerId] = true;
         }
     }
 
@@ -143,30 +146,97 @@ export class TestPlayerComponent implements OnInit {
             .then(() => this.checkTimer(false), null);
     }
 
-    checkTimer(continueTest: boolean) {
-        clearInterval(this.timerId);
+    private getTime = Observable.create(observer => {
         this.testPlayerService.getTimeStamp()
             .subscribe(timeEndOfTest => {
-                this.testPlayerService.getEndTime()
-                    .subscribe(savedEndOfTest => {
-                        let startTime = +savedEndOfTest.unix_timestamp;
-                        let endTime = +timeEndOfTest.unix_timestamp;
-                        if (+savedEndOfTest.curtime + this.precisionTime > endTime) {
-                            if (continueTest) {
-                                this.restOfTime = +savedEndOfTest.curtime - +timeEndOfTest.unix_timestamp;
-                                this.timer = this.testPlayerService.createTimeForView(this.restOfTime);
-                                this.timerId = setInterval(() => {
-                                    this.startTimer();
-                                }, 1000);
-                            } else {
-                                this.testPlayerService.checkSAnswers(this.questions, startTime, endTime);
-                            }
-                        } else {
-                            this.testPlayerService.failTestByTimer(this.questions, startTime, endTime);
-                        }
-                    });
+                observer.next(timeEndOfTest);
+            });
+    });
+
+    getSavedTime = (timeEndOfTest) => {
+        return Observable.create(observer => {
+            this.testPlayerService.getEndTime()
+                .subscribe(savedEndOfTest => {
+                    observer.next({timeEndOfTest, savedEndOfTest});
+                });
+        });
+    }
+
+    compareTime = (times) => {
+        return Observable.create(observer => {
+            let startTime = +times.savedEndOfTest.unix_timestamp;
+            let endTime = +times.timeEndOfTest.unix_timestamp;
+            if (+times.savedEndOfTest.curtime + this.precisionTime > endTime) {
+                // this.testPlayerService.checkSAnswers(this.questions, startTime, endTime);
+                this.restOfTime = +times.savedEndOfTest.curtime - +times.timeEndOfTest.unix_timestamp;
+                observer.next({checkResult: true, startTime, endTime});
+            } else {
+                // this.testPlayerService.failTestByTimer(this.questions, startTime, endTime);
+                observer.next({checkResult: false, startTime, endTime});
+            }
+        });
+    }
+
+    // compareTimeContinuedTest = (times) => {
+    //     let startTime = +times.savedEndOfTest.unix_timestamp;
+    //     let endTime = +times.timeEndOfTest.unix_timestamp;
+    //     if (+times.savedEndOfTest.curtime + this.precisionTime > endTime) {
+    //         this.restOfTime = +times.savedEndOfTest.curtime - +times.timeEndOfTest.unix_timestamp;
+    //         this.timer = this.testPlayerService.createTimeForView(this.restOfTime);
+    //         this.timerId = setInterval(() => {
+    //             this.startTimer();
+    //         }, 1000);
+    //     } else {
+    //         this.testPlayerService.failTestByTimer(this.questions, startTime, endTime);
+    //     }
+    // }
+
+    finishCheckTimer = (data: any, continueTest: boolean) => {
+        if (!data.checkResult) {
+            this.testPlayerService.failTestByTimer(this.questions, data.startTime, data.endTime);
+        } else if (continueTest) {
+            this.timer = this.testPlayerService.createTimeForView(this.restOfTime);
+            this.timerId = setInterval(() => {
+                this.startTimer();
+            }, 1000);
+        } else {
+            this.testPlayerService.checkSAnswers(this.questions, data.startTime, data.endTime);
+        }
+    }
+
+    checkTimer(continueTest: boolean) {
+        this.getTime
+            .flatMap(this.getSavedTime)
+            .flatMap(this.compareTime)
+            .subscribe((data: any) => {
+                this.finishCheckTimer(data, continueTest);
             });
     }
+
+    // checkTimer(continueTest: boolean) {
+    //     clearInterval(this.timerId);
+    //     this.testPlayerService.getTimeStamp()
+    //         .subscribe(timeEndOfTest => {
+    //             this.testPlayerService.getEndTime()
+    //                 .subscribe(savedEndOfTest => {
+    //                     let startTime = +savedEndOfTest.unix_timestamp;
+    //                     let endTime = +timeEndOfTest.unix_timestamp;
+    //                     if (+savedEndOfTest.curtime + this.precisionTime > endTime) {
+    //                         if (continueTest) {
+    //                             this.restOfTime = +savedEndOfTest.curtime - +timeEndOfTest.unix_timestamp;
+    //                             this.timer = this.testPlayerService.createTimeForView(this.restOfTime);
+    //                             this.timerId = setInterval(() => {
+    //                                 this.startTimer();
+    //                             }, 1000);
+    //                         } else {
+    //                             this.testPlayerService.checkSAnswers(this.questions, startTime, endTime);
+    //                         }
+    //                     } else {
+    //                         this.testPlayerService.failTestByTimer(this.questions, startTime, endTime);
+    //                     }
+    //                 });
+    //         });
+    // }
 
     getNewTest() {
         this.testPlayerService.getNewTest()
@@ -209,5 +279,9 @@ export class TestPlayerComponent implements OnInit {
                 this.questions = questions;
                 this.show = true;
             });
+    }
+
+    ngOnDestroy() {
+        clearInterval(this.timerId);
     }
 }

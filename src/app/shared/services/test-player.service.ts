@@ -24,10 +24,11 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {SubjectService} from "./subject.service";
 import {TestPlayerAnswers} from "../classes/test-player-answers";
 import {CRUDService} from "./crud.service";
+import {CommonService} from "./common.service";
+const md5 = require("crypto-js/md5");
 
 @Injectable()
 export class TestPlayerService {
-
     private getAnswersByQuestionUrl: string = getAnswersByQuestionTestPlayerUrl;
     private checkSAnswerUrl: string = checkSAnswerUrl;
     private getTimeStampUrl: string = getTimeStampUrl;
@@ -53,7 +54,8 @@ export class TestPlayerService {
                 private modalService: NgbModal,
                 private subjectService: SubjectService,
                 private crudService: CRUDService,
-                private location: Location) {
+                private location: Location,
+                private commonService: CommonService) {
     };
 
     private handleError = (error: any) => {
@@ -67,6 +69,10 @@ export class TestPlayerService {
     };
 
     private successResponse = (response: Response) => response.json();
+
+    cryptData(data: any) {
+        return md5(data).toString();
+    }
 
     getAnswersByQuestion(questionId: string): Observable<any> {
         return this.http
@@ -122,8 +128,8 @@ export class TestPlayerService {
         };
         let bodyResult: any = this.createBodyResult(bodyResultParams);
         localStorage.removeItem("dTester");
-        this.crudService.insertData("result", bodyResult)
-            .subscribe();
+        // this.crudService.insertData("result", bodyResult)
+        //     .subscribe();
     }
 
     setBaseTestData(testId: number, studentId: number, maxUserRate: number) {
@@ -152,13 +158,13 @@ export class TestPlayerService {
                 .map(this.successResponse)
                 .catch(this.handleError)
                 .subscribe(countTestPassed => {
-                    if (+countTestPassed.numberOfRecords >= +testRecord[0].attempts) {
-                        this.openModalInfo("Ви використали всі спроби", "info", "Повідомлення.")
-                            .then(null, () => {
-                                this.router.navigate(["/student/profile"]);
-                            });
-                        return;
-                    }
+                    // if (+countTestPassed.numberOfRecords >= +testRecord[0].attempts) {
+                    //     this.openModalInfo("Ви використали всі спроби", "info", "Повідомлення.")
+                    //         .then(null, () => {
+                    //             this.router.navigate(["/student/profile"]);
+                    //         });
+                    //     return;
+                    // }
                     observer.next();
                 });
         });
@@ -177,48 +183,53 @@ export class TestPlayerService {
         });
     };
 
-    getQuestions = (testDetails: any) => {
-        let questionCount: number = 0;
+    getQuestions = (testDetails: any[]) => {
         this.questions = [];
         return Observable.create(observer => {
-            testDetails.forEach(item => {
-                this.subjectService.getQuestionsByLevelRand(item.test_id, item.level, item.tasks)
-                    .subscribe((response: TestPlayerQuestions[]) => {
-                        questionCount += +item.tasks;
-                        response.forEach((question: TestPlayerQuestions) => {
-                            question.chosenAnswer = {};
-                            question.rate = item.rate + "";
-                            question.type = question.type === "1" ? "radio" : "checkbox";
-                            this.questions.push(question);
-                        });
-                        if (questionCount === this.tasksCount) {
-                            this.questions.sort((a, b) => {
-                                return this.randomSortOfObjects(a, b, "question_id");
-                            });
-                            this.navButtons = this.createNavButtons(this.questions.length);
-                            observer.next(this.questions);
-                        }
-                    });
+            let forkJoinBatch: Observable<any>[] = testDetails.map(item => {
+                return this.subjectService.getQuestionsByLevelRand(item.test_id, item.level, item.tasks)
             });
+            Observable.forkJoin(forkJoinBatch)
+                .subscribe((questions: TestPlayerQuestions[][]) => {
+                    this.questions = this.prepareQuestionForTest(questions, testDetails);
+                    this.randomSortArrayOfObjects(this.questions, "question_id");
+                    this.navButtons = this.createNavButtons(this.questions.length);
+                    observer.next(this.questions);
+                });
         });
     };
 
+    prepareQuestionForTest(questions: TestPlayerQuestions[][], testDetails: any[]): TestPlayerQuestions[] {
+        let tempArr: TestPlayerQuestions[] = [];
+        questions.forEach(elem => {
+            tempArr.push(...elem);
+        });
+        return tempArr.map((question: TestPlayerQuestions) => {
+            question.chosenAnswer = {};
+            testDetails.forEach(item => {
+                if (question.level === item.level) {
+                    question.rate = item.rate + "";
+                    return;
+                }
+            });
+            question.type = question.type === "1" ? "radio" : "checkbox";
+            return question;
+        });
+    }
+
     getAnswers = (questions) => {
         return Observable.create(observer => {
-            let j: number = 0;
-            questions.forEach((question) => {
-                this.getAnswersByQuestion(question.question_id)
-                    .subscribe((answers: TestPlayerAnswers[]) => {
-                        answers.sort((a, b) => {
-                            return this.randomSortOfObjects(a, b, "answer_id");
-                        });
-                        j++;
-                        question.answers = answers;
-                        if (j === this.questions.length) {
-                            observer.next();
-                        }
-                    });
+            const forkJoinBatch = questions.map(question => {
+                return this.getAnswersByQuestion(question.question_id);
             });
+            Observable.forkJoin(forkJoinBatch)
+                .subscribe((answers: any[][]) => {
+                    answers.forEach((item, i) => {
+                        this.randomSortArrayOfObjects(item, "answer_id");
+                        questions[i].answers = item;
+                    });
+                    observer.next();
+                });
         });
     };
 
@@ -289,8 +300,11 @@ export class TestPlayerService {
         });
     }
 
-    randomSortOfObjects(a: Object, b: Object, property: string): any {
-        return Math.random() > 0.5 ? +a[property] - +b[property] : +b[property] - +a[property];
+    randomSortArrayOfObjects(arr: Object[], property: string): any {
+        arr.sort((a, b) => {
+            return Math.random() > 0.5 ? +a[property] - +b[property] : +b[property] - +a[property];
+        });
+
     }
 
     openModalInfo(infoString: string, type: string, title: string): Promise < any > {
@@ -335,7 +349,7 @@ export class TestPlayerService {
             {answered: false, label: "01", active: true, className: `${navButtonConstClassName} btn-warning`}];
         for (let i = 1; i < countOfButtons; i++) {
             navButtons.push(new TestPlayerNavButton());
-            navButtons[i].label = this.leftPad(i + 1);
+            navButtons[i].label = this.commonService.leftPad(i + 1);
             navButtons[i].className = `${navButtonConstClassName} btn-primary`;
         }
         return navButtons;
@@ -383,13 +397,14 @@ export class TestPlayerService {
     ;
 
     createTimeForView(restOfTime: number) {
+        restOfTime = restOfTime <= 0 ? 0 : restOfTime;
         let hours: number = restOfTime / 3600 ^ 0;
         let min: number = (restOfTime - hours * 60) / 60 ^ 0;
         let sec: number = (restOfTime - hours * 3600 - min * 60);
         return {
-            hours: this.leftPad(hours),
-            min: this.leftPad(min),
-            sec: this.leftPad(sec)
+            hours: this.commonService.leftPad(hours),
+            min: this.commonService.leftPad(min),
+            sec: this.commonService.leftPad(sec)
         };
     }
 
@@ -413,9 +428,9 @@ export class TestPlayerService {
         bodyResult.test_id = bodyResultParams.testId;
         let date = new Date(bodyResultParams.startTime * 1000);
         let dateEnd = new Date(bodyResultParams.endTime * 1000);
-        bodyResult.session_date = `${this.leftPad(date.getFullYear())}-${this.leftPad(date.getMonth() + 1)}-${this.leftPad(date.getDate())}`;
-        bodyResult.start_time = `${this.leftPad(date.getHours())}:${this.leftPad(date.getMinutes())}:${this.leftPad(date.getSeconds())}`;
-        bodyResult.end_time = `${this.leftPad(dateEnd.getHours())}:${this.leftPad(dateEnd.getMinutes())}:${this.leftPad(dateEnd.getSeconds())}`;
+        bodyResult.session_date = this.commonService.createSQLDate(date, "date", "-");
+        bodyResult.start_time = this.commonService.createSQLDate(date, "time", ":");
+        bodyResult.end_time = this.commonService.createSQLDate(dateEnd, "time", ":");
         bodyResult.result = bodyResultParams.userRate;
         bodyResult.questions = [];
         if (!bodyResultParams.results.length) {
@@ -442,15 +457,5 @@ export class TestPlayerService {
         }
         bodyResult.questions = JSON.stringify(bodyResult.questions);
         return bodyResult;
-    }
-
-    leftPad(num: number): string {
-        let result: string;
-        if (num >= 0) {
-            result = num < 10 ? `0${num}` : `${num}`;
-        } else {
-            result = Math.abs(num) < 10 ? `-0${Math.abs(num)}` : `${num}`;
-        }
-        return result;
     }
 }
