@@ -53,26 +53,22 @@
     }
 
     div.print ul li div:nth-child(1){
-        width: 10%;
-        text-align: center;
+        width: 7%;
     }
 
     div.print ul li div:nth-child(2){
-        width: 40%;
+        width: 43%;
     }
 
     div.print ul li div:nth-child(3){
-        width: 14%;
-        text-align: center;
-    }
-
-    div.print ul li div:nth-child(4){
-        width: 24%;
-        text-align: center;
+        width: 16%;
     }
 
     div.print ul li div:nth-child(5){
-        width: 12%;
-        text-align: center;
+        width: 20%;
+    }
+
+    div.print ul li div:nth-child(6){
+        width: 14%;
     }
 }
