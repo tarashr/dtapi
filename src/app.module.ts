@@ -45,8 +45,8 @@ import {TestListComponent} from "./app/studentpart/test-list/test-list.component
 import {TestListSheduleComponent} from "./app/studentpart/test-list-shedule/test-list-shedule.component";
 
 import {TestBarComponent} from "./app/shared/components/test-bar/test-bar.component";
-
 import {NgbdAlertSelfclosing} from "./app/studentpart/alerts/alert.component";
+import {StudentTestResultsComponent} from "./app/studentpart/test-results/test-results.component";
 
 
 
@@ -89,7 +89,8 @@ import {NgbdAlertSelfclosing} from "./app/studentpart/alerts/alert.component";
         TestListComponent,
         TestListSheduleComponent,
         TestBarComponent,
-        NgbdAlertSelfclosing
+        NgbdAlertSelfclosing,
+		StudentTestResultsComponent
 
 
     ],
