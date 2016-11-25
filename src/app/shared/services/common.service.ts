@@ -1,10 +1,13 @@
 import {Injectable}      from "@angular/core";
+import {ConfigModalInfo} from "../classes/configs/config-modal-info";
+import {InfoModalComponent} from "../components/info-modal/info-modal.component";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 const md5 = require("crypto-js/md5");
 
 @Injectable()
 export class CommonService {
 
-    constructor() {
+    constructor(private modalService: NgbModal) {
     };
 
     leftPad(num: number): string {
@@ -18,7 +21,7 @@ export class CommonService {
     }
 
     cryptData(data: any) {
-        return md5(data).toString();
+        return md5(JSON.stringify(data)).toString();
     }
 
     createSQLDate(date: Date, type: string, separator: string): string {
@@ -35,6 +38,13 @@ export class CommonService {
             result = [hours, min, sec].join(separator);
         }
         return result;
+    }
+
+    openModalInfo(infoString: string, type: string, title: string): Promise <any> {
+        let config: ConfigModalInfo = new ConfigModalInfo(infoString, type, title);
+        let modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
+        modalRef.componentInstance.config = config;
+        return modalRef.result;
     }
 }
 
