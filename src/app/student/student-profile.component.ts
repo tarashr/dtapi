@@ -10,6 +10,7 @@ import {Observable, Subscription} from "rxjs/Rx";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule} from "@angular/forms";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
+// import {ImageCropperComponent, CropperSettings} from "ng2-img-cropper";
 
 import {
     modalInfoConfig,
@@ -78,8 +79,7 @@ export class StudentProfileComponent implements OnInit {
 
     newStudent() {
         this.student = new Student;
-        this.newFotoSrc.nativeElement.src = "";
-        // this.inputFile.nativeElement.value = "";
+        this.inputFile.nativeElement.value = "";
         this.getFacultyName();
     }
 
@@ -95,8 +95,8 @@ export class StudentProfileComponent implements OnInit {
         dataForRequest.student_fname = this.student.student_fname;
         dataForRequest.group_id = this.student.group_id;
         dataForRequest.plain_password = this.student.plain_password;
+        console.log("this.newFotoSrc.nativeElement.src: ", this.newFotoSrc.nativeElement.src);
         dataForRequest.photo = this.newFotoSrc.nativeElement.src;
-
         this._commonService.insertData(this.entity, dataForRequest)
             .subscribe(data => {
                     if (data.response === "ok") {
@@ -148,6 +148,7 @@ export class StudentProfileComponent implements OnInit {
             this._commonService.getRecordById(this.entity, this.user_id),
             this._commonService.getRecordById(this.entityUser, this.user_id)
         ).subscribe(data => {
+            console.log("data : ", data);
                 this.student.user_id = this.user_id;
                 this.student.username = data[1][0].username;
                 this.student.plain_password = data[0][0].plain_password;
@@ -160,6 +161,15 @@ export class StudentProfileComponent implements OnInit {
                 this.student.student_fname = data[0][0].student_fname;
                 this.student.group_id = data[0][0].group_id;
                 this.student.photo = data[0][0].photo;
+
+                /* this.student.photo = "assets/profile.2e72398604d85b12ede3348de8441eb7.png";*/
+                    if (this.student.photo === "") {
+                    this.newFotoSrc.nativeElement.src = "assets/profile.2e72398604d85b12ede3348de8441eb7.png";
+                    console.log("this.newFotoSrc.nativeElement.src +: ", this.newFotoSrc.nativeElement.src);
+                    console.log("this.student.photo", this.student.photo);
+                }
+                console.log("this.student.photo : ", this.student.photo);
+                console.log("data[0][0].photo : ", data[0][0].photo);
 
                 let studGroupId: Array <number> = [];
                 studGroupId.push(this.student.group_id);
