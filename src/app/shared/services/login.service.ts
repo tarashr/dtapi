@@ -14,6 +14,7 @@ import {
     badLogoutMessage,
     serverErrorMessage
 } from "../constant";
+import {CommonService} from "./common.service";
 
 @Injectable()
 export class LoginService {
@@ -27,7 +28,8 @@ export class LoginService {
 
     constructor(private _router: Router,
                 private _http: Http,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private commonService: CommonService) {
     };
 
     private successEventModal = successEventModal;
@@ -36,7 +38,35 @@ export class LoginService {
         return Observable.throw(error.status);
     };
 
-    private success = (response: Response) => response.json();
+    private successRequest = (response: Response) => response.json();
+
+    private successLogin = (response: any) => {
+        const dTester: any = JSON.parse(localStorage.getItem("dTester"));
+        if (dTester) {
+            const userIdHash: string = this.commonService.cryptData(+response.id);
+            if (userIdHash !== dTester.userId) {
+                localStorage.removeItem("dTester");
+            }
+        }
+        if (response.roles[1] === "student") {
+            sessionStorage.setItem("userRole", response.roles[1]);
+            sessionStorage.setItem("userId", response.id);
+            this._router.navigate(["/student"]);
+        } else if (response.roles[1] === "admin") {
+            sessionStorage.setItem("userRole", response.roles[1]);
+            this._router.navigate(["/admin"]);
+        }
+    }
+
+    private errorLogin = (error) => {
+        if (error === 400) {
+            this.modalInfoConfig.infoString = this.badLoginOrPasswordMessage;
+            this.successEventModal();
+        } else {
+            this.modalInfoConfig.infoString = this.serverErrorMessage;
+            this.successEventModal();
+        }
+    }
 
     private successLogout = (response: Response) => {
         if (response.status === 200) {
@@ -46,52 +76,35 @@ export class LoginService {
         }
     };
 
+    private errorLogout = () => {
+        this.modalInfoConfig.infoString = this.badLogoutMessage;
+        this.modalInfoConfig.action = "confirm";
+        this.modalInfoConfig.title = "Попередження!";
+        const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
+        modalRef.componentInstance.config = this.modalInfoConfig;
+        modalRef.result
+            .then(() => {
+                return;
+            }, () => {
+                sessionStorage.removeItem("userRole");
+                sessionStorage.removeItem("userId");
+                this._router.navigate(["/login"]);
+            });
+    }
+
     login(user: User) {
         this._http
             .post(this.loginUrl, JSON.stringify(user), {headers: this._headers})
-            .map(this.success)
+            .map(this.successRequest)
             .catch(this.handleError)
-            .subscribe((response: any) => {
-                    if (response.roles[1] === "student") {
-                        sessionStorage.setItem("userRole", response.roles[1]);
-                        sessionStorage.setItem("userId", response.id);
-                        this._router.navigate(["/student"]);
-                    } else if (response.roles[1] === "admin") {
-                        sessionStorage.setItem("userRole", response.roles[1]);
-                        this._router.navigate(["/admin"]);
-                    }
-                },
-                (error: any) => {
-                    if (error === 400) {
-                        this.modalInfoConfig.infoString = this.badLoginOrPasswordMessage;
-                        this.successEventModal();
-                    } else {
-                        this.modalInfoConfig.infoString = this.serverErrorMessage;
-                        this.successEventModal();
-                    }
-                });
+            .subscribe(this.successLogin, this.errorLogin);
     };
 
     logout(): void {
         this._http
             .get(this.logoutUrl)
             .catch(this.handleError)
-            .subscribe(this.successLogout,
-                () => {
-                    this.modalInfoConfig.infoString = this.badLogoutMessage;
-                    this.modalInfoConfig.action = "confirm";
-                    this.modalInfoConfig.title = "Попередження!";
-                    const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
-                    modalRef.componentInstance.config = this.modalInfoConfig;
-                    modalRef.result
-                        .then(() => {
-                            return;
-                        }, () => {
-                            sessionStorage.removeItem("userRole");
-                            sessionStorage.removeItem("userId");
-                            this._router.navigate(["/login"]);
-                        });
-                });
+            .subscribe(this.successLogout, this.errorLogout);
     }
 
 }

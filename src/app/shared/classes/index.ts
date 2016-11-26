@@ -10,3 +10,4 @@ export * from "./test-player-questions";
 export * from "./test-player-nav-buttons";
 export * from "./test-player-dtapi-result";
 export * from "./user";
+export * from "./test-detail";
