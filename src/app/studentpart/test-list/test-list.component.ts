@@ -28,14 +28,14 @@ export class TestListComponent implements OnChanges {
     public activeTests: any = activeTests;
     public activeTimeTable: any = activeTimeTable;
 
-    public dateNow;
+    public dateNow = {date:"", time:""};
     public countOfTests: number = 0;
 
     public headers: any = headersStudentTestList;
     public actions: any = actionsStudentTestList;
     public entityData = [];
-
-
+	public userRole = sessionStorage.getItem("userRole");
+	
     constructor(private _commonService: CRUDService,
                 private _router: Router,
                 private _subjectService: SubjectService,
@@ -64,17 +64,18 @@ export class TestListComponent implements OnChanges {
                 this.dateNow = this.getTimeStamp(+today.curtime - today.offset);
 
                 this._commonService.getTimeTableForGroup(this.groupId)
-                    .subscribe(data=> {
+                    .subscribe(data => {
                         this.activeTimeTable = data;
 
                         for (let i = 0; i < this.activeTimeTable.length; i++) {
+                            let testStartDate = this.activeTimeTable[i].start_date;
+                            let testStartTime = this.activeTimeTable[i].start_time;
 
-
-                            if (this.dateNow === this.activeTimeTable[i].start_date) {
+                            if (this.dateNow.date === testStartDate) {
                                 this.getTestsForToday(
-									this.activeTimeTable[i].subject_id,
-                                    this.activeTimeTable[i].start_date
-									);
+                                    this.activeTimeTable[i].subject_id,
+                                    testStartDate
+                                );
                             }
 
 
@@ -87,10 +88,10 @@ export class TestListComponent implements OnChanges {
 
     getTestsForToday(subId, eventDate) {
         this._commonService.getRecordById("subject", subId)
-            .subscribe(subject=> {
-                var newSubjectName = subject[0].subject_name;
+            .subscribe(subject => {
+                let newSubjectName = subject[0].subject_name;
                 this._subjectService.getTestsBySubjectId("subject", +subId)
-                    .subscribe(dataTests=> {
+                    .subscribe(dataTests => {
                         this.activeTests = dataTests;
                         for (let j = 0; j < this.activeTests.length; j++) {
                             if (this.activeTests[j].enabled === "1") {
@@ -100,13 +101,13 @@ export class TestListComponent implements OnChanges {
                                     this.activeTests[j].test_name,
                                     eventDate,
                                     this.activeTests[j].test_id
-                                )
+                                );
                             }
                         }
 
-                    })
+                    });
 
-            })
+            });
     }
 
     entityDataPush(subName, testName, eventDate, testId) {
@@ -140,8 +141,14 @@ export class TestListComponent implements OnChanges {
     getTimeStamp(mili) {
         mili = +mili * 1000;
         let myDate = new Date(mili);
-        let formatDate = myDate.getFullYear() + '-' + ('0' + (myDate.getMonth() + 1)).slice(-2) +
-            '-' + ('0' + myDate.getDate()).slice(-2);
+
+        let formatDate = {
+            date: myDate.getFullYear() + "-" + ("0" + (myDate.getMonth() + 1)).slice(-2) +
+            "-" + ("0" + myDate.getDate()).slice(-2),
+
+            time: ("0" + (myDate.getHours() + 1)).slice(-2) + "-" + ("0" + (myDate.getMinutes() + 1)).slice(-2) +
+            "-" + ("0" + myDate.getSeconds()).slice(-2)
+        };
 
         return formatDate;
     }

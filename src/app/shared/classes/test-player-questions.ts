@@ -10,4 +10,6 @@ export class TestPlayerQuestions {
     rate?: string;
     test_id?: string;
     type?: string;
+    active?: boolean;
+    answered?: boolean;
 }
