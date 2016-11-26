@@ -43,3 +43,8 @@
 .hidden {
     display: none;
 }
+
+input.ng-invalid ,
+select.ng-invalid {
+    border: 1px solid red;
+}

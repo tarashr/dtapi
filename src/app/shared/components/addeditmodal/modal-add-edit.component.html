@@ -1,29 +1,36 @@
-<div class="modal-header">
+<form #f="ngForm">
+    <div class="modal-header">
     <button type="button" class="close" (click)="activeModal.dismiss()">
         <span>&times;</span>
     </button>
     <h4 class="modal-title">{{config.title}}</h4>
-</div>
-<div class="modal-body modal-body-add-edit">
-    <div *ngIf="config.select">
-        <div class="input-group input-group-add-edit" *ngFor="let item of config.select">
-            <span class="input-group-addon modal-span">{{item.selectName}}:</span>
-            <select class="form-control" name="count"
-                    [(ngModel)]="item.selected">
-                <option *ngFor="let option of item.selectItem">{{option}}</option>
-            </select>
-        </div>
     </div>
+    <div class="modal-body modal-body-add-edit">
+        <div *ngIf="config.select">
+            <div class="input-group input-group-add-edit" *ngFor="let item of config.select">
+                <span class="input-group-addon modal-span">{{item.selectName}}:</span>
+                <select class="form-control"
+                        name="count"
+                        required
+                        ngModel
+                        [(ngModel)]="item.selected">
+                    <option *ngFor="let option of item.selectItem">{{option}}</option>
+                </select>
+            </div>
+        </div>
         <div class="input-group input-group-add-edit" *ngFor="let item of config.list">
             <span *ngIf="item.name !=='Дата початку' && item.name !== 'Дата кінця'" class="input-group-addon modal-span">
                 {{item.name}}:
             </span>
             <input *ngIf="item.name !=='Дата початку' && item.name !== 'Дата кінця'"
                    [type]="item.type"
+                   [name]="item.name"
                    class="form-control modalInput"
                    [placeholder]="item.placeholder||''"
-                   [(ngModel)]="item.value">
-
+                   [(ngModel)]="item.value"
+                   required
+                   [pattern]="item.pattern"
+                   ngModel>
             <div class="input-group" *ngIf="item.name === 'Дата початку' || item.name === 'Дата кінця'">
                 <span class="input-group-addon modal-span">{{item.name}}:</span>
                 <input
@@ -43,27 +50,31 @@
                 <template #customDay let-date="date" let-currentMonth="currentMonth" let-selected="selected"
                           let-disabled="disabled">
                      <span class="custom-day" [class.weekend]="isWeekend(date)" [class.bg-primary]="selected"
-                            [class.hidden]="date.month !== currentMonth" [class.text-muted]="disabled">
+                           [class.hidden]="date.month !== currentMonth" [class.text-muted]="disabled">
                          {{ date.day }}
                      </span>
                 </template>
             </div>
         </div>
-    <div *ngIf="config.img">
-        <div class="input-group input-group-add-edit">
-            <span class="input-group-addon modal-span">{{config.img.imgName}}:</span>
-            <input [type]="config.img.type" class="form-control modalInput" (change)="openFile($event)"
-                   accept='image/*'>
-            <div *ngIf="config.action == 'edit'" class="input-group-addon remove-image" title="Видалити зображення">
-                <span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="removeImage()"></span>
+        <div *ngIf="config.img">
+            <div class="input-group input-group-add-edit">
+                <span class="input-group-addon modal-span">{{config.img.imgName}}:</span>
+                <input [type]="config.img.type" class="form-control modalInput" (change)="openFile($event)"
+                       accept='image/*'>
+                <div *ngIf="config.action == 'edit'" class="input-group-addon remove-image" title="Видалити зображення">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="removeImage()"></span>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary"
-            (click)="activeModal.close(config)">{{config.labelBtn}}
-    </button>
-    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Відмінити</button>
-</div>
+    <div class="modal-footer">
+        <button type="button"
+                class="btn btn-secondary"
+                [disabled]="!f.valid"
+                (click)="activeModal.close(config)">{{config.labelBtn}}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Відмінити</button>
+    </div>
+</form>
+
 

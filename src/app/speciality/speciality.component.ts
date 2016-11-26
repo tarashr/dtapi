@@ -101,6 +101,9 @@ export class SpecialityComponent implements OnInit{
 
 
     createCase() {
+        this.configAdd.list.forEach((item) => {
+            item.value = "";
+        });
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result

@@ -92,6 +92,9 @@ export class AdminUserComponent implements OnInit {
     }
 
     createCase(userToChange?: User) {
+        this.configAdd.list.forEach((item) => {
+            item.value = "";
+        });
         if (userToChange) {
             this.configAdd.list[0].value = userToChange.username;
             this.configAdd.list[1].value = userToChange.email;
