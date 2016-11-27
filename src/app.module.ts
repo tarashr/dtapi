@@ -1,6 +1,6 @@
 import {NgModule}      from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
-import {FormsModule}   from "@angular/forms";
+import {FormsModule, ReactiveFormsModule}   from "@angular/forms";
 import {HttpModule}    from "@angular/http";
 import {APP_BASE_HREF} from "@angular/common";
 import {NgbModule}     from "@ng-bootstrap/ng-bootstrap";
@@ -54,6 +54,7 @@ import {StudentTestResultsComponent} from "./app/studentpart/test-results/test-r
         FormsModule,
         HttpModule,
         NgbModule.forRoot(),
+        ReactiveFormsModule,
         routing
     ],
     declarations: [

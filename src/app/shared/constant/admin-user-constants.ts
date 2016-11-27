@@ -25,13 +25,10 @@ export const actionsAdminUser = [
 export const configAddAdminUser = {
     title: "Додати адміністратора",
     list: [
-        {name: "Логін", value: "", title: "username", type: "text"},
-        {name: "Поштова скринька", value: "", title: "email", type: "email",
-            pattern: "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"},
-        {name: "Пароль", value: "", title: "password", type: "password",
-            pattern: "^[a-zA-Z0-9_-]{8,}$"},
-        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password",
-            pattern: "^[a-zA-Z0-9_-]{8,}$"}
+        {name: "Логін", value: "", title: "username", type: "text", formControlName: "username"},
+        {name: "Поштова скринька", value: "", title: "email", type: "email", formControlName: "email"},
+        {name: "Пароль", value: "", title: "password", type: "password", formControlName: "password"},
+        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password", formControlName: "cpassword"}
     ],
     action: "create",
     labelBtn: "Додати"
@@ -40,10 +37,10 @@ export const configAddAdminUser = {
 export const configEditAdminUser = {
     title: "Редагувати адміністратора",
     list: [
-        {name: "Логін", value: "", title: "username", type: "text"},
-        {name: "Поштова скринька", value: "", title: "email", type: "email"},
-        {name: "Пароль", value: "", title: "password", type: "password"},
-        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password"}
+        {name: "Логін", value: "", title: "username", type: "text", formControlName: "username"},
+        {name: "Поштова скринька", value: "", title: "email", type: "email", formControlName: "email"},
+        {name: "Пароль", value: "", title: "password", type: "password", formControlName: "password"},
+        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password", formControlName: "cpassword"}
     ],
     action: "edit",
     labelBtn: "Редагувати",

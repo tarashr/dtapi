@@ -1,4 +1,4 @@
-<form>
+<form [formGroup]="addEditForm" (ngSubmit)="onSubmit()">
     <div class="modal-header">
     <button type="button" class="close" (click)="activeModal.dismiss()">
         <span>&times;</span>
@@ -22,10 +22,14 @@
             </span>
             <input *ngIf="item.name !=='Дата початку' && item.name !== 'Дата кінця'"
                    [type]="item.type"
-                   [name]="item.title"
+                   [formControlName]="item.formControlName"
                    class="form-control modalInput"
                    [placeholder]="item.placeholder||''"
                    [(ngModel)]="item.value">
+            <div *ngIf="!addEditForm.controls[item.formControlName].valid && !addEditForm.controls[item.formControlName].pristine">
+                {{item.name}}
+            </div>
+            <div *ngIf="item.formControlName ==='cpassword' && !isSamePasswords">Passwords do not confirm</div>
             <div class="input-group" *ngIf="item.name === 'Дата початку' || item.name === 'Дата кінця'">
                 <span class="input-group-addon modal-span">{{item.name}}:</span>
                 <input
@@ -63,6 +67,8 @@
         </div>
     </div>
     <div class="modal-footer">
+        <button type="submit">Submit</button>
+        <button type="button" (click)="comparePasswords()">Submit</button>
         <button type="button"
                 class="btn btn-secondary"
                 (click)="activeModal.close(config)">{{config.labelBtn}}
