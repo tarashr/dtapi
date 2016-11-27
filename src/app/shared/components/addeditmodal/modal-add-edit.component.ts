@@ -8,7 +8,7 @@ import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
     templateUrl: "modal-add-edit.component.html",
     styleUrls: ["modal-add-edit.component.css"]
 })
-export class ModalAddEditComponent {
+export class ModalAddEditComponent{
 
     @Input() config: any;
     public maxSizeOfPictures: number = 1000000;
@@ -46,5 +46,5 @@ export class ModalAddEditComponent {
     isDisabled(date: NgbDateStruct, current: {month: number}) {
         return date.month !== current.month;
     }
-    // the end
+    // the end of datapicker's code
 }
