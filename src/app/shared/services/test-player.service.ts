@@ -165,13 +165,13 @@ export class TestPlayerService {
                 .map(this.successResponse)
                 .catch(this.handleError)
                 .subscribe(countTestPassed => {
-                    // if (+countTestPassed.numberOfRecords >= +testRecord[0].attempts) {
-                    //     this.commonService.openModalInfo("Ви використали всі спроби", "info", "Повідомлення.")
-                    //         .then(null, () => {
-                    //             this.router.navigate(["/student"]);
-                    //         });
-                    //     return;
-                    // }
+                    if (+countTestPassed.numberOfRecords >= +testRecord[0].attempts) {
+                        this.commonService.openModalInfo("Ви використали всі спроби", "info", "Повідомлення.")
+                            .then(null, () => {
+                                this.router.navigate(["/student"]);
+                            });
+                        return;
+                    }
                     observer.next();
                 });
         });
