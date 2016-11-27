@@ -5,71 +5,27 @@ import {AuthStudentGuard} from "./app/shared/services/auth-student.guard.ts";
 import {LoginComponent}     from "./app/login/login.component";
 import {StartPageComponent}  from "./app/studentpart/start-page.component";
 import {AdminStartPageComponent} from "./app/admin-start/admin-start-page.component.ts";
-import {SubjectComponent} from "./app/subjects/subject.component";
-import {TestComponent} from "./app/subjects/tests/test.component";
-import {FacultyComponent} from "./app/faculty/faculty.component";
-import {StatisticComponent} from "./app/statistic/statistic.component";
-import {GroupComponent} from "./app/group/group.component";
-import {GroupTimetableComponent} from "./app/group/group-timetable/group-timetable.component";
-import {GroupResultComponent} from "./app/group/group-result/group-result.component";
-import {GroupTestResultComponent} from "./app/group/group-test-result/group-test-result.component";
-import {AdminUserComponent} from "./app/admin-user/admin-user.component";
-import {SpecialityComponent} from "./app/speciality/speciality.component";
-import {StudentComponent} from "./app/student/student.component";
-import {StudentProfileComponent} from "./app/student/student-profile.component";
-import {TimeTableComponent} from "./app/subjects/timetable/timetable.component";
-
-import { TestDetailComponent } from "./app/subjects/test-detail/test-detail.component";
-import { QuestionComponent } from "./app/subjects/question/question.component";
-import { AnswerComponent } from "./app/subjects/answer/answer.component";
-
-import {UserProfileComponent} from "./app/studentpart/profile/user-profile.component";
-import {TestPlayerComponent} from "./app/test-player/test-player.component";
-import {TestDetail} from "./app/shared/classes/test-detail";
+import {NotFoundComponent} from "./app/not-found/not-found.component";
+import {adminRoutes} from "./app/admin.routing";
+import {studentRoutes} from "./app/student.routing";
 
 const appRoutes: Routes = [
-    {path: "", redirectTo: "login", pathMatch: "full"},
+    {path: "", redirectTo: "/login", pathMatch: "full"},
     {path: "login", component: LoginComponent},
+    {path: "notfound", component: NotFoundComponent},
     {
         path: "student",
         component: StartPageComponent,
         canActivate: [AuthStudentGuard],
-        children: [
-            {path: "", redirectTo: "profile"},
-            {path: "profile", component: UserProfileComponent},
-            {path: "test-player", component: TestPlayerComponent}
-        ]
+        children: studentRoutes
     },
     {
         path: "admin",
         component: AdminStartPageComponent,
         canActivate: [AuthAdminGuard],
-        children: [
-            {path: "", redirectTo: "statistic"},
-            {path: "statistic", component: StatisticComponent},
-            {path: "subject", component: SubjectComponent},
-            {path: "subject/:id/test", component: TestComponent},
-            {path: "subject/test/:id/testDetail", component: TestDetailComponent},
-            {path: "subject/test/:id/question", component: QuestionComponent},
-            {path: "subject/test/question/:id/answer", component: AnswerComponent},
-            {path: "subject/:id/timeTable", component: TimeTableComponent},
-            {path: "speciality", component: SpecialityComponent},
-            {path: "faculty", component: FacultyComponent},
-            {path: "group", component: GroupComponent},
-            {path: "group/byFaculty", component: GroupComponent},
-            {path: "group/bySpeciality", component: GroupComponent},
-            {path: "group/groupTest", component: GroupResultComponent},
-            {path: "group/groupTestResult", component: GroupTestResultComponent},
-            {path: "group/groupTimetable", component: GroupTimetableComponent},
-            {path: "adminUser", component: AdminUserComponent},
-            {path: "student", component: StudentComponent},
-            {path: "student/byGroup", component: StudentComponent},
-            {path: "student/student-profile", component: StudentProfileComponent},
-            {path: "student/student-profile/:id", component: StudentProfileComponent},
-            {path: "**", redirectTo: "statistic", pathMatch: "full"}
-        ]
+        children: adminRoutes
     },
-    {path: "**", redirectTo: "login", pathMatch: "full"}
+    {path: "**", redirectTo: "/login", pathMatch: "full"}
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes, {useHash: true});

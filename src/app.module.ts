@@ -2,7 +2,6 @@ import {NgModule}      from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule}   from "@angular/forms";
 import {HttpModule}    from "@angular/http";
-import {APP_BASE_HREF} from "@angular/common";
 import {NgbModule}     from "@ng-bootstrap/ng-bootstrap";
 import {routing}       from "./app.routing";
 
@@ -47,6 +46,8 @@ import {TestBarComponent} from "./app/shared/components/test-bar/test-bar.compon
 import {NgbdAlertSelfclosing} from "./app/studentpart/alerts/alert.component";
 import {CommonService} from "./app/shared/services/common.service";
 import {StudentTestResultsComponent} from "./app/studentpart/test-results/test-results.component";
+import {NotFoundComponent} from "./app/not-found/not-found.component";
+import {TestPlayerGuard} from "./app/shared/services/test-player.guard";
 
 @NgModule({
     imports: [
@@ -88,10 +89,10 @@ import {StudentTestResultsComponent} from "./app/studentpart/test-results/test-r
         TestListSheduleComponent,
         TestBarComponent,
         NgbdAlertSelfclosing,
-        StudentTestResultsComponent
+        StudentTestResultsComponent,
+        NotFoundComponent
     ],
     providers: [
-        {provide: APP_BASE_HREF, useValue: "/"},
         LoginService,
         CRUDService,
         GroupService,
@@ -99,6 +100,7 @@ import {StudentTestResultsComponent} from "./app/studentpart/test-results/test-r
         HttpModule,
         AuthAdminGuard,
         AuthStudentGuard,
+        TestPlayerGuard,
         TestPlayerService,
         CommonService
     ],

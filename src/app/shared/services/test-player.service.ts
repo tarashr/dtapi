@@ -1,5 +1,4 @@
 import {Injectable} from "@angular/core";
-import {Location} from "@angular/common";
 import {Http, Response, Headers} from "@angular/http";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs";
@@ -53,7 +52,6 @@ export class TestPlayerService {
                 private router: Router,
                 private subjectService: SubjectService,
                 private crudService: CRUDService,
-                private location: Location,
                 private commonService: CommonService) {
     };
 
@@ -131,7 +129,7 @@ export class TestPlayerService {
                     this.commonService.openModalInfo(message, "info", "Результат тестування!")
                         .then(null, () => {
                             this.resetSessionData();
-                            this.location.back();
+                            this.router.navigate(["/student"]);
                         });
                 },
                 () => {
@@ -167,13 +165,13 @@ export class TestPlayerService {
                 .map(this.successResponse)
                 .catch(this.handleError)
                 .subscribe(countTestPassed => {
-                    if (+countTestPassed.numberOfRecords >= +testRecord[0].attempts) {
-                        this.commonService.openModalInfo("Ви використали всі спроби", "info", "Повідомлення.")
-                            .then(null, () => {
-                                this.router.navigate(["/student/profile"]);
-                            });
-                        return;
-                    }
+                    // if (+countTestPassed.numberOfRecords >= +testRecord[0].attempts) {
+                    //     this.commonService.openModalInfo("Ви використали всі спроби", "info", "Повідомлення.")
+                    //         .then(null, () => {
+                    //             this.router.navigate(["/student"]);
+                    //         });
+                    //     return;
+                    // }
                     observer.next();
                 });
         });
@@ -181,6 +179,7 @@ export class TestPlayerService {
     };
 
     getTestDetails = () => {
+        this.maxUserRate = 0;
         return Observable.create(observer => {
             this.subjectService.getTestDetailsByTest(this.testId)
                 .subscribe((testDetails: TestDetail[]) => {
@@ -562,7 +561,7 @@ export class TestPlayerService {
         this.commonService.openModalInfo(`Відновлення тесту не можливо!`, "info", "Повідомлення.")
             .then(null, () => {
                 localStorage.removeItem("dTester");
-                this.location.back();
+                this.router.navigate(["/student"]);
             });
     }
 

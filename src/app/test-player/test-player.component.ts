@@ -3,13 +3,15 @@ import {ActivatedRoute} from "@angular/router";
 import {TestPlayerService} from "../shared/services/test-player.service";
 import {TestPlayerQuestions, TestPlayerNavButton} from "../shared/classes";
 import {CommonService} from "../shared/services/common.service";
+import {ComponentCanDeactivate} from "../shared/services/test-player.guard";
+import {Observable} from "rxjs";
 
 @Component({
     templateUrl: "test-player.component.html",
     styleUrls: ["test-player.component.css"]
 })
 
-export class TestPlayerComponent implements OnInit, OnDestroy {
+export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
 
     private testId: number;
     private studentId: number;
@@ -28,6 +30,7 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
     private disableSkip: boolean = false;
     private maxUserRate: number = 0;
     private informedUserAboutAllQuestionAnswered: boolean = false;
+    private finishedTest: boolean = false;
 
     constructor(private testPlayerService: TestPlayerService,
                 private route: ActivatedRoute,
@@ -48,9 +51,27 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
         }
     };
 
+    canDeactivate(): boolean | Observable<boolean> {
+        return Observable.create(observer => {
+            if (!this.finishedTest) {
+                this.commonService.openModalInfo("Ви дійсно хочете припинити тестування (ваші результати можуть бути втраченими)?",
+                    "confirm", "Попередження!")
+                    .then(() => {
+                        observer.next(true);
+                    }, () => {
+                        observer.next(false);
+                    });
+            }
+            else {
+                observer.next(true);
+            }
+        });
+    }
+
     startTimer() {
         this.restOfTime--;
         if (this.restOfTime === 0) {
+            this.finishedTest = true;
             this.leftTimePercent = 0;
             this.timer = this.testPlayerService.createTimeForView(this.restOfTime);
             clearInterval(this.timerId);
@@ -125,7 +146,10 @@ export class TestPlayerComponent implements OnInit, OnDestroy {
 
     finishTest() {
         this.commonService.openModalInfo("Ви дійсно хочете завершити тестування?", "confirm", "Підтвердження.")
-            .then(() => this.checkTimer(false), null);
+            .then(() => {
+                this.finishedTest = true;
+                this.checkTimer(false);
+            }, null);
     }
 
     finishCheckTimer = (data: any, continueTest: boolean) => {
