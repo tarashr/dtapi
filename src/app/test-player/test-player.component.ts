@@ -30,7 +30,7 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
     private disableSkip: boolean = false;
     private maxUserRate: number = 0;
     private informedUserAboutAllQuestionAnswered: boolean = false;
-    private finishedTest: boolean = false;
+    private finishedTest: boolean = true;
 
     constructor(private testPlayerService: TestPlayerService,
                 private route: ActivatedRoute,
@@ -51,7 +51,7 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
         }
     };
 
-    canDeactivate(): boolean | Observable<boolean> {
+    canDeactivate(): Observable<boolean> {
         return Observable.create(observer => {
             if (!this.finishedTest) {
                 this.commonService.openModalInfo("Ви дійсно хочете припинити тестування (ваші результати можуть бути втраченими)?",
@@ -161,6 +161,7 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
             this.timerId = setInterval(() => {
                 this.startTimer();
             }, 1000);
+            this.finishedTest = false;
             this.show = true;
         } else {
             this.testPlayerService.checkSAnswers(this.questions, data.startTime, data.endTime);
@@ -187,6 +188,7 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
                 this.timerId = setInterval(() => {
                     this.startTimer();
                 }, 1000);
+                this.finishedTest = false;
                 this.testPlayerService.createBackup(this.questions);
             });
     }
