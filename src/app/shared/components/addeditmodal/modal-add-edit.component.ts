@@ -23,7 +23,6 @@ export class ModalAddEditComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this.config.list[0]);
         this.addEditForm = new FormGroup({
             "username": new FormControl("", Validators.required),
             "email": new FormControl("", [
@@ -41,16 +40,22 @@ export class ModalAddEditComponent implements OnInit {
         });
     }
 
-    comparePasswords(password: string, cpassword: string) {
+    comparePasswords() {
         if (this.addEditForm.controls["password"].value === this.addEditForm.controls["cpassword"].value) {
-            this.isSamePasswords = true;
+            return true;
         } else {
-            this.isSamePasswords = false;
+            return false;
         }
     }
 
-    onSubmit() {
-        console.log(this.addEditForm);
+    activateForm() {
+        if (!this.addEditForm.controls["password"]) {
+            this.activeModal.close(this.config);
+        } else if (this.comparePasswords()) {
+            this.activeModal.close(this.config);
+        } else {
+            this.isSamePasswords = false;
+        }
     }
 
     openFile($event) {

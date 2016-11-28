@@ -25,9 +25,12 @@ export const actionsAdminUser = [
 export const configAddAdminUser = {
     title: "Додати адміністратора",
     list: [
-        {name: "Логін", value: "", title: "username", type: "text", formControlName: "username"},
-        {name: "Поштова скринька", value: "", title: "email", type: "email", formControlName: "email"},
-        {name: "Пароль", value: "", title: "password", type: "password", formControlName: "password"},
+        {name: "Логін", value: "", title: "username", type: "text", formControlName: "username",
+            hint: "Це поле обов'язкове"},
+        {name: "Поштова скринька", value: "", title: "email", type: "email", formControlName: "email",
+            hint: "Введіть електронну адресу наступного формату логін@домен"},
+        {name: "Пароль", value: "", title: "password", type: "password", formControlName: "password",
+            hint: "Пароль повинен складатись мінімум з восьми символів"},
         {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password", formControlName: "cpassword"}
     ],
     action: "create",
