@@ -28,10 +28,11 @@ export const configAddAdminUser = {
         {name: "Логін", value: "", title: "username", type: "text", formControlName: "username",
             hint: "Це поле обов'язкове"},
         {name: "Поштова скринька", value: "", title: "email", type: "email", formControlName: "email",
-            hint: "Введіть електронну адресу наступного формату логін@домен"},
+            hint: "Електронна адреса повинна бути формату логін@домен"},
         {name: "Пароль", value: "", title: "password", type: "password", formControlName: "password",
             hint: "Пароль повинен складатись мінімум з восьми символів"},
-        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password", formControlName: "cpassword"}
+        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password", formControlName: "cpassword",
+            hint: "Пароль повинен складатись мінімум з восьми символів"}
     ],
     action: "create",
     labelBtn: "Додати"
@@ -40,10 +41,14 @@ export const configAddAdminUser = {
 export const configEditAdminUser = {
     title: "Редагувати адміністратора",
     list: [
-        {name: "Логін", value: "", title: "username", type: "text", formControlName: "username"},
-        {name: "Поштова скринька", value: "", title: "email", type: "email", formControlName: "email"},
-        {name: "Пароль", value: "", title: "password", type: "password", formControlName: "password"},
-        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password", formControlName: "cpassword"}
+        {name: "Логін", value: "", title: "username", type: "text", formControlName: "username",
+            hint: "Це поле обов'язкове"},
+        {name: "Поштова скринька", value: "", title: "email", type: "email", formControlName: "email",
+            hint: "Електронна адреса повинна бути формату логін@домен"},
+        {name: "Пароль", value: "", title: "password", type: "password", formControlName: "password",
+            hint: "Пароль повинен складатись мінімум з восьми символів"},
+        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password", formControlName: "cpassword",
+            hint: "Пароль повинен складатись мінімум з восьми символів"}
     ],
     action: "edit",
     labelBtn: "Редагувати",

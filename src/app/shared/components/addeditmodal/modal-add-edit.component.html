@@ -25,9 +25,10 @@
                    [formControlName]="item.formControlName"
                    class="form-control modalInput"
                    [placeholder]="item.placeholder||''"
+                   [required]="config.action === 'create'"
                    [(ngModel)]="item.value">
             <div class="hint"
-                 *ngIf="!addEditForm.controls[item.formControlName].valid && item.hint &&
+                 *ngIf="!addEditForm.controls[item.formControlName].valid &&
                  addEditForm.controls[item.formControlName].dirty">
                 {{item.hint}}
             </div>

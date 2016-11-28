@@ -53,7 +53,7 @@ select.ng-invalid.ng-dirty {
     border: 1px solid red;
 }
 
-.hint, .passwords-hint {
+.hint {
     position: absolute;
     bottom: 40px;
     left: 130px;
@@ -77,5 +77,24 @@ select.ng-invalid.ng-dirty {
 }
 
 .passwords-hint {
-    top: 35px;
+    position: absolute;
+    top: 40px;
+    left: 130px;
+    min-width: 131px;
+    z-index: 10;
+    padding: 5px;
+    border: 1px solid #87854e;
+    border-radius: 5px;
+    background: #f7f7f7;
+}
+
+.passwords-hint::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50px;
+    margin-left: -5px;
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent transparent #87854e transparent;
 }

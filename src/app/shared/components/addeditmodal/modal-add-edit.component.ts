@@ -26,16 +26,13 @@ export class ModalAddEditComponent implements OnInit {
         this.addEditForm = new FormGroup({
             "username": new FormControl("", Validators.required),
             "email": new FormControl("", [
-                Validators.required,
                 Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
             ]),
             "password": new FormControl("", [
-                Validators.required,
-                Validators.pattern("^[a-zA-Z0-9_-]{8,}$")
+                Validators.minLength(8)
             ]),
             "cpassword": new FormControl("", [
-                Validators.required,
-                Validators.pattern("^[a-zA-Z0-9_-]{8,}$")
+                Validators.minLength(8)
             ]),
         });
     }
