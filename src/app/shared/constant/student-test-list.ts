@@ -2,17 +2,17 @@
 
 export const  headersStudentTestList = [
     // {name: "№", className: "col-xs-12 col-sm-1"},
-    {name: "Предмет", className: "col-xs-12 col-sm-4"},
+    {name: "Предмет", className: "col-xs-12 col-sm-3"},
     {name: "Назва тесту", className: "col-xs-12 col-sm-4"},
-    {name: "Дата початку", className: "col-xs-12 col-sm-3"},
+    {name: "Час початку", className: "col-xs-12 col-sm-2"},
+    {name: "Час кінця", className: "col-xs-12 col-sm-2"},
     {name: "", className: "col-xs-12 col-sm-1"}
 ];
 
 export const  headersStudentTestResults = [
     // {name: "№", className: "col-xs-12 col-sm-1"},
-    {name: "Предмет", className: "col-xs-12 col-sm-3"},
-    {name: "Назва тесту", className: "col-xs-12 col-sm-3"},
-    {name: "Дата тестування", className: "col-xs-12 col-sm-3"},
+    {name: "Назва тесту", className: "col-xs-12 col-sm-5"},
+    {name: "Дата тестування", className: "col-xs-12 col-sm-5"},
 	{name: "Результат", className: "col-xs-12 col-sm-2"}
 ];
 
