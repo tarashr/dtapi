@@ -1,8 +1,11 @@
 // Constants for table.component
 export const headersGroupTimeTable = [
     {name: "№", className: "col-xs-12 col-sm-1"},
-    {name: "Назва предмету", className: "col-xs-12 col-sm-4"},
-    {name: "Дата та час проведення тестування", className: "col-xs-12 col-sm-5"},
+    {name: "Назва предмету", className: "col-xs-12 col-sm-3"},
+    {name: "Дата початку", className: "col-xs-12 col-sm-2"},
+    {name: "Час початку", className: "col-xs-12 col-sm-1"},
+    {name: "Дата кінця", className: "col-xs-12 col-sm-2"},
+    {name: "Час кінця", className: "col-xs-12 col-sm-1"},
     {name: "", className: "col-xs-12 col-sm-2"}
 ];
 

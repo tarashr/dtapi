@@ -24,13 +24,24 @@ module.exports = function (config) {
             noInfo: true
         },
 
-        reporters: ['progress'],
+        reporters: ['html', 'progress'],
+
+        htmlReporter: {
+            outputFile: 'tests/units.html',
+            // Optional
+            pageTitle: 'Unit Tests',
+            subPageTitle: 'DTester',
+            groupSuites: true,
+            useCompactStyle: true,
+            useLegacyStyle: true
+        },
+
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
-        autoWatch: false,
-        browsers: ['PhantomJS'],
-        singleRun: true
+        autoWatch: true,
+        browsers: ['Chrome'],
+        singleRun: false
     };
 
     config.set(_config);

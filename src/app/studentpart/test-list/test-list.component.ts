@@ -3,6 +3,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router} from "@angular/router";
 import {CRUDService} from "../../shared/services/crud.service";
 import {SubjectService} from "../../shared/services/subject.service";
+import {StudentPageService} from "../../shared/services/student-page.service";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {
     headersStudentTestList,
@@ -16,6 +17,7 @@ import {modalInfoConfig} from "../../shared/constant";
 @Component({
     selector: "test-list",
     templateUrl: "./test-list.component.html",
+    providers : [StudentPageService]
 })
 
 export class TestListComponent implements OnChanges {
@@ -23,23 +25,24 @@ export class TestListComponent implements OnChanges {
     @Input() groupId;
 
 
-    public modalInfoConfig: any = modalInfoConfig;
+    public modalInfoConfig:any = modalInfoConfig;
 
-    public activeTests: any = activeTests;
-    public activeTimeTable: any = activeTimeTable;
+    public activeTests:any = activeTests;
+    public activeTimeTable:any = activeTimeTable;
 
-    public dateNow = {date:"", time:""};
-    public countOfTests: number = 0;
+    public dateNow = {date: "", time: ""};
+    public countOfTests:number = 0;
 
-    public headers: any = headersStudentTestList;
-    public actions: any = actionsStudentTestList;
+    public headers:any = headersStudentTestList;
+    public actions:any = actionsStudentTestList;
     public entityData = [];
-	public userRole = sessionStorage.getItem("userRole");
-	
-    constructor(private _commonService: CRUDService,
-                private _router: Router,
-                private _subjectService: SubjectService,
-                private modalService: NgbModal) {
+    public userRole = sessionStorage.getItem("userRole");
+
+    constructor(private _commonService:CRUDService,
+                private _router:Router,
+                private _subjectService:SubjectService,
+                private _studentService: StudentPageService,
+                private modalService:NgbModal) {
     }
 
     ngOnChanges() {
@@ -61,32 +64,35 @@ export class TestListComponent implements OnChanges {
         this._commonService.getTime()
             .subscribe(date=> {
                 let today = date;
-                this.dateNow = this.getTimeStamp(+today.curtime - today.offset);
+                this.dateNow = this._studentService.getTimeStamp(+today.curtime - today.offset);
 
                 this._commonService.getTimeTableForGroup(this.groupId)
                     .subscribe(data => {
                         this.activeTimeTable = data;
 
                         for (let i = 0; i < this.activeTimeTable.length; i++) {
-                            let testStartDate = this.activeTimeTable[i].start_date;
-                            let testStartTime = this.activeTimeTable[i].start_time;
-
-                            if (this.dateNow.date === testStartDate) {
+                            const eventDateTime = {
+                                startDate: this.activeTimeTable[i].start_date,
+                                startTime: this.activeTimeTable[i].start_time,
+                                endDate: this.activeTimeTable[i].end_date,
+                                endTime: this.activeTimeTable[i].end_time
+                            };
+                            if ((this.dateNow.date >= eventDateTime.startDate)&&
+                                (this.dateNow.date <= eventDateTime.endDate)&&
+                                (this.dateNow.time >= eventDateTime.startTime)&&
+                                (this.dateNow.time <= eventDateTime.endTime)
+                            ){
                                 this.getTestsForToday(
                                     this.activeTimeTable[i].subject_id,
-                                    testStartDate
+                                    eventDateTime
                                 );
                             }
-
-
                         }
                     });
-
-
             });
     }
 
-    getTestsForToday(subId, eventDate) {
+    getTestsForToday(subId, eventDateTime) {
         this._commonService.getRecordById("subject", subId)
             .subscribe(subject => {
                 let newSubjectName = subject[0].subject_name;
@@ -96,12 +102,14 @@ export class TestListComponent implements OnChanges {
                         for (let j = 0; j < this.activeTests.length; j++) {
                             if (this.activeTests[j].enabled === "1") {
                                 this.countOfTests++;
-                                this.entityDataPush(
-                                    newSubjectName,
-                                    this.activeTests[j].test_name,
-                                    eventDate,
-                                    this.activeTests[j].test_id
-                                );
+                                this.entityData.push({
+                                    entityColumns: [
+                                        newSubjectName,
+                                        this.activeTests[j].test_name,
+                                            eventDateTime.startTime,
+                                            eventDateTime.endTime],
+                                    actions : this.activeTests[j].test_id
+                                });
                             }
                         }
 
@@ -110,19 +118,10 @@ export class TestListComponent implements OnChanges {
             });
     }
 
-    entityDataPush(subName, testName, eventDate, testId) {
-        this.entityData.push({
-                entityColumns: [
-                    subName,
-                    testName,
-                    eventDate],
-                entity_id: testId
-            }
-        )
-    }
 
 
-    runTest(data: any) {
+
+    runTest(data:any) {
         this.modalInfoConfig.infoString = "Ви дійсно хочете пройти тест:\n" + data.entityColumns[1] + "?";
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Початок тестування";
@@ -138,19 +137,6 @@ export class TestListComponent implements OnChanges {
             });
     }
 
-    getTimeStamp(mili) {
-        mili = +mili * 1000;
-        let myDate = new Date(mili);
 
-        let formatDate = {
-            date: myDate.getFullYear() + "-" + ("0" + (myDate.getMonth() + 1)).slice(-2) +
-            "-" + ("0" + myDate.getDate()).slice(-2),
-
-            time: ("0" + (myDate.getHours() + 1)).slice(-2) + "-" + ("0" + (myDate.getMinutes() + 1)).slice(-2) +
-            "-" + ("0" + myDate.getSeconds()).slice(-2)
-        };
-
-        return formatDate;
-    }
 
 }

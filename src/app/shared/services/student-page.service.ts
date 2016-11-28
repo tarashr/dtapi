@@ -25,20 +25,27 @@ export class StudentPageService {
         return Observable.throw(errMsg);
     };
 
-    getTimeStamp(mili) {
-        mili = +mili * 1000;
-        let myDate = new Date(mili);
-        let formatDate = myDate.getFullYear() + '-' + ('0' + (myDate.getMonth() + 1)).slice(-2) +
-            '-' + ('0' + myDate.getDate()).slice(-2);
 
-        return formatDate;
-    }
-	
 	 getStudentTestResults(studentId: number): Observable<any> {
         return this.http
             .get(`${this.hostUrlBase}Result/getRecordsbyStudent/${studentId}`)
             .map(this.successResponse)
             .catch(this.handleError);
+    }
+
+    getTimeStamp(mili) {
+        mili = +mili * 1000;
+        let myDate = new Date(mili);
+
+        let formatDate = {
+            date: myDate.getFullYear() + "-" + ("0" + (myDate.getMonth() + 1)).slice(-2) +
+            "-" + ("0" + myDate.getDate()).slice(-2),
+
+            time: ("0" + (myDate.getHours() + 1)).slice(-2) + "-" + ("0" + (myDate.getMinutes() + 1)).slice(-2) +
+            "-" + ("0" + myDate.getSeconds()).slice(-2)
+        };
+
+        return formatDate;
     }
 
 

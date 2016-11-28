@@ -68,11 +68,11 @@ export class SpecialityComponent implements OnInit{
     }
 
     private createTableConfig = (data: any )=> {
-        let tempArr: any[] = [];
+        const tempArr: any[] = [];
         let numberOfOrder: number;
         data.forEach((item, i) => {
             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-            let speciality: any = {};
+            const speciality: any = {};
             speciality.entity_id = item.speciality_id;
             speciality.entityColumns = [numberOfOrder, item.speciality_code, item.speciality_name];
             tempArr.push(speciality);
@@ -105,7 +105,7 @@ export class SpecialityComponent implements OnInit{
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                let newSpeciality: Speciality = new Speciality(data.list[0].value, data.list[1].value);
+                const newSpeciality: Speciality = new Speciality(data.list[0].value, data.list[1].value);
                 this.crudService.insertData(this.entity, newSpeciality)
                     .subscribe(response => {
                         this.configAdd.list.forEach((item) => item.value = "");
@@ -127,7 +127,7 @@ export class SpecialityComponent implements OnInit{
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
-                let editedSpeciality: Speciality = new Speciality(data.list[0].value, data.list[1].value);
+                const editedSpeciality: Speciality = new Speciality(data.list[0].value, data.list[1].value);
                 this.crudService.updateData(this.entity, data.id, editedSpeciality)
                     .subscribe(response => {
                         this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
