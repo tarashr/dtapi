@@ -110,29 +110,20 @@ export class AdminUserComponent implements OnInit {
                     data.list[1].value,
                     data.list[2].value,
                     data.list[3].value);
-                if (data.list[2].value === data.list[3].value) {
-                    this.crudService.insertData(this.entity, newAdminUser)
-                        .subscribe(response => {
+                this.crudService.insertData(this.entity, newAdminUser)
+                    .subscribe(response => {
                             this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                             this.configAdd.list.forEach((item) => {
                                 item.value = "";
                             });
                             this.successEventModal();
                             this.refreshData(data.action);
-                        },
-                            error => {
-                                this.modalInfoConfig.infoString = `Пароль та логін повинні бути унікальними`;
-                                this.createCase(newAdminUser);
-                                this.successEventModal();
-                            }
-                        );
-                } else {
-                    this.modalInfoConfig.infoString = `Введені паролі не співпадають`;
-                    newAdminUser.password_confirm = "";
-                    newAdminUser.password = "";
-                    this.createCase(newAdminUser);
-                    this.successEventModal();
-                }
+                    }, error => {
+                            this.modalInfoConfig.infoString = `Пароль та логін повинні бути унікальними`;
+                            this.createCase(newAdminUser);
+                            this.successEventModal();
+                        }
+                    );
             }, () => {
                 return;
             });
@@ -148,31 +139,21 @@ export class AdminUserComponent implements OnInit {
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
-                if (data.list[2].value === data.list[3].value) {
-                    let editedAdminUser: User = new User(
-                        data.list[0].value,
-                        data.list[1].value,
-                        data.list[2].value,
-                        data.list[3].value);
-                    this.crudService.updateData(this.entity, data.id, editedAdminUser)
-                        .subscribe(response => {
+                let editedAdminUser: User = new User(
+                    data.list[0].value,
+                    data.list[1].value,
+                    data.list[2].value,
+                    data.list[3].value);
+                this.crudService.updateData(this.entity, data.id, editedAdminUser)
+                    .subscribe(response => {
                             this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
                             this.successEventModal();
                             this.refreshData(data.action);
-                        },
-                            error => {
-                                this.modalInfoConfig.infoString = `Пароль та логін повинні бути унікальними`;
-                                this.editCase(editData);
-                                this.successEventModal();
-                            }
-                        );
-                } else {
-                    data.list[2].value = "";
-                    data.list[3].value = "";
-                    this.modalInfoConfig.infoString = `Введені паролі не співпадають, спробуйте ще раз`;
-                    this.editCase(editData);
-                    this.successEventModal();
-                }
+                    }, error => {
+                            this.modalInfoConfig.infoString = `Пароль та логін повинні бути унікальними`;
+                            this.editCase(editData);
+                            this.successEventModal();}
+                    );
             }, () => {
                 return;
             });
