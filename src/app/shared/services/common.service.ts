@@ -20,7 +20,7 @@ export class CommonService {
         return result;
     }
 
-    cryptData(data: any) {
+    cryptData(data: any): string {
         return md5(JSON.stringify(data)).toString();
     }
 
@@ -40,8 +40,8 @@ export class CommonService {
         return result;
     }
 
-    openModalInfo(infoString: string, type: string, title: string): Promise <any> {
-        let config: ConfigModalInfo = new ConfigModalInfo(infoString, type, title);
+    openModalInfo(...arr: string[]): Promise <any> {
+        let config: ConfigModalInfo = new ConfigModalInfo(arr[0], arr[1], arr[2]);
         let modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
         modalRef.componentInstance.config = config;
         return modalRef.result;

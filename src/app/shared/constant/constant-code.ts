@@ -50,6 +50,7 @@ export const delRecord = function (entity: string, id: number) {
         .subscribe(() => {
             this.modalInfoConfig.infoString = `Видалення пройшло успішно.`;
             this.modalInfoConfig.action = "info";
+            this.modalInfoConfig.title = "Повідомлення";
             const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
             modalRef.componentInstance.config = this.modalInfoConfig;
             this.refreshData("delete");

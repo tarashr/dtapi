@@ -22,6 +22,7 @@ import {
     addTitle, searchTitle, entityTitle, selectLimitTitle
 } from "../shared/constant";
 import {ConfigTableData} from "../shared/classes/configs/config-table-data";
+import {CommonService} from "../shared/services/common.service";
 
 
 @Component({
@@ -54,7 +55,8 @@ export class FacultyComponent implements OnInit {
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private commonService: CommonService) {
     };
 
     public changeLimit = changeLimit;
@@ -113,8 +115,7 @@ export class FacultyComponent implements OnInit {
                 let newFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
                 this.crudService.insertData(this.entity, newFaculty)
                     .subscribe(() => {
-                        this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
-                        this.successEventModal();
+                        this.commonService.openModalInfo(`${data.list[0].value} успішно створено`);
                         this.refreshData(data.action);
                     });
             }, null);
@@ -132,20 +133,15 @@ export class FacultyComponent implements OnInit {
                 let editedFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
                 this.crudService.updateData(this.entity, +data.id, editedFaculty)
                     .subscribe(() => {
-                        this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
-                        this.successEventModal();
+                        this.commonService.openModalInfo(`Редагування пройшло успішно`);
                         this.refreshData(data.action);
                     });
             }, null);
     }
 
     deleteCase(data: ConfigTableData) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видалити ${data.entityColumns[1]}?`;
-        this.modalInfoConfig.action = "confirm";
-        this.modalInfoConfig.title = "Видалення";
-        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
-        modalRefDel.componentInstance.config = this.modalInfoConfig;
-        modalRefDel.result
+        let message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[1]}?`, "confirm", "Попередження!"];
+        this.commonService.openModalInfo(...message)
             .then(() => {
                 this.delRecord(this.entity, +data.entity_id);
             }, null);

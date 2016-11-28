@@ -11,7 +11,8 @@ import {
     getEndTimeUrl,
     resetSessionDataUrl,
     getTestRecordUrl,
-    countTestPassesByStudentUrl
+    countTestPassesByStudentUrl,
+    modalInfoParams
 }  from "../constant";
 import {
     TestPlayerNavButton,
@@ -36,6 +37,7 @@ export class TestPlayerService {
     private countTestPassesByStudentUrl: string = countTestPassesByStudentUrl;
     private navButtonConstClassName: string = navButtonConstClassName;
     private headersCheckSAnswer = new Headers({"content-type": "application/json"});
+    private modalParams: any = modalInfoParams;
 
     private testId: number;
     private studentId: number;
@@ -133,9 +135,7 @@ export class TestPlayerService {
                         });
                 },
                 () => {
-                    this.commonService.openModalInfo(`Виникла помилка в процесі збереження результатів. Нажміть "Завершити тест" повторно`,
-                        "info",
-                        "Результат тестування!");
+                    this.commonService.openModalInfo(...this.modalParams.mistakeDuringSaveResult);
                 });
     }
 
@@ -159,52 +159,46 @@ export class TestPlayerService {
     });
 
     countTestPassesByStudent = (testRecord: any): Observable<any> => {
-        return Observable.create(observer => {
-            this.http
-                .get(`${this.countTestPassesByStudentUrl}/${this.studentId}/${this.testId}`)
-                .map(this.successResponse)
-                .catch(this.handleError)
-                .subscribe(countTestPassed => {
-                    if (+countTestPassed.numberOfRecords >= +testRecord[0].attempts) {
-                        this.commonService.openModalInfo("Ви використали всі спроби", "info", "Повідомлення.")
-                            .then(null, () => {
-                                this.router.navigate(["/student"]);
-                            });
-                        return;
-                    }
-                    observer.next();
-                });
-        });
+        return this.http
+            .get(`${this.countTestPassesByStudentUrl}/${this.studentId}/${this.testId}`)
+            .map(this.successResponse)
+            .catch(this.handleError)
+            .do(countTestPassed => {
+                if (+countTestPassed.numberOfRecords >= +testRecord[0].attempts) {
+                    this.commonService.openModalInfo(...this.modalParams.youUsedAllAtempts)
+                        .then(null, () => {
+                            this.router.navigate(["/student"]);
+                        });
+                    this.getTestRecord.unsubscribe();
+                }
+            });
 
     };
 
     getTestDetails = () => {
         this.maxUserRate = 0;
-        return Observable.create(observer => {
-            this.subjectService.getTestDetailsByTest(this.testId)
-                .subscribe((testDetails: TestDetail[]) => {
-                    testDetails.forEach((data: TestDetail) => {
-                        this.maxUserRate += +data.tasks * +data.rate;
-                    });
-                    observer.next(testDetails);
+        return this.subjectService.getTestDetailsByTest(this.testId)
+            .map((testDetails: TestDetail[]) => {
+                testDetails.forEach((data: TestDetail) => {
+                    this.maxUserRate += +data.tasks * +data.rate;
                 });
-        });
+                return testDetails;
+            });
     };
 
     getQuestions = (testDetails: any[]) => {
         this.questions = [];
-        return Observable.create(observer => {
-            let forkJoinBatch: Observable<any>[] = testDetails.map(item => {
-                return this.subjectService.getQuestionsByLevelRand(item.test_id, item.level, item.tasks);
-            });
-            Observable.forkJoin(forkJoinBatch)
-                .subscribe((questions: TestPlayerQuestions[][]) => {
-                    this.questions = this.prepareQuestionForTest(questions, testDetails);
-                    this.randomSortArrayOfObjects(this.questions, "question_id");
-                    this.navButtons = this.createNavButtons(this.questions.length);
-                    observer.next(this.questions);
-                });
+        let forkJoinBatch: Observable<any>[] = testDetails.map(item => {
+            return this.subjectService.getQuestionsByLevelRand(item.test_id, item.level, item.tasks);
         });
+        return Observable.forkJoin(forkJoinBatch)
+            .map((questions: TestPlayerQuestions[][]) => {
+                this.questions = this.prepareQuestionForTest(questions, testDetails);
+                this.randomSortArrayOfObjects(this.questions, "question_id");
+                this.navButtons = this.createNavButtons(this.questions.length);
+                return this.questions;
+            });
+
     };
 
     prepareQuestionForTest(questions: TestPlayerQuestions[][], testDetails: any[]): TestPlayerQuestions[] {
@@ -215,12 +209,12 @@ export class TestPlayerService {
         });
         return tempArr.map((question: TestPlayerQuestions, i: number) => {
             question.chosenAnswer = {};
-            testDetails.forEach((item) => {
-                if (question.level === item.level) {
-                    question.rate = item.rate + "";
-                    return;
+            for (let i = 0; i < testDetails.length; i++) {
+                if (question.level === testDetails[i].level) {
+                    question.rate = testDetails[i].rate + "";
+                    break;
                 }
-            });
+            }
             question.type = question.type === "1" ? "radio" : "checkbox";
             question.answered = false;
             question.active = i === 0 ? true : false;
@@ -233,27 +227,22 @@ export class TestPlayerService {
             return this.getAnswersByQuestion(question.question_id);
         });
 
-        return Observable.create(observer => {
-            Observable.forkJoin(forkJoinBatch)
-                .subscribe((answers: any[][]) => {
-                    answers.forEach((item, i) => {
-                        this.randomSortArrayOfObjects(item, "answer_id");
-                        questions[i].answers = item;
-                    });
-                    observer.next();
+        return Observable.forkJoin(forkJoinBatch)
+            .do((answers: any[][]) => {
+                answers.forEach((item, i) => {
+                    this.randomSortArrayOfObjects(item, "answer_id");
+                    questions[i].answers = item;
                 });
-        });
+            });
+
     };
 
     createTimeStamp = () => {
-        return Observable.create(observer => {
-            this.getTimeStamp()
-                .subscribe(timeStamp => {
-                    timeStamp.curtime = +timeStamp.unix_timestamp + this.timeForTest;
-                    this.saveEndTime(timeStamp);
-                    observer.next();
-                });
-        });
+        return this.getTimeStamp()
+            .do(timeStamp => {
+                timeStamp.curtime = +timeStamp.unix_timestamp + this.timeForTest;
+                this.saveEndTime(timeStamp);
+            });
     };
 
     returnTestData = () => {
@@ -286,14 +275,12 @@ export class TestPlayerService {
             return this.crudService.getRecordById("question", item.question_id);
         });
 
-        return Observable.create(observer => {
-            Observable.forkJoin(forkJoinBatch)
-                .subscribe((questions: TestPlayerQuestions[][]) => {
-                    this.prepareQuestionsForContinueTest(questions, testDetails);
-                    this.recoverNavButtons();
-                    observer.next();
-                });
-        });
+        return Observable.forkJoin(forkJoinBatch)
+            .do((questions: TestPlayerQuestions[][]) => {
+                this.prepareQuestionsForContinueTest(questions, testDetails);
+                this.recoverNavButtons();
+            });
+
     };
 
     prepareQuestionsForContinueTest(questions, testDetails) {
@@ -331,13 +318,10 @@ export class TestPlayerService {
             return this.getAnswersByQuestion(item.question_id);
         });
 
-        return Observable.create(observer => {
-            Observable.forkJoin(forkJoinBatch)
-                .subscribe((answers) => {
-                    this.prepareAnswersForContinueTest(answers);
-                    observer.next();
-                });
-        });
+        return Observable.forkJoin(forkJoinBatch)
+            .do((answers) => {
+                this.prepareAnswersForContinueTest(answers);
+            });
     };
 
     prepareAnswersForContinueTest(answers) {
@@ -355,7 +339,6 @@ export class TestPlayerService {
 
     recoverTestData() {
         const dTester = JSON.parse(localStorage.getItem("dTester"));
-
         this.studentId = +sessionStorage.getItem("userId");
         this.testId = dTester.testId;
         this.questions = dTester.questions;
@@ -522,31 +505,21 @@ export class TestPlayerService {
 
     createBackup(questions: TestPlayerQuestions[]) {
         let dTester: any = {};
-
         dTester.testId = this.testId;
         dTester.userId = this.commonService.cryptData(this.studentId);
-        dTester.questions = JSON.parse(JSON.stringify(questions));
-        dTester.questions.forEach((question: TestPlayerQuestions) => {
-            delete question.question_text;
-            delete question.attachment;
-            delete question.rate;
-            delete question.test_id;
-            delete question.type;
-            delete question.level;
-            question.answers.forEach((answer: TestPlayerAnswers) => {
-                delete answer.answer_text;
-                delete answer.attachment;
+        dTester.questions = questions.map((question: TestPlayerQuestions) => {
+            let backupQuestion: any = {};
+            backupQuestion.active = question.active;
+            backupQuestion.question_id = question.question_id;
+            backupQuestion.answered = question.answered;
+            backupQuestion.chosenAnswer = question.chosenAnswer;
+            backupQuestion.answers = question.answers.map((answer: TestPlayerAnswers) => {
+                return {answer_id: answer.answer_id};
             });
+            return backupQuestion;
         });
         localStorage.setItem("dTester", JSON.stringify(dTester));
     }
-
-    private getTime = Observable.create(observer => {
-        this.getTimeStamp()
-            .subscribe(timeEndOfTest => {
-                observer.next(timeEndOfTest);
-            });
-    });
 
     getSavedTime = (timeEndOfTest) => {
         return Observable.create(observer => {
@@ -558,7 +531,7 @@ export class TestPlayerService {
     }
 
     errorSavedTime = () => {
-        this.commonService.openModalInfo(`Відновлення тесту не можливо!`, "info", "Повідомлення.")
+        this.commonService.openModalInfo(...this.modalParams.impossibleRecoverTest)
             .then(null, () => {
                 localStorage.removeItem("dTester");
                 this.router.navigate(["/student"]);
@@ -572,15 +545,15 @@ export class TestPlayerService {
         return Observable.create(observer => {
             if (+times.savedEndOfTest.curtime + this.precisionTime > endTime) {
                 const restOfTime: number = +times.savedEndOfTest.curtime - +times.timeEndOfTest.unix_timestamp;
-                observer.next({checkResult: true, startTime, endTime, restOfTime});
+                observer.next({startTime, endTime, restOfTime});
             } else {
-                observer.next({checkResult: false, startTime, endTime});
+                observer.next({startTime, endTime});
             }
         });
     }
 
     checkTimer() {
-        return this.getTime
+        return this.getTimeStamp()
             .flatMap(this.getSavedTime)
             .flatMap(this.compareTime);
     }
