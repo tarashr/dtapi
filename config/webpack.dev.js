@@ -11,8 +11,8 @@ module.exports = webpackMerge(commonConfig, {
 
     output: {
         path: helpers.root('dist'),
-        //publicPath: 'http://dtapi.local/~pupkin/DTester/dist/',
-	publicPath: 'http://ec2-35-160-47-83.us-west-2.compute.amazonaws.com/~ubuntu/DTester/dist/',
+        publicPath: 'http://dtapi.local/~pupkin/DTester/dist/',
+		//publicPath: 'http://ec2-35-160-47-83.us-west-2.compute.amazonaws.com/~ubuntu/DTester/dist/',
         filename: '[name].js',
         chunkFilename: '[id].chunk.js'
     },
