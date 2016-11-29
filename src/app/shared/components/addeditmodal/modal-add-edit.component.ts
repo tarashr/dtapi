@@ -25,6 +25,30 @@ export class ModalAddEditComponent implements OnInit {
     ngOnInit() {
         this.addEditForm = new FormGroup({
             "username": new FormControl("", Validators.required),
+            "groupName": new FormControl("", [
+                Validators.minLength(8)
+            ]),
+            "specialityCode": new FormControl("", [
+                Validators.pattern("^[0-9]*$")
+            ]),
+            "entityName": new FormControl("", [
+                Validators.pattern("^\d{4}-((0[1-9])|(1[012]))-((0[1-9]|[12]\d)|3[01])$")
+            ]),
+            "startDate": new FormControl("", [
+                Validators.pattern("^[0-9]*$")
+            ]),
+            "endDate": new FormControl("", [
+                Validators.pattern("^[0-9]*$")
+            ]),
+            "startTime": new FormControl("", [
+                Validators.pattern("^(([0|1][0-9])|([2][0-3])):([0-5][0-9])$")
+            ]),
+            "endTime": new FormControl("", [
+                Validators.pattern("^(([0|1][0-9])|([2][0-3])):([0-5][0-9])$")
+            ]),
+            "entityDescription": new FormControl("", [
+                Validators.maxLength(100)
+            ]),
             "email": new FormControl("", [
                 Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
             ]),

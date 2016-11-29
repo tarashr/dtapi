@@ -28,12 +28,14 @@ export const actionsGroupTimeTable = [
 export const configAddGroupTimeTable = {
     title: "Назначити тестування",
     list: [
-        {name: "Дата початку", value: "", title: "date", type: "date", placeholder: "РРРР-ММ-ДД"},
+        {name: "Дата початку", value: "", title: "date", type: "date", placeholder: "РРРР-ММ-ДД",
+            formControlName: "startDate", hint: "Дата повинна бути наступного формату РРРР-ММ-ДД"},
         {name: "Час початку", value: "", title: "date", type: "time", placeholder: "год:хв",
-            pattern: "^(([0|1][0-9])|([2][0-3])):([0-5][0-9])$"},
-        {name: "Дата кінця", value: "", title: "time", type: "date", placeholder: "РРРР-ММ-ДД"},
+            formControlName: "startTime", hint: "Час повинен бути наступного формату ГГ:ХХ"},
+        {name: "Дата кінця", value: "", title: "time", type: "date", placeholder: "РРРР-ММ-ДД",
+            formControlName: "endDate", hint: "Дата повинна бути наступного формату РРРР-ММ-ДД"},
         {name: "Час кінця", value: "", title: "time", type: "time", placeholder: "год:хв",
-            pattern: "^(([0|1][0-9])|([2][0-3])):([0-5][0-9])$"},
+            formControlName: "endTime", hint: "Час повинен бути наступного формату ГГ:ХХ"},
     ],
     action: "create",
     labelBtn: "Назначити",
