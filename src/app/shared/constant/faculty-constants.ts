@@ -38,8 +38,10 @@ export const actionsFaculty: ConfigTableAction[] = [
 export const configAddFaculty: ConfigModalAddEdit = <ConfigModalAddEdit>{
     title: "Створити факультет",
     list: [
-        {name: "Назва факультету", value: "", title: "name", type: "text"},
-        {name: "Опис факультету", value: "", title: "description", type: "text"},
+        {name: "Назва факультету", value: "", title: "name", type: "text", formControlName: "name",
+            hint: "Назва може складатись тільки з українських літер та пробілів"},
+        {name: "Опис факультету", value: "", title: "description", type: "text", formControlName: "entityDescription",
+            hint: "Максимальна довжина опису 100 символів"},
     ],
     action: "create",
     labelBtn: "Додати"
@@ -48,8 +50,10 @@ export const configAddFaculty: ConfigModalAddEdit = <ConfigModalAddEdit>{
 export const configEditFaculty: ConfigModalAddEdit = <ConfigModalAddEdit>{
     title: "Редагувати факультет",
     list: [
-        {name: "Назва факультету", value: "", title: "name", type: "text"},
-        {name: "Опис факультету", value: "", title: "description", type: "text"},
+        {name: "Назва факультету", value: "", title: "name", type: "text", formControlName: "name",
+            hint: "Назва може складатись тільки з українських літер та пробілів"},
+        {name: "Опис факультету", value: "", title: "description", type: "text", formControlName: "entityDescription",
+            hint: "Максимальна довжина опису 100 символів"},
     ],
     action: "edit",
     labelBtn: "Редагувати",

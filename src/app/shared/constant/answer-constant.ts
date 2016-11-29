@@ -25,7 +25,8 @@ export const actionsAnswer = [
 export const configAddAnswer = {
     title: "Додати нову відповідь",
     list: [
-        {name: "Текст відповіді", value: "", title: "answer_text", type: "text", placeholder: "Відповідь для тесту"},
+        {name: "Текст відповіді", value: "", title: "answer_text", type: "text", placeholder: "Відповідь для тесту",
+            formControlName: "answer", hint: "Текст відповіді не може перевищувати 100 символів"},
     ],
     select: [
         {selectName: "Правильна відповідь", selectItem: [], selected: ""}
@@ -38,7 +39,8 @@ export const configAddAnswer = {
 export const configEditAnswer = {
     title: "Редагувати завдання",
     list: [
-        {name: "Текст відповіді", value: "", title: "answer", type: "text"},
+        {name: "Текст відповіді", value: "", title: "answer_text", type: "text", placeholder: "Відповідь для тесту",
+            formControlName: "answer", hint: "Текст відповіді не може перевищувати 100 символів"},
     ],
     select: [
         {selectName: "Правильна відповідь", selectItem: [], selected: ""}

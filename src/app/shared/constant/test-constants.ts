@@ -41,10 +41,14 @@ export const actionsTest = [
 export const configEditTest = {
     title: "Редагувати тест",
     list: [
-        {name: "Назва тесту", value: "", title: "name", type: "text"},
-        {name: "Кількість завдань", value: "", title: "tasks", type: "text"},
-        {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text"},
-        {name: "Кількість спроб", value: "", title: "attempts", type: "text"},
+        {name: "Назва тесту", value: "", title: "name", type: "text", formControlName: "name",
+            hint: "Назва може складатись тільки з українських літер та пробілів"},
+        {name: "Кількість завдань", value: "", title: "tasks", type: "text", formControlName: "count",
+            hint: "Допускається використовувати тільки цифри"},
+        {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text", formControlName: "testTime/Rate",
+            hint: "Допускається використовувати тільки цифри"},
+        {name: "Кількість спроб", value: "", title: "attempts", type: "text", formControlName: "testAttempts",
+            hint: "Допускається використовувати тільки цифри (максимальне значення 255)"},
     ],
     action: "edit",
     labelBtn: "Редагувати",
@@ -57,10 +61,14 @@ export const configEditTest = {
 export const configAddTest = {
     title: "Додати тест",
     list: [
-        {name: "Назва тесту", value: "", title: "name", type: "text", placeholder: "Вкажіть назву тесту"},
-        {name: "Кількість завдань", value: "", title: "tasks", type: "number", placeholder: "Задайте кількість завдань"},
-        {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text", placeholder: "Встановіть час, хв"},
-        {name: "Кількість спроб", value: "", title: "attempts", type: "number", placeholder: "Встановіть кількість спроб"}
+        {name: "Назва тесту", value: "", title: "name", type: "text", placeholder: "Вкажіть назву тесту",
+            formControlName: "name", hint: "Назва може складатись тільки з українських літер та пробілів"},
+        {name: "Кількість завдань", value: "", title: "tasks", type: "text", placeholder: "Задайте кількість завдань",
+            formControlName: "count", hint: "Допускається використовувати тільки цифри"},
+        {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text", placeholder: "Встановіть час, хв",
+            formControlName: "testTime", hint: "Допускається використовувати тільки цифри"},
+        {name: "Кількість спроб", value: "", title: "attempts", type: "text", placeholder: "Встановіть кількість спроб",
+            formControlName: "testAttempts", hint: "Допускається використовувати тільки цифри (максимальне значення 255)"}
     ],
     action: "create",
     labelBtn: "Додати",
