@@ -23,7 +23,6 @@ export class ModalAddEditComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this.config);
         this.addEditForm = new FormGroup({
             "username": new FormControl("", Validators.required),
             "groupName": new FormControl("", [
