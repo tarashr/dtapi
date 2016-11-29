@@ -152,7 +152,7 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
     }
 
     finishCheckTimer = (data: any, continueTest: boolean) => {
-        if (!data.restOfTime) {
+        if (!data.checkResult) {
             this.testPlayerService.failTestByTimer(this.questions, data.startTime, data.endTime);
         } else if (continueTest) {
             this.restOfTime = data.restOfTime;
@@ -177,6 +177,10 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
     getNewTest() {
         this.testPlayerService.getNewTest()
             .subscribe((testData) => {
+                if (!testData.countAttempts) {
+                    this.testPlayerService.resetSessionData();
+                    return;
+                }
                 this.questions = testData.questions;
                 this.navButtons = testData.navButtons;
                 this.timeForTest = this.restOfTime = testData.timeForTest;

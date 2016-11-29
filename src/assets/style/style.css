@@ -1,6 +1,7 @@
 html, body {
     height: 100%;
 }
+
 .entity-container {
     max-width: 1024px;
     margin: 0px auto 0px auto;
@@ -11,16 +12,20 @@ html, body {
 .entity-list li:first-child {
     font-weight: bold;
 }
+
 .entity-list li:nth-child(2n) {
     background-color: #f9f9f9;
 }
+
 .entity-list li:not(:first-child):hover {
     background-color: #e7e7e7;
 }
+
 .entity-list li a {
     margin: 2px;
 }
-.entity-bar .container-fluid form.navbar-left select{
+
+.entity-bar .container-fluid form.navbar-left select {
     width: 200px;
     margin: 0 15px;
 }

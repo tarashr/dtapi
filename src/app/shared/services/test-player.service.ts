@@ -49,6 +49,7 @@ export class TestPlayerService {
     private maxUserRate: number = 0;
     private userRate: number = 0;
     private precisionTime: number = 5;
+    private countAttempts: boolean = true;
 
     constructor(private http: Http,
                 private router: Router,
@@ -107,30 +108,26 @@ export class TestPlayerService {
     }
 
     saveResults(saveResConfig: any) {
-        let message: string;
+        let message: string = saveResConfig.results[0].question_id === "-1" ?
+            `Тест закінчено поза межами відведеного часу. Ваша оцінка становить 0 балів.` :
+            `Кількість набраних Вами балів становить: ${this.userRate} з ${this.maxUserRate} максимально можливих`;
         const bodyResultParams: any = {
             studentId: this.studentId,
             testId: this.testId,
             startTime: saveResConfig.startTime,
             endTime: saveResConfig.endTime,
-            results: saveResConfig.results,
+            results: [],
             userRate: saveResConfig.userRate,
             questions: saveResConfig.questions,
             maxUserRate: this.maxUserRate
         };
         let bodyResult: any = this.createBodyResult(bodyResultParams);
-
-        localStorage.removeItem("dTester");
-        if (saveResConfig.results[0].question_id === "-1") {
-            message = `Тест закінчено поза межами відведеного часу. Ваша оцінка становить 0 балів.`;
-        } else {
-            message = `Кількість набраних Вами балів становить: ${this.userRate} з ${this.maxUserRate} максимально можливих`;
-        }
         this.crudService.insertData("result", bodyResult)
             .subscribe(() => {
+                    localStorage.removeItem("dTester");
+                    this.resetSessionData();
                     this.commonService.openModalInfo(message, "info", "Результат тестування!")
                         .then(null, () => {
-                            this.resetSessionData();
                             this.router.navigate(["/student"]);
                         });
                 },
@@ -169,10 +166,9 @@ export class TestPlayerService {
                         .then(null, () => {
                             this.router.navigate(["/student"]);
                         });
-                    this.getTestRecord.unsubscribe();
-                }
+                    this.countAttempts = false;
+                 }
             });
-
     };
 
     getTestDetails = () => {
@@ -239,9 +235,9 @@ export class TestPlayerService {
 
     createTimeStamp = () => {
         return this.getTimeStamp()
-            .do(timeStamp => {
+            .map(timeStamp => {
                 timeStamp.curtime = +timeStamp.unix_timestamp + this.timeForTest;
-                this.saveEndTime(timeStamp);
+                return timeStamp;
             });
     };
 
@@ -252,7 +248,8 @@ export class TestPlayerService {
             tasksCount: this.tasksCount,
             timeForTest: this.timeForTest,
             maxUserRate: this.maxUserRate,
-            timer: this.timer
+            timer: this.timer,
+            countAttempts: this.countAttempts
         };
 
         return Observable.create(observer => {
@@ -267,6 +264,7 @@ export class TestPlayerService {
             .flatMap(this.getQuestions)
             .flatMap(this.getAnswers)
             .flatMap(this.createTimeStamp)
+            .flatMap(this.saveEndTime)
             .flatMap(this.returnTestData);
     }
 
@@ -363,12 +361,11 @@ export class TestPlayerService {
             .catch(this.handleError);
     }
 
-    saveEndTime(body: any) {
-        this.http
+    saveEndTime = (body: any) => {
+        return this.http
             .post(this.saveEndTimeUrl, JSON.stringify(body), {headers: this.headersCheckSAnswer})
             .map(this.successResponse)
-            .catch(this.handleError)
-            .subscribe();
+            .catch(this.handleError);
     }
 
     getEndTime(): Observable < any > {
@@ -545,9 +542,9 @@ export class TestPlayerService {
         return Observable.create(observer => {
             if (+times.savedEndOfTest.curtime + this.precisionTime > endTime) {
                 const restOfTime: number = +times.savedEndOfTest.curtime - +times.timeEndOfTest.unix_timestamp;
-                observer.next({startTime, endTime, restOfTime});
+                observer.next({checkResult: true, startTime, endTime, restOfTime});
             } else {
-                observer.next({startTime, endTime});
+                observer.next({checkResult: false, startTime, endTime});
             }
         });
     }

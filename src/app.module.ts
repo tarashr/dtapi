@@ -48,6 +48,7 @@ import {CommonService} from "./app/shared/services/common.service";
 import {StudentTestResultsComponent} from "./app/studentpart/test-results/test-results.component";
 import {NotFoundComponent} from "./app/not-found/not-found.component";
 import {TestPlayerGuard} from "./app/shared/services/test-player.guard";
+import {LoaderComponent} from "./app/shared/components/loader/loader.component";
 
 @NgModule({
     imports: [
@@ -90,7 +91,8 @@ import {TestPlayerGuard} from "./app/shared/services/test-player.guard";
         TestBarComponent,
         NgbdAlertSelfclosing,
         StudentTestResultsComponent,
-        NotFoundComponent
+        NotFoundComponent,
+        LoaderComponent
     ],
     providers: [
         LoginService,

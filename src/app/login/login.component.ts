@@ -12,7 +12,7 @@ import {LoginService} from "../shared/services/login.service";
 export class LoginComponent {
 
     public user: User = new User();
-  
+
     constructor(private loginService: LoginService) {
     }
 
