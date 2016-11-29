@@ -5,6 +5,7 @@ import {TestPlayerQuestions, TestPlayerNavButton} from "../shared/classes";
 import {CommonService} from "../shared/services/common.service";
 import {ComponentCanDeactivate} from "../shared/services/test-player.guard";
 import {Observable} from "rxjs";
+import {modalInfoParams} from "../shared/constant";
 
 @Component({
     templateUrl: "test-player.component.html",
@@ -31,6 +32,7 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
     private maxUserRate: number = 0;
     private informedUserAboutAllQuestionAnswered: boolean = false;
     private finishedTest: boolean = true;
+    private modalParams: any = modalInfoParams;
 
     constructor(private testPlayerService: TestPlayerService,
                 private route: ActivatedRoute,
@@ -54,8 +56,7 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
     canDeactivate(): Observable<boolean> {
         return Observable.create(observer => {
             if (!this.finishedTest) {
-                this.commonService.openModalInfo("Ви дійсно хочете припинити тестування (ваші результати можуть бути втраченими)?",
-                    "confirm", "Попередження!")
+                this.commonService.openModalInfo(...this.modalParams.canDeactivateMessage)
                     .then(() => {
                         observer.next(true);
                     }, () => {
@@ -92,16 +93,14 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
         this.createQuestionsProgressbarData();
         this.questions[this.activeQuestion].answered = true;
         const allAnswered = this.allAnswered();
-        if (allAnswered && !this.informedUserAboutAllQuestionAnswered) {
+        if (!allAnswered) {
+            const activeQuestion = this.testPlayerService.findUnAsweredQuestion(this.activeQuestion, this.navButtons);
+            this.changeActiveQuestion(activeQuestion);
+        } else if (!this.informedUserAboutAllQuestionAnswered) {
             this.disableSkip = true;
             this.informedUserAboutAllQuestionAnswered = true;
             this.testPlayerService.createBackup(this.questions);
-            this.commonService.openModalInfo(`Ви відповіли на всі запитання. 
-            Щоб закінчити тестування натисніть кнопку "Завершити тест"`, "info", "Повідомлення.");
-        } else if (allAnswered) {
-            this.activeQuestion === this.questions.length - 1 ?
-                this.changeActiveQuestion(0) :
-                this.changeActiveQuestion(this.activeQuestion + 1);
+            this.commonService.openModalInfo(...this.modalParams.youAsweredAllQuestion);
         } else {
             const activeQuestion = this.testPlayerService.findUnAsweredQuestion(this.activeQuestion, this.navButtons);
             this.changeActiveQuestion(activeQuestion);
@@ -145,7 +144,7 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
     }
 
     finishTest() {
-        this.commonService.openModalInfo("Ви дійсно хочете завершити тестування?", "confirm", "Підтвердження.")
+        this.commonService.openModalInfo(...this.modalParams.doYouWantFinishTest)
             .then(() => {
                 this.finishedTest = true;
                 this.checkTimer(false);
@@ -153,7 +152,7 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
     }
 
     finishCheckTimer = (data: any, continueTest: boolean) => {
-        if (!data.checkResult) {
+        if (!data.restOfTime) {
             this.testPlayerService.failTestByTimer(this.questions, data.startTime, data.endTime);
         } else if (continueTest) {
             this.restOfTime = data.restOfTime;
