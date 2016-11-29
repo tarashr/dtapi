@@ -73,18 +73,10 @@ export class ModalAddEditComponent implements OnInit {
         });
     }
 
-    comparePasswords() {
-        if (this.addEditForm.controls["password"].value === this.addEditForm.controls["cpassword"].value) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     activateForm() {
         if (!this.addEditForm.controls["password"]) {
             this.activeModal.close(this.config);
-        } else if (this.comparePasswords()) {
+        } else if (this.addEditForm.controls["password"].value === this.addEditForm.controls["cpassword"].value) {
             this.activeModal.close(this.config);
         } else {
             this.isSamePasswords = false;
