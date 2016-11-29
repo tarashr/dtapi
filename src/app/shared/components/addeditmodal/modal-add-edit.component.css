@@ -10,6 +10,10 @@
     min-width: 161px;
 }
 
+.modalInput {
+    position: relative;
+}
+
 .open-modal-btn {
     display: inline-block;
 }
@@ -42,4 +46,55 @@
 
 .hidden {
     display: none;
+}
+
+input.ng-invalid.ng-dirty:not(:focus) ,
+select.ng-invalid.ng-dirty {
+    border: 1px solid red;
+}
+
+.hint {
+    position: absolute;
+    bottom: 40px;
+    left: 130px;
+    min-width: 131px;
+    z-index: 10;
+    padding: 5px;
+    border: 1px solid #87854e;
+    border-radius: 5px;
+    background: #f7f7f7;
+}
+
+.hint::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50px;
+    margin-left: -5px;
+    border-width: 7px;
+    border-style: solid;
+    border-color: #87854e transparent transparent transparent;
+}
+
+.passwords-hint {
+    position: absolute;
+    top: 40px;
+    left: 130px;
+    min-width: 131px;
+    z-index: 10;
+    padding: 5px;
+    border: 1px solid #87854e;
+    border-radius: 5px;
+    background: #f7f7f7;
+}
+
+.passwords-hint::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50px;
+    margin-left: -5px;
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent transparent #87854e transparent;
 }

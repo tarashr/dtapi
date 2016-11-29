@@ -139,6 +139,7 @@ export class GroupTestResultComponent implements OnInit {
     }
 
     private createTableConfig = (data: any) => {
+        console.log(data);
         let tempArr: any[] = [];
         let numberOfOrder: number;
         if (data.length) {
