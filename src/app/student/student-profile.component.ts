@@ -74,11 +74,26 @@ export class StudentProfileComponent implements OnInit {
         }
     }
 
-    tooltip() {
-    this.validationTooltipConfig.placement = "top";
-    this.validationTooltipConfig.container = "";
-    this.validationTooltipConfig.triggers = "click";
-}
+    /*tooltip() {
+        console.log("tooltip");
+        // this.validationTooltipConfig.placement = "right";
+        // this.validationTooltipModule.
+        /*if (this.surname.nativeElement.validity) {
+            this.surname.nativeElement.open();
+        } else {this.surname.nativeElement.close();}
+
+    if (this.surname.nativeElement.errors.pattern) {
+        this.validationTooltipConfig.placement = "top";
+        this.myname = "2222";
+        console.log("tooltip2");
+    };
+        console.log("tooltip3");
+    // this.name = "World";
+    // this.validationTooltipConfig.triggers = "focus";
+    // if (this.surname.nativeElement.pattern.error()) {this.surname.nativeElement.ngbTooltip.should("errors"); }
+    // this.validationTooltipModule;
+
+} */
 
 
     goBack(): void {
@@ -144,6 +159,7 @@ export class StudentProfileComponent implements OnInit {
     }
 
     studGroupId(data: number) {
+        console.log("groupId", data);
         this.student.group_id = data;
     }
 
