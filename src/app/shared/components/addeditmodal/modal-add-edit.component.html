@@ -17,7 +17,7 @@
                 </select>
             </div>
         </div>
-        <div [formGroup]="addEditForm" novalidate class="input-group input-group-add-edit" *ngFor="let item of config.list">
+        <div [formGroup]="addEditForm" class="input-group input-group-add-edit" *ngFor="let item of config.list">
             <span *ngIf="item.name !=='Дата початку' && item.name !== 'Дата кінця'" class="input-group-addon modal-span">
                 {{item.name}}:
             </span>
@@ -75,7 +75,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" (click)="activateForm()" class="btn btn-secondary">
+        <button type="button" (click)="activateForm()" class="btn btn-secondary"
+                [disabled]="addEditForm.invalid">
             {{config.labelBtn}}
         </button>
         <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Відмінити</button>

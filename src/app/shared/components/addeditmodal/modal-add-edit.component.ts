@@ -24,15 +24,17 @@ export class ModalAddEditComponent implements OnInit {
 
     ngOnInit() {
         this.addEditForm = new FormGroup({
-            "username": new FormControl("", Validators.required),
+            "username": new FormControl("", [
+                Validators.minLength(1)
+            ]),
             "groupName": new FormControl("", [
                 Validators.minLength(1)
             ]),
             "specialityCode": new FormControl("", [
-                Validators.pattern("^[0-9]*$")
+                Validators.pattern("^[0-9.]*$")
             ]),
             "name": new FormControl("", [
-                Validators.pattern("^[А-Яа-я ]+$")
+                Validators.pattern("^[А-Яа-яёЁЇїІіЄєҐґ ]+$")
             ]),
             "count": new FormControl("", [
                 Validators.pattern("^[0-9]*$")
@@ -60,7 +62,7 @@ export class ModalAddEditComponent implements OnInit {
                 Validators.maxLength(100)
             ]),
             "email": new FormControl("", [
-                Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                Validators.pattern("^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")
             ]),
             "password": new FormControl("", [
                 Validators.minLength(8)

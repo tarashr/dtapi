@@ -324,7 +324,7 @@ export class GroupComponent implements OnInit, OnDestroy {
             .then((data: any) => {
                 this.substituteSpecialitiesNamesOnId(data);
                 this.substituteFacultiesNamesOnId(data);
-                let newGroup: Group = new Group(data.list[0].value,
+                const newGroup: Group = new Group(data.list[0].value,
                                                 data.select[0].selected,
                                                 data.select[1].selected);
                 this.crudService.insertData(this.entity, newGroup)
