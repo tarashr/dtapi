@@ -23,22 +23,21 @@ export class ModalAddEditComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this.config);
         this.addEditForm = new FormGroup({
             "username": new FormControl("", Validators.required),
             "groupName": new FormControl("", [
-                Validators.minLength(8)
+                Validators.minLength(1)
             ]),
             "specialityCode": new FormControl("", [
                 Validators.pattern("^[0-9]*$")
             ]),
             "entityName": new FormControl("", [
-                Validators.pattern("^\d{4}-((0[1-9])|(1[012]))-((0[1-9]|[12]\d)|3[01])$")
+                Validators.pattern("^[А-Яа-я ]+$")
             ]),
-            "startDate": new FormControl("", [
-                Validators.pattern("^[0-9]*$")
+            "startDate": new FormControl({}, [
             ]),
-            "endDate": new FormControl("", [
-                Validators.pattern("^[0-9]*$")
+            "endDate": new FormControl({}, [
             ]),
             "startTime": new FormControl("", [
                 Validators.pattern("^(([0|1][0-9])|([2][0-3])):([0-5][0-9])$")
