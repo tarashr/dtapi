@@ -11,26 +11,30 @@
                      id="output" #newFotoSrc/>
                 <input type="file" name="file" (change)="changeFile($event)" #inputFile [disabled]="statusView" ngModel>
             </div>
+            <div *ngIf="!statusView">
             <div class="student-data1 col-xs-12 col-sm-4 col-md-4">
                 <div><label for="surname">Прізвище:</label>
-                    <div *ngIf="!statusView"><input id="surname" name="surname" class="input-student-data"
+                    <div><input id="surname" name="surname" class="input-student-data"
                                                    [(ngModel)]="student.student_surname" minlength="2"
                                                    maxlength="20"
                                                    required #surname="ngModel" pattern="([A-Za-z\-]*|[ЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ\-]*)"
                                                    ngModel>
-                        <div class="alert alert-danger"
-                             *ngIf="surname.errors?.pattern && (surname.dirty || surname.touched)">Дозволено літери укр. або
+                        <div ngbTooltip="Дозволено літери укр. або
+                            анг. алфавітів"
+                             *ngIf="surname.errors?.pattern && (surname.dirty || surname.touched)">Дозволено літери укр.
+                            або
                             анг. алфавітів
                         </div>
-                        <div class="alert alert-danger"
+                        <!-- <div class="alert alert-danger"
                              *ngIf="surname.errors?.minlength && (surname.dirty || surname.touched)">Мінімальна довжина 2
                             символи
-                        </div>
+                        </div> -->
                     </div>
-                    <div *ngIf="statusView" class="data-field" disabled="true">
+
+                    <!--<div *ngIf="statusView" class="data-field" disabled="true">
                         {{student?.student_surname}}
                     </div>
-                    <!-- <input id="surname2" name="surname"
+                     <input id="surname2" name="surname"
                            class="input-student-data"
                            [disabled]="statusView"
                            [(ngModel)]="student.student_surname"
@@ -50,7 +54,7 @@
                     </div> -->
                 </div>
                 <div><label for="name">Ім'я:</label>
-                    <div *ngIf="!statusView"><input id="name" class="input-student-data" name="name"
+                    <div><input id="name" class="input-student-data" name="name"
                                                     [disabled]="statusView"
                                                     [(ngModel)]="student.student_name" #name="ngModel"
                                                     minlength="2" maxlength="20"
@@ -61,32 +65,32 @@
                     </div>
                     <div class="alert alert-danger" *ngIf="name.errors?.minlength && (name.dirty || name.touched)">
                         Мінімальна довжина 2 символи
-                    </div> -->
+                    </div>
 
                     <div *ngIf="statusView" class="data-field" disabled="true">
                         {{student?.student_name}}
-                    </div>
+                    </div> -->
                 </div>
                 <div><label for="fname">По-батькові:</label>
-                    <div *ngIf="!statusView">
+                    <div>
                         <input id="fname" class="input-student-data" name="fname"
                                [disabled]="statusView"
                                [(ngModel)]="student.student_fname" #fname="ngModel"
                                minlength="2" maxlength="20"
                                pattern="([a-zA-z-]*|[ЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ-]*)"
                                required></div>
-                    <div *ngIf="statusView" class="data-field" disabled="true">
+                    <!-- <div *ngIf="statusView" class="data-field" disabled="true">
                         {{student?.student_fname}}
                     </div>
 
-                    <!-- <div class="alert alert-danger" *ngIf="fname.errors?.pattern && (fname.dirty || fname.touched)">
+                    <div class="alert alert-danger" *ngIf="fname.errors?.pattern && (fname.dirty || fname.touched)">
                         Дозволено літери укр. або анг. алфавітів
                     </div>
                     <div class="alert alert-danger" *ngIf="fname.errors?.minlength && (fname.dirty || fname.touched)">
                         Мінімальна довжина 2 символи
                     </div> -->
                 </div>
-                <div><label for="faculty">Факультет:</label><div *ngIf="!statusView">
+                <div><label for="faculty">Факультет:</label><div>
                     <select *ngIf="facultys" id="faculty" class="input-student-data select-group" name="faculty"
                             required [disabled]="statusView" [(ngModel)]="student.faculty_id" #faculty
                             (change)="getGroupByFaculty(faculty.value)" ngModel>
@@ -95,12 +99,13 @@
                             {{item.faculty_name}}
                         </option>
                     </select></div>
+                    <!--
                     <div *ngIf="statusView" class="data-field" disabled="true">
                         {{student?.faculty_name}}
-                    </div>
+                    </div>-->
                 </div>
 
-                <div><label for="group">Група:</label><div *ngIf="!statusView">
+                <div><label for="group">Група:</label><div>
                         <select id="group" class="input-student-data select-group" name="group"
                                 [(ngModel)]="student.group_id" #group (change)="studGroupId(group.value)" ngModel
                                 required [disabled]="statusView">
@@ -109,21 +114,21 @@
                                 {{item.group_name}}
                             </option>
                         </select></div>
-                    <div *ngIf="statusView" class="data-field" disabled="true">
+                    <!--<div *ngIf="statusView" class="data-field" disabled="true">
                         {{student?.group_name}}
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="student-data2 col-xs-12 col-sm-5 col-md-5">
 
-                <div><label for="userLogin">Логін:</label><div *ngIf="!statusView"><input id="userLogin" class="input-student-data"
+                <div><label for="userLogin">Логін:</label><div><input id="userLogin" class="input-student-data"
                                                     name="userLogin"
                                                     [(ngModel)]="student.username" [disabled]="statusView"
                                                     #userLogin="ngModel" ngModel minlength="4" maxlength="20"
                                                     pattern="[A-Za-z0-9_-]*"
                                                     required></div>
-                    <div *ngIf="statusView" class="data-field" disabled="true">
-                        {{student?.username}}</div>
+                    <!--<div *ngIf="statusView" class="data-field" disabled="true">
+                        {{student?.username}}</div>-->
 
                 </div>
                 <!-- <div class="alert alert-danger" *ngIf="userLogin.errors?.pattern && (userLogin.dirty || userLogin.touched)">
@@ -133,7 +138,7 @@
                     Мінімальна довжина 2 символи
                 </div> -->
 
-                <div><label for="userPassword">Пароль:</label><div *ngIf="!statusView"><input id="userPassword"
+                <div><label for="userPassword">Пароль:</label><div><input id="userPassword"
                                                     class="input-student-data password-eye-input"
                                                     name="userPassword"
                                                     [type]="passwordStatusText"
@@ -144,13 +149,6 @@
                                                     [disabled]="statusView"
                                                     required><span class="glyphicon glyphicon-eye-open password-eye"
                                                                    (click)="showPassword()"></span></div>
-                    <div *ngIf="statusView" class="data-field field-input" disabled="true">
-                        <input [type]="passwordStatusText"
-                               [value]="student?.plain_password"><span
-                            class="glyphicon glyphicon-eye-open password-eye"
-                            (click)="showPassword()"></span>
-                    </div>
-
                     <!-- <div class="alert alert-danger"
                          *ngIf="userPassword.errors?.pattern && (userPassword.dirty || userPassword.touched)">Дозволено літери укр.
                         і анг. алфавітів, цифри
@@ -162,7 +160,7 @@
                 </div>
 
                 <div><label for="gradebook_id">№ залікової книжки:</label>
-                    <div *ngIf="!statusView"><input id="gradebook_id"
+                    <div><input id="gradebook_id"
                                                     class="input-student-data"
                                                     name="gradebook"
                                                     [(ngModel)]="student.gradebook_id"
@@ -170,9 +168,9 @@
                                                     minlength="5" maxlength="20"
                                                     pattern="([a-zA-Z0-9_-]*|[ЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9_-]*)"
                                                     [disabled]="statusView" required></div>
-                    <div *ngIf="statusView" class="data-field" disabled="true">
+                    <!--<div *ngIf="statusView" class="data-field" disabled="true">
                         {{student?.gradebook_id}}
-                    </div>
+                    </div> -->
                     <!--
                     <div class="alert alert-danger"
                          *ngIf="gradebook.errors?.pattern && (gradebook.dirty || gradebook.touched)">Дозволено літери укр. і
@@ -184,7 +182,7 @@
                     </div>-->
                 </div>
                 <div><label for="email" required>Електронна адреса:</label>
-                    <div *ngIf="!statusView"><input id="email" class="input-student-data"
+                    <div><input id="email" class="input-student-data"
                                                     name="email" minlength="6"
                                                     maxlength="20"
                                                     [(ngModel)]="student.email"
@@ -192,10 +190,10 @@
                                                     pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
                                                     [disabled]="statusView" required></div>
 
-                    <div *ngIf="statusView" class="data-field" disabled="true">
+                    <!--<div *ngIf="statusView" class="data-field" disabled="true">
                         {{student?.email}}
                     </div>
-                    <!--
+
                     <div class="alert alert-danger"
                          *ngIf="email.errors?.pattern && (email.dirty || email.touched)">Формат ел.почти, тільки анг. літери
                     </div>
@@ -205,11 +203,65 @@
                     </div>-->
                 </div>
             </div>
+            </div>
+
+            <div *ngIf="statusView">
+                <div class="student-data1 col-xs-12 col-sm-4 col-md-4">
+                    <div><label>Прізвище:</label>
+                        <div class="data-field" disabled="true">
+                            {{student?.student_surname}}
+                        </div>
+                    </div>
+                    <div><label>Ім'я:</label>
+                        <div class="data-field" disabled="true">
+                            {{student?.student_name}}
+                        </div>
+                    </div>
+
+                    <div><label>По-батькові:</label>
+                        <div class="data-field" disabled="true">
+                            {{student?.student_fname}}
+                        </div>
+                    </div>
+
+                    <div><label>Факультет:</label>
+                        <div class="data-field" disabled="true">
+                            {{student?.faculty_name}}
+                        </div>
+                    </div>
+
+                    <div><label>Група:</label>
+                        <div class="data-field" disabled="true">
+                            {{student?.group_name}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="student-data2 col-xs-12 col-sm-5 col-md-5">
+
+                    <div><label>Логін:</label>
+                        <div class="data-field" disabled="true">
+                            {{student?.username}}</div>
+                    </div>
+
+                    <div><label>Пароль:</label><div class="data-field password-field" disabled="true"></div>
+                     </div>
+
+                    <div><label>№ залікової книжки:</label>
+                        <div class="data-field" disabled="true">
+                            {{student?.gradebook_id}}
+                        </div>
+                    </div>
+
+                    <div><label>Електронна адреса:</label>
+                        <div class="data-field" disabled="true">
+                            {{student?.email}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="button-create-refresh">
-                <button *ngIf="!action" class="btn btn-default" type="submit" (click)="myStatusView()"
-                        role="button">
-                    MyButton
-                </button>
                 <button *ngIf="!action" class="btn btn-default" type="submit" (click)="editSaveStudentProfile()"
                         role="button">
                     {{editSaveButtonName}}
@@ -227,26 +279,25 @@
         </div>
     </form>
 
-    <!-- <div *ngIf="!action" class="student-profile-title">
+    <div *ngIf="!action" class="student-profile-title">
         <ngbd-tabset-tests
                 [groupName]="student.group_name"
                 [groupId]="student.group_id">
         </ngbd-tabset-tests>
-    </div> -->
+    </div>
+
 </div>
-
-
 <div>
     <h3>Form value:</h3>
     {{myform.value | json}}
-    <h3>Student form.valid:</h3>
+    <!--<h3>Student form.valid:</h3>
     {{myform.valid | json}}
     <h3>Student JSON:</h3>
     {{student | json}}
     <h3>Group debug:</h3>
     group.value: {{group?.value | json}},{{groupError | json}}, {{group?.value > 0 }}
     <h3>student.photo:</h3>
-    {{student.photo | json}}
+    {{student.photo | json}}-->
 </div>
 
 <template ngbModalContainer></template>

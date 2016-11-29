@@ -7,7 +7,7 @@ import {Student} from "../shared/classes/student";
 import {CRUDService} from "../shared/services/crud.service";
 import {EntityManagerBody} from "../shared/classes/entity-manager-body";
 import {Observable, Subscription} from "rxjs/Rx";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbTooltipModule, NgbTooltipConfig} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule} from "@angular/forms";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
 // import {ImageCropperComponent, CropperSettings} from "ng2-img-cropper";
@@ -53,7 +53,9 @@ export class StudentProfileComponent implements OnInit {
     constructor(private route: ActivatedRoute,
                 private _commonService: CRUDService,
                 private location: Location,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private validationTooltipConfig: NgbTooltipConfig,
+                private validationTooltipModule: NgbTooltipModule) {
     }
 
     ngOnInit() {
@@ -71,6 +73,13 @@ export class StudentProfileComponent implements OnInit {
             this.newStudent();
         }
     }
+
+    tooltip() {
+    this.validationTooltipConfig.placement = "top";
+    this.validationTooltipConfig.container = "";
+    this.validationTooltipConfig.triggers = "click";
+}
+
 
     goBack(): void {
         this.location.back();
@@ -200,6 +209,7 @@ export class StudentProfileComponent implements OnInit {
         dataForUpdateStudent.group_id = this.student.group_id;
         dataForUpdateStudent.plain_password = this.student.plain_password;
         dataForUpdateStudent.photo = this.newFotoSrc.nativeElement.src;
+        console.log("error when update1");
         this._commonService.updateData(this.entity, this.student.user_id, dataForUpdateStudent)
             .subscribe(data => {
                     if (data.response === "ok") {
@@ -207,6 +217,7 @@ export class StudentProfileComponent implements OnInit {
                         this.successEventModal();
                     }
                     else {
+                        console.log("error when update2");
                         this.modalInfoConfig.infoString = `Помилка обновлення. Перевірте дані`;
                         this.successEventModal();
                     }
