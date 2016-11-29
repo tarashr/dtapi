@@ -32,8 +32,17 @@ export class ModalAddEditComponent implements OnInit {
             "specialityCode": new FormControl("", [
                 Validators.pattern("^[0-9]*$")
             ]),
-            "entityName": new FormControl("", [
+            "name": new FormControl("", [
                 Validators.pattern("^[А-Яа-я ]+$")
+            ]),
+            "count": new FormControl("", [
+                Validators.pattern("^[0-9]*$")
+            ]),
+            "testTime/Rate": new FormControl("", [
+                Validators.pattern("^[0-9]*$")
+            ]),
+            "testAttempts": new FormControl("", [
+                Validators.pattern("^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$")
             ]),
             "startDate": new FormControl({}, [
             ]),
@@ -46,6 +55,9 @@ export class ModalAddEditComponent implements OnInit {
                 Validators.pattern("^(([0|1][0-9])|([2][0-3])):([0-5][0-9])$")
             ]),
             "entityDescription": new FormControl("", [
+                Validators.maxLength(100)
+            ]),
+            "answer": new FormControl("", [
                 Validators.maxLength(100)
             ]),
             "email": new FormControl("", [

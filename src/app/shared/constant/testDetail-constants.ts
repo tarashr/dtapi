@@ -26,8 +26,10 @@ export const actionsTestDetail = [
 export const configAddTestDetail = {
     title: "Додати новий параметр тесту",
     list: [
-        {name: "Кількість завдань", value: "", title: "tasks", type: "number", placeholder: "Вкажіть кількість завдань"},
-        {name: "Кількість балів", value: "", title: "rate", type: "number", placeholder: "Вкажіть кількість балів"}
+        {name: "Кількість завдань", value: "", title: "tasks", type: "text", placeholder: "Вкажіть кількість завдань",
+            formControlName: "count", hint: "Допускається використовувати тільки цифри"},
+        {name: "Кількість балів", value: "", title: "rate", type: "text", placeholder: "Вкажіть кількість балів",
+            formControlName: "testTime/Rate", hint: "Допускається використовувати тільки цифри"}
     ],
     action: "create",
     labelBtn: "Додати",
@@ -39,8 +41,10 @@ export const configAddTestDetail = {
 export const configEditTestDetail = {
     title: "Редагувати параметр тесту",
     list: [
-        {name: "Кількість завдань", value: "", title: "tasks", type: "number"},
-        {name: "Кількість балів", value: "", title: "rate", type: "number"}
+        {name: "Кількість завдань", value: "", title: "tasks", type: "text", placeholder: "Вкажіть кількість завдань",
+            formControlName: "count", hint: "Допускається використовувати тільки цифри"},
+        {name: "Кількість балів", value: "", title: "rate", type: "text", placeholder: "Вкажіть кількість балів",
+            formControlName: "testTime/Rate", hint: "Допускається використовувати тільки цифри"}
     ],
     action: "edit",
     labelBtn: "Редагувати",

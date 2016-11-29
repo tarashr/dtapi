@@ -33,7 +33,7 @@ export const configAddSpeciality = {
     list: [
         {name: "Код спеціальності", value: "", title: "code", type: "specialityCode", formControlName: "specialityCode",
             hint: "Код повинен складатись тільки з цифер"},
-        {name: "Назва спеціальності", value: "", title: "specialityName", type: "text", formControlName: "entityName",
+        {name: "Назва спеціальності", value: "", title: "specialityName", type: "text", formControlName: "name",
             hint: "Назва може складатись тільки з українських літер та пробілів"}
     ],
     action: "create",
@@ -45,7 +45,7 @@ export const configEditSpeciality = {
     list: [
         {name: "Код спеціальності", value: "", title: "code", type: "specialityCode", formControlName: "specialityCode",
             hint: "Код повинен складатись тільки з цифер"},
-        {name: "Назва спеціальності", value: "", title: "specialityName", type: "text", formControlName: "entityName",
+        {name: "Назва спеціальності", value: "", title: "specialityName", type: "text", formControlName: "name",
             hint: "Назва може складатись тільки з українських літер та пробілів"}
     ],
     action: "edit",
