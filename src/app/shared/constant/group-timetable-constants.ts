@@ -28,10 +28,14 @@ export const actionsGroupTimeTable = [
 export const configAddGroupTimeTable = {
     title: "Назначити тестування",
     list: [
-        {name: "Дата початку", value: "", title: "date", type: "date", placeholder: "РРРР-ММ-ДД"},
-        {name: "Час початку", value: "", title: "date", type: "time", placeholder: "год:хв"},
-        {name: "Дата кінця", value: "", title: "time", type: "date", placeholder: "РРРР-ММ-ДД"},
-        {name: "Час кінця", value: "", title: "time", type: "time", placeholder: "год:хв"},
+        {name: "Дата початку", value: "", title: "date", type: "date", placeholder: "РРРР-ММ-ДД",
+            formControlName: "startDate", hint: "Дата повинна бути наступного формату РРРР-ММ-ДД"},
+        {name: "Час початку", value: "", title: "date", type: "time", placeholder: "год:хв",
+            formControlName: "startTime", hint: "Час повинен бути наступного формату ГГ:ХХ (наприклад 23:59)"},
+        {name: "Дата кінця", value: "", title: "time", type: "date", placeholder: "РРРР-ММ-ДД",
+            formControlName: "endDate", hint: "Дата повинна бути наступного формату РРРР-ММ-ДД"},
+        {name: "Час кінця", value: "", title: "time", type: "time", placeholder: "год:хв",
+            formControlName: "endTime", hint: "Час повинен бути наступного формату ГГ:ХХ (наприклад 23:59)"},
     ],
     action: "create",
     labelBtn: "Назначити",
@@ -43,10 +47,14 @@ export const configAddGroupTimeTable = {
 export const configEditGroupTimeTable = {
     title: "Редагувати тестування",
     list: [
-        {name: "Дата початку", value: {}, title: "date", type: "date", placeholder: "РРРР-ММ-ДД"},
-        {name: "Час початку", value: "", title: "time", type: "time", placeholder: "год:хв"},
-        {name: "Дата кінця", value: {}, title: "date", type: "date", placeholder: "РРРР-ММ-ДД"},
-        {name: "Час кінця", value: "", title: "time", type: "time", placeholder: "год:хв"}
+        {name: "Дата початку", value: {}, title: "date", type: "date", placeholder: "РРРР-ММ-ДД",
+            formControlName: "startDate", hint: "Дата повинна бути наступного формату РРРР-ММ-ДД"},
+        {name: "Час початку", value: "", title: "date", type: "time", placeholder: "год:хв",
+            formControlName: "startTime", hint: "Час повинен бути наступного формату ГГ:ХХ (наприклад 23:59)"},
+        {name: "Дата кінця", value: {}, title: "time", type: "date", placeholder: "РРРР-ММ-ДД",
+            formControlName: "endDate", hint: "Дата повинна бути наступного формату РРРР-ММ-ДД"},
+        {name: "Час кінця", value: "", title: "time", type: "time", placeholder: "год:хв",
+            formControlName: "endTime", hint: "Час повинен бути наступного формату ГГ:ХХ (наприклад 23:59)"},
     ],
     action: "edit",
     labelBtn: "Редагувати",

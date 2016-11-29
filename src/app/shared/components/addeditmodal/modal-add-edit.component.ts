@@ -1,22 +1,92 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {successEventModal, modalInfoConfig} from "../../../shared/constant";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {FormGroup, FormControl, Validators} from "@angular/forms";
 
 @Component({
     selector: "modal-add-edit",
     templateUrl: "modal-add-edit.component.html",
     styleUrls: ["modal-add-edit.component.css"]
 })
-export class ModalAddEditComponent {
+export class ModalAddEditComponent implements OnInit {
 
     @Input() config: any;
     public maxSizeOfPictures: number = 1000000;
     public modalInfoConfig: any = modalInfoConfig;
     public successEventModal: any = successEventModal;
+    public addEditForm: FormGroup;
+    public isSamePasswords: boolean = true;
 
     constructor(private activeModal: NgbActiveModal,
                 private modalService: NgbModal) {
+    }
+
+    ngOnInit() {
+        this.addEditForm = new FormGroup({
+            "username": new FormControl("", Validators.required),
+            "groupName": new FormControl("", [
+                Validators.minLength(1)
+            ]),
+            "specialityCode": new FormControl("", [
+                Validators.pattern("^[0-9]*$")
+            ]),
+            "name": new FormControl("", [
+                Validators.pattern("^[А-Яа-я ]+$")
+            ]),
+            "count": new FormControl("", [
+                Validators.pattern("^[0-9]*$")
+            ]),
+            "testTime/Rate": new FormControl("", [
+                Validators.pattern("^[0-9]*$")
+            ]),
+            "testAttempts": new FormControl("", [
+                Validators.pattern("^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$")
+            ]),
+            "startDate": new FormControl({}, [
+            ]),
+            "endDate": new FormControl({}, [
+            ]),
+            "startTime": new FormControl("", [
+                Validators.pattern("^(([0|1][0-9])|([2][0-3])):([0-5][0-9])$")
+            ]),
+            "endTime": new FormControl("", [
+                Validators.pattern("^(([0|1][0-9])|([2][0-3])):([0-5][0-9])$")
+            ]),
+            "entityDescription": new FormControl("", [
+                Validators.maxLength(100)
+            ]),
+            "answer": new FormControl("", [
+                Validators.maxLength(100)
+            ]),
+            "email": new FormControl("", [
+                Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+            ]),
+            "password": new FormControl("", [
+                Validators.minLength(8)
+            ]),
+            "cpassword": new FormControl("", [
+                Validators.minLength(8)
+            ]),
+        });
+    }
+
+    comparePasswords() {
+        if (this.addEditForm.controls["password"].value === this.addEditForm.controls["cpassword"].value) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    activateForm() {
+        if (!this.addEditForm.controls["password"]) {
+            this.activeModal.close(this.config);
+        } else if (this.comparePasswords()) {
+            this.activeModal.close(this.config);
+        } else {
+            this.isSamePasswords = false;
+        }
     }
 
     openFile($event) {
@@ -46,5 +116,5 @@ export class ModalAddEditComponent {
     isDisabled(date: NgbDateStruct, current: {month: number}) {
         return date.month !== current.month;
     }
-    // the end
+    // the end of datapicker's code
 }
