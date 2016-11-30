@@ -122,19 +122,22 @@ export class GroupComponent implements OnInit, OnDestroy {
             this.isSelectedBy = true;
             this.entityTitle = `Групи факультету: ${this.facultyName}`;
             this.getGroupsByFaculty(this.facultyId);
-        }
-        else {
+        } else {
             this.getCountRecords();
         }
     }
 
     getRecordsRange() {
-        this.noRecords = false;
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                 data => {
-                    this.entityDataWithNames =  data;
-                    this.getFacultyName();
+                    if (data.response === "no records") {
+                        this.noRecords = true;
+                    } else {
+                        this.noRecords = false;
+                        this.entityDataWithNames = data;
+                        this.getFacultyName();
+                    }
                 },
                 error => console.log("error: ", error));
     };
@@ -142,11 +145,10 @@ export class GroupComponent implements OnInit, OnDestroy {
     getGroupsByFaculty(data: any) {
         if (data === "default") {
             this.sortHide = false;
-            this.noRecords = false;
             this.getRecordsRange();
         } else {
-            this.sortHide = true;
             this.noRecords = false;
+            this.sortHide = true;
             this.crudService.getGroupsByFaculty(data)
                 .subscribe(
                     data => {
@@ -164,7 +166,6 @@ export class GroupComponent implements OnInit, OnDestroy {
     getGroupsBySpeciality(data: any) {
         if (data === "default") {
             this.sortHide = false;
-            this.noRecords = false;
             this.getRecordsRange();
         } else {
             this.sortHide = true;
@@ -243,11 +244,11 @@ export class GroupComponent implements OnInit, OnDestroy {
     };
 
     private createTableConfig = (data: any) => {
-        let tempArr: any[] = [];
+        const tempArr: any[] = [];
         let numberOfOrder: number;
         data.forEach((item, i) => {
             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-            let group: any = {};
+            const group: any = {};
             group.entity_id = item.group_id;
             group.entityColumns = [numberOfOrder, item.group_name, item.faculty_name, item.speciality_name];
             tempArr.push(group);
@@ -324,8 +325,8 @@ export class GroupComponent implements OnInit, OnDestroy {
                 this.substituteSpecialitiesNamesWithId(data);
                 this.substituteFacultiesNamesWithId(data);
                 const newGroup: Group = new Group(data.list[0].value,
-                                                data.select[0].selected,
-                                                data.select[1].selected);
+                                                  data.select[0].selected,
+                                                  data.select[1].selected);
                 this.crudService.insertData(this.entity, newGroup)
                     .subscribe(response => {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;

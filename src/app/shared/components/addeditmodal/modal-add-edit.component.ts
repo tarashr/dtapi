@@ -45,9 +45,10 @@ export class ModalAddEditComponent implements OnInit {
             "testAttempts": new FormControl("", [
                 Validators.pattern("^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$")
             ]),
-            "startDate": new FormControl({}, [
+            "startDate": new FormControl("", [
+                this.dateValidator
             ]),
-            "endDate": new FormControl({}, [
+            "endDate": new FormControl("", [
             ]),
             "startTime": new FormControl("", [
                 Validators.pattern("^(([0|1][0-9])|([2][0-3])):([0-5][0-9])$")
@@ -71,6 +72,20 @@ export class ModalAddEditComponent implements OnInit {
                 Validators.minLength(8)
             ]),
         });
+    }
+
+    dateValidator(control: FormControl): {[key: string]: boolean} {
+        if (control.value === null) {
+            return {Invalid: true};
+        } else if (control.value === "") {
+            return null;
+        } else if (control.value.day >= 1 && control.value.day <= 31) {
+            if (control.value.month >= 1 && control.value.month <= 12) {
+                return null;
+            }
+        } else {
+            return {Invalid: true};
+        }
     }
 
     activateForm() {

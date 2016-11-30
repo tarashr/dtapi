@@ -28,12 +28,6 @@ import {
 })
 export class AdminUserComponent implements OnInit {
 
-    public modalInfoConfig: any = modalInfoConfig;
-    public configAdd = configAddAdminUser;
-    public configEdit = configEditAdminUser;
-    public paginationSize = maxSize;
-    public headers: any = headersAdminUser;
-    public actions: any = actionsAdminUser;
     public searchTitle: string = "Введіть дані для пошуку";
     public entityTitle: string = "Адміністратори";
     public selectLimit: string = "Виберіть кількість записів на сторінці";
@@ -45,9 +39,12 @@ export class AdminUserComponent implements OnInit {
     public page: number = 1;
     public offset: number = 0;
 
-    constructor(private crudService: CRUDService,
-                private modalService: NgbModal) {
-    };
+    public modalInfoConfig: any = modalInfoConfig;
+    public configAdd = configAddAdminUser;
+    public configEdit = configEditAdminUser;
+    public paginationSize = maxSize;
+    public headers: any = headersAdminUser;
+    public actions: any = actionsAdminUser;
 
     public changeLimit = changeLimit;
     public pageChange = pageChange;
@@ -58,23 +55,26 @@ export class AdminUserComponent implements OnInit {
     public getRecordsRange = getRecordsRange;
     public findEntity = findEntity;
 
+    constructor(private crudService: CRUDService,
+                private modalService: NgbModal) {
+    }
 
     ngOnInit(): void {
         this.getCountRecords();
     }
 
     private createTableConfig = (data: any) => {
-        let tempArr: any[] = [];
+        const tempArr: any[] = [];
         let numberOfOrder: number;
         data.forEach((item, i ) => {
             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-            let adminUser: any = {};
+            const adminUser: any = {};
             adminUser.entity_id = item.id;
             adminUser.entityColumns = [numberOfOrder, item.username, item.email];
             tempArr.push(adminUser);
         });
         this.entityData = tempArr;
-    };
+    }
 
     activate(data: any) {
         switch (data.action) {
@@ -104,7 +104,7 @@ export class AdminUserComponent implements OnInit {
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                let newAdminUser: User = new User(
+                const newAdminUser: User = new User(
                     data.list[0].value,
                     data.list[1].value,
                     data.list[2].value,
@@ -126,10 +126,10 @@ export class AdminUserComponent implements OnInit {
             }, () => {
                 return;
             });
-    };
+    }
 
     editCase(data: any) {
-        let editData = data;
+        const editData = data;
         this.configEdit.list.forEach((item, i) => {
             item.value = data.entityColumns[i + 1];
         });
@@ -151,7 +151,8 @@ export class AdminUserComponent implements OnInit {
                     }, error => {
                             this.modalInfoConfig.infoString = `Пароль та логін повинні бути унікальними`;
                             this.editCase(editData);
-                            this.successEventModal();}
+                            this.successEventModal();
+                    }
                     );
             }, () => {
                 return;

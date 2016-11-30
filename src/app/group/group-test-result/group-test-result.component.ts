@@ -17,11 +17,8 @@ export class GroupTestResultComponent implements OnInit {
     public page: number = 1;
     public limit: number = 0;
     public noRecords: boolean = false;
-
     public entityData: any[] = [];
     public entityDataWithNames: any ;
-    public headers: any = headersGroupTestResult;
-
     public maxResult: number = 100;
     public testId: number;
     public testName: string;
@@ -33,6 +30,7 @@ export class GroupTestResultComponent implements OnInit {
     public subjectName: string;
     public subjectEntity: string = "Subject";
     public studentEntity: string = "Student";
+    public headers: any = headersGroupTestResult;
 
     private subscription: Subscription;
 
@@ -139,12 +137,12 @@ export class GroupTestResultComponent implements OnInit {
     }
 
     private createTableConfig = (data: any) => {
-        let tempArr: any[] = [];
+        const tempArr: any[] = [];
         let numberOfOrder: number;
         if (data.length) {
             data.forEach((item, i) => {
                 numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-                let groupResult: any = {};
+                const groupResult: any = {};
                 groupResult.entity_id = item.test_id;
                 groupResult.entityColumns = [
                     numberOfOrder,
