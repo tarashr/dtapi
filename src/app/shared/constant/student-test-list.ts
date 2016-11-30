@@ -1,6 +1,6 @@
 // Constants for table.component
 
-export const  headersStudentTestList = [
+export const headersStudentTestList = [
     // {name: "№", className: "col-xs-12 col-sm-1"},
     {name: "Предмет", className: "col-xs-12 col-sm-3"},
     {name: "Назва тесту", className: "col-xs-12 col-sm-4"},
@@ -9,11 +9,11 @@ export const  headersStudentTestList = [
     {name: "", className: "col-xs-12 col-sm-1"}
 ];
 
-export const  headersStudentTestResults = [
+export const headersStudentTestResults = [
     // {name: "№", className: "col-xs-12 col-sm-1"},
     {name: "Назва тесту", className: "col-xs-12 col-sm-5"},
     {name: "Дата тестування", className: "col-xs-12 col-sm-5"},
-	{name: "Результат", className: "col-xs-12 col-sm-2"}
+    {name: "Результат", className: "col-xs-12 col-sm-2"}
 ];
 
 export const actionsStudentTestList = [
