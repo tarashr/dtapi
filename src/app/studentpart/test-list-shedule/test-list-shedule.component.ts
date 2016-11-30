@@ -18,7 +18,7 @@ export class TestListSheduleComponent implements OnInit {
     public headers: any = headersStudentTestList;
     public entityData = [];
     public dateNow;
-    public dateUser = "";
+    public dateUser = "today";
 
 
     constructor(private _commonService: CRUDService,
@@ -37,8 +37,7 @@ export class TestListSheduleComponent implements OnInit {
                     this.activeTimeTable = data;
                     for (let i = 0; i < this.activeTimeTable.length; i++) {
                         if ((this.activeTimeTable[i].start_date >= startDay) &&
-                                (this.activeTimeTable[i].start_date <= endDay))
-                        {
+                                (this.activeTimeTable[i].start_date <= endDay))      {
                             this._commonService.getRecordById("subject", this.activeTimeTable[i].subject_id)
                                 .subscribe(subject => {
                                     let newSubjectName = subject[0].subject_name;

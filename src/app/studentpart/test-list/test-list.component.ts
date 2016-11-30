@@ -17,7 +17,7 @@ import {modalInfoConfig} from "../../shared/constant";
 @Component({
     selector: "test-list",
     templateUrl: "./test-list.component.html",
-    providers : [StudentPageService]
+    providers: [StudentPageService]
 })
 
 export class TestListComponent implements OnChanges {
@@ -25,24 +25,24 @@ export class TestListComponent implements OnChanges {
     @Input() groupId;
 
 
-    public modalInfoConfig:any = modalInfoConfig;
+    public modalInfoConfig: any = modalInfoConfig;
 
-    public activeTests:any = activeTests;
-    public activeTimeTable:any = activeTimeTable;
+    public activeTests: any = activeTests;
+    public activeTimeTable: any = activeTimeTable;
 
     public dateNow = {date: "", time: ""};
-    public countOfTests:number = 0;
+    public countOfTests: number = 0;
 
-    public headers:any = headersStudentTestList;
-    public actions:any = actionsStudentTestList;
+    public headers: any = headersStudentTestList;
+    public actions: any = actionsStudentTestList;
     public entityData = [];
     public userRole = sessionStorage.getItem("userRole");
 
-    constructor(private _commonService:CRUDService,
-                private _router:Router,
-                private _subjectService:SubjectService,
+    constructor(private _commonService: CRUDService,
+                private _router: Router,
+                private _subjectService: SubjectService,
                 private _studentService: StudentPageService,
-                private modalService:NgbModal) {
+                private modalService: NgbModal) {
     }
 
     ngOnChanges() {
@@ -77,11 +77,11 @@ export class TestListComponent implements OnChanges {
                                 endDate: this.activeTimeTable[i].end_date,
                                 endTime: this.activeTimeTable[i].end_time
                             };
-                            if ((this.dateNow.date >= eventDateTime.startDate)&&
-                                (this.dateNow.date <= eventDateTime.endDate)&&
-                                (this.dateNow.time >= eventDateTime.startTime)&&
+                            if ((this.dateNow.date >= eventDateTime.startDate) &&
+                                (this.dateNow.date <= eventDateTime.endDate) &&
+                                (this.dateNow.time >= eventDateTime.startTime) &&
                                 (this.dateNow.time <= eventDateTime.endTime)
-                            ){
+                            ) {
                                 this.getTestsForToday(
                                     this.activeTimeTable[i].subject_id,
                                     eventDateTime
@@ -106,9 +106,12 @@ export class TestListComponent implements OnChanges {
                                     entityColumns: [
                                         newSubjectName,
                                         this.activeTests[j].test_name,
-                                            eventDateTime.startTime,
-                                            eventDateTime.endTime],
-                                    actions : this.activeTests[j].test_id
+                                        eventDateTime.startDate.replace(/(\d+)-(\d+)-(\d+)/, '$3-$2-$1') + " / " +
+                                        eventDateTime.startTime,
+                                        eventDateTime.endDate.replace(/(\d+)-(\d+)-(\d+)/, '$3-$2-$1') + " / " +
+                                        eventDateTime.endTime,
+                                        ],
+                                    entity_id: this.activeTests[j].test_id
                                 });
                             }
                         }
@@ -119,9 +122,7 @@ export class TestListComponent implements OnChanges {
     }
 
 
-
-
-    runTest(data:any) {
+    runTest(data: any) {
         this.modalInfoConfig.infoString = "Ви дійсно хочете пройти тест:\n" + data.entityColumns[1] + "?";
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Початок тестування";
@@ -136,7 +137,6 @@ export class TestListComponent implements OnChanges {
                 return;
             });
     }
-
 
 
 }
