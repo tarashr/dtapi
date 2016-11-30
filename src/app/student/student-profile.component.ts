@@ -74,28 +74,6 @@ export class StudentProfileComponent implements OnInit {
         }
     }
 
-    /*tooltip() {
-        console.log("tooltip");
-        // this.validationTooltipConfig.placement = "right";
-        // this.validationTooltipModule.
-        /*if (this.surname.nativeElement.validity) {
-            this.surname.nativeElement.open();
-        } else {this.surname.nativeElement.close();}
-
-    if (this.surname.nativeElement.errors.pattern) {
-        this.validationTooltipConfig.placement = "top";
-        this.myname = "2222";
-        console.log("tooltip2");
-    };
-        console.log("tooltip3");
-    // this.name = "World";
-    // this.validationTooltipConfig.triggers = "focus";
-    // if (this.surname.nativeElement.pattern.error()) {this.surname.nativeElement.ngbTooltip.should("errors"); }
-    // this.validationTooltipModule;
-
-} */
-
-
     goBack(): void {
         this.location.back();
     }
@@ -103,6 +81,7 @@ export class StudentProfileComponent implements OnInit {
     newStudent() {
         this.student = new Student;
         this.student.photo = "assets/profile.png";
+        this.newFotoSrc.nativeElement.src = "assets/profile.png";
         this.getFacultyName();
     }
 
@@ -130,6 +109,7 @@ export class StudentProfileComponent implements OnInit {
                         this.modalInfoConfig.infoString = `Перевірте правильність введених даних`;
                         this.successEventModal();
                     }
+                    console.log("ERROR");
                 },
                 error => console.log("error: ", error)
             );
@@ -159,7 +139,6 @@ export class StudentProfileComponent implements OnInit {
     }
 
     studGroupId(data: number) {
-        console.log("groupId", data);
         this.student.group_id = data;
     }
 
@@ -225,7 +204,6 @@ export class StudentProfileComponent implements OnInit {
         dataForUpdateStudent.group_id = this.student.group_id;
         dataForUpdateStudent.plain_password = this.student.plain_password;
         dataForUpdateStudent.photo = this.newFotoSrc.nativeElement.src;
-        console.log("error when update1");
         this._commonService.updateData(this.entity, this.student.user_id, dataForUpdateStudent)
             .subscribe(data => {
                     if (data.response === "ok") {
@@ -233,7 +211,6 @@ export class StudentProfileComponent implements OnInit {
                         this.successEventModal();
                     }
                     else {
-                        console.log("error when update2");
                         this.modalInfoConfig.infoString = `Помилка обновлення. Перевірте дані`;
                         this.successEventModal();
                     }
@@ -275,10 +252,6 @@ export class StudentProfileComponent implements OnInit {
             this.updateStudent();
             this.editSaveButtonName = "Редагувати дані";
         }
-        this.statusView = !this.statusView;
-    }
-
-    myStatusView() {
         this.statusView = !this.statusView;
     }
 
