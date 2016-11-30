@@ -11,19 +11,21 @@ import {
     serverErrorMessage
 } from "../constant";
 import {CommonService} from "./common.service";
+import {TestPlayerService} from "./test-player.service";
 
 @Injectable()
 export class LoginService {
     private loginUrl: string = loginUrl;
     private logoutUrl: string = logoutUrl;
     private badLoginOrPasswordMessage: string = badLoginOrPasswordMessage;
-    private badLogoutMessage: string[] = badLogoutMessage;
+    private badLogoutMessage: any = badLogoutMessage;
     private serverErrorMessage: string = serverErrorMessage;
     private _headers = new Headers({"content-type": "application/json"});
 
     constructor(private _router: Router,
                 private _http: Http,
-                private commonService: CommonService) {
+                private commonService: CommonService,
+                private testPlayerService: TestPlayerService) {
     };
 
     private handleError = (error: any): Observable<any> => {
@@ -38,6 +40,7 @@ export class LoginService {
             const userIdHash: string = this.commonService.cryptData(+response.id);
             if (userIdHash !== dTester.userId) {
                 localStorage.removeItem("dTester");
+                this.testPlayerService.resetSessionData();
             }
         }
         if (response.roles[1] === "student") {
@@ -68,7 +71,8 @@ export class LoginService {
 
     private errorLogout = () => {
         this.commonService.openModalInfo(...this.badLogoutMessage)
-            .then(null, () => {
+            .then(() => {
+            }, () => {
                 sessionStorage.removeItem("userRole");
                 sessionStorage.removeItem("userId");
                 this._router.navigate(["/login"]);

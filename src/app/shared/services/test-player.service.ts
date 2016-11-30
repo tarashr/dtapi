@@ -24,6 +24,7 @@ import {
 import {SubjectService} from "./subject.service";
 import {CRUDService} from "./crud.service";
 import {CommonService} from "./common.service";
+import {DtapiResponse} from "../classes/dtapi-response";
 
 @Injectable()
 export class TestPlayerService {
@@ -127,9 +128,10 @@ export class TestPlayerService {
                     localStorage.removeItem("dTester");
                     this.resetSessionData();
                     this.commonService.openModalInfo(message, "info", "Результат тестування!")
-                        .then(null, () => {
-                            this.router.navigate(["/student"]);
-                        });
+                        .then(this.handleReject,
+                            () => {
+                                this.router.navigate(["/student"]);
+                            });
                 },
                 () => {
                     this.commonService.openModalInfo(...this.modalParams.mistakeDuringSaveResult);
@@ -142,40 +144,43 @@ export class TestPlayerService {
         this.maxUserRate = maxUserRate;
     }
 
-    private getTestRecord = Observable.create(observer => {
-        this.http
+    private getTestRecord(): Observable<any> {
+        return this.http
             .get(`${this.getTestRecordUrl}/${this.testId}`)
-            .map(this.successResponse)
-            .catch(this.handleError)
-            .subscribe(testRecord => {
+            .map(response => {
+                let testRecord = response.json();
+                if (testRecord.response && testRecord.response === "no records") {
+                    throw new Error("test does not exist");
+                }
                 this.timeForTest = +testRecord[0].time_for_test * 60;
                 this.tasksCount = +testRecord[0].tasks;
                 this.timer = this.createTimeForView(this.timeForTest);
-                observer.next(testRecord);
-            });
-    });
+                return testRecord;
+            })
+            .catch(this.handleError);
+    }
 
     countTestPassesByStudent = (testRecord: any): Observable<any> => {
+        this.countAttempts = true;
         return this.http
             .get(`${this.countTestPassesByStudentUrl}/${this.studentId}/${this.testId}`)
             .map(this.successResponse)
             .catch(this.handleError)
             .do(countTestPassed => {
                 if (+countTestPassed.numberOfRecords >= +testRecord[0].attempts) {
-                    this.commonService.openModalInfo(...this.modalParams.youUsedAllAtempts)
-                        .then(null, () => {
-                            this.router.navigate(["/student"]);
-                        });
-                    this.countAttempts = false;
-                 }
+                    throw new Error("attempts ended");
+                }
             });
     };
 
     getTestDetails = () => {
         this.maxUserRate = 0;
         return this.subjectService.getTestDetailsByTest(this.testId)
-            .map((testDetails: TestDetail[]) => {
-                testDetails.forEach((data: TestDetail) => {
+            .map((testDetails: TestDetail[] | DtapiResponse) => {
+                if ((testDetails as DtapiResponse).response && (testDetails as DtapiResponse).response === "no records") {
+                    throw new Error("test data are absent");
+                }
+                (testDetails as TestDetail[]).forEach((data: TestDetail) => {
                     this.maxUserRate += +data.tasks * +data.rate;
                 });
                 return testDetails;
@@ -188,8 +193,14 @@ export class TestPlayerService {
             return this.subjectService.getQuestionsByLevelRand(item.test_id, item.level, item.tasks);
         });
         return Observable.forkJoin(forkJoinBatch)
-            .map((questions: TestPlayerQuestions[][]) => {
-                this.questions = this.prepareQuestionForTest(questions, testDetails);
+            .map((questions: TestPlayerQuestions[][] | any) => {
+                let error = questions.some((item) => {
+                    return item.response;
+                });
+                if (error) {
+                    throw new Error("test data are absent");
+                }
+                this.questions = this.prepareQuestionForTest(<TestPlayerQuestions[][]>questions, testDetails);
                 this.randomSortArrayOfObjects(this.questions, "question_id");
                 this.navButtons = this.createNavButtons(this.questions.length);
                 return this.questions;
@@ -200,7 +211,7 @@ export class TestPlayerService {
     prepareQuestionForTest(questions: TestPlayerQuestions[][], testDetails: any[]): TestPlayerQuestions[] {
         let tempArr: TestPlayerQuestions[] = [];
 
-        questions.forEach(elem => {
+        questions.forEach((elem: TestPlayerQuestions[]) => {
             tempArr.push(...elem);
         });
         return tempArr.map((question: TestPlayerQuestions, i: number) => {
@@ -213,7 +224,7 @@ export class TestPlayerService {
             }
             question.type = question.type === "1" ? "radio" : "checkbox";
             question.answered = false;
-            question.active = i === 0 ? true : false;
+            question.active = !i;
             return question;
         });
     }
@@ -224,7 +235,13 @@ export class TestPlayerService {
         });
 
         return Observable.forkJoin(forkJoinBatch)
-            .do((answers: any[][]) => {
+            .do((answers: any[][] | any) => {
+                let error = answers.some(item => {
+                    return item.response;
+                });
+                if (error) {
+                    throw new Error("test data are absent");
+                }
                 answers.forEach((item, i) => {
                     this.randomSortArrayOfObjects(item, "answer_id");
                     questions[i].answers = item;
@@ -242,30 +259,25 @@ export class TestPlayerService {
     };
 
     returnTestData = () => {
-        let testData: any = {
+        return {
             navButtons: this.navButtons,
             questions: this.questions,
             tasksCount: this.tasksCount,
             timeForTest: this.timeForTest,
             maxUserRate: this.maxUserRate,
-            timer: this.timer,
-            countAttempts: this.countAttempts
+            timer: this.timer
         };
-
-        return Observable.create(observer => {
-            observer.next(testData);
-        });
     };
 
     getNewTest() {
-        return this.getTestRecord
+        return this.getTestRecord()
             .flatMap(this.countTestPassesByStudent)
             .flatMap(this.getTestDetails)
             .flatMap(this.getQuestions)
             .flatMap(this.getAnswers)
             .flatMap(this.createTimeStamp)
             .flatMap(this.saveEndTime)
-            .flatMap(this.returnTestData);
+            .map(this.returnTestData);
     }
 
     recoverQuestions = (testDetails: any[]) => {
@@ -290,7 +302,6 @@ export class TestPlayerService {
             testDetails.forEach((elem) => {
                 if (elem.level === item.level) {
                     item.rate = elem.rate + "";
-                    return;
                 }
             });
         });
@@ -302,11 +313,13 @@ export class TestPlayerService {
             button.active = question.active;
             button.answered = question.answered;
             button.label = this.commonService.leftPad(i + 1);
-            button.className = button.active ?
-                `${navButtonConstClassName} btn-warning` :
-                button.answered ?
-                    `${navButtonConstClassName} btn-success` :
-                    `${navButtonConstClassName} btn-primary`;
+            if (button.active) {
+                button.className = `${navButtonConstClassName} btn-warning`;
+            } else if (button.answered) {
+                button.className = `${navButtonConstClassName} btn-success`;
+            } else {
+                button.className = `${navButtonConstClassName} btn-primary`;
+            }
             return button;
         });
     }
@@ -340,11 +353,11 @@ export class TestPlayerService {
         this.studentId = +sessionStorage.getItem("userId");
         this.testId = dTester.testId;
         this.questions = dTester.questions;
-        return this.getTestRecord
+        return this.getTestRecord()
             .flatMap(this.getTestDetails)
             .flatMap(this.recoverQuestions)
             .flatMap(this.recoverAnswers)
-            .flatMap(this.returnTestData);
+            .map(this.returnTestData);
     }
 
     randomSortArrayOfObjects(arr: Object[], property: string): any {
@@ -356,7 +369,7 @@ export class TestPlayerService {
 
     getTimeStamp(): Observable < any > {
         return this.http
-            .get(`${this.getTimeStampUrl}`)
+            .get(this.getTimeStampUrl)
             .map(this.successResponse)
             .catch(this.handleError);
     }
@@ -370,27 +383,31 @@ export class TestPlayerService {
 
     getEndTime(): Observable < any > {
         return this.http
-            .get(`${this.getEndTimeUrl}`)
+            .get(this.getEndTimeUrl)
             .map(this.successResponse)
             .catch(this.handleError);
     }
 
     resetSessionData() {
         this.http
-            .get(`${this.resetSessionDataUrl}`)
+            .get(this.resetSessionDataUrl)
             .map(this.successResponse)
             .catch(this.handleError)
             .subscribe();
     }
 
     createNavButtons(countOfButtons: number): TestPlayerNavButton[] {
-        let navButtons: TestPlayerNavButton[] = [
-            {answered: false, label: "01", active: true, className: `${navButtonConstClassName} btn-warning`}];
+        let navButtons: TestPlayerNavButton[] = [];
 
-        for (let i = 1; i < countOfButtons; i++) {
+        for (let i = 0; i < countOfButtons; i++) {
             navButtons.push(new TestPlayerNavButton());
             navButtons[i].label = this.commonService.leftPad(i + 1);
-            navButtons[i].className = `${navButtonConstClassName} btn-primary`;
+            if (!i) {
+                navButtons[i].active = true;
+                navButtons[i].className = `${navButtonConstClassName} btn-warning`;
+            } else {
+                navButtons[i].className = `${navButtonConstClassName} btn-primary`;
+            }
         }
         return navButtons;
     }
@@ -421,7 +438,7 @@ export class TestPlayerService {
     }
 
     createBodyCheck(questions: TestPlayerQuestions[]) {
-        let bodyCheck: any[] = questions.map(question => {
+        return questions.map(question => {
             let data: any = {};
             data.question_id = question.question_id;
             data.answer_ids = [];
@@ -432,9 +449,7 @@ export class TestPlayerService {
             }
             return data;
         });
-        return bodyCheck;
     }
-    ;
 
     createTimeForView(restOfTime: number) {
         restOfTime = restOfTime <= 0 ? 0 : restOfTime;
@@ -529,10 +544,11 @@ export class TestPlayerService {
 
     errorSavedTime = () => {
         this.commonService.openModalInfo(...this.modalParams.impossibleRecoverTest)
-            .then(null, () => {
-                localStorage.removeItem("dTester");
-                this.router.navigate(["/student"]);
-            });
+            .then(this.handleReject,
+                () => {
+                    localStorage.removeItem("dTester");
+                    this.router.navigate(["/student"]);
+                });
     }
 
     compareTime = (times) => {
@@ -554,5 +570,8 @@ export class TestPlayerService {
             .flatMap(this.getSavedTime)
             .flatMap(this.compareTime);
     }
+
+    handleReject = () => {
+    };
 
 }

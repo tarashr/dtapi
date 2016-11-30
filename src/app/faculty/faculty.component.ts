@@ -112,13 +112,14 @@ export class FacultyComponent implements OnInit {
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: ConfigModalAddEdit) => {
-                let newFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
-                this.crudService.insertData(this.entity, newFaculty)
-                    .subscribe(() => {
-                        this.commonService.openModalInfo(`${data.list[0].value} успішно створено`);
-                        this.refreshData(data.action);
-                    });
-            }, null);
+                    let newFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
+                    this.crudService.insertData(this.entity, newFaculty)
+                        .subscribe(() => {
+                            this.commonService.openModalInfo(`${data.list[0].value} успішно створено`);
+                            this.refreshData(data.action);
+                        });
+                },
+                this.handleReject);
     };
 
     editCase(data: ConfigTableData) {
@@ -130,20 +131,24 @@ export class FacultyComponent implements OnInit {
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: ConfigModalAddEdit) => {
-                let editedFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
-                this.crudService.updateData(this.entity, +data.id, editedFaculty)
-                    .subscribe(() => {
-                        this.commonService.openModalInfo(`Редагування пройшло успішно`);
-                        this.refreshData(data.action);
-                    });
-            }, null);
+                    let editedFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
+                    this.crudService.updateData(this.entity, +data.id, editedFaculty)
+                        .subscribe(() => {
+                            this.commonService.openModalInfo(`Редагування пройшло успішно`);
+                            this.refreshData(data.action);
+                        });
+                },
+                this.handleReject);
     }
 
     deleteCase(data: ConfigTableData) {
         let message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[1]}?`, "confirm", "Попередження!"];
         this.commonService.openModalInfo(...message)
             .then(() => {
-                this.delRecord(this.entity, +data.entity_id);
-            }, null);
+                    this.delRecord(this.entity, +data.entity_id);
+                },
+                this.handleReject);
     }
+
+    handleReject = () => {};
 }

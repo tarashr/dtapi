@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {TestPlayerService} from "../shared/services/test-player.service";
 import {TestPlayerQuestions, TestPlayerNavButton} from "../shared/classes";
 import {CommonService} from "../shared/services/common.service";
@@ -36,6 +36,7 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
 
     constructor(private testPlayerService: TestPlayerService,
                 private route: ActivatedRoute,
+                private router: Router,
                 private commonService: CommonService) {
     }
 
@@ -148,7 +149,7 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
             .then(() => {
                 this.finishedTest = true;
                 this.checkTimer(false);
-            }, null);
+            }, this.testPlayerService.handleReject);
     }
 
     finishCheckTimer = (data: any, continueTest: boolean) => {
@@ -177,23 +178,44 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
     getNewTest() {
         this.testPlayerService.getNewTest()
             .subscribe((testData) => {
-                if (!testData.countAttempts) {
-                    this.testPlayerService.resetSessionData();
-                    return;
-                }
-                this.questions = testData.questions;
-                this.navButtons = testData.navButtons;
-                this.timeForTest = this.restOfTime = testData.timeForTest;
-                this.tasksCount = this.unAnsweredQuestionCount = testData.tasksCount;
-                this.maxUserRate = testData.maxUserRate;
-                this.timer = testData.timer;
-                this.show = true;
-                this.timerId = setInterval(() => {
-                    this.startTimer();
-                }, 1000);
-                this.finishedTest = false;
-                this.testPlayerService.createBackup(this.questions);
-            });
+                    this.questions = testData.questions;
+                    this.navButtons = testData.navButtons;
+                    this.timeForTest = this.restOfTime = testData.timeForTest;
+                    this.tasksCount = this.unAnsweredQuestionCount = testData.tasksCount;
+                    this.maxUserRate = testData.maxUserRate;
+                    this.timer = testData.timer;
+                    this.show = true;
+                    this.timerId = setInterval(() => {
+                        this.startTimer();
+                    }, 1000);
+                    this.finishedTest = false;
+                    this.testPlayerService.createBackup(this.questions);
+                },
+                this.getNewTestError);
+    }
+
+    getNewTestError = (error) => {
+        let message: string;
+        let mistake = error.message ? error.message : error;
+        switch (mistake) {
+            case "test does not exist":
+                message = "Ви намагаєтесь зайти на неіснуючий тест. Виберіть доступний Вам тест на сторіці Вашого профайлу.";
+                break;
+            case "test data are absent":
+                message = "Відсутні дані для тесту";
+                break;
+            case "attempts ended":
+                message = "Ви використали всі спроби";
+                this.testPlayerService.resetSessionData();
+                break;
+            default:
+                message = "Невідома помилка!";
+        }
+        this.commonService.openModalInfo(message)
+            .then(this.testPlayerService.handleReject,
+                () => {
+                    this.router.navigate(["/student"]);
+                });
     }
 
     continueTest() {
