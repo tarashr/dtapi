@@ -50,7 +50,7 @@
 
 input.ng-invalid.ng-dirty:not(:focus) ,
 select.ng-invalid.ng-dirty {
-    border: 1px solid red;
+    border: 1px solid indianred;
 }
 
 .hint {
@@ -60,9 +60,10 @@ select.ng-invalid.ng-dirty {
     min-width: 131px;
     z-index: 10;
     padding: 5px;
-    border: 1px solid #87854e;
-    border-radius: 5px;
-    background: #f7f7f7;
+    color: #777;;
+    border: 1px solid #e77e7e;
+    border-radius: 3px;
+    background: #ffeff2;
 }
 
 .hint::after {
@@ -73,7 +74,7 @@ select.ng-invalid.ng-dirty {
     margin-left: -5px;
     border-width: 7px;
     border-style: solid;
-    border-color: #87854e transparent transparent transparent;
+    border-color: #777 transparent transparent transparent;
 }
 
 .passwords-hint {
@@ -83,9 +84,10 @@ select.ng-invalid.ng-dirty {
     min-width: 131px;
     z-index: 10;
     padding: 5px;
-    border: 1px solid #87854e;
-    border-radius: 5px;
-    background: #f7f7f7;
+    color: #777;;
+    border: 1px solid #e77e7e;
+    border-radius: 3px;
+    background: #ffeff2;
 }
 
 .passwords-hint::after {
@@ -96,5 +98,5 @@ select.ng-invalid.ng-dirty {
     margin-left: -5px;
     border-width: 7px;
     border-style: solid;
-    border-color: transparent transparent #87854e transparent;
+    border-color: transparent transparent #777 transparent;
 }
