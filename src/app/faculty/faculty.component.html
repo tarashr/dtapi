@@ -9,6 +9,7 @@
             (searchRun)="findEntity($event)"
             (selectRun)="changeLimit($event)">
     </entity-bar>
+    <dt-loader *ngIf="!entityData.length"></dt-loader>
     <dt-table *ngIf="entityData.length"
               [page]="page"
               [limit]="limit"
@@ -17,7 +18,7 @@
               [tableData]="entityData"
               (activate)="activate($event)">
     </dt-table>
-    <ngb-pagination *ngIf="entityDataLength"
+    <ngb-pagination *ngIf="entityData.length"
                     [collectionSize]="entityDataLength"
                     [(page)]="page"
                     [maxSize]="paginationSize"

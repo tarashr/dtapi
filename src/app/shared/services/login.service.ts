@@ -2,40 +2,34 @@ import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
 import {Headers, Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {InfoModalComponent} from "../components/info-modal/info-modal.component";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {User} from "../classes/user";
 import {loginUrl} from "../constant";
 import {logoutUrl} from "../constant";
 import {
-    modalInfoConfig,
-    successEventModal,
     badLoginOrPasswordMessage,
     badLogoutMessage,
     serverErrorMessage
 } from "../constant";
 import {CommonService} from "./common.service";
+import {TestPlayerService} from "./test-player.service";
 
 @Injectable()
 export class LoginService {
-    private modalInfoConfig: any = modalInfoConfig;
     private loginUrl: string = loginUrl;
     private logoutUrl: string = logoutUrl;
     private badLoginOrPasswordMessage: string = badLoginOrPasswordMessage;
-    private badLogoutMessage: string = badLogoutMessage;
+    private badLogoutMessage: any = badLogoutMessage;
     private serverErrorMessage: string = serverErrorMessage;
     private _headers = new Headers({"content-type": "application/json"});
 
     constructor(private _router: Router,
                 private _http: Http,
-                private modalService: NgbModal,
-                private commonService: CommonService) {
+                private commonService: CommonService,
+                private testPlayerService: TestPlayerService) {
     };
 
-    private successEventModal = successEventModal;
-
     private handleError = (error: any): Observable<any> => {
-        return Observable.throw(error.status);
+        return Observable.throw(error);
     };
 
     private successRequest = (response: Response) => response.json();
@@ -46,6 +40,7 @@ export class LoginService {
             const userIdHash: string = this.commonService.cryptData(+response.id);
             if (userIdHash !== dTester.userId) {
                 localStorage.removeItem("dTester");
+                this.testPlayerService.resetSessionData();
             }
         }
         if (response.roles[1] === "student") {
@@ -59,12 +54,10 @@ export class LoginService {
     }
 
     private errorLogin = (error) => {
-        if (error === 400) {
-            this.modalInfoConfig.infoString = this.badLoginOrPasswordMessage;
-            this.successEventModal();
+        if (error.json().response === "Invalid login or password") {
+            this.commonService.openModalInfo(this.badLoginOrPasswordMessage);
         } else {
-            this.modalInfoConfig.infoString = this.serverErrorMessage;
-            this.successEventModal();
+            this.commonService.openModalInfo(this.serverErrorMessage);
         }
     }
 
@@ -77,14 +70,8 @@ export class LoginService {
     };
 
     private errorLogout = () => {
-        this.modalInfoConfig.infoString = this.badLogoutMessage;
-        this.modalInfoConfig.action = "confirm";
-        this.modalInfoConfig.title = "Попередження!";
-        const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
-        modalRef.componentInstance.config = this.modalInfoConfig;
-        modalRef.result
+        this.commonService.openModalInfo(...this.badLogoutMessage)
             .then(() => {
-                return;
             }, () => {
                 sessionStorage.removeItem("userRole");
                 sessionStorage.removeItem("userId");
