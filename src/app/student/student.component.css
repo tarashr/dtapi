@@ -80,7 +80,7 @@ div.input-foto input{
     margin: 0 20px 0 0;
 }
 
-input.ng-invalid{
+/* input.ng-invalid{
     border-left: 5px solid red;
 }
 
@@ -95,17 +95,18 @@ select.ng-invalid{
 select.ng-valid{
     border-left: 5px solid green;
 }
-
+ */
 .data-field{
     width: 50%;
     display: inline-block;
     float: right;
     text-align: left;
     margin: 10px 20px 10px 0;
+    min-height: 22px;
 }
 
 .password-eye-input{
-    margin: 10px 0 10px 0;
+    margin: 10px -3px 10px 0;
 }
 
 .password-eye{
@@ -125,7 +126,32 @@ label {
     margin: 10px 0 10px 0;
 }
 
-.password-field{
-    min-height: 22px
+.hint {
+    position: absolute;
+    bottom: 40px;
+    left: 40%;
+    text-align: left;
+    min-width: 131px;
+    z-index: 10;
+    padding: 5px;
+    color: #777;;
+    border: 1px solid #e77e7e;
+    border-radius: 3px;
+    background: #ffeff2;
+}
+
+.hint::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50px;
+    margin-left: -5px;
+    border-width: 7px;
+    border-style: solid;
+    border-color: #777 transparent transparent transparent;
+}
+
+.data-field-enter {
+    position: relative;
 }
 

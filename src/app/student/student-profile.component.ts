@@ -45,7 +45,10 @@ export class StudentProfileComponent implements OnInit {
     public passwordStatusText: string = "password";
     public editSaveButtonName: string = "Редагувати дані";
 
-    private subscription: Subscription;
+    public mypattern: string = "^[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]+[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9.!#$%&’*+/=?^_`{|}~-]*[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]*@[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]+(?:([a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9-]*[\.?]))+([a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ]{2,6})$";
+
+    // private subscription: Subscription;
+
 
     @ViewChild("newFotoSrc") newFotoSrc: ElementRef;
     @ViewChild("inputFile") inputFile: ElementRef;
@@ -105,13 +108,12 @@ export class StudentProfileComponent implements OnInit {
                         this.successEventModal();
                         this.newStudent();
                     }
-                    if (data.response === "Failed to validate array") {
-                        this.modalInfoConfig.infoString = `Перевірте правильність введених даних`;
-                        this.successEventModal();
-                    }
-                    console.log("ERROR");
                 },
-                error => console.log("error: ", error)
+                error => {
+                    console.log("error: ", error);
+                    this.modalInfoConfig.infoString = "Перевірте правильність введених даних";
+                    this.successEventModal();
+                }
             );
         }
 
@@ -215,7 +217,11 @@ export class StudentProfileComponent implements OnInit {
                         this.successEventModal();
                     }
                 },
-                error => console.log("error: ", error)
+                error => {
+                    console.log("error: ", error);
+                    this.modalInfoConfig.infoString = "Перевірте правильність введених даних";
+                    this.successEventModal();
+                }
             );
     }
 
