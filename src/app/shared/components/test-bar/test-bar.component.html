@@ -3,7 +3,7 @@
         <div class="navbar-text">{{pageTitle}}{{entityName}}</div>
         <form class="navbar-form navbar-right">
             <div class="form-group">
-                <a class="btn btn-default" (click)="addEntity(config)" [title]="addTitle">Додати </a>
+                <a class="btn btn-default" (click)="addEntity(config)">Додати </a>
             </div>
             <div *ngIf="isSelect" class="form-group">
                 <select class="form-control" name="count"
