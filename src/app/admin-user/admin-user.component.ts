@@ -34,7 +34,6 @@ export class AdminUserComponent implements OnInit {
     public paginationSize = maxSize;
     public headers: any = headersAdminUser;
     public actions: any = actionsAdminUser;
-    public addTitle: string = "Додати адміністратора";
     public searchTitle: string = "Введіть дані для пошуку";
     public entityTitle: string = "Адміністратори";
     public selectLimit: string = "Виберіть кількість записів на сторінці";

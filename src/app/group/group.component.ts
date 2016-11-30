@@ -35,7 +35,6 @@ export class GroupComponent implements OnInit, OnDestroy {
     public headers: any = headersGroup;
     public actions: any = actionsGroup;
 
-    public addTitle: string = "Створити нову групу";
     public searchTitle: string = "Введіть дані для пошуку";
     public entityTitle: string = "Групи";
     public selectLimit: string = "Виберіть кількість записів на сторінці";
@@ -59,11 +58,11 @@ export class GroupComponent implements OnInit, OnDestroy {
 
     public noRecords: boolean = false;
     public sortHide: boolean = false;
-    private subscription: Subscription;
     public facultiesNamesIDs: any[] = [];
     public specialitiesNamesIDs: any[] = [];
     public defaultFacultySelect: string = "Виберіть факультет";
     public defaultSpecialitySelect: string = "Виберіть спеціальність";
+    private subscription: Subscription;
 
     public changeLimit = changeLimit;
     public pageChange = pageChange;
@@ -288,7 +287,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         }
     }
 
-    substituteFacultiesNamesOnId(data) {
+    substituteFacultiesNamesWithId(data) {
         this.facultiesNamesIDs.forEach((item) => {
             if (item.name === data.select[0].selected) {
                 data.select[0].selected = item.id;
@@ -296,7 +295,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         });
     }
 
-    substituteSpecialitiesNamesOnId(data) {
+    substituteSpecialitiesNamesWithId(data) {
         this.specialitiesNamesIDs.forEach((item) => {
             if (item.name === data.select[1].selected) {
                 data.select[1].selected = item.id;
@@ -322,8 +321,8 @@ export class GroupComponent implements OnInit, OnDestroy {
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                this.substituteSpecialitiesNamesOnId(data);
-                this.substituteFacultiesNamesOnId(data);
+                this.substituteSpecialitiesNamesWithId(data);
+                this.substituteFacultiesNamesWithId(data);
                 const newGroup: Group = new Group(data.list[0].value,
                                                 data.select[0].selected,
                                                 data.select[1].selected);
@@ -355,8 +354,8 @@ export class GroupComponent implements OnInit, OnDestroy {
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
-                this.substituteSpecialitiesNamesOnId(data);
-                this.substituteFacultiesNamesOnId(data);
+                this.substituteSpecialitiesNamesWithId(data);
+                this.substituteFacultiesNamesWithId(data);
                 let newGroup: Group = new Group(data.list[0].value,
                                                 data.select[0].selected,
                                                 data.select[1].selected);
@@ -394,8 +393,7 @@ export class GroupComponent implements OnInit, OnDestroy {
             this.isSelectedBy = true;
             this.entityTitle = `Групи факультету: ${this.facultyName}`;
             this.getGroupsByFaculty(this.facultyId);
-        }
-        else {
+        } else {
             if (action === "delete" && this.entityData.length === 1 && this.entityDataLength > 1) {
                 this.offset = (this.page - 2) * this.limit;
                 this.page -= 1;

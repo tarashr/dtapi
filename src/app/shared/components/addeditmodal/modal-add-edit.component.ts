@@ -28,13 +28,13 @@ export class ModalAddEditComponent implements OnInit {
                 Validators.minLength(1)
             ]),
             "groupName": new FormControl("", [
-                Validators.minLength(1)
+                Validators.pattern("^[А-ЯЁЇІіЄҐ]{2,3}[-][0-9]{2}[-][0-9]{1}$")
             ]),
             "specialityCode": new FormControl("", [
-                Validators.pattern("^[0-9.]*$")
+                Validators.pattern("^[0-9. ]*$")
             ]),
             "name": new FormControl("", [
-                Validators.pattern("^[А-Яа-яёЁЇїІіЄєҐґ ]+$")
+                Validators.pattern("^[А-Яа-яёЁЇїІіЄєҐґ'’ ]+$")
             ]),
             "count": new FormControl("", [
                 Validators.pattern("^[0-9]*$")
@@ -62,7 +62,7 @@ export class ModalAddEditComponent implements OnInit {
                 Validators.maxLength(100)
             ]),
             "email": new FormControl("", [
-                Validators.pattern("^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")
+                Validators.pattern("^[^@]+@[^@]+\.[^@]+$")
             ]),
             "password": new FormControl("", [
                 Validators.minLength(8)
