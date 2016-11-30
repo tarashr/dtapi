@@ -14,9 +14,9 @@ import { LoginService } from "../../shared/services/login.service";
 export class UserProfileComponent implements OnInit{
 
     public user={
-        student_surname:"loading...",
-        student_name:"loading...",
-        group_id:""
+        student_surname : "loading...",
+        student_name : "loading...",
+        group_id : ""
     };
 
     public userGroup = {

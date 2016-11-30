@@ -33,7 +33,6 @@ export class StudentComponent implements OnInit {
     public actions: any = actionsStudentAdmin;
 
     // constants for view
-    public addTitle: string = "Додати нового студента";
     public searchTitle: string = "Введіть дані для пошуку";
     public entityTitle: string = "Студенти";
     public selectLimit: string = "Виберіть кількість студентів на сторінці";

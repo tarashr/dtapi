@@ -7,7 +7,7 @@ import {Student} from "../shared/classes/student";
 import {CRUDService} from "../shared/services/crud.service";
 import {EntityManagerBody} from "../shared/classes/entity-manager-body";
 import {Observable, Subscription} from "rxjs/Rx";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbTooltipModule, NgbTooltipConfig} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule} from "@angular/forms";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
 // import {ImageCropperComponent, CropperSettings} from "ng2-img-cropper";
@@ -53,7 +53,9 @@ export class StudentProfileComponent implements OnInit {
     constructor(private route: ActivatedRoute,
                 private _commonService: CRUDService,
                 private location: Location,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private validationTooltipConfig: NgbTooltipConfig,
+                private validationTooltipModule: NgbTooltipModule) {
     }
 
     ngOnInit() {
@@ -79,6 +81,7 @@ export class StudentProfileComponent implements OnInit {
     newStudent() {
         this.student = new Student;
         this.student.photo = "assets/profile.png";
+        this.newFotoSrc.nativeElement.src = "assets/profile.png";
         this.getFacultyName();
     }
 
@@ -106,6 +109,7 @@ export class StudentProfileComponent implements OnInit {
                         this.modalInfoConfig.infoString = `Перевірте правильність введених даних`;
                         this.successEventModal();
                     }
+                    console.log("ERROR");
                 },
                 error => console.log("error: ", error)
             );
@@ -248,10 +252,6 @@ export class StudentProfileComponent implements OnInit {
             this.updateStudent();
             this.editSaveButtonName = "Редагувати дані";
         }
-        this.statusView = !this.statusView;
-    }
-
-    myStatusView() {
         this.statusView = !this.statusView;
     }
 

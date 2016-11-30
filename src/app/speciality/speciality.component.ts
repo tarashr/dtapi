@@ -34,13 +34,9 @@ export class SpecialityComponent implements OnInit{
     public paginationSize = maxSize;
     public headers: any = headersSpeciality;
     public actions: any = actionsSpeciality;
-
-
-    public addTitle: string = "Створити новий факультет";
     public searchTitle: string = "Введіть дані для пошуку";
     public entityTitle: string = "Спеціальності";
     public selectLimit: string = "Виберіть кількість записів на сторінці";
-
     public entityData: any[] = [];
     private entityDataLength: number;
     public entity: string = "speciality";
@@ -48,11 +44,6 @@ export class SpecialityComponent implements OnInit{
     public offset: number = 0;
     public search: string = "";
     public page: number = 1;
-
-    constructor(private crudService: CRUDService,
-                private _router: Router,
-                private modalService: NgbModal) {
-    };
 
     public changeLimit = changeLimit;
     public pageChange = pageChange;
@@ -62,6 +53,11 @@ export class SpecialityComponent implements OnInit{
     public successEventModal = successEventModal;
     public getRecordsRange = getRecordsRange;
     public findEntity = findEntity;
+
+    constructor(private crudService: CRUDService,
+                private _router: Router,
+                private modalService: NgbModal) {
+    };
 
     ngOnInit() {
         this.getCountRecords();
@@ -111,8 +107,7 @@ export class SpecialityComponent implements OnInit{
                 const newSpeciality: Speciality = new Speciality(data.list[0].value, data.list[1].value);
                 this.crudService.insertData(this.entity, newSpeciality)
                     .subscribe(response => {
-                        this.configAdd.list.forEach((item) => item.value = "");
-                        this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
+                        this.modalInfoConfig.infoString = `${data.list[1].value} успішно створено`;
                         this.successEventModal();
                         this.refreshData(data.action);
                     });

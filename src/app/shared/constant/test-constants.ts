@@ -66,7 +66,7 @@ export const configAddTest = {
         {name: "Кількість завдань", value: "", title: "tasks", type: "text", placeholder: "Задайте кількість завдань",
             formControlName: "count", hint: "Допускається використовувати тільки цифри"},
         {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text", placeholder: "Встановіть час, хв",
-            formControlName: "testTime", hint: "Допускається використовувати тільки цифри"},
+            formControlName: "testTime/Rate", hint: "Допускається використовувати тільки цифри"},
         {name: "Кількість спроб", value: "", title: "attempts", type: "text", placeholder: "Встановіть кількість спроб",
             formControlName: "testAttempts", hint: "Допускається використовувати тільки цифри (максимальне значення 255)"}
     ],

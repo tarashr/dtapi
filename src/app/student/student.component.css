@@ -97,18 +97,11 @@ select.ng-valid{
 }
 
 .data-field{
-    display: inline-block;
-    margin: 10px 20px 10px 0;
     width: 50%;
+    display: inline-block;
     float: right;
     text-align: left;
-    height: auto;
-}
-
-.password-for-view{
-    width: auto;
-    border: 1px solid #000000;
-    background-color: #F8F8F8;
+    margin: 10px 20px 10px 0;
 }
 
 .password-eye-input{
@@ -126,18 +119,13 @@ select.ng-valid{
 }
 
 label {
+    display: block;
     float:left;
-    margin: 10px 0 10px 0;
     clear: right;
+    margin: 10px 0 10px 0;
 }
 
-.data-field input {
-    width: 80%;
-    margin: 0 0 0 0;
+.password-field{
+    min-height: 22px
 }
-
-.field-input{
-    margin: 0 0 0 0;
-}
-
 

@@ -24,15 +24,17 @@ export class ModalAddEditComponent implements OnInit {
 
     ngOnInit() {
         this.addEditForm = new FormGroup({
-            "username": new FormControl("", Validators.required),
-            "groupName": new FormControl("", [
+            "username": new FormControl("", [
                 Validators.minLength(1)
             ]),
+            "groupName": new FormControl("", [
+                Validators.pattern("^[А-ЯЁЇІіЄҐ]{2,3}[-][0-9]{2}[-][0-9]{1}$")
+            ]),
             "specialityCode": new FormControl("", [
-                Validators.pattern("^[0-9]*$")
+                Validators.pattern("^[0-9. ]*$")
             ]),
             "name": new FormControl("", [
-                Validators.pattern("^[А-Яа-я ]+$")
+                Validators.pattern("^[А-Яа-яёЁЇїІіЄєҐґ'’ ]+$")
             ]),
             "count": new FormControl("", [
                 Validators.pattern("^[0-9]*$")
@@ -60,7 +62,7 @@ export class ModalAddEditComponent implements OnInit {
                 Validators.maxLength(100)
             ]),
             "email": new FormControl("", [
-                Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                Validators.pattern("^[^@]+@[^@]+\.[^@]+$")
             ]),
             "password": new FormControl("", [
                 Validators.minLength(8)
@@ -71,18 +73,10 @@ export class ModalAddEditComponent implements OnInit {
         });
     }
 
-    comparePasswords() {
-        if (this.addEditForm.controls["password"].value === this.addEditForm.controls["cpassword"].value) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     activateForm() {
         if (!this.addEditForm.controls["password"]) {
             this.activeModal.close(this.config);
-        } else if (this.comparePasswords()) {
+        } else if (this.addEditForm.controls["password"].value === this.addEditForm.controls["cpassword"].value) {
             this.activeModal.close(this.config);
         } else {
             this.isSamePasswords = false;
