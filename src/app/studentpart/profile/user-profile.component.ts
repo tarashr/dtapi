@@ -3,7 +3,6 @@ import { Router } from "@angular/router";
 import { CRUDService } from "../../shared/services/crud.service";
 import { LoginService } from "../../shared/services/login.service";
 
-
 @Component({
     selector: 'user-profile-component',
     templateUrl: 'user-profile.component.html',
@@ -40,14 +39,12 @@ export class UserProfileComponent implements OnInit{
     }
 
     ngOnInit() {
-
         let userId:number = +sessionStorage.getItem("userId");
         this.getStudentProfile(userId);
     }
 
     logout() {
         this._loginService.logout();
-
     }
 
        getStudentProfile(userId: number) {
@@ -59,10 +56,8 @@ export class UserProfileComponent implements OnInit{
                         this.userGroup = dataGroup[0];
                         this._commonService.getRecordById("Faculty", this.userGroup.faculty_id)
                             .subscribe(dataFaculty=>this.userFaculty = dataFaculty[0]);
-
                         this._commonService.getRecordById("Speciality", this.userGroup.speciality_id)
                             .subscribe(dataSpeciality=>this.userSpeciality = dataSpeciality[0]);
-
                     })
             });
     }
