@@ -17,7 +17,7 @@
                         <div *ngIf="!statusView" class="data-field-enter">
                             <input id="surname" name="surname" class="input-student-data"
                                    [(ngModel)]="student.student_surname" required maxlength="20"
-                                   #surname="ngModel" pattern="([A-Za-z\-]*|[ЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ'\-]*)"
+                                   #surname="ngModel" pattern="([A-Za-z\-]*|[ЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ'`\-]*)"
                                    ngModel>
                             <div class="hint"
                                  [hidden]="!(surname.invalid && surname.dirty && surname.touched)">
@@ -32,7 +32,7 @@
                         <div *ngIf="!statusView" class="data-field-enter"><input id="name" name="name" class="input-student-data"
                                                         [(ngModel)]="student.student_name" required maxlength="20"
                                                         #name="ngModel"
-                                                        pattern="([A-Za-z\-]*|[ЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ'\-]*)"
+                                                        pattern="([A-Za-z\-]*|[ЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ'`\-]*)"
                                                         ngModel>
                             <div class="hint"
                                  [hidden]="!(name.invalid && name.dirty && name.touched)">
@@ -47,7 +47,7 @@
                             <div *ngIf="!statusView" class="data-field-enter"><input id="fname" name="fname" class="input-student-data"
                                                             [(ngModel)]="student.student_fname" required maxlength="20"
                                                             #fname="ngModel"
-                                                            pattern="([A-Za-z\-]*|[ЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ'\-]*)"
+                                                            pattern="([A-Za-z\-]*|[ЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ'`\-]*)"
                                                             ngModel>
                                 <div class="hint"
                                      [hidden]="!(fname.invalid && fname.dirty && fname.touched)">
