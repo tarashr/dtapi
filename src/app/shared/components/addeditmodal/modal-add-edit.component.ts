@@ -49,6 +49,7 @@ export class ModalAddEditComponent implements OnInit {
                 this.dateValidator
             ]),
             "endDate": new FormControl("", [
+                this.dateValidator
             ]),
             "startTime": new FormControl("", [
                 Validators.pattern("^(([0|1][0-9])|([2][0-3])):([0-5][0-9])$")
@@ -83,6 +84,7 @@ export class ModalAddEditComponent implements OnInit {
             if (control.value.month >= 1 && control.value.month <= 12) {
                 return null;
             }
+            return {Invalid: true};
         } else {
             return {Invalid: true};
         }
