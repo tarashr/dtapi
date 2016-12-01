@@ -64,16 +64,14 @@ export class SpecialityComponent implements OnInit{
     }
 
     private createTableConfig = (data: any )=> {
-        const tempArr: any[] = [];
         let numberOfOrder: number;
-        data.forEach((item, i) => {
+        this.entityData = data.map((item, i) => {
             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
             const speciality: any = {};
             speciality.entity_id = item.speciality_id;
             speciality.entityColumns = [numberOfOrder, item.speciality_code, item.speciality_name];
-            tempArr.push(speciality);
+            return speciality;
         });
-        this.entityData = tempArr;
     };
 
     activate(data: any) {
