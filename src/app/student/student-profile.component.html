@@ -105,12 +105,14 @@
                     </div>
                     <div><label for="userPassword">Пароль:</label>
                         <div *ngIf="!statusView" class="data-field-enter"><input id="userPassword" name="userPassword"
-                                                        class="input-student-data password-eye-input"
-                                                        [type]="passwordStatusText" [(ngModel)]="student.plain_password"
-                                                        required minlength="8"
-                                                        maxlength="20" #userPassword="ngModel" ngModel>
+                                                                                 class="input-student-data password-eye-input"
+                                                                                 [type]="passwordStatusText"
+                                                                                 [(ngModel)]="student.plain_password"
+                                                                                 required minlength="8" maxlength="20"
+                                                                                 #userPassword="ngModel" ngModel>
                             <span class="glyphicon glyphicon-eye-open password-eye" (click)="showPassword()"></span>
-                            <div class="hint" [hidden]="!(userPassword.invalid && userPassword.dirty && userPassword.touched)">
+                            <div class="hint"
+                                 [hidden]="!(userPassword.invalid && userPassword.dirty && userPassword.touched)">
                                 Довжина пароля повинна бути від 8 до 20 символів
                             </div>
                         </div>
@@ -161,7 +163,7 @@
                 <button *ngIf="action" class="btn btn-default" type="submit" (click)="createNewStudent()" role="button"
                         [disabled]="!(myform.valid && (group.value>0))">Зберегти дані
                 </button>
-                <button *ngIf="action" class="btn btn-default" type="submit" (click)="newStudent()" role="button">
+                <button *ngIf="action" class="btn btn-default" type="submit" (click)="newStudent(); myform.reset()" role="button">
                     Очистити форму
                 </button>
             </div>

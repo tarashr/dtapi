@@ -7,10 +7,9 @@ import {Student} from "../shared/classes/student";
 import {CRUDService} from "../shared/services/crud.service";
 import {EntityManagerBody} from "../shared/classes/entity-manager-body";
 import {Observable, Subscription} from "rxjs/Rx";
-import {NgbModal, NgbTooltipModule, NgbTooltipConfig} from "@ng-bootstrap/ng-bootstrap";
-import {FormsModule} from "@angular/forms";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {FormsModule, Form} from "@angular/forms";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
-// import {ImageCropperComponent, CropperSettings} from "ng2-img-cropper";
 
 import {
     modalInfoConfig,
@@ -41,24 +40,19 @@ export class StudentProfileComponent implements OnInit {
     public statusView: boolean = true;
     public action: Boolean;
 
-    public passwordStatus: boolean = true;
     public passwordStatusText: string = "password";
     public editSaveButtonName: string = "Редагувати дані";
 
     public mypattern: string = "^[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]+[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9.!#$%&’*+/=?^_`{|}~-]*[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]*@[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]+(?:([a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9-]*[\.?]))+([a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ]{2,6})$";
 
-    // private subscription: Subscription;
-
-
     @ViewChild("newFotoSrc") newFotoSrc: ElementRef;
     @ViewChild("inputFile") inputFile: ElementRef;
+    @ViewChild("myform") myform: any;
 
     constructor(private route: ActivatedRoute,
                 private _commonService: CRUDService,
                 private location: Location,
-                private modalService: NgbModal,
-                private validationTooltipConfig: NgbTooltipConfig,
-                private validationTooltipModule: NgbTooltipModule) {
+                private modalService: NgbModal) {
     }
 
     ngOnInit() {
@@ -107,6 +101,7 @@ export class StudentProfileComponent implements OnInit {
                         this.modalInfoConfig.infoString = `Створено профіль студента ${dataForRequest.student_surname} ${dataForRequest.student_name} ${dataForRequest.student_fname}`;
                         this.successEventModal();
                         this.newStudent();
+                        this.myform.reset();
                     }
                 },
                 error => {
@@ -241,13 +236,12 @@ export class StudentProfileComponent implements OnInit {
     }
 
     showPassword() {
-        if (this.passwordStatus) {
+        if (this.passwordStatusText === "password") {
             this.passwordStatusText = "text";
         }
         else {
             this.passwordStatusText = "password";
         }
-        this.passwordStatus = !this.passwordStatus;
     }
 
     editSaveStudentProfile() {
