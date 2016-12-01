@@ -51,10 +51,10 @@ export class StudentTestResultsComponent implements OnInit {
                             this.entityData.push({
                                 entityColumns: [
                                     testResults.test_name,
-                                    testResult[i].session_date.replace(/(\d+)-(\d+)-(\d+)/, '$3-$2-$1') + " з (" +
+                                    testResult[i].session_date.replace(/(\d+)-(\d+)-(\d+)/, '$3-$2-$1') + " ( з " +
                                     testResult[i].start_time + " до " +
                                     testResult[i].end_time + ")",
-                                    testResult[i].result / testResult[i].answers * 100 + "% (" +
+                                    (testResult[i].result / testResult[i].answers * 100).toFixed(2) + "% (" +
                                     testResult[i].result + " з " +
                                     testResult[i].answers + ")"]
                             });

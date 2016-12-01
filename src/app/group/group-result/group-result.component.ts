@@ -128,18 +128,16 @@ export class GroupResultComponent implements OnInit {
     }
 
     private createTableConfig = (data: any) => {
-        let tempArr: any[] = [];
         let numberOfOrder: number;
         if (data.length) {
-            data.forEach((item, i) => {
+            this.entityData = data.map((item, i) => {
                 numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-                let groupResult: any = {};
+                const groupResult: any = {};
                 groupResult.entity_id = item.test_id;
                 groupResult.subject_id = item.subject_id;
                 groupResult.entityColumns = [numberOfOrder, item.subject_name, item.test_name];
-                tempArr.push(groupResult);
+                return groupResult;
             });
-            this.entityData = tempArr;
         } else {
             this.noRecords = true;
         }
