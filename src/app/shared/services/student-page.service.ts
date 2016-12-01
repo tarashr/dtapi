@@ -32,6 +32,13 @@ export class StudentPageService {
             .catch(this.handleError);
     }
 
+    getStudentTestPassedCount(studentId: number, testId:number): Observable<any> {
+        return this.http
+            .get(`${this.hostUrlBase}Result/countTestPassesByStudent/${studentId}/${testId}`)
+            .map(this.successResponse)
+            .catch(this.handleError);
+    }
+
     getTimeStamp(mili) {
         mili = +mili * 1000;
         let myDate = new Date(mili);
