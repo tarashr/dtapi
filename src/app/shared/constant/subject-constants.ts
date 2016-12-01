@@ -39,7 +39,7 @@ export const configAddSubject = {
     title: "Створити предмет",
     list: [
         {name: "Назва предмету", value: "", title: "name", type: "text", formControlName: "name",
-            hint: "Назва може складатись тільки з українських літер та пробілів"},
+            hint: "Назва може складатись тільки з українських чи латинських літер та пробілів"},
         {name: "Опис предмету", value: "", title: "description", type: "text", formControlName: "entityDescription",
             hint: "Максимальна довжина опису 100 символів"}
     ],
@@ -51,7 +51,7 @@ export const configEditSubject = {
     title: "Редагувати предмет",
     list: [
         {name: "Назва предмету", value: "", title: "name", type: "text", formControlName: "name",
-            hint: "Назва може складатись тільки з українських літер та пробілів"},
+            hint: "Назва може складатись тільки з українських чи латинських літер та пробілів"},
         {name: "Опис предмету", value: "", title: "description", type: "text", formControlName: "entityDescription",
             hint: "Максимальна довжина опису 100 символів"}
     ],

@@ -34,7 +34,7 @@ export const configAddSpeciality = {
         {name: "Код спеціальності", value: "", title: "code", type: "text", formControlName: "specialityCode",
             hint: "Код може складатись з цифр, пробілів та крапок"},
         {name: "Назва спеціальності", value: "", title: "specialityName", type: "text", formControlName: "name",
-            hint: "Назва може складатись тільки з українських літер та пробілів"}
+            hint: "Назва може складатись тільки з українських чи латинських літер та пробілів"}
     ],
     action: "create",
     labelBtn: "Додати"
@@ -46,7 +46,7 @@ export const configEditSpeciality = {
         {name: "Код спеціальності", value: "", title: "code", type: "text", formControlName: "specialityCode",
             hint: "Код може складатись з цифр, пробілів та крапок"},
         {name: "Назва спеціальності", value: "", title: "specialityName", type: "text", formControlName: "name",
-            hint: "Назва може складатись тільки з українських літер та пробілів"}
+            hint: "Назва може складатись тільки з українських чи латинських літер та пробілів"}
     ],
     action: "edit",
     labelBtn: "Редагувати",

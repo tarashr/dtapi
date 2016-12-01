@@ -42,7 +42,7 @@ export const configEditTest = {
     title: "Редагувати тест",
     list: [
         {name: "Назва тесту", value: "", title: "name", type: "text", formControlName: "name",
-            hint: "Назва може складатись тільки з українських літер та пробілів"},
+            hint: "Назва може складатись тільки з українських чи латинських літер та пробілів"},
         {name: "Кількість завдань", value: "", title: "tasks", type: "text", formControlName: "count",
             hint: "Допускається використовувати тільки цифри"},
         {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text", formControlName: "testTime/Rate",
@@ -62,7 +62,7 @@ export const configAddTest = {
     title: "Додати тест",
     list: [
         {name: "Назва тесту", value: "", title: "name", type: "text", placeholder: "Вкажіть назву тесту",
-            formControlName: "name", hint: "Назва може складатись тільки з українських літер та пробілів"},
+            formControlName: "name", hint: "Назва може складатись тільки з українських чи латинських літер та пробілів"},
         {name: "Кількість завдань", value: "", title: "tasks", type: "text", placeholder: "Задайте кількість завдань",
             formControlName: "count", hint: "Допускається використовувати тільки цифри"},
         {name: "Тривалість тесту", value: "", title: "time_for_test", type: "text", placeholder: "Встановіть час, хв",

@@ -34,7 +34,7 @@ export class ModalAddEditComponent implements OnInit {
                 Validators.pattern("^[0-9. ]*$")
             ]),
             "name": new FormControl("", [
-                Validators.pattern("^[А-Яа-яёЁЇїІіЄєҐґ'’ ]+$")
+                Validators.pattern("^[A-Za-zА-Яа-яёЁЇїІіЄєҐґ'’,. -]+$")
             ]),
             "count": new FormControl("", [
                 Validators.pattern("^[0-9]*$")
