@@ -64,16 +64,14 @@ export class AdminUserComponent implements OnInit {
     }
 
     private createTableConfig = (data: any) => {
-        const tempArr: any[] = [];
         let numberOfOrder: number;
-        data.forEach((item, i ) => {
-            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-            const adminUser: any = {};
-            adminUser.entity_id = item.id;
-            adminUser.entityColumns = [numberOfOrder, item.username, item.email];
-            tempArr.push(adminUser);
+        this.entityData = data.map((item, i ) => {
+                numberOfOrder = i + 1 + (this.page - 1) * this.limit;
+                const adminUser: any = {};
+                adminUser.entity_id = item.id;
+                adminUser.entityColumns = [numberOfOrder, item.username, item.email];
+                return adminUser;
         });
-        this.entityData = tempArr;
     }
 
     activate(data: any) {
