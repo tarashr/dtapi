@@ -24,36 +24,27 @@ export class TestListComponent implements OnChanges {
 
     @Input() groupId;
 
-
-    public modalInfoConfig: any = modalInfoConfig;
-
-    public activeTests: any = activeTests;
-    public activeTimeTable: any = activeTimeTable;
-
+    public modalInfoConfig:any = modalInfoConfig;
+    public activeTests:any = activeTests;
+    public activeTimeTable:any = activeTimeTable;
     public dateNow = {date: "", time: ""};
-    public countOfTests: number = 0;
-
-    public headers: any = headersStudentTestList;
-    public actions: any = actionsStudentTestList;
+    public headers:any = headersStudentTestList;
+    public actions:any = actionsStudentTestList;
     public entityData = [];
     public userRole = sessionStorage.getItem("userRole");
 
-    constructor(private _commonService: CRUDService,
-                private _router: Router,
-                private _subjectService: SubjectService,
-                private _studentService: StudentPageService,
-                private modalService: NgbModal) {
+    constructor(private _commonService:CRUDService,
+                private _router:Router,
+                private _subjectService:SubjectService,
+                private _studentService:StudentPageService,
+                private modalService:NgbModal) {
     }
 
     ngOnChanges() {
         if (this.groupId) {
             this.getTimeTable();
-
         }
-
-
     }
-
 
     activate(data) {
         this.runTest(data);
@@ -65,11 +56,9 @@ export class TestListComponent implements OnChanges {
             .subscribe(date=> {
                 let today = date;
                 this.dateNow = this._studentService.getTimeStamp(+today.curtime - today.offset);
-
                 this._commonService.getTimeTableForGroup(this.groupId)
                     .subscribe(data => {
                         this.activeTimeTable = data;
-
                         for (let i = 0; i < this.activeTimeTable.length; i++) {
                             const eventDateTime = {
                                 startDate: this.activeTimeTable[i].start_date,
@@ -82,7 +71,7 @@ export class TestListComponent implements OnChanges {
                                 (this.dateNow.time >= eventDateTime.startTime) &&
                                 (this.dateNow.time <= eventDateTime.endTime)
                             ) {
-                                this.getTestsForToday(
+                                this.getTestsForNow(
                                     this.activeTimeTable[i].subject_id,
                                     eventDateTime
                                 );
@@ -92,7 +81,7 @@ export class TestListComponent implements OnChanges {
             });
     }
 
-    getTestsForToday(subId, eventDateTime) {
+    getTestsForNow(subId, eventDateTime) {
         this._commonService.getRecordById("subject", subId)
             .subscribe(subject => {
                 let newSubjectName = subject[0].subject_name;
@@ -100,30 +89,40 @@ export class TestListComponent implements OnChanges {
                     .subscribe(dataTests => {
                         this.activeTests = dataTests;
                         for (let j = 0; j < this.activeTests.length; j++) {
-                            if (this.activeTests[j].enabled === "1") {
-                                this.countOfTests++;
-                                this.entityData.push({
-                                    entityColumns: [
-                                        newSubjectName,
-                                        this.activeTests[j].test_name,
-                                        eventDateTime.startDate.replace(/(\d+)-(\d+)-(\d+)/, '$3-$2-$1') + " / " +
-                                        eventDateTime.startTime,
-                                        eventDateTime.endDate.replace(/(\d+)-(\d+)-(\d+)/, '$3-$2-$1') + " / " +
-                                        eventDateTime.endTime,
-                                        ],
-                                    entity_id: this.activeTests[j].test_id
+                            const userId:number = +sessionStorage.getItem("userId");
+                            let userAttepts:number = 0;
+                            this._studentService.getStudentTestResults(userId)
+                                .subscribe(data=> {
+                                    const testResult = data;
+                                    for (let i = 0; i < testResult.length; i++) {
+                                        if (testResult[i].test_id == this.activeTests[j].test_id) {
+                                            ++userAttepts;
+                                        }
+                                    }
+                                    if (this.activeTests[j].enabled === "1" &&
+                                        this.activeTests[j].attempts > userAttepts) {
+                                        this.entityData.push({
+                                            entityColumns: [
+                                                newSubjectName + ": " +
+                                                this.activeTests[j].test_name,
+                                                eventDateTime.startDate.replace(/(\d+)-(\d+)-(\d+)/, '$3-$2-$1') + " / " +
+                                                eventDateTime.startTime,
+                                                eventDateTime.endDate.replace(/(\d+)-(\d+)-(\d+)/, '$3-$2-$1') + " / " +
+                                                eventDateTime.endTime,
+                                                this.activeTests[j].tasks,
+                                                this.activeTests[j].time_for_test
+                                            ],
+                                            entity_id: this.activeTests[j].test_id
+                                        });
+                                    }
                                 });
-                            }
                         }
-
                     });
-
             });
     }
 
-
-    runTest(data: any) {
-        this.modalInfoConfig.infoString = "Ви дійсно хочете пройти тест:\n" + data.entityColumns[1] + "?";
+    runTest(data:any) {
+        this.modalInfoConfig.infoString = "Ви дійсно хочете пройти тест:\n" + data.entityColumns[0] + "?";
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Початок тестування";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
@@ -137,6 +136,5 @@ export class TestListComponent implements OnChanges {
                 return;
             });
     }
-
 
 }

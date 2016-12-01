@@ -6,7 +6,6 @@ import {Component, OnInit, Input} from "@angular/core";
 })
 
 export class TestsTabsetComponent implements OnInit {
-
     @Input() groupName;
     @Input() groupId;
 
