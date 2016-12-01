@@ -121,7 +121,8 @@ export class GroupTestResultComponent implements OnInit {
         for (let i in this.entityDataWithNames) {
             for (let k in data) {
                 if (this.entityDataWithNames[i].student_id === data[k].user_id) {
-                    this.entityDataWithNames[i].student_name = `${data[k].student_surname} ${data[k].student_name}`;
+                    this.entityDataWithNames[i].student_name =
+                        `${data[k].student_surname} ${data[k].student_name} ${data[k].student_fname}`;
                 }
             }
         }
