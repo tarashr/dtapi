@@ -154,7 +154,7 @@
 
             <div class="button-create-refresh">
                 <button *ngIf="!action" class="btn btn-default" type="submit" (click)="editSaveStudentProfile()"
-                        role="button">
+                        role="button" [disabled]="myform.invalid && (editSaveButtonName == 'Зберегти дані')">
                     {{editSaveButtonName}}
                 </button>
                 <button *ngIf="!action" class="btn btn-danger" type="submit" (click)=deleteStudent() role="button">

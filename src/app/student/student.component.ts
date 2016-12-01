@@ -1,11 +1,11 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Router, ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
 import {Student} from "../shared/classes/student";
 import {Group} from "../shared/classes/group";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {CRUDService} from "../shared/services/crud.service.ts";
+import {CRUDService} from "../shared/services/crud.service";
 import {EntityManagerBody} from "../shared/classes/entity-manager-body";
 import "../shared/rxjs-operators";
 import {
@@ -13,7 +13,6 @@ import {
     changeLimit,
     pageChange,
     delRecord,
-    // refreshData,
     getCountRecords,
     headersStudentAdmin,
     actionsStudentAdmin,
