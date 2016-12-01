@@ -151,7 +151,7 @@
 
             </div>
 
-
+            <div [hidden]="myform.valid" class="emergy-text"> * Всі поля є обов'язковими!!!</div>
             <div class="button-create-refresh">
                 <button *ngIf="!action" class="btn btn-default" type="submit" (click)="editSaveStudentProfile()"
                         role="button" [disabled]="myform.invalid && (editSaveButtonName == 'Зберегти дані')">
