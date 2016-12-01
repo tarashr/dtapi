@@ -206,6 +206,8 @@ export class StudentProfileComponent implements OnInit {
                     if (data.response === "ok") {
                         this.modalInfoConfig.infoString = `Дані студента ${dataForUpdateStudent.student_surname} ${dataForUpdateStudent.student_name} ${dataForUpdateStudent.student_fname} обновленно`;
                         this.successEventModal();
+                        this.editSaveButtonName = "Редагувати дані";
+                        this.statusView = !this.statusView;
                     }
                     else {
                         this.modalInfoConfig.infoString = `Помилка обновлення. Перевірте дані`;
@@ -216,6 +218,7 @@ export class StudentProfileComponent implements OnInit {
                     console.log("error: ", error);
                     this.modalInfoConfig.infoString = "Перевірте правильність введених даних";
                     this.successEventModal();
+                    this.editSaveButtonName = "Зберегти дані";
                 }
             );
     }
@@ -247,12 +250,11 @@ export class StudentProfileComponent implements OnInit {
     editSaveStudentProfile() {
         if (this.statusView) {
             this.editSaveButtonName = "Зберегти дані";
+            this.statusView = !this.statusView;
         }
         else {
             this.updateStudent();
-            this.editSaveButtonName = "Редагувати дані";
         }
-        this.statusView = !this.statusView;
     }
 
     deleteStudent() {
