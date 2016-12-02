@@ -239,21 +239,17 @@ export class GroupComponent implements OnInit, OnDestroy {
                     this.createTableConfig(data);
                 }, error => console.log("error: ", error));
         }
-
-
     };
 
     private createTableConfig = (data: any) => {
-        const tempArr: any[] = [];
         let numberOfOrder: number;
-        data.forEach((item, i) => {
+        this.entityData = data.map((item, i) => {
             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
             const group: any = {};
             group.entity_id = item.group_id;
             group.entityColumns = [numberOfOrder, item.group_name, item.faculty_name, item.speciality_name];
-            tempArr.push(group);
+            return group;
         });
-        this.entityData = tempArr;
     };
 
     activate(data: any) {
