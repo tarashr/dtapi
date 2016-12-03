@@ -92,15 +92,14 @@ export class GroupTestResultComponent implements OnInit {
                     } else {
                         this.entityDataWithNames = data;
                         this.noRecords = false;
-                        const ids = [];
-                        this.maxResult = +data[0].answers
-                        data.forEach(item => {
-                            ids.push(item.student_id);
+                        this.maxResult = +data[0].answers;
+                        const ids = data.map(item => {
                             item.resultInPercentage = (+item.result / this.maxResult) * 100;
                             item.resultNational = this.groupService.toNationalRate(item.resultInPercentage);
                             item.resultECTS = this.groupService.toECTSRate(item.resultInPercentage);
+                            return item.student_id;
                         });
-                        let entityManagerStudent = new EntityManagerBody(this.studentEntity, ids);
+                        const entityManagerStudent = new EntityManagerBody(this.studentEntity, ids);
                         this.getStudentName(entityManagerStudent);
                     }
                 },
@@ -138,7 +137,6 @@ export class GroupTestResultComponent implements OnInit {
     };
 
     private createTableConfig = (data: any) => {
-        const tempArr: any[] = [];
         let numberOfOrder: number;
         if (data.length) {
             this.entityData = data.map((item, i) => {
