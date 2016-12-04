@@ -488,9 +488,9 @@ export class TestPlayerService {
         bodyResult.answers = bodyResultParams.maxUserRate;
         bodyResult.student_id = bodyResultParams.studentId;
         bodyResult.test_id = bodyResultParams.testId;
-        bodyResult.session_date = this.commonService.createSQLDate(date, "date", "-");
-        bodyResult.start_time = this.commonService.createSQLDate(date, "time", ":");
-        bodyResult.end_time = this.commonService.createSQLDate(dateEnd, "time", ":");
+        bodyResult.session_date = this.commonService.formatTime(date, "YYYY-MM-DD");
+        bodyResult.start_time = this.commonService.formatTime(date, "hh:mm:ss");
+        bodyResult.end_time = this.commonService.formatTime(dateEnd, "hh:mm:ss");
         bodyResult.result = bodyResultParams.userRate;
         bodyResult.questions = [];
         if (!bodyResultParams.results.length) {
