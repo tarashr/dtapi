@@ -51,7 +51,7 @@ export class GroupTestResultComponent implements OnInit {
         this.getGroupName();
         this.getTestName();
         this.getSubjectName();
-    }
+    };
 
     getGroupName() {
         this.crudService.getRecordById(this.groupEntity, this.groupId)
@@ -61,7 +61,7 @@ export class GroupTestResultComponent implements OnInit {
                 },
                 error => console.log("error: ", error)
             );
-    }
+    };
 
     getTestName() {
         this.crudService.getRecordById(this.testEntity, this.testId)
@@ -71,7 +71,7 @@ export class GroupTestResultComponent implements OnInit {
                 },
                 error => console.log("error: ", error)
             );
-    }
+    };
 
     getSubjectName() {
         this.crudService.getRecordById(this.subjectEntity, this.subjectId)
@@ -81,7 +81,7 @@ export class GroupTestResultComponent implements OnInit {
                 },
                 error => console.log("error: ", error)
             );
-    }
+    };
 
     getRecords(): void {
         this.groupService.getTestResult(this.testId, this.groupId)
@@ -106,7 +106,7 @@ export class GroupTestResultComponent implements OnInit {
                 },
                 error => console.log("error: ", error)
             );
-    }
+    };
 
     getStudentName(param: EntityManagerBody): void {
         this.crudService.getEntityValues(param)
@@ -115,7 +115,7 @@ export class GroupTestResultComponent implements OnInit {
                     this.getNamesByIds(data);
                 }
             );
-    }
+    };
 
     getNamesByIds(data: any): void {
         for (let i in this.entityDataWithNames) {
@@ -127,21 +127,21 @@ export class GroupTestResultComponent implements OnInit {
             }
         }
         this.createTableConfig(this.entityDataWithNames);
-    }
+    };
 
     goBack(): void {
         this.location.back();
-    }
+    };
 
     Print(): void {
         window.print();
-    }
+    };
 
     private createTableConfig = (data: any) => {
         const tempArr: any[] = [];
         let numberOfOrder: number;
         if (data.length) {
-            data.forEach((item, i) => {
+            this.entityData = data.map((item, i) => {
                 numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                 const groupResult: any = {};
                 groupResult.entity_id = item.test_id;
@@ -152,9 +152,8 @@ export class GroupTestResultComponent implements OnInit {
                     `${item.resultInPercentage.toFixed(2)}%`,
                     item.resultNational,
                     item.resultECTS];
-                tempArr.push(groupResult);
+                return groupResult;
             });
-            this.entityData = tempArr;
         } else {
             this.noRecords = true;
         }
@@ -162,5 +161,5 @@ export class GroupTestResultComponent implements OnInit {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
-    }
+    };
 }

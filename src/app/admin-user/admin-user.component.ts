@@ -57,11 +57,11 @@ export class AdminUserComponent implements OnInit {
 
     constructor(private crudService: CRUDService,
                 private modalService: NgbModal) {
-    }
+    };
 
     ngOnInit(): void {
         this.getCountRecords();
-    }
+    };
 
     private createTableConfig = (data: any) => {
         let numberOfOrder: number;
@@ -72,7 +72,7 @@ export class AdminUserComponent implements OnInit {
                 adminUser.entityColumns = [numberOfOrder, item.username, item.email];
                 return adminUser;
         });
-    }
+    };
 
     activate(data: any) {
         switch (data.action) {
@@ -85,8 +85,8 @@ export class AdminUserComponent implements OnInit {
             case "delete":
                 this.deleteCase(data);
                 break;
-        }
-    }
+        };
+    };
 
     createCase(userToChange?: User) {
         this.configAdd.list.forEach((item) => {
@@ -124,7 +124,7 @@ export class AdminUserComponent implements OnInit {
             }, () => {
                 return;
             });
-    }
+    };
 
     editCase(data: any) {
         const editData = data;
@@ -155,7 +155,7 @@ export class AdminUserComponent implements OnInit {
             }, () => {
                 return;
             });
-    }
+    };
 
     deleteCase(data: any) {
         this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
@@ -169,6 +169,6 @@ export class AdminUserComponent implements OnInit {
             }, () => {
                 return;
             });
-    }
+    };
 
-}
+};
