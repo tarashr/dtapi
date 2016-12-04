@@ -227,7 +227,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 let newQuestion: Question = new Question(
                     data.list[0].value,
                     data.select[0].selected,
-                    data.select[1].selectItem.indexOf(data.select[1].selected),
+                    data.select[1].selectItem.indexOf(data.select[1].selected) + 1,
                     data.img.value,
                     this.test_id
                 );

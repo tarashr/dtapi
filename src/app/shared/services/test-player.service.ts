@@ -50,7 +50,6 @@ export class TestPlayerService {
     private maxUserRate: number = 0;
     private userRate: number = 0;
     private precisionTime: number = 5;
-    private countAttempts: boolean = true;
 
     constructor(private http: Http,
                 private router: Router,
@@ -78,12 +77,16 @@ export class TestPlayerService {
             .catch(this.handleError);
     }
 
-    checkSAnswers(questions: TestPlayerQuestions[], startTime: number, endTime: number) {
-        let body = this.createBodyCheck(questions);
-        this.http
+    checkSAnswer(body: any) {
+        return this.http
             .post(this.checkSAnswerUrl, JSON.stringify(body), {headers: this.headersCheckSAnswer})
             .map(this.successResponse)
-            .catch(this.handleError)
+            .catch(this.handleError);
+    }
+
+    successTestByTimer(questions: TestPlayerQuestions[], startTime: number, endTime: number) {
+        let body = this.createBodyCheck(questions);
+        this.checkSAnswer(body)
             .subscribe((results: TestPlayerDtapiResult[]) => {
                 this.userRate = this.getUserRate(results, questions);
                 const saveResConfig: any = {
@@ -98,9 +101,11 @@ export class TestPlayerService {
     }
 
     failTestByTimer(questions: TestPlayerQuestions[], startTime: number, endTime: number) {
-        let userRate: number = 0;
-        const results: TestPlayerDtapiResult[] = [{question_id: "-1", true: 0}];
-        const saveResConfig: any = {userRate, startTime, endTime, questions, results};
+        const body = `[{"question_id":"","answer_ids":[]}]`;
+        this.checkSAnswer(body)
+            .subscribe(this.handleReject, this.handleReject);
+
+        const saveResConfig: any = {userRate: 0, startTime, endTime, questions, results: []};
 
         questions.forEach(question => {
             question.chosenAnswer = {};
@@ -109,7 +114,7 @@ export class TestPlayerService {
     }
 
     saveResults(saveResConfig: any) {
-        let message: string = saveResConfig.results[0].question_id === "-1" ?
+        let message: string = !saveResConfig.results.length ?
             `Тест закінчено поза межами відведеного часу. Ваша оцінка становить 0 балів.` :
             `Кількість набраних Вами балів становить: ${this.userRate} з ${this.maxUserRate} максимально можливих`;
         const bodyResultParams: any = {
@@ -117,7 +122,7 @@ export class TestPlayerService {
             testId: this.testId,
             startTime: saveResConfig.startTime,
             endTime: saveResConfig.endTime,
-            results: [],
+            results: saveResConfig.results,
             userRate: saveResConfig.userRate,
             questions: saveResConfig.questions,
             maxUserRate: this.maxUserRate
@@ -161,7 +166,6 @@ export class TestPlayerService {
     }
 
     countTestPassesByStudent = (testRecord: any): Observable<any> => {
-        this.countAttempts = true;
         return this.http
             .get(`${this.countTestPassesByStudentUrl}/${this.studentId}/${this.testId}`)
             .map(this.successResponse)
@@ -379,7 +383,7 @@ export class TestPlayerService {
             .post(this.saveEndTimeUrl, JSON.stringify(body), {headers: this.headersCheckSAnswer})
             .map(this.successResponse)
             .catch(this.handleError);
-    }
+    };
 
     getEndTime(): Observable < any > {
         return this.http
@@ -540,7 +544,7 @@ export class TestPlayerService {
                     observer.next({timeEndOfTest, savedEndOfTest});
                 }, this.errorSavedTime);
         });
-    }
+    };
 
     errorSavedTime = () => {
         this.commonService.openModalInfo(...this.modalParams.impossibleRecoverTest)
@@ -549,7 +553,7 @@ export class TestPlayerService {
                     localStorage.removeItem("dTester");
                     this.router.navigate(["/student"]);
                 });
-    }
+    };
 
     compareTime = (times) => {
         let startTime = +times.savedEndOfTest.unix_timestamp;
@@ -563,7 +567,7 @@ export class TestPlayerService {
                 observer.next({checkResult: false, startTime, endTime});
             }
         });
-    }
+    };
 
     checkTimer() {
         return this.getTimeStamp()

@@ -164,9 +164,9 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
             this.finishedTest = false;
             this.show = true;
         } else {
-            this.testPlayerService.checkSAnswers(this.questions, data.startTime, data.endTime);
+            this.testPlayerService.successTestByTimer(this.questions, data.startTime, data.endTime);
         }
-    }
+    };
 
     checkTimer(continueTest: boolean) {
         this.testPlayerService.checkTimer()
@@ -195,28 +195,29 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
     }
 
     getNewTestError = (error) => {
-        let message: string;
-        let mistake = error.message ? error.message : error;
-        switch (mistake) {
-            case "test does not exist":
+        let message: string = "Невідома помилка!";
+        let mistake: string = error.message ? error.message : error;
+        let resolve = {
+            "test does not exist": () => {
                 message = "Ви намагаєтесь зайти на неіснуючий тест. Виберіть доступний Вам тест на сторіці Вашого профайлу.";
-                break;
-            case "test data are absent":
+            },
+            "test data are absent": () => {
                 message = "Відсутні дані для тесту";
-                break;
-            case "attempts ended":
+            },
+            "attempts ended": () => {
                 message = "Ви використали всі спроби";
                 this.testPlayerService.resetSessionData();
-                break;
-            default:
-                message = "Невідома помилка!";
+            }
+        };
+        if (resolve[mistake]) {
+            resolve[mistake]();
         }
         this.commonService.openModalInfo(message)
             .then(this.testPlayerService.handleReject,
                 () => {
                     this.router.navigate(["/student"]);
                 });
-    }
+    };
 
     continueTest() {
         this.testPlayerService.recoverTestData()

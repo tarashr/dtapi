@@ -9,7 +9,6 @@ import {
     ConfigModalInfo
 } from "../shared/classes";
 
-import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add-edit.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {CRUDService} from "../shared/services/crud.service.ts";
@@ -17,7 +16,7 @@ import {
     configAddFaculty, configEditFaculty, modalInfoConfig,
     maxSize,
     changeLimit, pageChange, getCountRecords, getRecordsRange,
-    delRecord, findEntity, refreshData, successEventModal,
+    delRecord, findEntity, refreshData,
     headersFaculty, actionsFaculty,
     addTitle, searchTitle, entityTitle, selectLimitTitle
 } from "../shared/constant";
@@ -64,7 +63,6 @@ export class FacultyComponent implements OnInit {
     public getCountRecords = getCountRecords;
     public delRecord = delRecord;
     public refreshData = refreshData;
-    public successEventModal = successEventModal;
     public getRecordsRange = getRecordsRange;
     public findEntity = findEntity;
 
@@ -73,38 +71,34 @@ export class FacultyComponent implements OnInit {
     }
 
     private createTableConfig = (data: Faculty[]) => {
-        let tempArr: ConfigTableData[] = [];
         let numberOfOrder: number;
-        data.forEach((item, i) => {
+        this.entityData = data.map((item, i) => {
             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
             let faculty: any = {};
             faculty.entity_id = item.faculty_id + "";
             faculty.entityColumns = [numberOfOrder, item.faculty_name, item.faculty_description];
-            tempArr.push(<ConfigTableData>faculty);
+            return <ConfigTableData>faculty;
         });
-        this.entityData = tempArr;
     };
 
     activate(data: ConfigTableData) {
-        switch (data.action) {
-            case "group":
-                this._router.navigate(
-                    ["/admin/group/byFaculty"],
-                    {queryParams: {facultyId: data.entity_id}});
-                break;
-            case "create":
-                this.createCase();
-                break;
-            case "edit":
-                this.editCase(data);
-                break;
-            case "delete":
-                this.deleteCase(data);
-                break;
-        }
+        let run = {
+            group: this.groupCase,
+            create: this.createCase,
+            edit: this.editCase,
+            delete: this.deleteCase
+        };
+
+        run[data.action](data);
     }
 
-    createCase() {
+    groupCase = (data: ConfigTableData) => {
+        this._router.navigate(
+            ["/admin/group/byFaculty"],
+            {queryParams: {facultyId: data.entity_id}});
+    };
+
+    createCase = (data: ConfigTableData) => {
         this.configAdd.list.forEach((item) => {
             item.value = "";
         });
@@ -122,7 +116,7 @@ export class FacultyComponent implements OnInit {
                 this.handleReject);
     };
 
-    editCase(data: ConfigTableData) {
+    editCase = (data: ConfigTableData) => {
         this.configEdit.list.forEach((item, i) => {
             item.value = data.entityColumns[i + 1];
         });
@@ -139,16 +133,17 @@ export class FacultyComponent implements OnInit {
                         });
                 },
                 this.handleReject);
-    }
+    };
 
-    deleteCase(data: ConfigTableData) {
+    deleteCase = (data: ConfigTableData) => {
         let message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[1]}?`, "confirm", "Попередження!"];
         this.commonService.openModalInfo(...message)
             .then(() => {
                     this.delRecord(this.entity, +data.entity_id);
                 },
                 this.handleReject);
-    }
+    };
 
-    handleReject = () => {};
+    handleReject = () => {
+    };
 }
