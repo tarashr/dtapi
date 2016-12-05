@@ -40,6 +40,9 @@ export class ModalAddEditComponent implements OnInit {
             "count": new FormControl("", [
                 Validators.pattern(patterns.number)
             ]),
+            "answerCount": new FormControl("", [
+                Validators.pattern(patterns.answerCount)
+            ]),
             "testTime/Rate": new FormControl("", [
                 Validators.pattern(patterns.number)
             ]),

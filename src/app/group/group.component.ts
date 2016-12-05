@@ -328,6 +328,10 @@ export class GroupComponent implements OnInit, OnDestroy {
                         this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
                         this.successEventModal();
                         this.refreshData(data.action);
+                    }, error => {
+                        this.modalInfoConfig.infoString = `Група з такою назвою вже існує`;
+                        this.createCase();
+                        this.successEventModal();
                     });
             }, () => {
                 return;
