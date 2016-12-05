@@ -43,7 +43,7 @@ export const configAddQuestion = {
             title: "task",
             type: "text",
             placeholder: `"0" якщо бажаєте добавити відповіді пізніше`,
-            formControlName: "count",
+            formControlName: "answerCount",
             hint: "Введіть ціле число від 0 до 9"
         }
     ],
