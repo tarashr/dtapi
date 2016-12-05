@@ -6,6 +6,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {Speciality} from '../shared/classes/speciality';
 import {CRUDService} from "../shared/services/crud.service";
+import {CommonService} from "../shared/services/common.service";
 import {
     configAddSpeciality,
     configEditSpeciality,
@@ -56,7 +57,8 @@ export class SpecialityComponent implements OnInit{
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private commonService: CommonService) {
     };
 
     ngOnInit() {
@@ -105,9 +107,10 @@ export class SpecialityComponent implements OnInit{
                 const newSpeciality: Speciality = new Speciality(data.list[0].value, data.list[1].value);
                 this.crudService.insertData(this.entity, newSpeciality)
                     .subscribe(response => {
-                        this.modalInfoConfig.infoString = `${data.list[1].value} успішно створено`;
-                        this.successEventModal();
+                        this.commonService.openModalInfo(`${data.list[1].value} успішно створено`);
                         this.refreshData(data.action);
+                    }, error => {
+                        this.commonService.openModalInfo(`Спеціальність з такою назвою або кодом вже існує`);
                     });
             }, () => {
                 return;
@@ -126,9 +129,10 @@ export class SpecialityComponent implements OnInit{
                 const editedSpeciality: Speciality = new Speciality(data.list[0].value, data.list[1].value);
                 this.crudService.updateData(this.entity, data.id, editedSpeciality)
                     .subscribe(response => {
-                        this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
-                        this.successEventModal();
+                        this.commonService.openModalInfo(`Редагування пройшло успішно`);
                         this.refreshData(data.action);
+                    }, error => {
+                        this.commonService.openModalInfo(`Спеціальність з такою назвою або кодом вже існує`);
                     });
             }, () => {
                 return;
