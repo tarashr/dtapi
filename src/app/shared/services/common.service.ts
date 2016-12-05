@@ -64,15 +64,12 @@ export class CommonService {
             let end = format.indexOf(arr[i + 1]);
             separators.push(format.slice(start, end));
         }
-        const result: string[] = arr.map((elem, i) => {
-            if (separators[i]) {
-                return createPartsOFTime[elem](date) + separators[i];
-            } else {
-                return createPartsOFTime[elem](date);
-            }
+        let result: string = "";
+        arr.forEach((elem, i) => {
+            result += separators[i] ? createPartsOFTime[elem](date) + separators[i] : createPartsOFTime[elem](date);
         });
 
-        return result.join("");
+        return result;
     }
 
     openModalInfo(...arr: string[]): Promise <any> {
