@@ -166,6 +166,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
         let isTrue = this.entityData.some(item => {
             return this.selectAnswer.indexOf(item.entityColumns[2]) === 1;
         });
+        this.configAdd.title = "Додати нову відповідь";
         this.configAdd.list[0].value = "";
         this.configAdd.select[0].selected = "";
         this.configAdd.img.value = "";

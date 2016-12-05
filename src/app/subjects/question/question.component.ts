@@ -7,6 +7,7 @@ import {SubjectService}  from "../../shared/services/subject.service";
 import {
     configAddQuestion,
     configEditQuestion,
+    configAddAnswer,
     successEventModal,
     headersQuestion,
     actionsQuestion,
@@ -16,7 +17,9 @@ import {Question} from "../../shared/classes/question";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {Subscription} from "rxjs";
+import {Subscription, Observable} from "rxjs";
+import {Answer} from "../../shared/classes/answer";
+import {CommonService} from "../../shared/services/common.service";
 
 @Component({
     selector: "question-container",
@@ -52,6 +55,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
     // varibles for addedit
     public configAdd = configAddQuestion;
+    public configAddAnswer = configAddAnswer;
     public configEdit = configEditQuestion;
     public modalInfoConfig: any = modalInfoConfig;
     public levels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
@@ -60,16 +64,22 @@ export class QuestionComponent implements OnInit, OnDestroy {
         "0": "Простий вибір",
         "1": "Мультивибір"
     };
-
+    public selectAnswer: string[] = ["Не правильно", "Правильно"];
+    // public answers = [];
+    public answersCount: number;
+    public countOfAnswers: number;
+    public numberOfAnswer: number = 1;
     // variables for common component
     public entityData: any[] = [];
+
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
                 private router: Router,
                 private subjectService: SubjectService,
                 private location: Location,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private commonService: CommonService) {
         this.subscription = route.queryParams.subscribe(
             data => {
                 this.subject_id = +data["subject_id"];
@@ -215,6 +225,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
     createCase() {
         this.configAdd.list[0].value = "";
+        this.configAdd.list[1].value = "";
         this.configAdd.img.value = "";
         this.configAdd.select[0].selected = "";
         this.configAdd.select[1].selected = "";
@@ -231,14 +242,79 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     data.img.value,
                     this.test_id
                 );
-                this.crudService.insertData(this.entity, newQuestion)
-                    .subscribe(() => {
-                        this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
-                        this.successEventModal();
-                        this.refreshData(data.action);
-                    });
+                if (+data.list[1].value) {
+                    this.answersCount = this.countOfAnswers = +data.list[1].value;
+                    let answers: any[] = [];
+                    this.openCreateAnswerModal(newQuestion, answers);
+                } else {
+                    this.crudService.insertData(this.entity, newQuestion)
+                        .subscribe(() => {
+                            this.commonService.openModalInfo(`${newQuestion.question_text} успішно створено`);
+                        });
+                }
             }, () => {
                 return;
+            });
+    };
+
+    openCreateAnswerModal = (newQuestion, answers, value?) => {
+        this.configAddAnswer.title = `Відповідь ${this.numberOfAnswer} з ${this.countOfAnswers} до питання:
+${newQuestion.question_text}`;
+        this.configAddAnswer.list[0].value = value || "";
+        this.configAddAnswer.select[0].selected = "";
+        this.configAddAnswer.img.value = "";
+        this.configAddAnswer.select[0].selectItem = this.selectAnswer;
+        const modalRefAddAnswer = this.modalService.open(ModalAddEditComponent);
+        modalRefAddAnswer.componentInstance.config = this.configAddAnswer;
+        modalRefAddAnswer.result
+            .then((data: any) => {
+                let isTrue = answers.some(item => {
+                    return item.true_answer === 1;
+                });
+                if (newQuestion.type === 1
+                    && !isTrue
+                    || newQuestion.type === 2
+                    || data.select[0].selectItem.indexOf(data.select[0].selected) === 0) {
+                    let newAnswer: Answer = new Answer(
+                        data.img.value,
+                        data.list[0].value,
+                        data.select[0].selectItem.indexOf(data.select[0].selected),
+                        0
+                    );
+                    answers.push(newAnswer);
+                    this.answersCount--;
+                    this.numberOfAnswer++;
+                    if (this.answersCount) {
+                        this.openCreateAnswerModal(newQuestion, answers);
+                    } else {
+                        this.saveQuestionAndAnswers(newQuestion, answers);
+                    }
+                } else {
+                    this.commonService.openModalInfo(`Дозволено вказувати тільки одну правильну відповідь`)
+                        .then(
+                            this.handleReject,
+                            () => {
+                                this.openCreateAnswerModal(newQuestion, answers, data.list[0].value);
+                            }
+                        );
+                }
+            }, this.handleReject);
+    };
+
+    saveQuestionAndAnswers = (question, answers) => {
+        this.crudService.insertData(this.entity, question)
+            .flatMap(response => {
+                this.refreshData("");
+                answers.forEach(elem => {
+                    elem.question_id = response[0].question_id;
+                });
+                let forkJoinButch: Observable<any>[] = answers.map(answer => {
+                    return this.crudService.insertData("answer", answer);
+                });
+                return Observable.forkJoin(forkJoinButch);
+            })
+            .subscribe(() => {
+                this.commonService.openModalInfo(`${question.question_text} успішно створено`);
             });
     };
 
@@ -285,6 +361,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 return;
             });
     }
+
+    handleReject = () => {};
 }
 
 
