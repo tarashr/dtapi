@@ -174,9 +174,9 @@ export class AnswerComponent implements OnInit, OnDestroy {
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                if (this.questionArr[0].type == "0"
+                if (this.questionArr[0].type == "1"
                     && !isTrue
-                    || this.questionArr[0].type == "1"
+                    || this.questionArr[0].type == "2"
                     || data.select[0].selectItem.indexOf(data.select[0].selected) == 0) {
                     let newAnswer: Answer = new Answer(
                         data.img.value,
@@ -212,9 +212,9 @@ export class AnswerComponent implements OnInit, OnDestroy {
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
-                if (this.questionArr[0].type == "0"
+                if (this.questionArr[0].type == "1"
                     && !isTrue
-                    || this.questionArr[0].type == "1"
+                    || this.questionArr[0].type == "2"
                     || data.select[0].selectItem.indexOf(data.select[0].selected) == 0) {
                     let editedAnswer: Answer = new Answer(
                         data.img.value,
