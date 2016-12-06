@@ -84,13 +84,12 @@ export class ModalAddEditComponent implements OnInit {
             return {Invalid: true};
         } else if (control.value === "") {
             return null;
-        } else if (control.value.day >= 1 && control.value.day <= 31) {
-            if (control.value.month >= 1 && control.value.month <= 12) {
-                return null;
-            }
-            return {Invalid: true};
         } else {
-            return {Invalid: true};
+            const newDate = new Date(control.value.year, (control.value.month - 1), control.value.day);
+            const isValid = (newDate.getFullYear() === control.value.year) &&
+                (newDate.getMonth() === (control.value.month - 1)) &&
+                (newDate.getDate() === control.value.day);
+            return isValid ? null : {Invalid: true};
         }
     }
 
