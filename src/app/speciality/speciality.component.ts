@@ -63,7 +63,7 @@ export class SpecialityComponent implements OnInit{
         this.getCountRecords();
     }
 
-    private createTableConfig = (data: any )=> {
+    private createTableConfig = (data: any ) => {
         let numberOfOrder: number;
         this.entityData = data.map((item, i) => {
             numberOfOrder = i + 1 + (this.page - 1) * this.limit;

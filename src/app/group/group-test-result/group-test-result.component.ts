@@ -51,7 +51,7 @@ export class GroupTestResultComponent implements OnInit {
         this.getGroupName();
         this.getTestName();
         this.getSubjectName();
-    }
+    };
 
     getGroupName() {
         this.crudService.getRecordById(this.groupEntity, this.groupId)
@@ -61,7 +61,7 @@ export class GroupTestResultComponent implements OnInit {
                 },
                 error => console.log("error: ", error)
             );
-    }
+    };
 
     getTestName() {
         this.crudService.getRecordById(this.testEntity, this.testId)
@@ -71,7 +71,7 @@ export class GroupTestResultComponent implements OnInit {
                 },
                 error => console.log("error: ", error)
             );
-    }
+    };
 
     getSubjectName() {
         this.crudService.getRecordById(this.subjectEntity, this.subjectId)
@@ -81,7 +81,7 @@ export class GroupTestResultComponent implements OnInit {
                 },
                 error => console.log("error: ", error)
             );
-    }
+    };
 
     getRecords(): void {
         this.groupService.getTestResult(this.testId, this.groupId)
@@ -92,21 +92,20 @@ export class GroupTestResultComponent implements OnInit {
                     } else {
                         this.entityDataWithNames = data;
                         this.noRecords = false;
-                        const ids = [];
-                        this.maxResult = +data[0].answers
-                        data.forEach(item => {
-                            ids.push(item.student_id);
+                        this.maxResult = +data[0].answers;
+                        const ids = data.map(item => {
                             item.resultInPercentage = (+item.result / this.maxResult) * 100;
                             item.resultNational = this.groupService.toNationalRate(item.resultInPercentage);
                             item.resultECTS = this.groupService.toECTSRate(item.resultInPercentage);
+                            return item.student_id;
                         });
-                        let entityManagerStudent = new EntityManagerBody(this.studentEntity, ids);
+                        const entityManagerStudent = new EntityManagerBody(this.studentEntity, ids);
                         this.getStudentName(entityManagerStudent);
                     }
                 },
                 error => console.log("error: ", error)
             );
-    }
+    };
 
     getStudentName(param: EntityManagerBody): void {
         this.crudService.getEntityValues(param)
@@ -115,32 +114,32 @@ export class GroupTestResultComponent implements OnInit {
                     this.getNamesByIds(data);
                 }
             );
-    }
+    };
 
     getNamesByIds(data: any): void {
         for (let i in this.entityDataWithNames) {
             for (let k in data) {
                 if (this.entityDataWithNames[i].student_id === data[k].user_id) {
-                    this.entityDataWithNames[i].student_name = `${data[k].student_surname} ${data[k].student_name}`;
+                    this.entityDataWithNames[i].student_name =
+                        `${data[k].student_surname} ${data[k].student_name} ${data[k].student_fname}`;
                 }
             }
         }
         this.createTableConfig(this.entityDataWithNames);
-    }
+    };
 
     goBack(): void {
         this.location.back();
-    }
+    };
 
     Print(): void {
         window.print();
-    }
+    };
 
     private createTableConfig = (data: any) => {
-        const tempArr: any[] = [];
         let numberOfOrder: number;
         if (data.length) {
-            data.forEach((item, i) => {
+            this.entityData = data.map((item, i) => {
                 numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                 const groupResult: any = {};
                 groupResult.entity_id = item.test_id;
@@ -151,9 +150,8 @@ export class GroupTestResultComponent implements OnInit {
                     `${item.resultInPercentage.toFixed(2)}%`,
                     item.resultNational,
                     item.resultECTS];
-                tempArr.push(groupResult);
+                return groupResult;
             });
-            this.entityData = tempArr;
         } else {
             this.noRecords = true;
         }
@@ -161,5 +159,5 @@ export class GroupTestResultComponent implements OnInit {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
-    }
+    };
 }

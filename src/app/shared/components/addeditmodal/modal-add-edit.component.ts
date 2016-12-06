@@ -3,6 +3,7 @@ import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {successEventModal, modalInfoConfig} from "../../../shared/constant";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {FormGroup, FormControl, Validators} from "@angular/forms";
+import {patterns} from "../../../shared/constant";
 
 @Component({
     selector: "modal-add-edit",
@@ -28,22 +29,25 @@ export class ModalAddEditComponent implements OnInit {
                 Validators.minLength(1)
             ]),
             "groupName": new FormControl("", [
-                Validators.pattern("^[А-ЯЁЇІіЄҐ]{2,3}[-][0-9]{2}[-][0-9]{1}$")
+                Validators.pattern(patterns.groupName)
             ]),
             "specialityCode": new FormControl("", [
-                Validators.pattern("^[0-9. ]*$")
+                Validators.pattern(patterns.code)
             ]),
             "name": new FormControl("", [
-                Validators.pattern("^[А-Яа-яёЁЇїІіЄєҐґ'’ ]+$")
+                Validators.pattern(patterns.entityName)
             ]),
             "count": new FormControl("", [
-                Validators.pattern("^[0-9]*$")
+                Validators.pattern(patterns.number)
+            ]),
+            "answerCount": new FormControl("", [
+                Validators.pattern(patterns.answerCount)
             ]),
             "testTime/Rate": new FormControl("", [
-                Validators.pattern("^[0-9]*$")
+                Validators.pattern(patterns.number)
             ]),
             "testAttempts": new FormControl("", [
-                Validators.pattern("^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$")
+                Validators.pattern(patterns.numberUpTo255)
             ]),
             "startDate": new FormControl("", [
                 this.dateValidator
@@ -52,10 +56,10 @@ export class ModalAddEditComponent implements OnInit {
                 this.dateValidator
             ]),
             "startTime": new FormControl("", [
-                Validators.pattern("^(([0|1][0-9])|([2][0-3])):([0-5][0-9])$")
+                Validators.pattern(patterns.time)
             ]),
             "endTime": new FormControl("", [
-                Validators.pattern("^(([0|1][0-9])|([2][0-3])):([0-5][0-9])$")
+                Validators.pattern(patterns.time)
             ]),
             "entityDescription": new FormControl("", [
                 Validators.maxLength(100)
@@ -64,7 +68,7 @@ export class ModalAddEditComponent implements OnInit {
                 Validators.maxLength(100)
             ]),
             "email": new FormControl("", [
-                Validators.pattern("^[^@]+@[^@]+\.[^@]+$")
+                Validators.pattern(patterns.email)
             ]),
             "password": new FormControl("", [
                 Validators.minLength(8)

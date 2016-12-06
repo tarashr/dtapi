@@ -3,7 +3,7 @@
             [entityTitle]="entityTitle"
             [searchTitle]="searchTitle"
             [addTitle]="addTitle"
-            [selectLimit]="selectLimitTitle"
+            [selectLimit]="selectLimit"
             [isSelectedBy]="!!groupId"
             [entityDataLength]="entityDataLength"
             (activate)="activate($event)"
@@ -11,7 +11,7 @@
             (selectRun)="changeLimit($event)">
     </entity-bar>
     <div *ngIf="noRecords" class="text-center">
-        Для даної групи студентів не знайдено
+        За даними критеріями студентів не знайдено
     </div>
     <dt-table *ngIf="!noRecords"
               [page]="page"

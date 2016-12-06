@@ -62,7 +62,7 @@ export class GroupTimetableComponent implements OnInit {
     ngOnInit() {
         this.createTitle();
         this.getRecords();
-    }
+    };
 
     createTitle() {
         this.crudService.getRecordById(this.groupEntity, this.groupId)
@@ -73,7 +73,7 @@ export class GroupTimetableComponent implements OnInit {
                 },
                 error => console.log("error: ", error)
             );
-    }
+    };
 
     getRecords() {
         this.crudService.getRecords(this.subjectEntity)
@@ -84,7 +84,7 @@ export class GroupTimetableComponent implements OnInit {
                 },
                 error => console.log("error: ", error)
             );
-    }
+    };
 
     getGroupTimeTables() {
         this.groupService.getTimeTablesForGroup(this.groupId)
@@ -105,7 +105,7 @@ export class GroupTimetableComponent implements OnInit {
                     }
                 },
                 error => console.log("error: ", error));
-    }
+    };
 
     deleteGroupTimeTable(entity: string, id: number): void {
         this.crudService.delRecord(this.entity, id)
@@ -115,7 +115,7 @@ export class GroupTimetableComponent implements OnInit {
                 },
                 error => console.log("error: ", error)
             );
-    }
+    };
 
     activate(data: any) {
         switch (data.action) {
@@ -129,7 +129,7 @@ export class GroupTimetableComponent implements OnInit {
                 this.createCase();
                 break;
         }
-    }
+    };
 
     substituteSubjectsNamesWithId(data) {
         this.subjects.forEach((item) => {
@@ -137,7 +137,7 @@ export class GroupTimetableComponent implements OnInit {
                 data.select[0].selected = item.subject_id;
             }
         });
-    }
+    };
 
     createCase() {
         this.configAdd.list.forEach((item) => {
@@ -170,7 +170,7 @@ export class GroupTimetableComponent implements OnInit {
             }, () => {
                 return;
             });
-    }
+    };
 
     editCase(data) {
         let nDate = new Date(data.entityColumns[2]);
@@ -234,13 +234,12 @@ export class GroupTimetableComponent implements OnInit {
             }, () => {
                 return;
             });
-    }
+    };
 
     private createTableConfig = (data: any) => {
-        const tempArr: any[] = [];
         let numberOfOrder: number;
         if (data.length) {
-            data.forEach((item, i) => {
+            this.entityData = data.map((item, i) => {
                 numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                 const groupTimetable: any = {};
                 groupTimetable.entity_id = item.timetable_id;
@@ -251,9 +250,8 @@ export class GroupTimetableComponent implements OnInit {
                     item.start_time.slice(0, 5),
                     item.end_date,
                     item.end_time.slice(0, 5)];
-                tempArr.push(groupTimetable);
+                return groupTimetable;
             });
-            this.entityData = tempArr;
         } else {
             this.noRecords = true;
         }
@@ -261,9 +259,9 @@ export class GroupTimetableComponent implements OnInit {
 
     goBack(): void {
         this.location.back();
-    }
+    };
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
-    }
-}
+    };
+};

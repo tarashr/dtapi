@@ -166,6 +166,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
         let isTrue = this.entityData.some(item => {
             return this.selectAnswer.indexOf(item.entityColumns[2]) === 1;
         });
+        this.configAdd.title = "Додати нову відповідь";
         this.configAdd.list[0].value = "";
         this.configAdd.select[0].selected = "";
         this.configAdd.img.value = "";
@@ -174,9 +175,9 @@ export class AnswerComponent implements OnInit, OnDestroy {
         modalRefAdd.componentInstance.config = this.configAdd;
         modalRefAdd.result
             .then((data: any) => {
-                if (this.questionArr[0].type == "0"
+                if (this.questionArr[0].type == "1"
                     && !isTrue
-                    || this.questionArr[0].type == "1"
+                    || this.questionArr[0].type == "2"
                     || data.select[0].selectItem.indexOf(data.select[0].selected) == 0) {
                     let newAnswer: Answer = new Answer(
                         data.img.value,
@@ -212,9 +213,9 @@ export class AnswerComponent implements OnInit, OnDestroy {
         modalRefEdit.componentInstance.config = this.configEdit;
         modalRefEdit.result
             .then((data: any) => {
-                if (this.questionArr[0].type == "0"
+                if (this.questionArr[0].type == "1"
                     && !isTrue
-                    || this.questionArr[0].type == "1"
+                    || this.questionArr[0].type == "2"
                     || data.select[0].selectItem.indexOf(data.select[0].selected) == 0) {
                     let editedAnswer: Answer = new Answer(
                         data.img.value,

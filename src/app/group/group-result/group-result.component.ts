@@ -66,9 +66,8 @@ export class GroupResultComponent implements OnInit {
                         this.noRecords = true;
                     } else {
                         this.noRecords = false;
-                        const ids = [];
-                        data.forEach(item => {
-                            ids.push(item.test_id);
+                        const ids = data.map(item => {
+                            return item.test_id;
                         });
                         const entityManagerTests = new EntityManagerBody(this.testEntity, ids);
                         this.getTestsDetails(entityManagerTests);
@@ -84,11 +83,10 @@ export class GroupResultComponent implements OnInit {
             .subscribe(
                 data => {
                     this.entityDataWithNames = data;
-                    const ids = [];
-                    data.forEach(item => {
-                        ids.push(item.subject_id);
+                    const ids = data.map(item => {
+                        return item.subject_id;
                     });
-                    let entityManagerSubjects = new EntityManagerBody(this.subjectEntity, ids);
+                    const entityManagerSubjects = new EntityManagerBody(this.subjectEntity, ids);
                     this.getSubjectNames(entityManagerSubjects);
                 },
                 error => console.log("error: ", error)
@@ -114,7 +112,7 @@ export class GroupResultComponent implements OnInit {
             }
         }
         this.createTableConfig(this.entityDataWithNames);
-    }
+    };
 
     activate(data: any): void {
         switch (data.action) {
@@ -125,7 +123,7 @@ export class GroupResultComponent implements OnInit {
                 );
                 break;
         }
-    }
+    };
 
     private createTableConfig = (data: any) => {
         let numberOfOrder: number;
@@ -145,9 +143,9 @@ export class GroupResultComponent implements OnInit {
 
     goBack(): void {
         this.location.back();
-    }
+    };
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
-    }
+    };
 }

@@ -24,19 +24,51 @@ export class CommonService {
         return md5(JSON.stringify(data)).toString();
     }
 
-    createSQLDate(date: Date, type: string, separator: string): string {
-        let result: string;
-        if (type === "date") {
-            const year: string = this.leftPad(date.getFullYear());
-            const month: string = this.leftPad(date.getMonth() + 1);
-            const day: string = this.leftPad(date.getDate());
-            result = [year, month, day].join(separator);
-        } else if (type === "time") {
-            const hours: string = this.leftPad(date.getHours());
-            const min: string = this.leftPad(date.getMinutes());
-            const sec: string = this.leftPad(date.getSeconds());
-            result = [hours, min, sec].join(separator);
+    formatTime(date: Date, format: string) {
+        const createPartsOFTime = {
+            YYYY: (date): string => {
+                return this.leftPad(date.getFullYear());
+            },
+            MM: (date): string => {
+                return this.leftPad(date.getMonth() + 1);
+            },
+            DD: (date): string => {
+                return this.leftPad(date.getDate());
+            },
+            hh: (date): string => {
+                return this.leftPad(date.getHours());
+            },
+            mm: (date): string => {
+                return this.leftPad(date.getMinutes());
+            },
+            ss: (date): string => {
+                return this.leftPad(date.getSeconds());
+            }
+        };
+        let arr: string[] = format.split(/-|:|,| /);
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] === "") {
+                arr.splice(i, 1);
+                i--;
+            }
         }
+        const rightFormat: boolean = arr.every(elem => {
+            return !!createPartsOFTime[elem];
+        });
+        if (!rightFormat) {
+            return "wrong format";
+        }
+        let separators: string[] = [];
+        for (let i = 0; i < arr.length - 1; i++) {
+            let start = format.indexOf(arr[i]) + arr[i].length;
+            let end = format.indexOf(arr[i + 1]);
+            separators.push(format.slice(start, end));
+        }
+        let result: string = "";
+        arr.forEach((elem, i) => {
+            result += separators[i] ? createPartsOFTime[elem](date) + separators[i] : createPartsOFTime[elem](date);
+        });
+
         return result;
     }
 
