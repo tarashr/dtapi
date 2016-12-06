@@ -39,13 +39,14 @@ export class StudentProfileComponent implements OnInit {
 
     public statusView: boolean = true;
     public action: Boolean;
+    public studentPhoto: any;
 
     public passwordStatusText: string = "password";
     public editSaveButtonName: string = "Редагувати дані";
 
     public mypattern: string = "^[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]+[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9.!#$%&’*+/=?^_`{|}~-]*[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]*@[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]+(?:([a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9-]*[\.?]))+([a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ]{2,6})$";
 
-    @ViewChild("newFotoSrc") newFotoSrc: ElementRef;
+    // @ViewChild("newFotoSrc") newFotoSrc: ElementRef;
     @ViewChild("inputFile") inputFile: ElementRef;
     @ViewChild("myform") myform: any;
 
@@ -69,6 +70,7 @@ export class StudentProfileComponent implements OnInit {
             this.action = true;
             this.newStudent();
         }
+        let studentPhoto = <HTMLInputElement>document.getElementById("output");
     }
 
     goBack(): void {
@@ -78,12 +80,14 @@ export class StudentProfileComponent implements OnInit {
     newStudent() {
         this.student = new Student;
         this.student.photo = "assets/profile.png";
-        this.newFotoSrc.nativeElement.src = "assets/profile.png";
+        // this.newFotoSrc.nativeElement.src = "assets/profile.png";
+        // this.studentPhoto.src = "assets/profile.png";
         this.getFacultyName();
     }
 
     createNewStudent() {
         let dataForRequest = new Student;
+        let studentPhoto = <HTMLInputElement>document.getElementById("output");
         dataForRequest.username = this.student.username;
         dataForRequest.password = this.student.plain_password;
         dataForRequest.password_confirm = this.student.plain_password;
@@ -94,7 +98,8 @@ export class StudentProfileComponent implements OnInit {
         dataForRequest.student_fname = this.student.student_fname;
         dataForRequest.group_id = this.student.group_id;
         dataForRequest.plain_password = this.student.plain_password;
-        dataForRequest.photo = this.newFotoSrc.nativeElement.src;
+        // dataForRequest.photo = this.newFotoSrc.nativeElement.src;
+        dataForRequest.photo = studentPhoto.src;
         this._commonService.insertData(this.entity, dataForRequest)
             .subscribe(data => {
                     if (data.response === "ok") {
@@ -190,6 +195,7 @@ export class StudentProfileComponent implements OnInit {
 
     updateStudent() {
         let dataForUpdateStudent = new Student;
+        let studentPhoto = <HTMLInputElement>document.getElementById("output");
         dataForUpdateStudent.username = this.student.username;
         dataForUpdateStudent.password = this.student.plain_password;
         dataForUpdateStudent.password_confirm = this.student.plain_password;
@@ -200,7 +206,8 @@ export class StudentProfileComponent implements OnInit {
         dataForUpdateStudent.student_fname = this.student.student_fname;
         dataForUpdateStudent.group_id = this.student.group_id;
         dataForUpdateStudent.plain_password = this.student.plain_password;
-        dataForUpdateStudent.photo = this.newFotoSrc.nativeElement.src;
+        //dataForUpdateStudent.photo = this.newFotoSrc.nativeElement.src;
+        dataForUpdateStudent.photo = studentPhoto.src;
         this._commonService.updateData(this.entity, this.student.user_id, dataForUpdateStudent)
             .subscribe(data => {
                     if (data.response === "ok") {

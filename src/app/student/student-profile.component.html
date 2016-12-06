@@ -7,8 +7,10 @@
     <form #myform="ngForm" novalidate>
         <div class="student-datas row">
             <div class="input-foto student-foto col-xs-12 col-sm-3 col-md-3">
-                <img class="img-responsive img-rounded profile-foto" [src]="student.photo" alt="Фото студента"
-                     id="output" #newFotoSrc/>
+                <img *ngIf="student.photo" class="img-responsive img-rounded profile-foto" [src]="student.photo" alt="Фото студента"
+                     id="output"/>
+                <!--  <img class="img-responsive img-rounded profile-foto" [src]="student.photo" alt="Фото студента"
+                     id="output" #newFotoSrc/> -->
                 <input type="file" name="file" (change)="changeFile($event)" #inputFile [disabled]="statusView" ngModel>
             </div>
             <div>
@@ -137,7 +139,7 @@
                                                                                  class="input-student-data"
                                                                                  [(ngModel)]="student.email" required
                                                                                  maxlength="30" #email="ngModel" ngModel
-                                                                                 pattern="{{mypattern}}">
+                                                                                 [pattern]="mypattern">
                             <div class="hint" [hidden]="!(email.invalid && email.dirty && email.touched)">
                                 Поштова скринька повинна бути формату логін@домен
                             </div>
@@ -152,9 +154,10 @@
             </div>
 
             <div [hidden]="myform.valid" class="emergy-text"> * Всі поля є обов'язковими!!!</div>
+            <div [hidden]="(group.value>0 && myform.valid) || myform.invalid" class="emergy-text"> * Поле група є обов'язковими!!!</div>
             <div class="button-create-refresh">
                 <button *ngIf="!action" class="btn btn-default" type="submit" (click)="editSaveStudentProfile()"
-                        role="button" [disabled]="myform.invalid && (editSaveButtonName == 'Зберегти дані')">
+                        role="button" [disabled]="(myform.valid && (group.value==0)) || myform.invalid">
                     {{editSaveButtonName}}
                 </button>
                 <button *ngIf="!action" class="btn btn-danger" type="submit" (click)=deleteStudent() role="button">
@@ -170,13 +173,12 @@
         </div>
     </form>
 
-    <div *ngIf="!action" class="student-profile-title">
+    <div *ngIf="!action" class="student-ability">
         <ngbd-tabset-tests
                 [groupName]="student.group_name"
                 [groupId]="student.group_id">
         </ngbd-tabset-tests>
     </div>
-
 </div>
 
 <template ngbModalContainer></template>
