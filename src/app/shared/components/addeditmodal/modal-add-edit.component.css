@@ -80,23 +80,12 @@ select.ng-invalid.ng-dirty {
 .passwords-hint {
     position: absolute;
     top: 40px;
-    left: 130px;
-    min-width: 131px;
+    left: 0;
+    max-width: 100%;
     z-index: 10;
     padding: 5px;
     color: #777;;
     border: 1px solid #e77e7e;
     border-radius: 3px;
     background: #ffeff2;
-}
-
-.passwords-hint::after {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: 50px;
-    margin-left: -5px;
-    border-width: 7px;
-    border-style: solid;
-    border-color: transparent transparent #777 transparent;
 }
