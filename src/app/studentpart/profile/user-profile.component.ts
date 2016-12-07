@@ -6,7 +6,7 @@ import { LoginService } from "../../shared/services/login.service";
 @Component({
     selector: 'user-profile-component',
     templateUrl: 'user-profile.component.html',
-    styleUrls: ['../start-page.component.css'],
+    styleUrls: ['../start-page.component.scss'],
     providers: [LoginService]
 })
 

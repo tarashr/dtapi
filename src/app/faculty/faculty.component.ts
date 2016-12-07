@@ -26,7 +26,7 @@ import {CommonService} from "../shared/services/common.service";
 
 @Component({
     templateUrl: "faculty.component.html",
-    styleUrls: ["faculty.component.css"]
+    styleUrls: ["faculty.component.scss"]
 })
 export class FacultyComponent implements OnInit {
 

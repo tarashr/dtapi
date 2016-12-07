@@ -1,6 +1,0 @@
-.entity-list li:first-child{
-    font-weight: normal;
-}
-.entity-list li:first-child:hover {
-    background-color: #e7e7e7;
-}

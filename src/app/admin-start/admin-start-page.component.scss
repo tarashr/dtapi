@@ -1,0 +1,16 @@
+.main-menu {
+    max-width: 1024px;
+    margin: 0px auto 10px auto;
+    padding: 10px;
+    min-width: 420px;
+    font-size: 12px;
+}
+
+.main-menu .main-menu-navbar {
+    margin-bottom: 0;
+    min-width: 420px;
+}
+
+.main-menu .navbar-nav .active {
+    background-color: #e7e7e7;
+}
