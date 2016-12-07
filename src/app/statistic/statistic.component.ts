@@ -5,7 +5,7 @@ import {entities} from "../shared/constant";
 
 @Component({
     templateUrl: "statistic.component.html",
-    styleUrls: ["statistic.component.css"]
+    styleUrls: ["statistic.component.scss"]
 })
 export class StatisticComponent implements OnInit {
 

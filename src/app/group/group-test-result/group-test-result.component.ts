@@ -10,7 +10,7 @@ import {CRUDService} from "../../shared/services/crud.service";
 
 @Component({
     templateUrl: "group-test-result.component.html",
-    styleUrls: ["group-test-result.component.css"]
+    styleUrls: ["group-test-result.component.scss"]
 })
 export class GroupTestResultComponent implements OnInit {
 

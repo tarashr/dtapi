@@ -8,7 +8,7 @@ import {patterns} from "../../../shared/constant";
 @Component({
     selector: "modal-add-edit",
     templateUrl: "modal-add-edit.component.html",
-    styleUrls: ["modal-add-edit.component.css"]
+    styleUrls: ["modal-add-edit.component.scss"]
 })
 export class ModalAddEditComponent implements OnInit {
 
@@ -18,6 +18,7 @@ export class ModalAddEditComponent implements OnInit {
     public successEventModal: any = successEventModal;
     public addEditForm: FormGroup;
     public isSamePasswords: boolean = true;
+    public isValidDatesTimes: boolean = true;
 
     constructor(private activeModal: NgbActiveModal,
                 private modalService: NgbModal) {
@@ -84,24 +85,51 @@ export class ModalAddEditComponent implements OnInit {
             return {Invalid: true};
         } else if (control.value === "") {
             return null;
-        } else if (control.value.day >= 1 && control.value.day <= 31) {
-            if (control.value.month >= 1 && control.value.month <= 12) {
-                return null;
-            }
-            return {Invalid: true};
         } else {
-            return {Invalid: true};
+            const newDate = new Date(control.value.year, (control.value.month - 1), control.value.day);
+            const isValid = (newDate.getFullYear() === control.value.year) &&
+                (newDate.getMonth() === (control.value.month - 1)) &&
+                (newDate.getDate() === control.value.day);
+            return isValid ? null : {Invalid: true};
         }
     }
 
     activateForm() {
-        if (!this.addEditForm.controls["password"]) {
-            this.activeModal.close(this.config);
-        } else if (this.addEditForm.controls["password"].value === this.addEditForm.controls["cpassword"].value) {
-            this.activeModal.close(this.config);
+        if (this.addEditForm.controls["password"].value) {
+            if (this.addEditForm.controls["password"].value === this.addEditForm.controls["cpassword"].value) {
+                this.activeModal.close(this.config);
+            } else {
+                this.isSamePasswords = false;
+            }
+        } else if (this.addEditForm.controls["startDate"].value) {
+            const compareStatus = this.compareDates(this.addEditForm.controls["startDate"].value,
+                                                        this.addEditForm.controls["endDate"].value);
+            if (compareStatus === 1) {
+                this.activeModal.close(this.config);
+            } else if (compareStatus === 2 && this.compareTimes(this.addEditForm.controls["startTime"].value,
+                                                                this.addEditForm.controls["endTime"].value)) {
+                this.activeModal.close(this.config);
+            } else {
+                this.isValidDatesTimes = false;
+            }
         } else {
-            this.isSamePasswords = false;
+            this.activeModal.close(this.config);
         }
+    }
+
+    compareDates(startDate, endDate): number {
+        const newStartDate = new Date(startDate.year, startDate.month, startDate.day);
+        const newEndDate = new Date(endDate.year, endDate.month, endDate.day);
+        return (newStartDate < newEndDate) ? 1 : (newStartDate > newEndDate) ? 0 : 2;
+    }
+
+    compareTimes(startTime: string, endTime: string): boolean {
+        const startTimeArr = startTime.split(":");
+        const endTimeArr = endTime.split(":");
+        if (+startTimeArr[0] >= +endTimeArr[0]) {
+            return +startTimeArr[1] < +endTimeArr[1];
+        }
+        return true;
     }
 
     openFile($event) {

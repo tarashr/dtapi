@@ -4,7 +4,7 @@ import {Location} from "@angular/common";
 @Component({
     selector: "test-bar",
     templateUrl: "test-bar.component.html",
-    styleUrls: ["test-bar.component.css"]
+    styleUrls: ["test-bar.component.scss"]
 })
 export class TestBarComponent implements OnInit {
 
