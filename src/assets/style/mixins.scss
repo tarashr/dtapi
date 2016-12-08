@@ -1,0 +1,11 @@
+@import "variables";
+
+@mixin base-hint {
+  position: absolute;
+  z-index: 3;
+  padding: 5px;
+  color: $hint-text-color;
+  border: $hint-border;
+  border-radius: 3px;
+  background: $hint-bg-color;
+}
