@@ -38,6 +38,9 @@
         <div class="passwords-hint" *ngIf="item.formControlName ==='cpassword' && !isSamePasswords">
             Введені паролі не співпадають
         </div>
+        <div class="passwords-hint" *ngIf="item.formControlName ==='endTime' && !isValidDatesTimes">
+            Ви вказали не коректний період доступності тесту
+        </div>
         <div class="hint" *ngIf="addEditForm.controls[item.formControlName].value === '' &&
                                 addEditForm.controls[item.formControlName].dirty &&
                                 addEditForm.controls[item.formControlName].invalid">

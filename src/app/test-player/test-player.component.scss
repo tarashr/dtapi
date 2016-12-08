@@ -1,0 +1,46 @@
+.nav-buttons button {
+    margin: 1px 2px;
+}
+
+.row div.info {
+    padding: 5px 15px;
+    background-color:#f9f9f9;
+    border: 5px solid #fff;
+}
+
+.nom-qua{
+    margin-top:2px;
+    margin-bottom:2px;
+}
+
+.answers li {
+    list-style: none;
+}
+
+.answers img{
+    max-height: 160px;
+}
+
+.question-img {
+    text-align: center;
+}
+
+.question-img img {
+    max-height: 180px;
+    border: 1px solid #ddd;
+}
+
+.question-text {
+    border-bottom: 2px solid #bbb;
+    padding-bottom: 10px;
+}
+
+.text-left, .text-right {
+    display: inline-block;
+}
+.text-left {
+    float: left;
+}
+.text-right {
+    float: right;
+}

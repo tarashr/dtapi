@@ -18,7 +18,7 @@ import {
 
 @Component({
     templateUrl: "student-profile.component.html",
-    styleUrls: ["student.component.css"],
+    styleUrls: ["student.component.scss"],
 })
 
 export class StudentProfileComponent implements OnInit {

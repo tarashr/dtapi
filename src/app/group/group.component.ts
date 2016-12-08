@@ -9,6 +9,7 @@ import {Speciality} from "../shared/classes/speciality";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add-edit.component";
 import {CRUDService} from "../shared/services/crud.service.ts";
+import {CommonService} from "../shared/services/common.service";
 import {
     configAddGroup,
     configEditGroup,
@@ -73,7 +74,8 @@ export class GroupComponent implements OnInit, OnDestroy {
     constructor(private crudService: CRUDService,
                 private _router: Router,
                 private route: ActivatedRoute,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private commonService: CommonService) {
         this.subscription = route.queryParams.subscribe(
             data => {
                 this.specialityId = data["specialityId"];
@@ -300,10 +302,8 @@ export class GroupComponent implements OnInit, OnDestroy {
         });
     }
 
-    createCase() {
-        this.configAdd.list.forEach((item) => {
-            item.value = "";
-        });
+    createCase(groupToChange?: Group) {
+        this.configAdd.list[0].value = "";
         this.configAdd.select[0].selected = "";
         this.configAdd.select[0].selectItem = [];
         this.facultiesNamesIDs.forEach(item => {
@@ -325,13 +325,10 @@ export class GroupComponent implements OnInit, OnDestroy {
                                                   data.select[1].selected);
                 this.crudService.insertData(this.entity, newGroup)
                     .subscribe(response => {
-                        this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
-                        this.successEventModal();
+                        this.commonService.openModalInfo(`${data.list[0].value} успішно створено`);
                         this.refreshData(data.action);
                     }, error => {
-                        this.modalInfoConfig.infoString = `Група з такою назвою вже існує`;
-                        this.createCase();
-                        this.successEventModal();
+                        this.commonService.openModalInfo("Група з такою назвою вже існує");
                     });
             }, () => {
                 return;
@@ -362,9 +359,10 @@ export class GroupComponent implements OnInit, OnDestroy {
                                                 data.select[1].selected);
                 this.crudService.updateData(this.entity, data.id, newGroup)
                     .subscribe(response => {
-                        this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
-                        this.successEventModal();
+                        this.commonService.openModalInfo("Редагування пройшло успішно");
                         this.refreshData(data.action);
+                    }, error => {
+                        this.commonService.openModalInfo("Група з такою назвою вже існує");
                     });
             }, () => {
                 return;

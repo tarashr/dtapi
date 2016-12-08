@@ -5,7 +5,7 @@ import {Subject} from "rxjs";
 @Component({
     selector: "entity-bar",
     templateUrl: "entity-bar.component.html",
-    styleUrls: ["entity-bar.component.css"]
+    styleUrls: ["entity-bar.component.scss"]
 })
 export class EntityBarComponent implements OnInit {
 

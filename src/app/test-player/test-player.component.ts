@@ -9,7 +9,7 @@ import {modalInfoParams} from "../shared/constant";
 
 @Component({
     templateUrl: "test-player.component.html",
-    styleUrls: ["test-player.component.css"]
+    styleUrls: ["test-player.component.scss"]
 })
 
 export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeactivate {

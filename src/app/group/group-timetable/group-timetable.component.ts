@@ -9,6 +9,7 @@ import {GroupService} from "../../shared/services/group.service";
 import {TimeTable} from "../../shared/classes/timetable";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
+import {CommonService} from "../../shared/services/common.service";
 import {
     headersGroupTimeTable,
     actionsGroupTimeTable,
@@ -52,7 +53,8 @@ export class GroupTimetableComponent implements OnInit {
                 private crudService: CRUDService,
                 private groupService: GroupService,
                 private location: Location,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private commonService: CommonService) {
         this.subscription = route.queryParams.subscribe(
             data => {
                 this.groupId = data["groupId"];
@@ -163,9 +165,10 @@ export class GroupTimetableComponent implements OnInit {
                 );
                 this.crudService.insertData(this.entity, newGroupTimeTable)
                     .subscribe(response => {
-                        this.modalInfoConfig.infoString = `Тестування назначено`;
-                        this.successEventModal();
+                        this.commonService.openModalInfo("Тестування назначено");
                         this.getGroupTimeTables();
+                    }, error => {
+                        this.commonService.openModalInfo("Для даної групи вже назначено тестування з даного предмету");
                     });
             }, () => {
                 return;
@@ -213,9 +216,10 @@ export class GroupTimetableComponent implements OnInit {
                 );
                 this.crudService.updateData(this.entity, data.id, editedGroupTimeTable)
                     .subscribe(() => {
-                        this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
-                        this.successEventModal();
+                        this.commonService.openModalInfo("Редагування пройшло успішно");
                         this.getGroupTimeTables();
+                    }, error => {
+                        this.commonService.openModalInfo("Для даної групи вже назначено тестування з даного предмету");
                     });
             }, () => {
                 return;
