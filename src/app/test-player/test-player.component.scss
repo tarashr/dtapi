@@ -1,46 +1,54 @@
-.nav-buttons button {
+@import "../../assets/style/constant";
+
+.nav-buttons {
+  button {
     margin: 1px 2px;
+  }
 }
 
-.row div.info {
+.row {
+  div.info {
     padding: 5px 15px;
-    background-color:#f9f9f9;
+    background-color: $very-light-grey;
     border: 5px solid #fff;
+  }
 }
 
-.nom-qua{
-    margin-top:2px;
-    margin-bottom:2px;
+.nom-qua {
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
-.answers li {
+.answers {
+  li {
     list-style: none;
-}
-
-.answers img{
+  }
+  img {
     max-height: 160px;
+  }
 }
 
 .question-img {
-    text-align: center;
-}
-
-.question-img img {
+  text-align: center;
+  img {
     max-height: 180px;
     border: 1px solid #ddd;
+  }
 }
 
 .question-text {
-    border-bottom: 2px solid #bbb;
-    padding-bottom: 10px;
+  border-bottom: 2px solid #bbb;
+  padding-bottom: 10px;
 }
 
 .text-left, .text-right {
-    display: inline-block;
+  display: inline-block;
 }
+
 .text-left {
-    float: left;
+  float: left;
 }
+
 .text-right {
-    float: right;
+  float: right;
 }
