@@ -1,16 +1,24 @@
-.main-menu {
-    max-width: 1024px;
-    margin: 0px auto 10px auto;
-    padding: 10px;
-    min-width: 420px;
-    font-size: 12px;
-}
+@import "../../assets/style/constant";
 
-.main-menu .main-menu-navbar {
+.main-menu {
+  max-width: 1024px;
+  margin: 0px auto 10px auto;
+  padding: 10px;
+  min-width: 420px;
+  font-size: 12px;
+  nav.main-menu-navbar {
     margin-bottom: 0;
     min-width: 420px;
-}
-
-.main-menu .navbar-nav .active {
-    background-color: #e7e7e7;
+    background-color: $main-menu-bkg-color;
+    .navbar-nav {
+      .active {
+        background-color: $main-menu-bkg-color-active;
+      }
+    }
+  }
+  .navbar-right {
+    a {
+      margin-left: 15px;
+    }
+  }
 }

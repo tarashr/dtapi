@@ -1,0 +1,37 @@
+@import "../../../../assets/style/constant";
+
+nav.entity-bar {
+  background-color: $entity-bar-bkg-color;
+  .container-fluid {
+    form.navbar-left {
+      select {
+        width: 200px;
+        margin: 0 15px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .entity-bar {
+    .navbar-text, form.navbar-left {
+      display: inline-block;
+    }
+    .form-control {
+      width: auto;
+      display: inline-block;
+      border-radius: $btn-radius;
+    }
+    form.navbar-right {
+      display: inline-block;
+      float: right;
+    }
+    form.navbar-form {
+      border: none;
+    }
+    .btn {
+      margin-bottom: 2px;
+      margin-right: 10px;
+    }
+  }
+}
