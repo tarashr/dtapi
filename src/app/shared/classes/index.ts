@@ -11,3 +11,6 @@ export * from "./test-player-nav-buttons";
 export * from "./test-player-dtapi-result";
 export * from "./user";
 export * from "./test-detail";
+export * from "./student";
+export * from "./entity-manager-body";
+export * from "./group";

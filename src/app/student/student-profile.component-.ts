@@ -1,8 +1,11 @@
 import {Component, ViewChild, OnInit, ElementRef} from "@angular/core";
 import {Location} from "@angular/common";
-import {ActivatedRoute, Params} from "@angular/router";
-import {Group, Faculty, Student, EntityManagerBody} from "../shared/classes";
+import {Router, ActivatedRoute, Params} from "@angular/router";
+import {Group} from "../shared/classes/group";
+import {Faculty} from "../shared/classes/faculty";
+import {Student} from "../shared/classes/student";
 import {CRUDService} from "../shared/services/crud.service";
+import {EntityManagerBody} from "../shared/classes/entity-manager-body";
 import {Observable, Subscription} from "rxjs/Rx";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule, Form} from "@angular/forms";
@@ -10,8 +13,7 @@ import {InfoModalComponent} from "../shared/components/info-modal/info-modal.com
 
 import {
     modalInfoConfig,
-    successEventModal,
-    patterns
+    successEventModal
 } from "../shared/constant";
 
 @Component({
@@ -33,22 +35,20 @@ export class StudentProfileComponent implements OnInit {
 
     public modalInfoConfig: any = modalInfoConfig;
     public successEventModal = successEventModal;
-    private maxFileSize: number = 2000000;
+    private maxFileSize: number = 5000000;
 
     public statusView: boolean = true;
     public action: Boolean;
+    public studentPhoto: any;
 
     public passwordStatusText: string = "password";
     public editSaveButtonName: string = "Редагувати дані";
 
-    public surnamePattern: string = patterns.studentSurname;
-    public namePattern: string = patterns.studentName;
-    public fnamePattern: string = patterns.studentFname;
-    public loginPattern: string = patterns.studentLogin;
-    public gradebookPattern: string = patterns.studentGradebook;
-    public emailPattern: string = patterns.studentEmail;
+    public mypattern: string = "^[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]+[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9.!#$%&’*+/=?^_`{|}~-]*[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]*@[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]+(?:([a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9-]*[\.?]))+([a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ]{2,6})$";
 
-    @ViewChild("studentForm") studentForm: any;
+    // @ViewChild("newFotoSrc") newFotoSrc: ElementRef;
+    @ViewChild("inputFile") inputFile: ElementRef;
+    @ViewChild("myform") myform: any;
 
     constructor(private route: ActivatedRoute,
                 private _commonService: CRUDService,
@@ -70,6 +70,7 @@ export class StudentProfileComponent implements OnInit {
             this.action = true;
             this.newStudent();
         }
+        let studentPhoto = <HTMLInputElement>document.getElementById("output");
     }
 
     goBack(): void {
@@ -79,13 +80,14 @@ export class StudentProfileComponent implements OnInit {
     newStudent() {
         this.student = new Student;
         this.student.photo = "assets/profile.png";
+        // this.newFotoSrc.nativeElement.src = "assets/profile.png";
+        // this.studentPhoto.src = "assets/profile.png";
         this.getFacultyName();
     }
 
     createNewStudent() {
         let dataForRequest = new Student;
         let studentPhoto = <HTMLInputElement>document.getElementById("output");
-        studentPhoto.src = "assets/profile.png";
         dataForRequest.username = this.student.username;
         dataForRequest.password = this.student.plain_password;
         dataForRequest.password_confirm = this.student.plain_password;
@@ -96,6 +98,7 @@ export class StudentProfileComponent implements OnInit {
         dataForRequest.student_fname = this.student.student_fname;
         dataForRequest.group_id = this.student.group_id;
         dataForRequest.plain_password = this.student.plain_password;
+        // dataForRequest.photo = this.newFotoSrc.nativeElement.src;
         dataForRequest.photo = studentPhoto.src;
         this._commonService.insertData(this.entity, dataForRequest)
             .subscribe(data => {
@@ -103,7 +106,7 @@ export class StudentProfileComponent implements OnInit {
                         this.modalInfoConfig.infoString = `Створено профіль студента ${dataForRequest.student_surname} ${dataForRequest.student_name} ${dataForRequest.student_fname}`;
                         this.successEventModal();
                         this.newStudent();
-                        this.studentForm.reset();
+                        this.myform.reset();
                     }
                 },
                 error => {
@@ -203,6 +206,7 @@ export class StudentProfileComponent implements OnInit {
         dataForUpdateStudent.student_fname = this.student.student_fname;
         dataForUpdateStudent.group_id = this.student.group_id;
         dataForUpdateStudent.plain_password = this.student.plain_password;
+        //dataForUpdateStudent.photo = this.newFotoSrc.nativeElement.src;
         dataForUpdateStudent.photo = studentPhoto.src;
         this._commonService.updateData(this.entity, this.student.user_id, dataForUpdateStudent)
             .subscribe(data => {
