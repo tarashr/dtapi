@@ -1,18 +1,14 @@
 <div class="login-container">
-    <form class="loginform" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <label for="login">Логін</label>
-            <input type="text" class="form-control" id="login" name="login"
-                   placeholder="логін" required
+    <h1>D-Tester</h1>
+    <h3>Система автоматизованого оцінювання знань студентів</h3><br/>
+    <form (ngSubmit)="onSubmit()">
+            <input type="text" class="input-txt" id="login" name="login"
+                   placeholder="Логін" required
                    [(ngModel)]="user.username">
-        </div>
-        <div class="form-group">
-            <label for="password">Пароль</label>
-            <input type="password" class="form-control" id="password"
-                   placeholder="пароль" required name="password"
+            <input type="password" class="input-txt" id="password"
+                   placeholder="Пароль" required name="password"
                    [(ngModel)]="user.password">
-        </div>
-        <button type="submit" class="btn btn-default submit-btn">Увійти</button>
+        <button type="submit" class="custom-btn">Увійти</button>
     </form>
 </div>
 <template ngbModalContainer></template>
