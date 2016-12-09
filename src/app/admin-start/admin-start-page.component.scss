@@ -9,12 +9,12 @@
   nav.main-menu-navbar {
     margin-bottom: 0;
     min-width: 420px;
-    background-color: $main-menu-bkg-color;
-    .navbar-nav {
-      .active {
-        background-color: $main-menu-bkg-color-active;
-      }
-    }
+    //background-color: $main-menu-bkg-color;
+    //.navbar-nav {
+    //  .active {
+    //    background-color: $main-menu-bkg-color-active;
+    //  }
+    //}
   }
 }
 @media screen and (max-width: 767px){

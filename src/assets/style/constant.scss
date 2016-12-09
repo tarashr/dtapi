@@ -5,16 +5,10 @@ $grey50: #f8f8f8;
 $grey100: #e7e7e7;
 $black: #000;
 
-// indigo style
-$indigo50: #E8EAF6;
-$indigo100: #C5CAE9;
-$indigo200: #9FA8DA;
-$indigo900: #1A237E;
-
-$light: $indigo50;
-$normal: $indigo100;
-$dark: $indigo200;
-$darkest: $indigo900;
+$light: $white;
+$normal: $grey50;
+$dark: $grey100;
+$darkest: $black;
 // constant for dt-table.component
 $background-color-n: $light;
 $background-color-2n: $normal;

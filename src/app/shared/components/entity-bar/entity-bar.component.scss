@@ -1,7 +1,7 @@
 @import "../../../../assets/style/constant";
 
 nav.entity-bar {
-  background-color: $entity-bar-bkg-color;
+  //background-color: $entity-bar-bkg-color;
   .container-fluid {
     form.navbar-left {
       select {
@@ -20,7 +20,7 @@ nav.entity-bar {
     .form-control {
       width: auto;
       display: inline-block;
-      border-radius: $btn-radius;
+      //border-radius: $btn-radius;
     }
     form.navbar-right {
       display: inline-block;
