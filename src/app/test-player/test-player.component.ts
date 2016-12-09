@@ -207,6 +207,9 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
             "attempts ended": () => {
                 message = "Ви використали всі спроби";
                 this.testPlayerService.resetSessionData();
+            },
+            "You don't have permissions to make this test": () => {
+                message = "Даний тест Вам недоступний. Виберіть доступний для Вас тест на сторіці Вашого профайлу.";
             }
         };
         if (resolve[mistake]) {
@@ -217,7 +220,8 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
                 () => {
                     this.router.navigate(["/student"]);
                 });
-    };
+    }
+        ;
 
     continueTest() {
         this.testPlayerService.recoverTestData()

@@ -9,7 +9,7 @@
                 <span class="visible-xs-inline-block">{{headers[j].name+": "}}</span>
                 <span class="align-xs" *ngIf="headers[j].name !== 'Вкладення'">{{item}}</span>
                 <span class="align-xs" *ngIf="headers[j].name == 'Вкладення'">
-                <img [src]="item" alt="Зображення для тесту" width="200px">
+                    <img [src]="item" alt="Зображення для тесту" width="200px">
                 </span>
             </div>
             <div [ngClass]="headers[headers.length-1].className">

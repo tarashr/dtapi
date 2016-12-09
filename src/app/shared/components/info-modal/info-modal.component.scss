@@ -1,20 +1,10 @@
-.modal-body-add-edit {
-    background-color: #f9f9f9;
-}
-
-.input-group-add-edit {
-    margin: 10px auto;
-}
-
-.modal-span {
-    min-width: 161px;
-}
-
-.open-modal-btn {
-    display: inline-block;
+@import "../../../../assets/style/constant";
+.modal-header, .modal-footer{
+    background-color: $modal-bkg-color;
 }
 
 .modal-body-info-confirm{
     text-align: center;
     font-size: 120%;
+    background-color: $modal-bkg-color-body;
 }
