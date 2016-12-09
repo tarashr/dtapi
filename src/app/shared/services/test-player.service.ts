@@ -162,7 +162,9 @@ export class TestPlayerService {
                 this.timer = this.createTimeForView(this.timeForTest);
                 return testRecord;
             })
-            .catch(this.handleError);
+            .catch((error) => {
+                return Observable.throw(error.json().response);
+            });
     }
 
     countTestPassesByStudent = (testRecord: any): Observable<any> => {

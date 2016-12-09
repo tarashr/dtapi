@@ -16,9 +16,13 @@
       }
     }
   }
-  .navbar-right {
-    a {
-      margin-left: 15px;
+}
+@media screen and (max-width: 767px){
+  .main-menu {
+    .navbar-right {
+      a {
+        margin-left: 15px;
+      }
     }
   }
 }
