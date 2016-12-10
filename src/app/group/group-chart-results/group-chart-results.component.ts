@@ -1,48 +1,66 @@
-import { Component } from "@angular/core";
+import {Component, OnInit, Input} from "@angular/core";
 
 @Component({
-    selector: "simple-chart-example",
+    selector: "barChart",
     template: `
         <chart [options]="options"></chart>
     `
 })
-export class GroupChartResultsComponent {
-    constructor() {
+export class GroupChartResultsComponent implements OnInit {
+
+    @Input() chartData;
+    options: Object;
+
+    constructor() {}
+
+    ngOnInit() {
         this.options = {
             chart: {
-                type: 'bar'
+                type: "column"
             },
             title: {
-                text: ''
+                text: "Результати тестування"
             },
             xAxis: {
-                categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+                type: "category",
+                labels: {
+                    rotation: -45,
+                    style: {
+                        fontSize: "13px",
+                        fontFamily: "Verdana, sans-serif"
+                    }
+                }
             },
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Total fruit consumption'
+                    text: "Бали за тестування"
                 }
             },
             legend: {
-                reversed: true
+                enabled: false
             },
-            plotOptions: {
-                series: {
-                    stacking: 'normal'
-                }
+            credits: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: "Набрано балів: <b>{point.y:.1f}</b>"
             },
             series: [{
-                name: 'John',
-                data: [5, 3, 4, 7, 2]
-            }, {
-                name: 'Jane',
-                data: [2, 2, 3, 2, 1]
-            }, {
-                name: 'Joe',
-                data: [3, 4, 4, 2, 5]
+                name: "Набрані бали",
+                data: this.chartData,
+                dataLabels: {
+                    enabled: true,
+                    rotation: -90,
+                    color: "#000",
+                    align: "right",
+                    y: 10, // 10 pixels down from the top
+                    style: {
+                        fontSize: "13px",
+                        fontFamily: "Verdana, sans-serif"
+                    }
+                }
             }]
         };
     }
-    options: Object;
 }

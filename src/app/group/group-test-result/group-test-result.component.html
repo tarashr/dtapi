@@ -5,7 +5,10 @@
                 Група:&nbsp;{{groupName}}&nbsp; &nbsp;Предмет:&nbsp;"{{subjectName}}"&nbsp; &nbsp;Тест:&nbsp;"{{testName}}"
             </div>
             <form class="navbar-form navbar-right">
-                <button type="button" class="btn btn-default" (click)="Print()">Друк</button>
+                <button *ngIf="!showGraph" type="button" class="btn btn-default" (click)="Print()">Друк</button>
+                <button type="button" class="btn btn-default"
+                        (click)="showGraph = !showGraph">На графіку
+                </button>
                 <button type="button" class="btn btn-secondary"
                         (click)="goBack()">Назад
                 </button>
@@ -25,7 +28,7 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid print">
+    <div *ngIf="!showGraph" class="container-fluid print">
         <ul class="list-group entity-list">
             <li class="list-group-item row">
                 <div *ngFor="let item of headers" [ngClass]="item.className">{{item.name}}</div>
@@ -44,5 +47,5 @@
     <div *ngIf="noRecords" class="text-center">
         Немає результатів тестування для даної групи
     </div>
-    <simple-chart-example></simple-chart-example>
+    <barChart *ngIf="showGraph" [chartData]="chartData"></barChart>
 </div>
