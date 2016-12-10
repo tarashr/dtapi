@@ -1,0 +1,35 @@
+<div class="entity-container">
+    <test-bar
+            [pageTitle]="entityTitle"
+            [entityName]="nameOfTest"
+            [isSelect]="isSelect"
+            [noRecords]="noRecords"
+            [selectLimit]="selectLimit"
+            (activate)="activate($event)"
+            (selectRun)="changeLimit($event)">
+    </test-bar>
+    <div *ngIf="!noRecords">
+        <dt-table *ngIf="!noRecords"
+                  [headers]="headers"
+                  [actions]="actions"
+                  [tableData]="entityData"
+                  (activate)="activate($event)">
+        </dt-table>
+    </div>
+    <ngb-pagination
+            *ngIf="!noRecords"
+            [hidden]="limit>=entityDataLength"
+            [pageSize]="limit"
+            [collectionSize]="entityDataLength"
+            [(page)]="page"
+            [rotate]="true"
+            (pageChange)="pageChange($event)"
+            [maxSize]="maxSize"
+            [ellipses]="true"
+            [boundaryLinks]="true">
+    </ngb-pagination>
+    <div *ngIf="noRecords" class="text-center">
+        Для вибраного тесту завдань немає
+    </div>
+</div>
+<template ngbModalContainer></template>

@@ -1,0 +1,58 @@
+<nav *ngIf="!isSelectedBy" class="navbar navbar-default entity-bar">
+    <div class="container-fluid">
+        <div class="navbar-text">{{entityTitle}}</div>
+        <form class="navbar-form navbar-left">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="пошук" name="inputSearch"
+                       #inputSearch
+                       [title]="searchTitle"
+                       (input)="find(inputSearch.value)">
+            </div>
+        </form>
+        <form *ngIf="listOfOptions1 && listOfOptions2" class="navbar-form navbar-left">
+            <div class="form-group">
+                <select *ngIf="listOfOptions1"
+                        #select1
+                        class="form-control"
+                        name="select1"
+                        (input)="onSelect1(select1.value)">
+                    <option value="default">{{defaultOption1}}</option>
+                    <option *ngFor="let item of listOfOptions1" [value]="item.id">{{item.name}}</option>
+                </select>
+                <select *ngIf="listOfOptions2"
+                        #select2
+                        class="form-control"
+                        name="select2"
+                        (input)="onSelect2(select2.value)">>
+                    <option value="default">{{defaultOption2}}</option>
+                    <option *ngFor="let item of listOfOptions2" [value]="item.id">{{item.name}}</option>
+                </select>
+            </div>
+        </form>
+        <form class="navbar-form navbar-right">
+            <div class="form-group">
+                <a class="btn btn-default" (click)="modal(config)">Додати </a>
+                <select class="form-control" name="count"
+                        #select
+                        [title]="selectLimit"
+                        (input)="changeLimit(select.value)"
+                        [disabled]="inputSearch.value.length">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option [value]="entityDataLength">Всі</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</nav>
+<nav *ngIf="isSelectedBy" class="navbar navbar-default entity-bar">
+    <div class="container-fluid">
+        <div class="navbar-text">{{entityTitle}}</div>
+        <form class="navbar-form navbar-right">
+            <div class="form-group">
+                <button type="button" class="btn btn-secondary" (click)="goBack()">Назад</button>
+            </div>
+        </form>
+    </div>
+</nav>

@@ -1,0 +1,30 @@
+@import "constant";
+
+html, body {
+  height: 100%;
+}
+
+.entity-container {
+  max-width: 1024px;
+  margin: 0px auto 0px auto;
+  padding: 0px 10px 0 10px;
+  min-width: 412px;
+}
+
+.entity-list {
+  li {
+    background-color: $background-color-n;
+    &:first-child {
+      font-weight: bold;
+    }
+    &:nth-child(2n) {
+      background-color: $background-color-2n;
+    }
+    &:not(:first-child):hover {
+      background-color: $background-color-hover;
+    }
+    a {
+      margin: 2px;
+    }
+  }
+}

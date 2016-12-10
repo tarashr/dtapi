@@ -1,0 +1,152 @@
+.student-container {
+    max-width: 1024px;
+    margin: 0px auto 0px auto;
+    padding: 10px 10px 0 10px;
+    min-width: 412px;
+}
+
+.student-profile-title{
+    font-size: 150%;
+    padding: 10px 0 10px 0;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    background-color: #F8F8F8;
+    text-align: center;
+}
+
+.student-datas{
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+    margin: 15px 0 15px 0;
+    padding: 10px 0 10px 0;
+    background-color: #F8F8F8;
+    display: inline-block;
+    width: 100%;
+}
+
+.student-foto{
+    display: inline-block;
+    float: left;
+}
+
+.student-data1{
+    display: inline-block;
+    float:	left;
+    text-align:right;
+    padding: 10px;
+}
+
+.student-data2{
+    display: inline-block;
+    float:	left;
+    text-align:right;
+    padding: 10px;
+}
+
+.input-student-data {
+    margin: 10px 20px 10px 0;
+}
+
+.button-create-refresh {
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    clear:both;
+}
+
+.position-left {
+    float: right;
+    margin-right: 10px;
+}
+
+.select-group {
+    clear:both;
+    padding: 2px;
+    height: 24px;
+    width: 50%;
+}
+
+div.student-datas input{
+    width: 50%;
+}
+
+div.input-foto input{
+    width: 100%;
+}
+
+.field-error-message{
+    text-align: center;
+    margin: 0 20px 0 0;
+}
+
+.data-field{
+    width: 50%;
+    display: inline-block;
+    float: right;
+    text-align: left;
+    margin: 10px 20px 10px 0;
+    min-height: 22px;
+}
+
+.password-eye-input{
+    margin: 10px -3px 10px 0;
+}
+
+.password-eye{
+    display: inline-block;
+    cursor: pointer;
+    width: 20px;
+    position: relative;
+    right: 25px;
+    color: #000000;
+    margin: 10px 0 10px 0;
+}
+
+label {
+    display: block;
+    float:left;
+    clear: right;
+    margin: 10px 0 10px 0;
+}
+
+.hint {
+    position: absolute;
+    bottom: 40px;
+    left: 40%;
+    text-align: left;
+    min-width: 131px;
+    z-index: 10;
+    padding: 5px;
+    color: #777;;
+    border: 1px solid #e77e7e;
+    border-radius: 3px;
+    background: #ffeff2;
+}
+
+.hint::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50px;
+    margin-left: -5px;
+    border-width: 7px;
+    border-style: solid;
+    border-color: #777 transparent transparent transparent;
+}
+
+.data-field-enter {
+    position: relative;
+}
+
+.emergy-text {
+    color: red;
+}
+
+.student-ability{
+    padding: 10px 0 10px 0;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    background-color: #F8F8F8;
+}

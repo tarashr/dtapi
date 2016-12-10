@@ -1,0 +1,10 @@
+@import "../../../../assets/style/constant";
+.modal-header, .modal-footer{
+    background-color: $modal-bkg-color;
+}
+
+.modal-body-info-confirm{
+    text-align: center;
+    font-size: 120%;
+    background-color: $modal-bkg-color-body;
+}

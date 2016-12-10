@@ -1,0 +1,21 @@
+<div class="entity-container">
+    <test-bar
+            [entityName]="nameOfQuestion"
+            [pageTitle]="entityTitle"
+            [addTitle]="addTitle"
+            (activate)="activate($event)">
+
+    </test-bar>
+    <div *ngIf="!noRecords">
+        <dt-table *ngIf="!noRecords"
+                  [headers]="headers"
+                  [actions]="actions"
+                  [tableData]="entityData"
+                  (activate)="activate($event)">
+        </dt-table>
+    </div>
+    <div *ngIf="noRecords" class="text-center" role="alert">
+        Для вибраного завдання відповіді немає
+    </div>
+</div>
+<template ngbModalContainer></template>

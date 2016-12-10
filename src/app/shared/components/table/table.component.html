@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <ul class="list-group entity-list">
+        <li class="list-group-item row hidden-xs">
+            <div *ngFor="let item of headers" [ngClass]="item.className">{{item.name}}</div>
+        </li>
+        <li class="list-group-item row"
+            *ngFor="let entity of tableData; let i=index">
+            <div *ngFor="let item of entity.entityColumns; let j=index" [ngClass]="headers[j].className">
+                <span class="visible-xs-inline-block">{{headers[j].name+": "}}</span>
+                <span class="align-xs" *ngIf="headers[j].name !== 'Вкладення'">{{item}}</span>
+                <span class="align-xs" *ngIf="headers[j].name == 'Вкладення'">
+                    <img [src]="item" alt="Зображення для тесту" width="200px">
+                </span>
+            </div>
+            <div [ngClass]="headers[headers.length-1].className">
+                <a
+                        *ngFor="let button of actions"
+                        [ngClass]="button.btnClassName"
+                        [title]="button.title+': ' + entity.entityColumns[1]"
+                        (click)="run(entity, button.action)">
+                    <span [ngClass]="button.glyphicon"></span>
+                </a>
+            </div>
+        </li>
+    </ul>
+</div>

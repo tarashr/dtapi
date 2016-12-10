@@ -1,0 +1,34 @@
+<ngb-tabset>
+    <ngb-tab title="Доступні">
+        <template ngbTabContent>
+		  <div class="row"><div class="col-xs-12">
+            <h3>Cписок доступних тестувань для групи "{{groupName}}"</h3>
+            <test-list
+                    [groupId] = "groupId">
+
+            </test-list>
+			</div></div>
+        </template>
+    </ngb-tab>
+
+    <ngb-tab title="Заплановані">
+        <template ngbTabContent>
+		 <div class="row"><div class="col-xs-12">
+            <h3>Cписок тестувань які плануються для групи "{{groupName}}"</h3>
+           
+                <test-list-shedule
+                        [groupId] = "groupId">
+                </test-list-shedule>
+			</div></div>
+        </template>
+    </ngb-tab>
+    <ngb-tab title="Пройдені">
+        <template ngbTabContent>
+		<div class="row"><div class="col-xs-12">
+            <h3>Результати тестувань</h3>
+            <test-results>
+			</test-results>
+		</div></div>
+        </template>
+    </ngb-tab>
+</ngb-tabset>

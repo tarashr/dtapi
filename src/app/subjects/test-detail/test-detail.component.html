@@ -1,0 +1,23 @@
+<div class="entity-container">
+    <test-bar
+            [entityName]="nameOfTest"
+            [pageTitle]="pageTitle"
+            [addTitle]="addTitle"
+            (activate)="activate($event)"
+    ></test-bar>
+    <dt-table *ngIf="!noRecords"
+              [limit]="limit"
+              [page]="page"
+              [headers]="headers"
+              [actions]="actions"
+              [tableData]="entityData"
+              (activate)="activate($event)">
+    </dt-table>
+    <div *ngIf="!noRecords">
+        Загальна кількість завдань в тесті: {{tasksTest}} <br>
+    </div>
+    <div *ngIf="noRecords" class="text-center">
+        Для вибраного тесту немає детальнішого опису
+    </div>
+</div>
+<template ngbModalContainer></template>

@@ -1,0 +1,27 @@
+$btn-radius: 2px;
+// grey style
+$white: #fff; // white
+$grey50: #f8f8f8;
+$grey100: #e7e7e7;
+$black: #000;
+
+$light: $white;
+$normal: $grey50;
+$dark: $grey100;
+$darkest: $black;
+// constant for dt-table.component
+$background-color-n: $light;
+$background-color-2n: $normal;
+$background-color-hover: $dark;
+
+// constant for entity-bar.component
+$entity-bar-bkg-color: $normal;
+
+// constant for admin-start-page.component
+$main-menu-bkg-color: $normal;
+$main-menu-bkg-color-active: $dark;
+
+// modal
+$modal-bkg-color-body: $normal;
+$modal-bkg-color: $light;
+

@@ -1,0 +1,682 @@
+[33mcommit d825cf1bc6d35d434aaff994b5f7832524027339[m
+Author: ivan.fetsenets@gmail.com <yurkovskiy@gmail.com>
+Date:   Mon Oct 24 11:50:54 2016 +0300
+
+    student.component.html
+
+[33mcommit 1acd0ff6b86d4a39132f56997a57c3b37b1add8f[m
+Merge: 4fe740c 6c284ee
+Author: Taras Hrynevych <tarashrynevych@gmail.com>
+Date:   Sun Oct 23 21:11:34 2016 +0300
+
+    Merge branch 'develop' of https://github.com/if069web/DTester into develop
+
+[33mcommit 4fe740c271af78cee31a46b36477aa5e8525072b[m
+Author: Taras Hrynevych <tarashrynevych@gmail.com>
+Date:   Sun Oct 23 21:06:06 2016 +0300
+
+    styles for userAdmin were unified
+
+[33mcommit 6c284eecb920bdd12c25065c79d126bdd5d50e50[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Sun Oct 23 21:00:05 2016 +0300
+
+    some const data moved to constatnt.ts (this file was renamed from constant_url.ts). Now common.service will redirect to login page if server send 403 error.
+
+[33mcommit 490a04d3539b7f588e48aa52b039c86190445fd2[m
+Merge: 35114c4 32d0903
+Author: Taras Hrynevych <tarashrynevych@gmail.com>
+Date:   Sun Oct 23 20:45:55 2016 +0300
+
+    for merging
+
+[33mcommit 32d090302201c7cf6098a3b2fcabd09161fdbc2b[m
+Author: Taras Hrynevych <tarashrynevych@gmail.com>
+Date:   Sun Oct 23 20:38:41 2016 +0300
+
+    added possibility to edit adminUser
+
+[33mcommit 35114c4e4550bc87b277c5d51914bb538d6e4f00[m
+Merge: 28fcd87 59dd2ee
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Sun Oct 23 18:12:57 2016 +0300
+
+    Merge branch 'develop' of https://github.com/if069web/DTester into develop
+
+[33mcommit 28fcd87b1e93c2944c18fd1aa1c771b9e0b203be[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Sun Oct 23 18:12:14 2016 +0300
+
+    separated style.css from vendor.css. Some changes in package.json
+
+[33mcommit 59dd2ee545710a83bc04e0a793eff2a56e94324a[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Sun Oct 23 14:01:44 2016 +0300
+
+    Removed inactive links
+
+[33mcommit b749532f887ea22e968aca99fdbb9cdb90656073[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Sun Oct 23 13:52:12 2016 +0300
+
+    Changed styles on page
+
+[33mcommit ce35cc704bed329d540749f3fbfe8a02ea0cb53b[m
+Merge: f8cd5fa d652a33
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Sun Oct 23 13:05:16 2016 +0300
+
+    Merge branch 'develop' of https://github.com/if069web/DTester into develop
+
+[33mcommit f8cd5fa089f3c9496d177cff935678dc90befee2[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Sun Oct 23 13:03:01 2016 +0300
+
+    Added posibility to search subjects, fix some bug in modal
+
+[33mcommit d652a33db83f66e956594e9f19b2557836eb6aa3[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Sun Oct 23 12:26:46 2016 +0300
+
+    Update speciality css
+
+[33mcommit 09c59979d55935d7ad7a1ccf1f645b21b4f884ec[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Sun Oct 23 12:26:05 2016 +0300
+
+    Update speciality html
+
+[33mcommit 67193558f09e4889b881e0b0ea58dbea3019bb14[m
+Merge: 11e2c8e 57e5fb6
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Sun Oct 23 12:03:13 2016 +0300
+
+    Merge branch 'develop' of https://github.com/if069web/DTester into develop
+
+[33mcommit 11e2c8e9101cc3ce2323ed096731eac5af66f196[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Sun Oct 23 12:02:58 2016 +0300
+
+    common styles from faculty and statistic component was moved assets/style/styles.css
+
+[33mcommit 6e3e5a8cfe8ed46c0671a99e5b1da6b1eb3f53f1[m
+Author: Taras Hrynevych <tarashrynevych@gmail.com>
+Date:   Sat Oct 22 23:19:42 2016 +0300
+
+    added possibility to add adminUser
+
+[33mcommit 57e5fb6f7bbd3f5b0b631736c8dc10e7cb9d5e6e[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Sat Oct 22 19:35:31 2016 +0300
+
+    Fixed bold table headers
+
+[33mcommit d7b717806a528fb538c94a9655d07b8cfd7984fc[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Sat Oct 22 19:34:40 2016 +0300
+
+    Fixed specialities button
+
+[33mcommit 1c5d0c42e54dd6e9a522848ae9117eab7de9d56c[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Sat Oct 22 19:12:33 2016 +0300
+
+    Added canActivate to router. admin-start-page was remove to separate folder. Fixed bugs: now page refresh data when user create new faculty; now pagination do not generate duplicate requests
+
+[33mcommit 80e441eab709b479f93b9f06f6ec213f87f8fdf3[m
+Author: if069web <if069web@gmail.com>
+Date:   Sat Oct 22 16:39:57 2016 +0300
+
+    Delete form-validator.directive.ts
+    
+    this file its not ready
+
+[33mcommit 43242d50a13313ee93a79f0c7395e175e66e572d[m
+Merge: 8ac8787 5afc8a9
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Sat Oct 22 15:16:56 2016 +0300
+
+    Merge branch 'develop' of https://github.com/if069web/DTester into develop
+
+[33mcommit 8ac8787ceb218a0e5a452ae59f6df589e7a006bd[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Sat Oct 22 15:05:16 2016 +0300
+
+    Added modal windows for both edit and create subjects
+
+[33mcommit 5afc8a96c97809bb7e3ecc5352766aa167bae3eb[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Sat Oct 22 12:09:33 2016 +0300
+
+    Speciality css
+
+[33mcommit 3ad81a62857309ae35efc21c9754e52356faa87b[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Sat Oct 22 11:46:05 2016 +0300
+
+    Update speciality template
+
+[33mcommit 4c4ad75866f7d95ffe680e6f32e341c326fb6a28[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Sat Oct 22 11:44:52 2016 +0300
+
+    Update speciality component
+
+[33mcommit 34aaacb44b1ce1b3ee1f037fbb6c02b22dfdd649[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Sat Oct 22 11:43:45 2016 +0300
+
+    Update Speciality service
+
+[33mcommit ae1bb11469881ffa4573e9142d0fc342da0464c1[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Sat Oct 22 11:35:50 2016 +0300
+
+    Update const
+
+[33mcommit 8bb320919f80296c7cda0ce7f6f840ad4725f3f0[m
+Merge: 3fc17ad 54f656a
+Author: Vasyl Maksymets <mcvazin@gmail.com>
+Date:   Sat Oct 22 04:15:56 2016 +0000
+
+    Merge branch 'develop' of https://github.com/if069web/DTester into develop
+
+[33mcommit 3fc17ad2c74819d27904631d22e4fbb022245320[m
+Author: Vasyl Maksymets <mcvazin@gmail.com>
+Date:   Sat Oct 22 04:15:49 2016 +0000
+
+    little fix StudentPage
+
+[33mcommit 32ba8b2dd78a8b20dac0d59c6c8bd6c29a7222bd[m
+Author: Vasyl Maksymets <mcvazin@gmail.com>
+Date:   Sat Oct 22 03:59:51 2016 +0000
+
+    little fix StudentPage
+
+[33mcommit 54f656a102417a858e4acf1cec0a6e40750e1e67[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Sat Oct 22 02:59:16 2016 +0300
+
+    Fixed bug in CRUD for entity subjects
+
+[33mcommit 5050ff2303a3bc2c920965f5c885f8b02b8729c8[m
+Author: if069web <if069web@gmail.com>
+Date:   Fri Oct 21 13:56:07 2016 +0300
+
+    Fix bug
+
+[33mcommit 5e559abec16ff39b72d62193b33235083beb28d4[m
+Author: if069web <if069web@gmail.com>
+Date:   Fri Oct 21 13:54:27 2016 +0300
+
+    Deleted dublicated
+
+[33mcommit b8c9d03fe2ff48c6c9f30f0c777319ad2217035e[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Fri Oct 21 13:45:50 2016 +0300
+
+    Fix bug in edit component
+
+[33mcommit 6dade563fdccf0e0bb093eab20302730d0a15d4e[m
+Merge: 5782625 e37497b
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Fri Oct 21 10:55:59 2016 +0300
+
+    to merge
+
+[33mcommit 456394e04d0d991f6cfec354fe57584994805413[m
+Author: Vasyl Maksymets <mcvazin@gmail.com>
+Date:   Fri Oct 21 07:40:00 2016 +0000
+
+    small fix on UserPage - student profile
+
+[33mcommit e37497bb74943ce4b38f60cc1fde5c7697113440[m
+Author: Ivan <ivan.fetsenets@gmail.com>
+Date:   Fri Oct 21 10:39:09 2016 +0300
+
+    delete dublicate group.service
+
+[33mcommit 578262572c605ecbd79b4c666c1ccc7d8e324793[m
+Merge: 3e29c5a 6007aea
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Fri Oct 21 10:34:00 2016 +0300
+
+    to merge
+
+[33mcommit 3e29c5ae2670720fca33d20f378398cf81fb0009[m
+Merge: ec7193d 93104dd
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Fri Oct 21 10:28:45 2016 +0300
+
+    Add new fies
+
+[33mcommit 6007aea99d7d5d98bf1b99013ba77252e22bd5a4[m
+Merge: 5a61a24 5fbcd01
+Author: katherina.vitruk@gmail.com <katherina.vitruk@gmail.com>
+Date:   Fri Oct 21 10:07:30 2016 +0300
+
+    for student merging
+
+[33mcommit 5a61a2494b99f2b64548f158368f16f8a1d7af15[m
+Merge: fae49e0 93104dd
+Author: katherina.vitruk@gmail.com <katherina.vitruk@gmail.com>
+Date:   Fri Oct 21 09:42:35 2016 +0300
+
+    for merging
+
+[33mcommit 5fbcd011d93e31832a92f73b047656021a20c607[m
+Author: Yuriy Bezgachnyuk <yurkovskiy@gmail.com>
+Date:   Fri Oct 21 08:36:15 2016 +0300
+
+    added button plus in student page
+
+[33mcommit ec7193d8bf709632279b2bd8b987a1a58546395b[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Fri Oct 21 08:13:15 2016 +0300
+
+    Added part of valid directive
+
+[33mcommit 62e52c89e7d2ec172ce9b236d006bcd5efb2ad5b[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Fri Oct 21 00:46:36 2016 +0300
+
+    Added search on page subject
+
+[33mcommit 9565f565e496fe6e715258a8d6de07f8fa348d62[m
+Author: Yuriy Bezgachnyuk <yurkovskiy@gmail.com>
+Date:   Thu Oct 20 23:57:39 2016 +0300
+
+    student module corrected
+
+[33mcommit db802e9dbb5ebb62538856dae14c265a69457345[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Thu Oct 20 23:37:49 2016 +0300
+
+    Added some change in pagination
+
+[33mcommit fae49e09706adf4626c4f10a31051887293a9530[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Thu Oct 20 23:21:27 2016 +0300
+
+    remove unnecessary files
+
+[33mcommit ab68f0b8579ec402b9ff0d0b26f1e85beb9adf7d[m
+Merge: 1ff3791 f491af5
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Thu Oct 20 23:05:51 2016 +0300
+
+    Merge branch 'ilemskyi' into develop
+
+[33mcommit f491af56b7356c68c374a669fe7c7c9e570822f4[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Thu Oct 20 22:42:30 2016 +0300
+
+    package.json prestart script was changed by prebuild. Added new groups-of-faculty.component. Updated pagination in faculties. Added new search to faculties. logout() in login.service was updated. Made some fix in statistic page. Added to common service search method. Made some fixes and updates of existing methods in faculty.component
+
+[33mcommit 1ff37917b91786877343d59fda83805ef6208445[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Thu Oct 20 22:10:47 2016 +0300
+
+    Update routing
+
+[33mcommit 80239e78b9a30ee1eb43f4802d7c41c7e5d22cbc[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Thu Oct 20 21:58:51 2016 +0300
+
+    Add speciality routes
+
+[33mcommit 54b8967f79a43606f3e4b889a36c9945433dfe9a[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Thu Oct 20 21:57:50 2016 +0300
+
+    Add Specialities to app module
+
+[33mcommit 186115a1f8f70c0a5f745f57d066d537ec42c42f[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Thu Oct 20 21:53:40 2016 +0300
+
+    Add speciality service
+
+[33mcommit 0f9bf6db9b5f33a7f4a021dd5c23f2c0b9ac99d8[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Thu Oct 20 21:52:42 2016 +0300
+
+    Update constant URL
+
+[33mcommit 523fcd50aec872f5cda49f7330e5d30e1f91ed25[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Thu Oct 20 21:50:17 2016 +0300
+
+    Add class
+    
+    Add specialities class
+
+[33mcommit a4ab27cb70fb88ede3e8abb163e5c2eb6887ab26[m
+Author: Serhii Kis <4irius@gmail.com>
+Date:   Thu Oct 20 21:47:15 2016 +0300
+
+    Add files via upload
+    
+    Add speciality component
+
+[33mcommit 93104dd18ca6e6f2366d5be492777823d91130a8[m
+Author: Taras Hrynevych <tarashrynevych@gmail.com>
+Date:   Thu Oct 20 20:01:30 2016 +0300
+
+    added posibility to delete admins
+
+[33mcommit e4c0f3a9e443565ae5bd21c150721b41716c2bcc[m
+Author: Yuriy Bezgachnyuk <yurkovskiy@gmail.com>
+Date:   Thu Oct 20 19:48:12 2016 +0300
+
+    added folder and files for student entities
+
+[33mcommit 0864e89d40c11093ed4de92aaf7d7bbd38ed0cdc[m
+Author: Vasyl Maksymets <mcvazin@gmail.com>
+Date:   Thu Oct 20 16:18:21 2016 +0000
+
+    fixed user profle block on StudentPart page
+
+[33mcommit ba7283187317c11f0900da9371171ead71e15cd9[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Thu Oct 20 16:46:53 2016 +0300
+
+    Added pagination on the page
+
+[33mcommit 04b48d2ab004bf9565698985d46fb83c69604433[m
+Merge: 837d552 559928c
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Thu Oct 20 15:51:56 2016 +0300
+
+    Merge branch 'ip-edit' of https://github.com/Petro88/DTester into ip-edit
+
+[33mcommit 837d5526784ea5be785d977e622441034789a1de[m
+Merge: 7bade72 d92671d
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Thu Oct 20 15:48:01 2016 +0300
+
+    Merge branch 'develop' of https://github.com/if069web/DTester into ip-edit
+
+[33mcommit 3fc8e4f28b2479a4dd777a876cecdd053f3c5732[m
+Author: Taras Hrynevych <tarashrynevych@gmail.com>
+Date:   Thu Oct 20 15:24:51 2016 +0300
+
+    style was changed a little bit
+
+[33mcommit 559928cb937c7362f0d1f93868ba8be9a7bcfc8e[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Thu Oct 20 13:05:34 2016 +0300
+
+    Added pagination on the page
+
+[33mcommit d92671dbc4a439265c63ce5bfefabf60dcddfadf[m
+Author: Vasyl Maksymets <mcvazin@gmail.com>
+Date:   Thu Oct 20 09:28:01 2016 +0000
+
+    add logout for student page. Add name, surname, gradebook, group-id for student page profile block
+
+[33mcommit b1a8c09792ac017f47304ccf963aaa3af38cdc0d[m
+Merge: 5af08ef 9cea6a1
+Author: Volodja Pitchuk <Vova85if@yandex.ru>
+Date:   Thu Oct 20 10:41:18 2016 +0300
+
+    Merge pull request #19 from if069web/group
+    
+    Group
+
+[33mcommit 9cea6a1398e22f6b08ce7ccc265f8ec95060f41c[m
+Author: Volodja Pitchuk <Vova85if@yandex.ru>
+Date:   Thu Oct 20 10:37:07 2016 +0300
+
+    add pagination on page group
+
+[33mcommit 7bade7264fe1ee56b49e18be5e7466b937c45ebb[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Thu Oct 20 02:42:19 2016 +0300
+
+    Part of pagination
+
+[33mcommit 86a53fcc32f03036d110759e23c820d1afbe1c81[m
+Author: Taras Hrynevych <tarashrynevych@gmail.com>
+Date:   Wed Oct 19 21:51:36 2016 +0300
+
+    fixed admin part(now it gets records from the server and display it)
+
+[33mcommit e2a4d2986dbc0830c560534207dc83c02a93e893[m
+Author: Taras Hrynevych <tarashrynevych@gmail.com>
+Date:   Wed Oct 19 21:01:27 2016 +0300
+
+    added administator page(but it doesn't work properly)
+
+[33mcommit 5af08ef130a37e8d293942f004be959c5a63d035[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Tue Oct 18 21:24:50 2016 +0300
+
+    promises was changed by Observable
+
+[33mcommit 6cbb41745fe8d71f83195465ab225e4c08ba1ab7[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Tue Oct 18 20:10:58 2016 +0300
+
+    Added posibility to show old name and description of subject before edit it
+
+[33mcommit 20002d127bb76cea3db6958a16c742b65ee025d2[m
+Author: Volodja Pitchuk <Vova85if@yandex.ru>
+Date:   Tue Oct 18 19:19:20 2016 +0300
+
+    done part of view of table Group
+
+[33mcommit a81bbafad040d0e67ae4a831c58e157634ef346d[m
+Author: if069web <if069web@gmail.com>
+Date:   Tue Oct 18 11:57:47 2016 +0300
+
+    Changed some information
+
+[33mcommit 22fb6ef7ccc228121723c4b2affb9edf2c43dc0a[m
+Merge: d0c8eb4 ff17b2f
+Author: Yuriy Bezgachnyuk <yurkovskiy@gmail.com>
+Date:   Tue Oct 18 09:47:30 2016 +0300
+
+    for merging
+
+[33mcommit ff17b2f9072da69cc10f4ac7c5020ba411f05ff4[m
+Author: Yuriy Bezgachnyuk <yurkovskiy@gmail.com>
+Date:   Tue Oct 18 09:40:50 2016 +0300
+
+    Added prestart task into package.json. Modified config files for WebPack: changed name of dist directories
+
+[33mcommit d0c8eb485ebcaa55d2f07753bc7e0762a7c003a2[m
+Merge: f8488a1 10b1ef3
+Author: if069web <if069web@gmail.com>
+Date:   Tue Oct 18 09:13:45 2016 +0300
+
+    Merge pull request #11 from if069web/ip-crud
+    
+    Ip crud
+
+[33mcommit 10b1ef3c7512abd2b364c428bd8973bbe4284f44[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Tue Oct 18 00:50:05 2016 +0300
+
+    Added posibility to edit subjects
+
+[33mcommit af41a8b2c13365820d1e8a9d6b44b2c8df443c73[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Tue Oct 18 00:01:50 2016 +0300
+
+    Added posibility to add subject
+
+[33mcommit 7b3e296ab3002fd3c3f6d59b26530bfbcdb00297[m
+Author: Vasyl Maksymets <mcvazin@gmail.com>
+Date:   Mon Oct 17 23:34:18 2016 +0300
+
+    updated file with <newline> at the end of file
+
+[33mcommit 6f721cef2906750550a0fca5d87a59eb30657e81[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Mon Oct 17 22:26:49 2016 +0300
+
+    Added posibility to delete subject
+
+[33mcommit aa2ffcdade63b5fc93de211d827bd8ec2c747e0f[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Mon Oct 17 22:08:23 2016 +0300
+
+    Added posibility to show subject on the page
+
+[33mcommit e1ec97e6d969701d1fc2a7482559ac1f0546cc2b[m
+Author: Yuriy Bezgachnyuk <yurkovskiy@gmail.com>
+Date:   Mon Oct 17 22:03:10 2016 +0300
+
+    used <ngb-tabset> for navigation at the student profile page
+
+[33mcommit f01cb3c8fdd6e58d9a5507b8dd8b22618876c39e[m
+Author: Yuriy Bezgachnyuk <yurkovskiy@gmail.com>
+Date:   Mon Oct 17 21:51:17 2016 +0300
+
+    simple .gitignore added
+
+[33mcommit bbfd0c9806db973e87aa7fa9cf8b2b9e97569c1f[m
+Merge: f8488a1 e2cc7ad
+Author: if069web <if069web@gmail.com>
+Date:   Sun Oct 16 22:46:03 2016 +0300
+
+    Merge pull request #4 from Vovail/develop
+    
+    Third try
+
+[33mcommit e2cc7ad4833d767d07b5645a2657c922b5567b22[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Sun Oct 16 22:42:45 2016 +0300
+
+    readme.md added
+
+[33mcommit 0fb0b370c313867c09e145b14062867229d57d7e[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Sun Oct 16 16:46:23 2016 +0300
+
+    Added statistic.component. Router starts from statistic page now. Fixed some pagination problems. Login component now stored in sessionStorage.
+
+[33mcommit f59762044d3e40b809834f936f208f1f583393c1[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Sat Oct 15 21:58:15 2016 +0300
+
+    Added pagination to faculty entity. Corrected common.service
+
+[33mcommit 05fca31480df553bab4388b1c250b64c6f545cb2[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Sat Oct 15 16:45:20 2016 +0300
+
+    Now search field is working. Added 'all' option to select
+
+[33mcommit cea4a8c7fd818a1a56ef36cb4ee514caff8d51d1[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Fri Oct 14 21:19:07 2016 +0300
+
+    now page will update when user edit faculty
+
+[33mcommit 2453bde7f28424b3cb3bec34dc28993301508703[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Fri Oct 14 20:08:34 2016 +0300
+
+    added ng-bootstrap modal window. Now buttons add and edit faculty work (the used the same modal window)
+
+[33mcommit 67075b61426d37243d9f8820b8f791f0ee936eb4[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Fri Oct 14 15:15:56 2016 +0300
+
+    updated package.json: versions of dependencies was chenged from '~' to '^' (it resolves some problem with 'npm start' in UbuntuOS)
+
+[33mcommit 25860b409cfbb08420ffae6a720c5195570f8e53[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Thu Oct 13 23:09:07 2016 +0300
+
+    login.component set to local storage "userRole"
+    admin-start-page.component (and faculty.component) will navigate to login page (if user is not logged as admin).
+    routing: added temporary redirect to faculty.component (in future it will redirect to home/statistic), when user input non-existen url.
+    updated common.service (handleError return promise with json object).
+    faculty.component - now is working delete button and select coun of page.
+
+[33mcommit c7d00f537a72b73485430a429bcc5f9ba445372e[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Thu Oct 13 10:15:24 2016 +0300
+
+    Updated delRecord in common.service. Updated faculty.component (and it template). Now we can delete faculty.
+
+[33mcommit 13256649ad9d03ad96fac8a27e7d7e68a6b7f012[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Wed Oct 12 23:04:06 2016 +0300
+
+    added common.service.
+
+[33mcommit cd0aa83417eeaf68b48339ae54c729230d71629c[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Wed Oct 12 14:07:27 2016 +0300
+
+    Added base for routes. Work only faculty-route and subject-route (because other component are absent).
+
+[33mcommit 4cbfdac273d2967cf8d184f14baee6eac973523e[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Tue Oct 11 23:32:40 2016 +0300
+
+    webpack.dev changed. Changed START and BUILD scripts . Other changes
+
+[33mcommit 945b5a0995f3e8957cd0f99ebf4b86c9fcd176db[m
+Author: Volodymyr Ilemskyi <v.ilemsky@gmail.com>
+Date:   Tue Oct 11 17:20:17 2016 +0300
+
+    v.0.0.0.0.0.1 pre alfa
+
+[33mcommit f8488a1eacfbacc59d6d64748e3194fbaac9a045[m
+Merge: 90d8d19 c0cd77e
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Fri Oct 7 11:57:06 2016 +0300
+
+    Merge pull request #1 from Petro88/master
+    
+    The last approved variant of our structure
+
+[33mcommit c0cd77ee38b168f8ea243c85ad20498d381b181b[m
+Merge: 1499b4c 56d5464
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Fri Oct 7 09:49:58 2016 +0300
+
+    Merge pull request #1 from rbelmega/master
+    
+    possible solution
+
+[33mcommit 56d5464772fe782f6cd18501152352ead4903a5e[m
+Author: Rostyslav <belmega31@gmail.com>
+Date:   Thu Oct 6 20:29:28 2016 +0300
+
+    Update README.md
+
+[33mcommit 22c11fa68263034cfaa79f9e1c35b94bd6c2bfd9[m
+Author: Rostyslav <belmega31@gmail.com>
+Date:   Thu Oct 6 20:25:57 2016 +0300
+
+    Update README.md
+
+[33mcommit 1499b4c10ce865f45d8c917370eac2242644362f[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Thu Oct 6 14:21:45 2016 +0300
+
+    Update README.md
+
+[33mcommit 188e71847727de3fe9e88e42cfc4204814698633[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Thu Oct 6 13:54:14 2016 +0300
+
+    Put in order READMEmd
+
+[33mcommit c95f806dfbb2dc5348ec0131e124fb435e0329ee[m
+Author: Petro Ivankiv <petro.ivankiv88@gmail.com>
+Date:   Tue Oct 4 18:33:53 2016 +0300
+
+    Describe our strukture
+
+[33mcommit 90d8d19f34ab4a0f7c67af013898168d813b31b8[m
+Author: if069web <if069web@gmail.com>
+Date:   Fri Sep 23 23:03:32 2016 +0300
+
+    Initial commit

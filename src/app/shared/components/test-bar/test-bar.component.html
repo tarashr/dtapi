@@ -1,0 +1,25 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-text">{{pageTitle}}{{entityName}}</div>
+        <form class="navbar-form navbar-right">
+            <div class="form-group">
+                <a class="btn btn-default" (click)="addEntity(config)">Додати </a>
+            </div>
+            <div *ngIf="isSelect" class="form-group">
+                <select class="form-control" name="count"
+                        #select
+                        [title]="selectLimit"
+                        (input)="setupLimit(select.value)"
+                        [disabled]="noRecords">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option [value]="entityDataLength">Всі</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-secondary"
+                    (click)="goBack()">Назад
+            </button>
+        </form>
+    </div>
+</nav>

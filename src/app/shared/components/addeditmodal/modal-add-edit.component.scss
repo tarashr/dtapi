@@ -1,0 +1,81 @@
+@import "../../../../assets/style/variables.scss";
+@import "../../../../assets/style/mixins.scss";
+
+.modal-body-add-edit {
+    background-color: #f9f9f9;
+}
+
+.input-group-add-edit {
+    margin: 10px auto;
+}
+
+.modal-span {
+    min-width: 161px;
+}
+
+.modalInput {
+    position: relative;
+}
+
+.open-modal-btn {
+    display: inline-block;
+}
+
+.remove-image span:hover {
+    color: red;
+}
+
+.input-group {
+    width: 100%;
+}
+
+// DatePicker styles
+.custom-day {
+    text-align: center;
+    padding: 0.185rem 0.25rem;
+    border-radius: 0.25rem;
+    display: inline-block;
+    width: 2rem;
+    &:hover{
+        background-color: #e6e6e6;
+    }
+}
+
+.weekend {
+    background-color: #f0ad4e;
+    border-radius: 1rem;
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
+// end of datePicker styles
+
+// Styles for validation
+input.ng-invalid.ng-dirty:not(:focus) ,
+select.ng-invalid.ng-dirty {
+    border: $warning-border;
+}
+
+.hint {
+    @include base-hint;
+    bottom: 40px;
+    left: 130px;
+    &::after{content: "";
+        position: absolute;
+        top: 100%;
+        left: 50px;
+        margin-left: -5px;
+        border-width: 7px;
+        border-style: solid;
+        border-color: #777 transparent transparent transparent;
+    }
+}
+
+.passwords-hint {
+    @include base-hint;
+    top: 40px;
+    left: 0;
+}
+// End of validation styles

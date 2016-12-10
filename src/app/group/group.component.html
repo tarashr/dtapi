@@ -1,0 +1,42 @@
+<div class="entity-container">
+    <entity-bar
+            [entityTitle]="entityTitle"
+            [searchTitle]="searchTitle"
+            [addTitle]="addTitle"
+            [selectLimit]="selectLimit"
+            [entityDataLength]="entityDataLength"
+            [listOfOptions1]="facultiesNamesIDs"
+            [listOfOptions2]="specialitiesNamesIDs"
+            [isSelectedBy]="isSelectedBy"
+            [defaultOption1]="defaultFacultySelect"
+            [defaultOption2]="defaultSpecialitySelect"
+            (activate)="activate($event)"
+            (sortByField1)="getGroupsByFaculty($event)"
+            (sortByField2)="getGroupsBySpeciality($event)"
+            (searchRun)="findEntity($event)"
+            (selectRun)="changeLimit($event)">
+    </entity-bar>
+    <div *ngIf="noRecords" class="text-center">
+        За даними критеріями груп не знайдено
+    </div>
+    <dt-table *ngIf="!noRecords"
+              [page]="page"
+              [limit]="limit"
+              [headers]="headers"
+              [actions]="actions"
+              [tableData]="entityData"
+              (activate)="activate($event)">
+    </dt-table>
+    <ngb-pagination *ngIf="!sortHide"
+                    [collectionSize]="entityDataLength"
+                    [(page)]="page"
+                    [maxSize]="paginationSize"
+                    [pageSize]="limit"
+                    [rotate]="true"
+                    [ellipses]="true"
+                    [boundaryLinks]="true"
+                    (pageChange)="pageChange($event)"
+                    [hidden]="search.length || limit>=entityDataLength">
+    </ngb-pagination>
+</div>
+<template ngbModalContainer></template>

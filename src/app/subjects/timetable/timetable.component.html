@@ -1,0 +1,20 @@
+<div class="entity-container">
+    <test-bar
+            [entityName]="nameOfSubject"
+            [pageTitle]="pageTitle"
+            [addTitle]="addTitle"
+            (activate)="activate($event)"
+    ></test-bar>
+    <dt-table *ngIf="!noRecords"
+              [limit]="limit"
+              [page]="page"
+              [headers]="headers"
+              [actions]="actions"
+              [tableData]="entityData"
+              (activate)="activate($event)">
+    </dt-table>
+    <div *ngIf="noRecords" class="text-center">
+        Для вибраного предмету розклад не сформований
+    </div>
+</div>
+<template ngbModalContainer></template>

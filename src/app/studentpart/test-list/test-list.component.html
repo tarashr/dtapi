@@ -1,0 +1,14 @@
+<dt-table *ngIf="entityData.length && userRole ==='student'"
+		  [headers]="headers"
+		  [actions]="actions"
+		  [tableData]="entityData"
+		  (activate)="activate($event)">
+</dt-table>
+
+<dt-table *ngIf="entityData.length && userRole ==='admin'"
+		  [headers]="headers"
+		  [tableData]="entityData">
+</dt-table>
+
+<template ngbModalContainer></template>
+
