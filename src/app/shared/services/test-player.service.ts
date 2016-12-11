@@ -134,9 +134,7 @@ export class TestPlayerService {
                     this.resetSessionData();
                     this.commonService.openModalInfo(message, "info", "Результат тестування!")
                         .then(this.handleReject,
-                            () => {
-                                this.router.navigate(["/student"]);
-                            });
+                            this.returnToStudent);
                 },
                 () => {
                     this.commonService.openModalInfo(...this.modalParams.mistakeDuringSaveResult);
@@ -579,5 +577,9 @@ export class TestPlayerService {
 
     handleReject = () => {
     };
+
+    returnToStudent = () => {
+        this.router.navigate(["/student"]);
+    }
 
 }
