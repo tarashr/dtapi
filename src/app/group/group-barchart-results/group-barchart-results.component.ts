@@ -1,12 +1,12 @@
 import {Component, OnInit, Input} from "@angular/core";
 
 @Component({
-    selector: "barChart",
+    selector: "bar-chart",
     template: `
         <chart [options]="options"></chart>
     `
 })
-export class GroupChartResultsComponent implements OnInit {
+export class GroupBarChartResultsComponent implements OnInit {
 
     @Input() chartData;
     options: Object;
@@ -51,10 +51,9 @@ export class GroupChartResultsComponent implements OnInit {
                 data: this.chartData,
                 dataLabels: {
                     enabled: true,
-                    rotation: -90,
+                    rotation: 0,
                     color: "#000",
-                    align: "right",
-                    y: 10, // 10 pixels down from the top
+                    align: "center",
                     style: {
                         fontSize: "13px",
                         fontFamily: "Verdana, sans-serif"

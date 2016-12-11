@@ -47,5 +47,6 @@
     <div *ngIf="noRecords" class="text-center">
         Немає результатів тестування для даної групи
     </div>
-    <barChart *ngIf="showGraph" [chartData]="chartData"></barChart>
+    <bar-chart *ngIf="showGraph" [chartData]="barChartData" style="width: 50%;"></bar-chart>
+    <pie-chart *ngIf="showGraph" [chartData]="pieChartData" style="width: 30%;"></pie-chart>
 </div>

@@ -19,7 +19,8 @@ export class GroupTestResultComponent implements OnInit {
     public noRecords: boolean = false;
     public entityData: any[] = [];
     public entityDataWithNames: any ;
-    public chartData: any;
+    public barChartData: any;
+    public pieChartData: any;
     public maxResult: number = 100;
     public testId: number;
     public testName: string;
@@ -127,6 +128,7 @@ export class GroupTestResultComponent implements OnInit {
                 }
             }
         }
+        this.createChartData();
         this.createTableConfig(this.entityDataWithNames);
     };
 
@@ -149,15 +151,17 @@ export class GroupTestResultComponent implements OnInit {
         } else {
             this.noRecords = true;
         }
-        this.createChartData();
     };
 
     createChartData() {
-        this.chartData = this.entityDataWithNames.map(item => {
+        this.barChartData = this.entityDataWithNames.map(item => {
             const data: any = [];
             data[0] = item.student_name;
             data[1] = +item.result;
             return data;
+        });
+        this.pieChartData = this.entityDataWithNames.map(item => {
+            return item.resultNational;
         });
     }
 
