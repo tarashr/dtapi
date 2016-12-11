@@ -7,7 +7,7 @@
             <form class="navbar-form navbar-right">
                 <button *ngIf="!showGraph" type="button" class="btn btn-default" (click)="Print()">Друк</button>
                 <button type="button" class="btn btn-default"
-                        (click)="showGraph = !showGraph">На графіку
+                        (click)="showGraph = !showGraph">{{changeGraphLable()}}
                 </button>
                 <button type="button" class="btn btn-secondary"
                         (click)="goBack()">Назад
@@ -47,6 +47,6 @@
     <div *ngIf="noRecords" class="text-center">
         Немає результатів тестування для даної групи
     </div>
-    <bar-chart *ngIf="showGraph" [chartData]="barChartData" style="width: 50%;"></bar-chart>
-    <pie-chart *ngIf="showGraph" [chartData]="pieChartData" style="width: 30%;"></pie-chart>
+    <bar-chart *ngIf="showGraph" [chartData]="barChartData"></bar-chart>
+    <pie-chart *ngIf="showGraph" [chartData]="pieChartData"></pie-chart>
 </div>

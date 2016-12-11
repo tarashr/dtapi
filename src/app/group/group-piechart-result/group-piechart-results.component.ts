@@ -1,11 +1,11 @@
 import {Component, OnInit, Input} from "@angular/core";
-import {templateVisitAll} from "@angular/compiler";
 
 @Component({
     selector: "pie-chart",
     template: `
         <chart [options]="options"></chart>
-    `
+    `,
+    styleUrls: ["gruop-piechart-results.component.scss"]
 })
 export class GroupPieChartResultsComponent implements OnInit {
 

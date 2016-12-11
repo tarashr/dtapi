@@ -165,6 +165,10 @@ export class GroupTestResultComponent implements OnInit {
         });
     }
 
+    changeGraphLable(): string {
+        return (this.showGraph) ? "Список" : "На графіках";
+    }
+
     Print(): void {
         window.print();
     };

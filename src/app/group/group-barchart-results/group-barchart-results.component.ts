@@ -4,7 +4,8 @@ import {Component, OnInit, Input} from "@angular/core";
     selector: "bar-chart",
     template: `
         <chart [options]="options"></chart>
-    `
+    `,
+    styleUrls: ["group-barchart-results.component.scss"]
 })
 export class GroupBarChartResultsComponent implements OnInit {
 
@@ -26,7 +27,7 @@ export class GroupBarChartResultsComponent implements OnInit {
                 labels: {
                     rotation: -45,
                     style: {
-                        fontSize: "13px",
+                        fontSize: "12px",
                         fontFamily: "Verdana, sans-serif"
                     }
                 }
@@ -55,7 +56,7 @@ export class GroupBarChartResultsComponent implements OnInit {
                     color: "#000",
                     align: "center",
                     style: {
-                        fontSize: "13px",
+                        fontSize: "11px",
                         fontFamily: "Verdana, sans-serif"
                     }
                 }
