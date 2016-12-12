@@ -1,4 +1,5 @@
 import {Component, OnInit, Input} from "@angular/core";
+import {GroupService} from "../../shared/services/group.service";
 
 @Component({
     selector: "pie-chart",
@@ -12,51 +13,11 @@ export class GroupPieChartResultsComponent implements OnInit {
     @Input() chartData;
     options: Object;
 
-    constructor() {}
+    constructor(private groupService: GroupService) {}
 
     ngOnInit() {
-        this.formChartData();
-    }
-
-    formChartData() {
-        let countPerfect: number = 0;
-        let countGood: number = 0;
-        let countSatisfactorily: number = 0;
-        let countNotSatisfactorily: number = 0;
-        const data: any = [];
-
-        for (let i = 0; i < this.chartData.length; i++) {
-            if (this.chartData[i] === "Відмінно") {
-                countPerfect++;
-            }
-            if (this.chartData[i] === "Добре") {
-                countGood++;
-            }
-            if (this.chartData[i] === "Задовільно") {
-                countSatisfactorily++;
-            }
-            if (this.chartData[i] === "Незадовільно") {
-                countNotSatisfactorily++;
-            }
-        }
-
-        if (countPerfect) {
-            data.push({name: "Відмінно", y: (100 * countPerfect) / this.chartData.length});
-        }
-
-        if (countGood) {
-            data.push({name: "Добре", y: (100 * countGood) / this.chartData.length});
-        }
-
-        if (countSatisfactorily) {
-            data.push({name: "Задовільно", y: (100 * countSatisfactorily) / this.chartData.length});
-        }
-
-        if (countNotSatisfactorily) {
-            data.push({name: "Незадовільно", y: (100 * countNotSatisfactorily) / this.chartData.length});
-        }
-
-        this.createPieChart(data);
+        const pieChartData = this.groupService.formPieChartData(this.chartData);
+        this.createPieChart(pieChartData);
     }
 
     createPieChart(pieChartData) {
