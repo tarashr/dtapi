@@ -21,7 +21,7 @@ export class GroupTestResultComponent implements OnInit {
     public entityDataWithNames: any ;
     public barChartData: any;
     public pieChartData: any;
-    public maxResult: number = 100;
+    public maxResult: number;
     public testId: number;
     public testName: string;
     public testEntity: string = "Test";
@@ -125,6 +125,8 @@ export class GroupTestResultComponent implements OnInit {
                 if (this.entityDataWithNames[i].student_id === data[k].user_id) {
                     this.entityDataWithNames[i].student_name =
                         `${data[k].student_surname} ${data[k].student_name} ${data[k].student_fname}`;
+                    this.entityDataWithNames[i].student_nameWithInitials =
+                        `${data[k].student_surname} ${data[k].student_name.slice(0, 1)}. ${data[k].student_fname.slice(0, 1)}.`;
                 }
             }
         }
@@ -156,7 +158,7 @@ export class GroupTestResultComponent implements OnInit {
     createChartData() {
         this.barChartData = this.entityDataWithNames.map(item => {
             const data: any = [];
-            data[0] = item.student_name;
+            data[0] = item.student_nameWithInitials;
             data[1] = +item.result;
             return data;
         });
