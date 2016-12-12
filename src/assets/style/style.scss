@@ -12,6 +12,9 @@ html, body {
 }
 
 .entity-list {
+  .list-group-item {
+    border-radius: 0;
+  }
   li {
     background-color: $background-color-n;
     &:first-child {
@@ -27,4 +30,8 @@ html, body {
       margin: 2px;
     }
   }
+}
+
+.entity-bar, .main-menu-navbar {
+  border-radius: 0;
 }

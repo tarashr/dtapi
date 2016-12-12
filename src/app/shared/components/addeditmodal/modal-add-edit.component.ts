@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, Input, OnInit, ViewEncapsulation} from "@angular/core";
 import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {successEventModal, modalInfoConfig} from "../../../shared/constant";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
@@ -7,6 +7,7 @@ import {patterns} from "../../../shared/constant";
 
 @Component({
     selector: "modal-add-edit",
+    encapsulation: ViewEncapsulation.None,
     templateUrl: "modal-add-edit.component.html",
     styleUrls: ["modal-add-edit.component.scss"]
 })

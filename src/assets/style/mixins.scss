@@ -9,3 +9,12 @@
   border-radius: 3px;
   background: $hint-bg-color;
 }
+
+@mixin button($hoverColor) {
+  color: darkslategray;
+  font-family: Verdana;
+  background-color: transparent;
+  &:hover {
+    color: $hoverColor;
+  }
+}

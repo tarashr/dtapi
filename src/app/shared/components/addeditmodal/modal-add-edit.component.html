@@ -1,4 +1,4 @@
-<div class="modal-header">
+<div class="modal-header add-edit-header">
     <button type="button" class="close" (click)="activeModal.dismiss()">
         <span>&times;</span>
     </button>
@@ -83,11 +83,11 @@
         </div>
     </div>
 </div>
-<div class="modal-footer">
-    <button type="button" (click)="activateForm()" class="btn btn-secondary" [disabled]="addEditForm.invalid">
+<div class="modal-footer modal-footer-add-edit">
+    <button type="button" (click)="activateForm()" class="btn add-edit-accept-btn" [disabled]="addEditForm.invalid">
         {{config.labelBtn}}
     </button>
-    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Відмінити</button>
+    <button type="button" class="btn add-edit-cancel-btn" (click)="activeModal.dismiss()">Відмінити</button>
 </div>
 
 
