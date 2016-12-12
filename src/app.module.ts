@@ -19,7 +19,8 @@ import {GroupComponent}           from "./app/group/group.component";
 import {GroupTimetableComponent}  from "./app/group/group-timetable/group-timetable.component";
 import {GroupResultComponent}     from "./app/group/group-result/group-result.component";
 import {GroupTestResultComponent} from "./app/group/group-test-result/group-test-result.component";
-import {GroupChartResultsComponent} from "./app/group/group-chart-results/group-chart-results.component";
+import {GroupBarChartResultsComponent} from "./app/group/group-barchart-results/group-barchart-results.component";
+import {GroupPieChartResultsComponent} from "./app/group/group-piechart-result/group-piechart-results.component";
 import {SpecialityComponent}      from "./app/speciality/speciality.component";
 import {AdminUserComponent}       from "./app/admin-user/admin-user.component";
 import {StudentComponent}         from "./app/student/student.component";
@@ -74,7 +75,8 @@ import {LoaderComponent}          from "./app/shared/components/loader/loader.co
         GroupTimetableComponent,
         GroupResultComponent,
         GroupTestResultComponent,
-        GroupChartResultsComponent,
+        GroupBarChartResultsComponent,
+        GroupPieChartResultsComponent,
         AdminUserComponent,
         SpecialityComponent,
         StudentComponent,
