@@ -6,13 +6,13 @@
     </div>
     <form #studentForm="ngForm" novalidate>
         <div class="student-datas row">
-            <div class="input-foto student-foto col-xs-12 col-sm-3 col-md-3">
-                <img *ngIf="student.photo" class="img-responsive img-rounded profile-foto" [src]="student.photo" alt="Фото студента"
-                     id="output"/>
+            <div class="input-foto student-foto col-xs-12 col-sm-12 col-md-3">
+                <img class="img-responsive img-rounded"
+                     #studentPhoto alt="Фото студента" id="output"/>
                 <input type="file" name="file" (change)="changeFile($event)" [disabled]="statusView" ngModel>
             </div>
             <div>
-                <div class="student-data1 col-xs-12 col-sm-4 col-md-4">
+                <div class="student-data1 col-xs-12 col-sm-12 col-md-4">
                     <div><label for="surname">Прізвище:</label>
                         <div *ngIf="!statusView" class="data-field-enter">
                             <input id="surname" name="surname" class="input-student-data"
@@ -90,7 +90,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="student-data2 col-xs-12 col-sm-5 col-md-5">
+                <div class="student-data2 col-xs-12 col-sm-12 col-md-5">
                     <div><label for="userLogin">Логін:</label>
                         <div *ngIf="!statusView" class="data-field-enter"><input id="userLogin" name="userLogin" class="input-student-data"
                                                         [(ngModel)]="student.username" required minlength="4"

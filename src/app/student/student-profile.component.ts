@@ -27,13 +27,12 @@ export class StudentProfileComponent implements OnInit {
     public entityUser: string = "AdminUser";
     public groupEntity: string = "Group";
     public groups: Array <any> = [];
-    public groupError: Array <any> = ["Для даного факультету не зареєстровано жодної групи!"];
     public facultyEntity: string = "Faculty";
     public facultys: Array <any> = [];
 
     public modalInfoConfig: any = modalInfoConfig;
     public successEventModal = successEventModal;
-    private maxFileSize: number = 2000000;
+    public maxFileSize: number = 2000000;
 
     public statusView: boolean = true;
     public action: Boolean;
@@ -49,6 +48,7 @@ export class StudentProfileComponent implements OnInit {
     public emailPattern: string = patterns.studentEmail;
 
     @ViewChild("studentForm") studentForm: any;
+    @ViewChild("studentPhoto") studentPhoto: ElementRef;
 
     constructor(private route: ActivatedRoute,
                 private _commonService: CRUDService,
@@ -78,14 +78,12 @@ export class StudentProfileComponent implements OnInit {
 
     newStudent() {
         this.student = new Student;
-        this.student.photo = "assets/profile.png";
+        this.studentPhoto.nativeElement.src = "assets/profile.png";
         this.getFacultyName();
     }
 
     createNewStudent() {
         let dataForRequest = new Student;
-        let studentPhoto = <HTMLInputElement>document.getElementById("output");
-        studentPhoto.src = "assets/profile.png";
         dataForRequest.username = this.student.username;
         dataForRequest.password = this.student.plain_password;
         dataForRequest.password_confirm = this.student.plain_password;
@@ -96,7 +94,7 @@ export class StudentProfileComponent implements OnInit {
         dataForRequest.student_fname = this.student.student_fname;
         dataForRequest.group_id = this.student.group_id;
         dataForRequest.plain_password = this.student.plain_password;
-        dataForRequest.photo = studentPhoto.src;
+        dataForRequest.photo = this.studentPhoto.nativeElement.src;
         this._commonService.insertData(this.entity, dataForRequest)
             .subscribe(data => {
                     if (data.response === "ok") {
@@ -104,11 +102,14 @@ export class StudentProfileComponent implements OnInit {
                         this.successEventModal();
                         this.newStudent();
                         this.studentForm.reset();
+                    } else {
+                        this.modalInfoConfig.infoString = "Помилка при створенні профілю. Перевірте правильність введених даних";
+                        this.successEventModal();
                     }
                 },
                 error => {
                     console.log("error: ", error);
-                    this.modalInfoConfig.infoString = "Перевірте правильність введених даних";
+                    this.modalInfoConfig.infoString = "Помилка при створенні профілю. Перевірте правильність введених даних";
                     this.successEventModal();
                 }
             );
@@ -139,6 +140,17 @@ export class StudentProfileComponent implements OnInit {
 
     studGroupId(data: number) {
         this.student.group_id = data;
+        if (+data !== 0) {
+        let studGroupId: Array <number> = [];
+        studGroupId.push(this.student.group_id);
+        let dataEnt = new EntityManagerBody(this.groupEntity, studGroupId);
+        this._commonService.getEntityValues(dataEnt)
+            .subscribe(data => {
+                this.student.group_name = data[0].group_name;
+            },
+                error => console.log("error: ", error)
+                );
+        }
     }
 
     getData() {
@@ -159,7 +171,7 @@ export class StudentProfileComponent implements OnInit {
                 this.student.student_fname = data[0][0].student_fname;
                 this.student.group_id = data[0][0].group_id;
                 this.student.photo = data[0][0].photo;
-
+                this.studentPhoto.nativeElement.src = this.student.photo;
                 let studGroupId: Array <number> = [];
                 studGroupId.push(this.student.group_id);
                 let dataEnt = new EntityManagerBody(this.groupEntity, studGroupId);
@@ -192,7 +204,6 @@ export class StudentProfileComponent implements OnInit {
 
     updateStudent() {
         let dataForUpdateStudent = new Student;
-        let studentPhoto = <HTMLInputElement>document.getElementById("output");
         dataForUpdateStudent.username = this.student.username;
         dataForUpdateStudent.password = this.student.plain_password;
         dataForUpdateStudent.password_confirm = this.student.plain_password;
@@ -203,7 +214,7 @@ export class StudentProfileComponent implements OnInit {
         dataForUpdateStudent.student_fname = this.student.student_fname;
         dataForUpdateStudent.group_id = this.student.group_id;
         dataForUpdateStudent.plain_password = this.student.plain_password;
-        dataForUpdateStudent.photo = studentPhoto.src;
+        dataForUpdateStudent.photo = this.studentPhoto.nativeElement.src;
         this._commonService.updateData(this.entity, this.student.user_id, dataForUpdateStudent)
             .subscribe(data => {
                     if (data.response === "ok") {
@@ -213,13 +224,13 @@ export class StudentProfileComponent implements OnInit {
                         this.statusView = !this.statusView;
                     }
                     else {
-                        this.modalInfoConfig.infoString = `Помилка обновлення. Перевірте дані`;
+                        this.modalInfoConfig.infoString = `Помилка обновлення. Перевірте правильність введених даних`;
                         this.successEventModal();
                     }
                 },
                 error => {
                     console.log("error: ", error);
-                    this.modalInfoConfig.infoString = "Перевірте правильність введених даних";
+                    this.modalInfoConfig.infoString = "Помилка обновлення. Перевірте правильність введених даних";
                     this.successEventModal();
                     this.editSaveButtonName = "Зберегти дані";
                 }
@@ -229,11 +240,12 @@ export class StudentProfileComponent implements OnInit {
     changeFile(event) {
         let input = event.target;
         if (input.files[0].size > this.maxFileSize) {
-            this.modalInfoConfig.infoString = `Розмір фотографії повинен бути не більше 5Мб`;
+            this.modalInfoConfig.infoString = `Розмір фотографії повинен бути не більше ${this.maxFileSize / 1000000} Мб`;
             this.successEventModal();
             return;
         }
         let reader = new FileReader();
+
         reader.onload = function () {
             let mysrc = <HTMLInputElement>document.getElementById("output");
             mysrc.src = reader.result;
