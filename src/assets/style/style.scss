@@ -1,4 +1,6 @@
 @import "constant";
+@import "variables";
+
 
 html, body {
   height: 100%;
@@ -14,6 +16,7 @@ html, body {
 .entity-list {
   .list-group-item {
     border-radius: 0;
+    font-family: $standard-font;
   }
   li {
     background-color: $background-color-n;

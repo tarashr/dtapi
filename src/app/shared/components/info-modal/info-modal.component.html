@@ -8,12 +8,12 @@
     {{config.infoString}}
 </div>
 <div class="modal-footer" *ngIf="config.action==='confirm'">
-    <button type="button" class="btn btn-secondary"
+    <button type="button" class="btn info-btn"
             (click)="activeModal.close()">ТАК
     </button>
-    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">НІ</button>
+    <button type="button" class="btn info-btn" (click)="activeModal.dismiss()">НІ</button>
 </div>
 <div class="modal-footer" *ngIf="config.action==='info'">
-    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">OK</button>
+    <button type="button" class="btn info-btn" (click)="activeModal.dismiss()">OK</button>
 </div>
 

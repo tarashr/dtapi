@@ -7,6 +7,13 @@
 
 .modal-content {
     background-color: transparent;
+    font-family: $standard-font;
+}
+
+.close-add-edit {
+    font-weight: 500;
+    color: #fff;
+    opacity: 1;
 }
 
 .add-edit-header {

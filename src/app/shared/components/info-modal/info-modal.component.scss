@@ -1,4 +1,6 @@
 @import "../../../../assets/style/constant";
+@import "../../../../assets/style/mixins.scss";
+
 .modal-header, .modal-footer{
     background-color: $modal-bkg-color;
 }
@@ -7,4 +9,8 @@
     text-align: center;
     font-size: 120%;
     background-color: $modal-bkg-color-body;
+}
+
+.info-btn {
+    @include button(#122b40);
 }
