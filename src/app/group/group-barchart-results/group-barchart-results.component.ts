@@ -10,6 +10,7 @@ import {Component, OnInit, Input} from "@angular/core";
 export class GroupBarChartResultsComponent implements OnInit {
 
     @Input() chartData;
+    @Input() maxResult;
     options: Object;
 
     constructor() {}
@@ -21,6 +22,9 @@ export class GroupBarChartResultsComponent implements OnInit {
             },
             title: {
                 text: "Результати тестування"
+            },
+            subtitle: {
+                text: `Максимальна кількість балів за тест: ${this.maxResult}`
             },
             xAxis: {
                 type: "category",

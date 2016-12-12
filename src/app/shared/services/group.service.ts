@@ -78,4 +78,44 @@ export class GroupService {
             return "Неправильні дані";
         }
     }
+
+    formPieChartData(data: string[]): {}[] {
+        let countPerfect: number = 0;
+        let countGood: number = 0;
+        let countSatisfactorily: number = 0;
+        let countNotSatisfactorily: number = 0;
+        const charData: any = [];
+
+        for (let i = 0; i < data.length; i++) {
+            if (data[i] === "Відмінно") {
+                countPerfect++;
+            }
+            if (data[i] === "Добре") {
+                countGood++;
+            }
+            if (data[i] === "Задовільно") {
+                countSatisfactorily++;
+            }
+            if (data[i] === "Незадовільно") {
+                countNotSatisfactorily++;
+            }
+        }
+
+        if (countPerfect) {
+            charData.push({name: "Відмінно", y: (100 * countPerfect) / data.length});
+        }
+
+        if (countGood) {
+            charData.push({name: "Добре", y: (100 * countGood) / data.length});
+        }
+
+        if (countSatisfactorily) {
+            charData.push({name: "Задовільно", y: (100 * countSatisfactorily) / data.length});
+        }
+
+        if (countNotSatisfactorily) {
+            charData.push({name: "Незадовільно", y: (100 * countNotSatisfactorily) / data.length});
+        }
+        return charData;
+    }
 }
