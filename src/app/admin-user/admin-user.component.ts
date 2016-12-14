@@ -69,6 +69,7 @@ export class AdminUserComponent implements OnInit {
                 numberOfOrder = i + 1 + (this.page - 1) * this.limit;
                 const adminUser: any = {};
                 adminUser.entity_id = item.id;
+                adminUser.oldPassword = item.password;
                 adminUser.entityColumns = [numberOfOrder, item.username, item.email];
                 return adminUser;
         });
@@ -131,6 +132,7 @@ export class AdminUserComponent implements OnInit {
         this.configEdit.list.forEach((item, i) => {
             item.value = data.entityColumns[i + 1];
         });
+        this.configEdit.oldPassword = data.oldPassword;
         this.configEdit.id = data.entity_id;
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;
@@ -139,8 +141,8 @@ export class AdminUserComponent implements OnInit {
                 let editedAdminUser: User = new User(
                     data.list[0].value,
                     data.list[1].value,
-                    data.list[2].value,
-                    data.list[3].value);
+                    data.list[3].value,
+                    data.list[4].value);
                 this.crudService.updateData(this.entity, data.id, editedAdminUser)
                     .subscribe(response => {
                             this.modalInfoConfig.infoString = `Редагування пройшло успішно`;

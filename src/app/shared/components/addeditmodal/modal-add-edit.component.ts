@@ -5,6 +5,8 @@ import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {FormGroup, FormControl, Validators} from "@angular/forms";
 import {patterns} from "../../../shared/constant";
 
+const CryptoJS = require("crypto-js/hmac-sha256");
+
 @Component({
     selector: "modal-add-edit",
     templateUrl: "modal-add-edit.component.html",
@@ -18,6 +20,7 @@ export class ModalAddEditComponent implements OnInit {
     public successEventModal: any = successEventModal;
     public addEditForm: FormGroup;
     public isSamePasswords: boolean = true;
+    public isTruePassword: boolean = true;
     public isValidDatesTimes: boolean = true;
 
     constructor(private activeModal: NgbActiveModal,
@@ -71,6 +74,7 @@ export class ModalAddEditComponent implements OnInit {
             "email": new FormControl("", [
                 Validators.pattern(patterns.email)
             ]),
+            "oldPassword": new FormControl(""),
             "password": new FormControl("", [
                 Validators.minLength(8)
             ]),
@@ -94,29 +98,6 @@ export class ModalAddEditComponent implements OnInit {
         }
     }
 
-    activateForm() {
-        if (this.addEditForm.controls["password"].value) {
-            if (this.addEditForm.controls["password"].value === this.addEditForm.controls["cpassword"].value) {
-                this.activeModal.close(this.config);
-            } else {
-                this.isSamePasswords = false;
-            }
-        } else if (this.addEditForm.controls["startDate"].value) {
-            const compareStatus = this.compareDates(this.addEditForm.controls["startDate"].value,
-                                                        this.addEditForm.controls["endDate"].value);
-            if (compareStatus === 1) {
-                this.activeModal.close(this.config);
-            } else if (compareStatus === 2 && this.compareTimes(this.addEditForm.controls["startTime"].value,
-                                                                this.addEditForm.controls["endTime"].value)) {
-                this.activeModal.close(this.config);
-            } else {
-                this.isValidDatesTimes = false;
-            }
-        } else {
-            this.activeModal.close(this.config);
-        }
-    }
-
     compareDates(startDate, endDate): number {
         const newStartDate = new Date(startDate.year, startDate.month, startDate.day);
         const newEndDate = new Date(endDate.year, endDate.month, endDate.day);
@@ -130,6 +111,41 @@ export class ModalAddEditComponent implements OnInit {
             return +startTimeArr[1] < +endTimeArr[1];
         }
         return true;
+    }
+
+    activateForm() {
+        if (this.addEditForm.controls["oldPassword"].value) {
+            this.isTruePassword = true;
+            this.isSamePasswords = true;
+            if (CryptoJS(this.addEditForm.controls["oldPassword"].value, "tuhes").toString() === this.config.oldPassword) {
+                if (this.addEditForm.controls["password"].value === this.addEditForm.controls["cpassword"].value) {
+                    this.activeModal.close(this.config);
+                } else {
+                    this.isSamePasswords = false;
+                }
+            } else {
+                this.isTruePassword = false;
+            }
+        } else if (this.addEditForm.controls["password"].value) {
+            if (this.addEditForm.controls["password"].value === this.addEditForm.controls["cpassword"].value) {
+                this.activeModal.close(this.config);
+            } else {
+                this.isSamePasswords = false;
+            }
+        } else if (this.addEditForm.controls["startDate"].value) {
+            const compareStatus = this.compareDates(this.addEditForm.controls["startDate"].value,
+                this.addEditForm.controls["endDate"].value);
+            if (compareStatus === 1) {
+                this.activeModal.close(this.config);
+            } else if (compareStatus === 2 && this.compareTimes(this.addEditForm.controls["startTime"].value,
+                    this.addEditForm.controls["endTime"].value)) {
+                this.activeModal.close(this.config);
+            } else {
+                this.isValidDatesTimes = false;
+            }
+        } else {
+            this.activeModal.close(this.config);
+        }
     }
 
     openFile($event) {
