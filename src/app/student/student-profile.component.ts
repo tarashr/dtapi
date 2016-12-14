@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit, ElementRef} from "@angular/core";
+import {Component, ViewChild, OnInit, ElementRef, ViewEncapsulation, Output, EventEmitter,} from "@angular/core";
 import {Location} from "@angular/common";
 import {ActivatedRoute, Params} from "@angular/router";
 import {Group, Faculty, Student, EntityManagerBody} from "../shared/classes";
@@ -7,6 +7,8 @@ import {Observable, Subscription} from "rxjs/Rx";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule, Form} from "@angular/forms";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
+import {ImageCropperComponent, CropperSettings, Bounds} from 'ng2-img-cropper';
+import {ModalImageCropperComponent} from "../shared/components/img-cropper/image-cropper.component";
 
 import {
     modalInfoConfig,
@@ -15,11 +17,19 @@ import {
 } from "../shared/constant";
 
 @Component({
+    encapsulation: ViewEncapsulation.Emulated,
     templateUrl: "student-profile.component.html",
     styleUrls: ["student.component.scss"],
 })
 
 export class StudentProfileComponent implements OnInit {
+
+    name:string;
+    // data1:any;
+    // cropperSettings1:CropperSettings;
+
+    data:any;  // cropper data
+    cropperSettings: CropperSettings; // cropper data
 
     public user_id: number;
     public entity: string = "student";
@@ -47,13 +57,44 @@ export class StudentProfileComponent implements OnInit {
     public gradebookPattern: string = patterns.studentGradebook;
     public emailPattern: string = patterns.studentEmail;
 
+    @Output() activate = new EventEmitter();
+    // @Output() inputImage: any;
+
     @ViewChild("studentForm") studentForm: any;
     @ViewChild("studentPhoto") studentPhoto: ElementRef;
+
+    @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
 
     constructor(private route: ActivatedRoute,
                 private _commonService: CRUDService,
                 private location: Location,
                 private modalService: NgbModal) {
+
+        this.cropperSettings = new CropperSettings();
+        this.cropperSettings.noFileInput = true;
+        this.data = {};
+
+        /*this.name = 'Angular2';
+        this.cropperSettings1 = new CropperSettings();
+        this.cropperSettings1.width = 200;
+        this.cropperSettings1.height = 200;
+
+        this.cropperSettings1.croppedWidth = 200;
+        this.cropperSettings1.croppedHeight = 200;
+
+        // this.cropperSettings1.canvasWidth = 500;
+        // this.cropperSettings1.canvasHeight = 300;
+
+        this.cropperSettings1.minWidth = 100;
+        this.cropperSettings1.minHeight = 100;
+
+        this.cropperSettings1.rounded = false;
+
+        this.cropperSettings1.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
+        this.cropperSettings1.cropperDrawSettings.strokeWidth = 2;
+
+        this.data1 = {};*/
+
     }
 
     ngOnInit() {
@@ -71,6 +112,40 @@ export class StudentProfileComponent implements OnInit {
             this.newStudent();
         }
     }
+
+    cropped(bounds:Bounds) {
+        console.log(bounds);
+    }
+
+    fileChangeListener($event) {
+        let image:any = new Image();
+        let file:File = $event.target.files[0];
+        let myReader:FileReader = new FileReader();
+        let that = this;
+        myReader.onloadend = function (loadEvent:any) {
+            image.src = loadEvent.target.result;
+            that.cropper.setImage(image);
+
+        };
+
+        myReader.readAsDataURL(file);
+    }
+
+
+    /*fileChangeListener($event) {
+        let image:any = new Image();
+        let file:File = $event.target.files[0];
+        let myReader:FileReader = new FileReader();
+        let that = this;
+        myReader.onloadend = function (loadEvent:any) {
+            image.src = loadEvent.target.result;
+            that.cropper.setImage(image);
+
+        };
+
+        myReader.readAsDataURL(file);
+    }*/
+
 
     goBack(): void {
         this.location.back();
@@ -301,4 +376,21 @@ export class StudentProfileComponent implements OnInit {
             });
     }
 
+    removePhoto(){
+        this.studentPhoto.nativeElement.src = "assets/profile.png";
+    }
+
+    modalOpen(){
+        // this.inputImage = this.studentPhoto.nativeElement.src;
+        const modalPhoto = this.modalService.open(ModalImageCropperComponent);
+        modalPhoto.result
+            .then((data: any) => {
+                console.log("data", data);
+                // console.log("croppedPhotoOut", croppedPhotoOut);
+            }, () => {
+                return;
+            });
+        /* const modalRef = this.modalService.open(ModalImageCropperComponent);
+        modalRef.componentInstance.inputImage = this.studentPhoto.nativeElement.src; */
+    }
 }

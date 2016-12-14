@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule}   from "@angular/forms";
 import {HttpModule}               from "@angular/http";
 import {NgbModule}                from "@ng-bootstrap/ng-bootstrap";
 import {ChartModule}              from "angular2-highcharts";
+import {ImageCropperComponent}    from "ng2-img-cropper";
 import {routing}                  from "./app.routing";
 
 import {AppComponent}             from "./app/app.component";
@@ -34,6 +35,7 @@ import {EntityBarComponent}       from "./app/shared/components/entity-bar/entit
 import {TableComponent}           from "./app/shared/components/table/table.component";
 import {InfoModalComponent}       from "./app/shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent}    from "./app/shared/components/addeditmodal/modal-add-edit.component";
+import {ModalImageCropperComponent}    from "./app/shared/components/img-cropper/image-cropper.component";
 import {TestDetailComponent}      from "./app/subjects/test-detail/test-detail.component";
 import {QuestionComponent}        from "./app/subjects/question/question.component";
 import {AnswerComponent}          from "./app/subjects/answer/answer.component";
@@ -99,7 +101,9 @@ import {LoaderComponent}          from "./app/shared/components/loader/loader.co
         NgbdAlertSelfclosing,
         StudentTestResultsComponent,
         NotFoundComponent,
-        LoaderComponent
+        LoaderComponent,
+        ModalImageCropperComponent,
+        ImageCropperComponent
     ],
     providers: [
         LoginService,
@@ -113,7 +117,7 @@ import {LoaderComponent}          from "./app/shared/components/loader/loader.co
         TestPlayerService,
         CommonService
     ],
-    entryComponents: [ModalAddEditComponent, InfoModalComponent],
+    entryComponents: [ModalAddEditComponent, InfoModalComponent, ModalImageCropperComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <button type="button" class="close" (click)="activeModal.dismiss()">
+        <span>&times;</span>
+    </button>
+    <h4 class="modal-title">Кадрування фотографії</h4>
+</div>
+<div class="modal-body modal-body-add-edit">
+    <div class="input-photo-file">
+        <!--<div>Вхідне фото</div>-->
+        <!--<img *ngIf="inputImage" [src]="inputImage" alt="photo" class="img-responsive img-rounded">-->
+
+        <div class="file-upload">
+            <span class="text">Загрузити фото</span>
+            <input id="custom-input" type="file" (change)="fileChangeListener($event)">
+        </div>
+            <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+            <div class="output-photo" *ngIf="data.image">
+                <img #croppedPhoto [src]="data.image" [width]="cropperSettings.croppedWidth"
+                     [height]="cropperSettings.croppedHeight"></div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="savePhoto()">
+        Зберегти фото
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Відмінити</button>
+</div>
+
+
+
