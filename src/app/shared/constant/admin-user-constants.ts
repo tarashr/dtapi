@@ -45,12 +45,14 @@ export const configEditAdminUser = {
             hint: "Це поле обов'язкове"},
         {name: "Поштова скринька", value: "", title: "email", type: "email", formControlName: "email",
             hint: "Поштова скринька повинна бути формату логін@домен"},
-        {name: "Пароль", value: "", title: "password", type: "password", formControlName: "password",
+        {name: "Старий пароль", value: "", title: "password", type: "password", formControlName: "oldPassword"},
+        {name: "Новий пароль", value: "", title: "password", type: "password", formControlName: "password",
             hint: "Пароль повинен складатись мінімум з 8-ми символів"},
         {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password", formControlName: "cpassword",
             hint: "Пароль повинен складатись мінімум з 8-ми символів"}
     ],
     action: "edit",
     labelBtn: "Редагувати",
-    id: ""
+    id: "",
+    oldPassword: ""
 };

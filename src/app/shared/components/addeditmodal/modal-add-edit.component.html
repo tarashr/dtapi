@@ -35,6 +35,9 @@
                  addEditForm.controls[item.formControlName].touched">
             {{item.hint}}
         </div>
+        <div class="hint" *ngIf="item.formControlName ==='oldPassword' && !isTruePassword">
+            Невірний пароль
+        </div>
         <div class="passwords-hint" *ngIf="item.formControlName ==='cpassword' && !isSamePasswords">
             Введені паролі не співпадають
         </div>
