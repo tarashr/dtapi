@@ -25,9 +25,6 @@ import {
 export class StudentProfileComponent implements OnInit {
 
     name:string;
-    // data1:any;
-    // cropperSettings1:CropperSettings;
-
     data:any;  // cropper data
     cropperSettings: CropperSettings; // cropper data
 
@@ -58,12 +55,12 @@ export class StudentProfileComponent implements OnInit {
     public emailPattern: string = patterns.studentEmail;
 
     @Output() activate = new EventEmitter();
-    // @Output() inputImage: any;
 
     @ViewChild("studentForm") studentForm: any;
     @ViewChild("studentPhoto") studentPhoto: ElementRef;
 
     @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
+    @ViewChild('croppedPhotoOut') croppedPhotoOut: string;
 
     constructor(private route: ActivatedRoute,
                 private _commonService: CRUDService,
@@ -94,7 +91,6 @@ export class StudentProfileComponent implements OnInit {
         this.cropperSettings1.cropperDrawSettings.strokeWidth = 2;
 
         this.data1 = {};*/
-
     }
 
     ngOnInit() {
@@ -117,19 +113,19 @@ export class StudentProfileComponent implements OnInit {
         console.log(bounds);
     }
 
-    fileChangeListener($event) {
-        let image:any = new Image();
-        let file:File = $event.target.files[0];
-        let myReader:FileReader = new FileReader();
-        let that = this;
-        myReader.onloadend = function (loadEvent:any) {
-            image.src = loadEvent.target.result;
-            that.cropper.setImage(image);
-
-        };
-
-        myReader.readAsDataURL(file);
-    }
+    // fileChangeListener($event) {
+    //     let image:any = new Image();
+    //     let file:File = $event.target.files[0];
+    //     let myReader:FileReader = new FileReader();
+    //     let that = this;
+    //     myReader.onloadend = function (loadEvent:any) {
+    //         image.src = loadEvent.target.result;
+    //         that.cropper.setImage(image);
+    //
+    //     };
+    //
+    //     myReader.readAsDataURL(file);
+    // }
 
 
     /*fileChangeListener($event) {
@@ -145,7 +141,6 @@ export class StudentProfileComponent implements OnInit {
 
         myReader.readAsDataURL(file);
     }*/
-
 
     goBack(): void {
         this.location.back();
@@ -312,21 +307,21 @@ export class StudentProfileComponent implements OnInit {
             );
     }
 
-    changeFile(event) {
-        let input = event.target;
-        if (input.files[0].size > this.maxFileSize) {
-            this.modalInfoConfig.infoString = `Розмір фотографії повинен бути не більше ${this.maxFileSize / 1000000} Мб`;
-            this.successEventModal();
-            return;
-        }
-        let reader = new FileReader();
-
-        reader.onload = function () {
-            let mysrc = <HTMLInputElement>document.getElementById("output");
-            mysrc.src = reader.result;
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
+    // changeFile(event) {
+    //     let input = event.target;
+    //     if (input.files[0].size > this.maxFileSize) {
+    //         this.modalInfoConfig.infoString = `Розмір фотографії повинен бути не більше ${this.maxFileSize / 1000000} Мб`;
+    //         this.successEventModal();
+    //         return;
+    //     }
+    //     let reader = new FileReader();
+    //
+    //     reader.onload = function () {
+    //         let mysrc = <HTMLInputElement>document.getElementById("output");
+    //         mysrc.src = reader.result;
+    //     };
+    //     reader.readAsDataURL(input.files[0]);
+    // }
 
     showPassword() {
         if (this.passwordStatusText === "password") {
@@ -381,16 +376,22 @@ export class StudentProfileComponent implements OnInit {
     }
 
     modalOpen(){
-        // this.inputImage = this.studentPhoto.nativeElement.src;
-        const modalPhoto = this.modalService.open(ModalImageCropperComponent);
-        modalPhoto.result
+        let modalRef = this.modalService.open(ModalImageCropperComponent);
+        modalRef.result
             .then((data: any) => {
                 console.log("data", data);
-                // console.log("croppedPhotoOut", croppedPhotoOut);
-            }, () => {
-                return;
+                console.log("croppedPhotoOut", this.croppedPhotoOut);
+            }, (reason: any) => {
+                console.log("reason: ", reason);
             });
-        /* const modalRef = this.modalService.open(ModalImageCropperComponent);
-        modalRef.componentInstance.inputImage = this.studentPhoto.nativeElement.src; */
+        // const modalPhoto = this.modalService.open(ModalImageCropperComponent);
+        // modalPhoto.result
+        //     .then((data: any) => {
+        //         console.log("data", data);
+        //         console.log("croppedPhotoOut", this.croppedPhotoOut);
+        //         // console.log("croppedPhotoOut", croppedPhotoOut);
+        //     }, (reason) => {
+        //         console.log("reason", reason);
+        //     });
     }
 }

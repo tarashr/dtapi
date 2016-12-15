@@ -1,5 +1,3 @@
-// Constants for table.component
-
 export const headersStudentTestList = [
     {name: "Предмет і назва тесту", className: "col-xs-12 col-sm-5"},
     {name: "Початок доступу", className: "col-xs-12 col-sm-2"},
@@ -37,3 +35,10 @@ export const activeTimeTable = [{
     subject_id: "",
     start_date: ""
 }];
+
+export const secInDate = {
+	day: 86400,
+	week: 7 * 86400,
+	month: 30 * 86400,
+	year: 365 * 86400 
+};

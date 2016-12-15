@@ -1,4 +1,7 @@
-﻿<dt-table *ngIf="entityData.length"
+﻿<h3 *ngIf="entityData.length">Ваші результати тестувань</h3>
+<h3 *ngIf="!entityData.length">Ви ще жодного тесту не пройшли</h3>
+
+<dt-table *ngIf="entityData.length"
 		  [headers]="headers"
 		  [tableData]="entityData">
 </dt-table>

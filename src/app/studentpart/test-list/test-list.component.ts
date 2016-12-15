@@ -23,7 +23,8 @@ import {modalInfoConfig} from "../../shared/constant";
 export class TestListComponent implements OnChanges {
 
     @Input() groupId;
-
+	@Input() userId;
+	
     public modalInfoConfig: any = modalInfoConfig;
     public activeTests: any = activeTests;
     public activeTimeTable: any = activeTimeTable;
@@ -82,7 +83,7 @@ export class TestListComponent implements OnChanges {
     }
 
     getTestsForNow(subId, eventDateTime) {
-        const userId: number = +sessionStorage.getItem("userId");
+       
         this._commonService.getRecordById("subject", subId)
             .subscribe(subject => {
                 let newSubjectName = subject[0].subject_name;
@@ -91,29 +92,32 @@ export class TestListComponent implements OnChanges {
                         this.activeTests = dataTests;
                         for (let j = 0; j < this.activeTests.length; j++) {
 
-                            let userAttepts: number = 0;
-                            this._studentService.getStudentTestPassedCount(userId, this.activeTests[j].test_id)
-                                .subscribe(data => {
-                                    userAttepts = data.numberOfRecords;
-
-                                    if (this.activeTests[j].enabled === "1" &&
-                                        this.activeTests[j].attempts > userAttepts) {
+                          if (this.activeTests[j].enabled === "1") {
+										
+							let userAttepts: number = 0;
+                            this._studentService.getStudentTestPassedCount(this.userId, this.activeTests[j].test_id)
+                                .subscribe(dataTestPassed => {
+                                    userAttepts = dataTestPassed.numberOfRecords;
+                                       if (this.activeTests[j].attempts > userAttepts)
+									   {
 
                                         this.entityData.push({
                                             entityColumns: [
                                                 newSubjectName + ": " +
                                                 this.activeTests[j].test_name,
                                                 eventDateTime.startDate.replace(/(\d+)-(\d+)-(\d+)/, '$3-$2-$1') + " / " +
-                                                eventDateTime.startTime,
+                                                eventDateTime.startTime.substr(0, eventDateTime.startTime.length -3),
                                                 eventDateTime.endDate.replace(/(\d+)-(\d+)-(\d+)/, '$3-$2-$1') + " / " +
-                                                eventDateTime.endTime,
+                                                eventDateTime.endTime.substr(0, eventDateTime.endTime.length -3),
                                                 this.activeTests[j].tasks,
                                                 this.activeTests[j].time_for_test
                                             ],
                                             entity_id: this.activeTests[j].test_id
                                         });
+									   }
+									});
                                     }
-                                });
+                                
                         }
                     });
             });

@@ -10,27 +10,9 @@
 
                 <img class="img-responsive img-rounded" #studentPhoto alt="Фото студента" id="output"/>
                 <button class="button-download-photo" (click)="modalOpen()">Загрузити фото</button>
-                <!--<label class="photo-label">-->
-                <!--<input type="file" name="file" (change)="changeFile($event)" [disabled]="statusView" ngModel/>-->
-                <!--<span class="photo-span">Загрузити фото</span>-->
-                <!--</label>-->
-
-                <!--<div class="file-upload">-->
-                    <!--<span class="text">upload</span>-->
-                    <!--<input id="custom-input" type="file" (change)="fileChangeListener($event)">-->
-                <!--</div>-->
-                <!--<img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>-->
-                <!--<br>-->
-                <!--<span class="result rounded" *ngIf="data.image" >-->
-    <!--<img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">-->
-<!--</span>-->
                 <div>
                     <button class="remove-photo" (click)="removePhoto()">Видалити фото</button>
                 </div>
-                <!--<div>-->
-                    <!--<button class="show-modal" (click)="modal()">Показати модальне вікно</button>-->
-                <!--</div>-->
-
             </div>
             <div>
                 <div class="student-data1 col-xs-12 col-sm-12 col-md-4">
@@ -207,7 +189,8 @@
     <div *ngIf="!action" class="student-ability">
         <ngbd-tabset-tests
                 [groupName]="student.group_name"
-                [groupId]="student.group_id">
+                [groupId]="student.group_id"
+                [userId]="student.user_id">
         </ngbd-tabset-tests>
     </div>
 </div>
