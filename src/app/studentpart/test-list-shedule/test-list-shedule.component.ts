@@ -2,7 +2,7 @@ import {Component, OnInit, Input} from "@angular/core";
 import {CRUDService} from "../../shared/services/crud.service";
 import {SubjectService} from "../../shared/services/subject.service";
 import {StudentPageService} from "../../shared/services/student-page.service";
-import {headersStudentTestList, activeTests, activeTimeTable} from "../../shared/constant/student-test-list";
+import {headersStudentTestList, activeTests, activeTimeTable, secInDate} from "../../shared/constant/student-test-list";
 
 @Component({
     selector: "test-list-shedule",
@@ -18,6 +18,7 @@ export class TestListSheduleComponent implements OnInit {
     public headers: any = headersStudentTestList;
     public entityData = [];
     public dateNow;
+	public secInDate:any = secInDate;
     public dateUser = "today";
 
 
@@ -54,9 +55,9 @@ export class TestListSheduleComponent implements OnInit {
                                                             newSubjectName + ": " +
                                                             this.activeTests[j].test_name,
                                                             this.activeTimeTable[i].start_date.replace(/(\d+)-(\d+)-(\d+)/, '$3-$2-$1') + " / " +
-                                                            this.activeTimeTable[i].start_time,
+                                                            this.activeTimeTable[i].start_time.substr(0, this.activeTimeTable[i].start_time.length -3),
                                                             this.activeTimeTable[i].end_date.replace(/(\d+)-(\d+)-(\d+)/, '$3-$2-$1') + " / " +
-                                                            this.activeTimeTable[i].end_time,
+                                                            this.activeTimeTable[i].end_time.substr(0, this.activeTimeTable[i].end_time.length -3),
                                                             this.activeTests[j].tasks,
                                                             this.activeTests[j].time_for_test]
                                                     });
@@ -79,29 +80,29 @@ export class TestListSheduleComponent implements OnInit {
                 let today = date;
                 today = +today.curtime - today.offset;
                 this.dateNow = this._studentService.getTimeStamp(today);
-
                 let startDay = this.dateNow.date;
                 let endDay = this.dateNow.date;
+				let secTomorrow = today + secInDate.day;
                 switch (this.dateUser) {
                     case "today":
                         startDay = this.dateNow.date;
                         endDay = this.dateNow.date;
                         break;
                     case "tomorrow":
-                        startDay = this._studentService.getTimeStamp(today + 86400).date;
-                        endDay = this._studentService.getTimeStamp(today + 86400).date;
+                        startDay = this._studentService.getTimeStamp(secTomorrow).date;
+                        endDay = this._studentService.getTimeStamp(secTomorrow).date;
                         break;
                     case "week":
-                        startDay = this._studentService.getTimeStamp(today + 86400).date;
-                        endDay = this._studentService.getTimeStamp(today + 7 * 86400).date;
+                        startDay = this._studentService.getTimeStamp(secTomorrow).date;
+                        endDay = this._studentService.getTimeStamp(today + secInDate.week).date;
                         break;
                     case "month":
-                        startDay = this._studentService.getTimeStamp(today + 86400).date;
-                        endDay = this._studentService.getTimeStamp(today + 30 * 86400).date;
+                        startDay = this._studentService.getTimeStamp(secTomorrow).date;
+                        endDay = this._studentService.getTimeStamp(today + secInDate.month).date;
                         break;
                     default:
-                        startDay = this._studentService.getTimeStamp(today + 86400).date;
-                        endDay = this._studentService.getTimeStamp(today + 365 * 86400).date;
+                        startDay = this._studentService.getTimeStamp(secTomorrow).date;
+                        endDay = this._studentService.getTimeStamp(today + secInDate.year).date;
                 }
 
                 this.getTimeTable(startDay, endDay);
