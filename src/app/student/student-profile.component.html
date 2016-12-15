@@ -9,7 +9,7 @@
             <div class="input-foto student-foto col-xs-12 col-sm-12 col-md-3">
 
                 <img class="img-responsive img-rounded" #studentPhoto alt="Фото студента" id="output"/>
-                <button class="button-download-photo" (click)="modalOpen()" (on)>Загрузити фото</button>
+                <button class="button-download-photo" (click)="modalOpen()">Загрузити фото</button>
                 <div>
                     <button class="remove-photo" (click)="removePhoto()">Видалити фото</button>
                 </div>
@@ -189,8 +189,8 @@
     <div *ngIf="!action" class="student-ability">
         <ngbd-tabset-tests
                 [groupName]="student.group_name"
-                [groupId]="student.group_id">
-            
+                [groupId]="student.group_id"
+                [userId]="student.user_id">
         </ngbd-tabset-tests>
     </div>
 </div>

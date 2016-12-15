@@ -7,7 +7,7 @@
 <div class="modal-body modal-body-add-edit">
     <div class="input-photo-file">
         <div class="file-upload">
-            <span class="text"  >Загрузити фото</span>
+            <span class="text">Загрузити фото</span>
             <input id="custom-input" type="file" (change)="fileChangeListener($event)">
         </div>
             <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
