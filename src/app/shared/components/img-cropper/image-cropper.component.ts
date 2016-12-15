@@ -53,6 +53,6 @@ export class ModalImageCropperComponent implements OnInit {
 
     savePhoto(data:any){
         this.croppedPhotoOut = data.nativeElement.src;
-        this.activeModal.close();
+        this.activeModal.close(data.nativeElement.src);
     }
 }

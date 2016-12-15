@@ -377,13 +377,13 @@ export class StudentProfileComponent implements OnInit {
 
     modalOpen(){
         let modalRef = this.modalService.open(ModalImageCropperComponent);
-        // modalRef.result
-        //     .then((data: any) => {
-        //         console.log("data", data);
-        //         console.log("croppedPhotoOut", this.croppedPhotoOut);
-        //     }, (reason: any) => {
-        //         console.log("reason: ", reason);
-        //     });
+        modalRef.result
+            .then((data: any) => {
+                console.log("data", data);
+                console.log("croppedPhotoOut", this.croppedPhotoOut);
+            }, (reason: any) => {
+                console.log("reason: ", reason);
+            });
         // const modalPhoto = this.modalService.open(ModalImageCropperComponent);
         // modalPhoto.result
         //     .then((data: any) => {
