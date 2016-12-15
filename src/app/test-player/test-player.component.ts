@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {TestPlayerService} from "../shared/services/test-player.service";
 import {TestPlayerQuestions, TestPlayerNavButton} from "../shared/classes";
 import {CommonService} from "../shared/services/common.service";
@@ -36,7 +36,6 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
 
     constructor(private testPlayerService: TestPlayerService,
                 private route: ActivatedRoute,
-                private router: Router,
                 private commonService: CommonService) {
     }
 
@@ -46,7 +45,11 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
                 this.testId = +data["testId"];
             });
         this.studentId = +sessionStorage.getItem("userId");
-        if (localStorage.getItem("dTester")) {
+        if (isNaN(this.testId) || isNaN(this.studentId)) {
+            this.commonService.openModalInfo("Неправильні параметри тесту!")
+                .then(this.testPlayerService.handleReject,
+                    this.testPlayerService.returnToStudent);
+        } else if (localStorage.getItem("dTester")) {
             this.continueTest();
         } else {
             this.testPlayerService.setBaseTestData(this.testId, this.studentId, this.maxUserRate);
@@ -198,15 +201,15 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
         let message: string = "Невідома помилка!";
         let mistake: string = error.message ? error.message : error;
         let resolve = {
-            "test does not exist": () => {
-                message = "Ви намагаєтесь зайти на неіснуючий тест. Виберіть доступний Вам тест на сторіці Вашого профайлу.";
-            },
             "test data are absent": () => {
                 message = "Відсутні дані для тесту";
             },
             "attempts ended": () => {
                 message = "Ви використали всі спроби";
                 this.testPlayerService.resetSessionData();
+            },
+            "You don't have permissions to make this test": () => {
+                message = "Запитуваний тест відсутній в списку доступних для Вас. Виберіть доступний для Вас тест на сторіці Вашого профайлу.";
             }
         };
         if (resolve[mistake]) {
@@ -214,10 +217,9 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
         }
         this.commonService.openModalInfo(message)
             .then(this.testPlayerService.handleReject,
-                () => {
-                    this.router.navigate(["/student"]);
-                });
-    };
+                this.testPlayerService.returnToStudent);
+    }
+        ;
 
     continueTest() {
         this.testPlayerService.recoverTestData()

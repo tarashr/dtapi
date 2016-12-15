@@ -19,7 +19,9 @@ export class GroupTestResultComponent implements OnInit {
     public noRecords: boolean = false;
     public entityData: any[] = [];
     public entityDataWithNames: any ;
-    public maxResult: number = 100;
+    public barChartData: any;
+    public pieChartData: any;
+    public maxResult: number;
     public testId: number;
     public testName: string;
     public testEntity: string = "Test";
@@ -31,6 +33,7 @@ export class GroupTestResultComponent implements OnInit {
     public subjectEntity: string = "Subject";
     public studentEntity: string = "Student";
     public headers: any = headersGroupTestResult;
+    public showGraph: boolean = false;
 
     private subscription: Subscription;
 
@@ -122,18 +125,13 @@ export class GroupTestResultComponent implements OnInit {
                 if (this.entityDataWithNames[i].student_id === data[k].user_id) {
                     this.entityDataWithNames[i].student_name =
                         `${data[k].student_surname} ${data[k].student_name} ${data[k].student_fname}`;
+                    this.entityDataWithNames[i].student_nameWithInitials =
+                        `${data[k].student_surname} ${data[k].student_name.slice(0, 1)}. ${data[k].student_fname.slice(0, 1)}.`;
                 }
             }
         }
+        this.createChartData();
         this.createTableConfig(this.entityDataWithNames);
-    };
-
-    goBack(): void {
-        this.location.back();
-    };
-
-    Print(): void {
-        window.print();
     };
 
     private createTableConfig = (data: any) => {
@@ -155,6 +153,30 @@ export class GroupTestResultComponent implements OnInit {
         } else {
             this.noRecords = true;
         }
+    };
+
+    createChartData() {
+        this.barChartData = this.entityDataWithNames.map(item => {
+            const data: any = [];
+            data[0] = item.student_nameWithInitials;
+            data[1] = +item.result;
+            return data;
+        });
+        this.pieChartData = this.entityDataWithNames.map(item => {
+            return item.resultNational;
+        });
+    }
+
+    changeGraphLable(): string {
+        return (this.showGraph) ? "Список" : "На графіках";
+    }
+
+    Print(): void {
+        window.print();
+    };
+
+    goBack(): void {
+        this.location.back();
     };
 
     ngOnDestroy() {

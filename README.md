@@ -1,11 +1,14 @@
 DTester!
 ===================
+Description
+-------------
+Front-end part of the DTestrer. The main purpose of the system is to check students knowledge. It consists of two parts: admin part and student part. Functionality for admin part allows to perform CRUD operations on fuculties, specialities, subjects, tests, groups, students and admin users. It also allows to assign a test for particular group and view the results. On the student part user is able to pass the assigned tests, view test results, view tests which are availiable now, planned or already passed .
 
-In this file, we describe a variant of our structure. 
-We also tried to give some explanation of the reasons for building such a structure
 
 Structure
 -------------
+In this file, we describe a variant of our structure. 
+We also tried to give some explanation of the reasons for building such a structure
 
 <ul>
     <li>config</li>

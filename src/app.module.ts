@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule}   from "@angular/forms";
 import {HttpModule}               from "@angular/http";
 import {NgbModule}                from "@ng-bootstrap/ng-bootstrap";
 import {ChartModule}              from "angular2-highcharts";
+import {ImageCropperComponent}    from "ng2-img-cropper";
 import {routing}                  from "./app.routing";
 
 import {AppComponent}             from "./app/app.component";
@@ -19,7 +20,8 @@ import {GroupComponent}           from "./app/group/group.component";
 import {GroupTimetableComponent}  from "./app/group/group-timetable/group-timetable.component";
 import {GroupResultComponent}     from "./app/group/group-result/group-result.component";
 import {GroupTestResultComponent} from "./app/group/group-test-result/group-test-result.component";
-import {GroupChartResultsComponent} from "./app/group/group-chart-results/group-chart-results.component";
+import {GroupBarChartResultsComponent} from "./app/group/group-barchart-results/group-barchart-results.component";
+import {GroupPieChartResultsComponent} from "./app/group/group-piechart-result/group-piechart-results.component";
 import {SpecialityComponent}      from "./app/speciality/speciality.component";
 import {AdminUserComponent}       from "./app/admin-user/admin-user.component";
 import {StudentComponent}         from "./app/student/student.component";
@@ -33,6 +35,7 @@ import {EntityBarComponent}       from "./app/shared/components/entity-bar/entit
 import {TableComponent}           from "./app/shared/components/table/table.component";
 import {InfoModalComponent}       from "./app/shared/components/info-modal/info-modal.component";
 import {ModalAddEditComponent}    from "./app/shared/components/addeditmodal/modal-add-edit.component";
+import {ModalImageCropperComponent}    from "./app/shared/components/img-cropper/image-cropper.component";
 import {TestDetailComponent}      from "./app/subjects/test-detail/test-detail.component";
 import {QuestionComponent}        from "./app/subjects/question/question.component";
 import {AnswerComponent}          from "./app/subjects/answer/answer.component";
@@ -74,7 +77,8 @@ import {LoaderComponent}          from "./app/shared/components/loader/loader.co
         GroupTimetableComponent,
         GroupResultComponent,
         GroupTestResultComponent,
-        GroupChartResultsComponent,
+        GroupBarChartResultsComponent,
+        GroupPieChartResultsComponent,
         AdminUserComponent,
         SpecialityComponent,
         StudentComponent,
@@ -97,7 +101,9 @@ import {LoaderComponent}          from "./app/shared/components/loader/loader.co
         NgbdAlertSelfclosing,
         StudentTestResultsComponent,
         NotFoundComponent,
-        LoaderComponent
+        LoaderComponent,
+        ModalImageCropperComponent,
+        ImageCropperComponent
     ],
     providers: [
         LoginService,
@@ -111,7 +117,7 @@ import {LoaderComponent}          from "./app/shared/components/loader/loader.co
         TestPlayerService,
         CommonService
     ],
-    entryComponents: [ModalAddEditComponent, InfoModalComponent],
+    entryComponents: [ModalAddEditComponent, InfoModalComponent, ModalImageCropperComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule {

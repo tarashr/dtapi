@@ -1,27 +1,35 @@
-import {Component, ViewChild, OnInit, ElementRef} from "@angular/core";
+import {Component, ViewChild, OnInit, ElementRef, ViewEncapsulation, Output, EventEmitter,} from "@angular/core";
 import {Location} from "@angular/common";
-import {Router, ActivatedRoute, Params} from "@angular/router";
-import {Group} from "../shared/classes/group";
-import {Faculty} from "../shared/classes/faculty";
-import {Student} from "../shared/classes/student";
+import {ActivatedRoute, Params} from "@angular/router";
+import {Group, Faculty, Student, EntityManagerBody} from "../shared/classes";
 import {CRUDService} from "../shared/services/crud.service";
-import {EntityManagerBody} from "../shared/classes/entity-manager-body";
 import {Observable, Subscription} from "rxjs/Rx";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule, Form} from "@angular/forms";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
+import {ImageCropperComponent, CropperSettings, Bounds} from 'ng2-img-cropper';
+import {ModalImageCropperComponent} from "../shared/components/img-cropper/image-cropper.component";
 
 import {
     modalInfoConfig,
-    successEventModal
+    successEventModal,
+    patterns
 } from "../shared/constant";
 
 @Component({
+    encapsulation: ViewEncapsulation.Emulated,
     templateUrl: "student-profile.component.html",
     styleUrls: ["student.component.scss"],
 })
 
 export class StudentProfileComponent implements OnInit {
+
+    name:string;
+    // data1:any;
+    // cropperSettings1:CropperSettings;
+
+    data:any;  // cropper data
+    cropperSettings: CropperSettings; // cropper data
 
     public user_id: number;
     public entity: string = "student";
@@ -29,13 +37,12 @@ export class StudentProfileComponent implements OnInit {
     public entityUser: string = "AdminUser";
     public groupEntity: string = "Group";
     public groups: Array <any> = [];
-    public groupError: Array <any> = ["Для даного факультету не зареєстровано жодної групи!"];
     public facultyEntity: string = "Faculty";
     public facultys: Array <any> = [];
 
     public modalInfoConfig: any = modalInfoConfig;
     public successEventModal = successEventModal;
-    private maxFileSize: number = 5000000;
+    public maxFileSize: number = 2000000;
 
     public statusView: boolean = true;
     public action: Boolean;
@@ -43,16 +50,51 @@ export class StudentProfileComponent implements OnInit {
     public passwordStatusText: string = "password";
     public editSaveButtonName: string = "Редагувати дані";
 
-    public mypattern: string = "^[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]+[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9.!#$%&’*+/=?^_`{|}~-]*[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]*@[a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9]+(?:([a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ0-9-]*[\.?]))+([a-zA-ZЄЇІїіА-ЩЬЮ-Яєа-щью-яҐґ]{2,6})$";
+    public surnamePattern: string = patterns.studentSurname;
+    public namePattern: string = patterns.studentName;
+    public fnamePattern: string = patterns.studentFname;
+    public loginPattern: string = patterns.studentLogin;
+    public gradebookPattern: string = patterns.studentGradebook;
+    public emailPattern: string = patterns.studentEmail;
 
-    @ViewChild("newFotoSrc") newFotoSrc: ElementRef;
-    @ViewChild("inputFile") inputFile: ElementRef;
-    @ViewChild("myform") myform: any;
+    @Output() activate = new EventEmitter();
+    // @Output() inputImage: any;
+
+    @ViewChild("studentForm") studentForm: any;
+    @ViewChild("studentPhoto") studentPhoto: ElementRef;
+
+    @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
 
     constructor(private route: ActivatedRoute,
                 private _commonService: CRUDService,
                 private location: Location,
                 private modalService: NgbModal) {
+
+        this.cropperSettings = new CropperSettings();
+        this.cropperSettings.noFileInput = true;
+        this.data = {};
+
+        /*this.name = 'Angular2';
+        this.cropperSettings1 = new CropperSettings();
+        this.cropperSettings1.width = 200;
+        this.cropperSettings1.height = 200;
+
+        this.cropperSettings1.croppedWidth = 200;
+        this.cropperSettings1.croppedHeight = 200;
+
+        // this.cropperSettings1.canvasWidth = 500;
+        // this.cropperSettings1.canvasHeight = 300;
+
+        this.cropperSettings1.minWidth = 100;
+        this.cropperSettings1.minHeight = 100;
+
+        this.cropperSettings1.rounded = false;
+
+        this.cropperSettings1.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
+        this.cropperSettings1.cropperDrawSettings.strokeWidth = 2;
+
+        this.data1 = {};*/
+
     }
 
     ngOnInit() {
@@ -71,14 +113,47 @@ export class StudentProfileComponent implements OnInit {
         }
     }
 
+    cropped(bounds:Bounds) {
+        console.log(bounds);
+    }
+
+    fileChangeListener($event) {
+        let image:any = new Image();
+        let file:File = $event.target.files[0];
+        let myReader:FileReader = new FileReader();
+        let that = this;
+        myReader.onloadend = function (loadEvent:any) {
+            image.src = loadEvent.target.result;
+            that.cropper.setImage(image);
+
+        };
+
+        myReader.readAsDataURL(file);
+    }
+
+
+    /*fileChangeListener($event) {
+        let image:any = new Image();
+        let file:File = $event.target.files[0];
+        let myReader:FileReader = new FileReader();
+        let that = this;
+        myReader.onloadend = function (loadEvent:any) {
+            image.src = loadEvent.target.result;
+            that.cropper.setImage(image);
+
+        };
+
+        myReader.readAsDataURL(file);
+    }*/
+
+
     goBack(): void {
         this.location.back();
     }
 
     newStudent() {
         this.student = new Student;
-        this.student.photo = "assets/profile.png";
-        this.newFotoSrc.nativeElement.src = "assets/profile.png";
+        this.studentPhoto.nativeElement.src = "assets/profile.png";
         this.getFacultyName();
     }
 
@@ -94,19 +169,22 @@ export class StudentProfileComponent implements OnInit {
         dataForRequest.student_fname = this.student.student_fname;
         dataForRequest.group_id = this.student.group_id;
         dataForRequest.plain_password = this.student.plain_password;
-        dataForRequest.photo = this.newFotoSrc.nativeElement.src;
+        dataForRequest.photo = this.studentPhoto.nativeElement.src;
         this._commonService.insertData(this.entity, dataForRequest)
             .subscribe(data => {
                     if (data.response === "ok") {
                         this.modalInfoConfig.infoString = `Створено профіль студента ${dataForRequest.student_surname} ${dataForRequest.student_name} ${dataForRequest.student_fname}`;
                         this.successEventModal();
                         this.newStudent();
-                        this.myform.reset();
+                        this.studentForm.reset();
+                    } else {
+                        this.modalInfoConfig.infoString = "Помилка при створенні профілю. Перевірте правильність введених даних";
+                        this.successEventModal();
                     }
                 },
                 error => {
                     console.log("error: ", error);
-                    this.modalInfoConfig.infoString = "Перевірте правильність введених даних";
+                    this.modalInfoConfig.infoString = "Помилка при створенні профілю. Перевірте правильність введених даних";
                     this.successEventModal();
                 }
             );
@@ -137,6 +215,17 @@ export class StudentProfileComponent implements OnInit {
 
     studGroupId(data: number) {
         this.student.group_id = data;
+        if (+data !== 0) {
+        let studGroupId: Array <number> = [];
+        studGroupId.push(this.student.group_id);
+        let dataEnt = new EntityManagerBody(this.groupEntity, studGroupId);
+        this._commonService.getEntityValues(dataEnt)
+            .subscribe(data => {
+                this.student.group_name = data[0].group_name;
+            },
+                error => console.log("error: ", error)
+                );
+        }
     }
 
     getData() {
@@ -157,7 +246,7 @@ export class StudentProfileComponent implements OnInit {
                 this.student.student_fname = data[0][0].student_fname;
                 this.student.group_id = data[0][0].group_id;
                 this.student.photo = data[0][0].photo;
-
+                this.studentPhoto.nativeElement.src = this.student.photo;
                 let studGroupId: Array <number> = [];
                 studGroupId.push(this.student.group_id);
                 let dataEnt = new EntityManagerBody(this.groupEntity, studGroupId);
@@ -200,7 +289,7 @@ export class StudentProfileComponent implements OnInit {
         dataForUpdateStudent.student_fname = this.student.student_fname;
         dataForUpdateStudent.group_id = this.student.group_id;
         dataForUpdateStudent.plain_password = this.student.plain_password;
-        dataForUpdateStudent.photo = this.newFotoSrc.nativeElement.src;
+        dataForUpdateStudent.photo = this.studentPhoto.nativeElement.src;
         this._commonService.updateData(this.entity, this.student.user_id, dataForUpdateStudent)
             .subscribe(data => {
                     if (data.response === "ok") {
@@ -210,13 +299,13 @@ export class StudentProfileComponent implements OnInit {
                         this.statusView = !this.statusView;
                     }
                     else {
-                        this.modalInfoConfig.infoString = `Помилка обновлення. Перевірте дані`;
+                        this.modalInfoConfig.infoString = `Помилка обновлення. Перевірте правильність введених даних`;
                         this.successEventModal();
                     }
                 },
                 error => {
                     console.log("error: ", error);
-                    this.modalInfoConfig.infoString = "Перевірте правильність введених даних";
+                    this.modalInfoConfig.infoString = "Помилка обновлення. Перевірте правильність введених даних";
                     this.successEventModal();
                     this.editSaveButtonName = "Зберегти дані";
                 }
@@ -226,11 +315,12 @@ export class StudentProfileComponent implements OnInit {
     changeFile(event) {
         let input = event.target;
         if (input.files[0].size > this.maxFileSize) {
-            this.modalInfoConfig.infoString = `Розмір фотографії повинен бути не більше 5Мб`;
+            this.modalInfoConfig.infoString = `Розмір фотографії повинен бути не більше ${this.maxFileSize / 1000000} Мб`;
             this.successEventModal();
             return;
         }
         let reader = new FileReader();
+
         reader.onload = function () {
             let mysrc = <HTMLInputElement>document.getElementById("output");
             mysrc.src = reader.result;
@@ -286,4 +376,21 @@ export class StudentProfileComponent implements OnInit {
             });
     }
 
+    removePhoto(){
+        this.studentPhoto.nativeElement.src = "assets/profile.png";
+    }
+
+    modalOpen(){
+        // this.inputImage = this.studentPhoto.nativeElement.src;
+        const modalPhoto = this.modalService.open(ModalImageCropperComponent);
+        modalPhoto.result
+            .then((data: any) => {
+                console.log("data", data);
+                // console.log("croppedPhotoOut", croppedPhotoOut);
+            }, () => {
+                return;
+            });
+        /* const modalRef = this.modalService.open(ModalImageCropperComponent);
+        modalRef.componentInstance.inputImage = this.studentPhoto.nativeElement.src; */
+    }
 }
