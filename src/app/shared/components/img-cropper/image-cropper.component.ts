@@ -13,14 +13,10 @@ import {patterns} from "../../../shared/constant";
 })
 export class ModalImageCropperComponent implements OnInit {
 
-    // @Input() inputImage: any;
     @Output() croppedPhotoOut = new EventEmitter();
     public maxFileSize: number = 3000000;
     public modalInfoConfig: any = modalInfoConfig;
     public successEventModal: any = successEventModal;
-    // public addEditForm: FormGroup;
-    // public isSamePasswords: boolean = true;
-    // public isValidDatesTimes: boolean = true;
 
     data:any;  // cropper data
     cropperSettings: CropperSettings; // cropper data
@@ -59,8 +55,9 @@ export class ModalImageCropperComponent implements OnInit {
         myReader.readAsDataURL(file);
     }
 
-    savePhoto(){
-        this.croppedPhotoOut = this.croppedPhoto.nativeElement.src;
+    savePhoto(data:any){
+        // this.croppedPhotoOut = this.croppedPhoto.nativeElement.src;
+        this.croppedPhotoOut = data.src;
         this.activeModal.close();
     }
 
