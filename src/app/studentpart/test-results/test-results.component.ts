@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, Input} from "@angular/core";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router} from "@angular/router";
 import {CRUDService} from "../../shared/services/crud.service";
@@ -18,9 +18,9 @@ import {
 })
 
 export class StudentTestResultsComponent implements OnInit {
-
-    public userId: number = +sessionStorage.getItem("userId");
-
+  
+	@Input() userId;
+	
     public activeTests: any = activeTests;
     public activeTimeTable: any = activeTimeTable;
     public headers: any = headersStudentTestResults;
@@ -35,8 +35,7 @@ export class StudentTestResultsComponent implements OnInit {
     }
 
     ngOnInit() {
-        let userId: number = +sessionStorage.getItem("userId");
-        this.getStudentResults(userId);
+        this.getStudentResults(this.userId);
     }
 
     getStudentResults(userId: number) {

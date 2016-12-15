@@ -7,6 +7,12 @@
     </div>
 </div>
 <br>
+
+<h3 *ngIf="!entityData.length && dateUser ==='today'">Немає доступних тестувань на сьогодні</h3>
+<h3 *ngIf="!entityData.length && dateUser ==='tomorrow'">Немає доступних тестувань на завтра</h3>
+<h3 *ngIf="!entityData.length && dateUser ==='week'">Немає доступних тестувань в найближчий тиждень</h3>
+<h3 *ngIf="!entityData.length && dateUser ==='month'">Немає доступних тестувань найближчого місяця</h3>
+
 <dt-table *ngIf="entityData.length"
           [headers]="headers"
           [actions]="actions"

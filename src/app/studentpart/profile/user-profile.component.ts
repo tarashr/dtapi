@@ -25,6 +25,7 @@ export class UserProfileComponent implements OnInit{
 
     public userFaculty = {};
     public userSpeciality = {};
+	public userId:number;
 
     constructor(
         private _loginService: LoginService,
@@ -39,8 +40,8 @@ export class UserProfileComponent implements OnInit{
     }
 
     ngOnInit() {
-        let userId:number = +sessionStorage.getItem("userId");
-        this.getStudentProfile(userId);
+        this.userId = +sessionStorage.getItem("userId");
+        this.getStudentProfile(this.userId);
     }
 
     logout() {
