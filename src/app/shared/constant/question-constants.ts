@@ -49,7 +49,7 @@ export const configAddQuestion = {
     ],
     action: "create",
     labelBtn: "Додати",
-    img: {imgName: "Вкладення", value: "", title: "attachment", type: "file"},
+    img: {imgName: "Вкладення", value: "", title: "attachment", type: "button", label: "Завантажити картинку"},
     select: [
         {selectName: "Рівень", selectItem: [], selected: ""},
         {selectName: "Тип", selectItem: [], selected: ""}
@@ -68,7 +68,7 @@ export const configEditQuestion = {
     action: "edit",
     labelBtn: "Редагувати",
     id: "",
-    img: {imgName: "Вкладення", value: "", title: "attachment", type: "file"},
+    img: {imgName: "Вкладення", value: "", title: "attachment", type: "button", label: "Завантажити картинку"},
     select: [
         {selectName: "Рівень", selectItem: [], selected: ""},
         {selectName: "Тип", selectItem: [], selected: ""}

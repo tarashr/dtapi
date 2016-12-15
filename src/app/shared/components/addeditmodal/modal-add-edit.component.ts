@@ -4,6 +4,7 @@ import {successEventModal, modalInfoConfig} from "../../../shared/constant";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {FormGroup, FormControl, Validators} from "@angular/forms";
 import {patterns} from "../../../shared/constant";
+import {ModalImageCropperComponent} from "../img-cropper/image-cropper.component";
 
 const CryptoJS = require("crypto-js/hmac-sha256");
 
@@ -176,4 +177,14 @@ export class ModalAddEditComponent implements OnInit {
         return date.month !== current.month;
     }
     // the end of datapicker's code
+
+    modalOpen(){
+        let modalRef = this.modalService.open(ModalImageCropperComponent);
+        modalRef.result
+            .then((data: any) => {
+                this.config.img.value = data;
+            }, () => {
+                return;
+            });
+    }
 }

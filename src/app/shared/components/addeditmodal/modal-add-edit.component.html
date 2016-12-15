@@ -76,13 +76,16 @@
         </div>
     </div>
     <div *ngIf="config.img">
-        <div class="input-group input-group-add-edit">
-            <span class="input-group-addon modal-span">{{config.img.imgName}}:</span>
-            <input [type]="config.img.type" class="form-control modalInput" (change)="openFile($event)"
-                   accept='image/*'>
-            <div *ngIf="config.action == 'edit'" class="input-group-addon remove-image" title="Видалити зображення">
+        <div class="input-group-add-edit">
+            <span class="input-group-addon modal-span modal-img">{{config.img.imgName}}:</span>
+            <input [type]="config.img.type"
+                   class="modalInput btn btn-default"
+                   (click)="modalOpen()"
+                   [value]="config.img.label">
+            <img *ngIf="config.img.value" [src]="config.img.value" class="test-img">
+            <button *ngIf="config.action == 'edit'" class="modalInput btn btn-danger remove-img" title="Видалити зображення">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="removeImage()"></span>
-            </div>
+            </button>
         </div>
     </div>
 </div>
