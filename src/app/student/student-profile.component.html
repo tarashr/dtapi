@@ -9,10 +9,9 @@
             <div class="input-foto student-foto col-xs-12 col-sm-12 col-md-3">
 
                 <img class="img-responsive img-rounded" #studentPhoto alt="Фото студента" id="output"/>
-                <button class="button-download-photo" (click)="modalOpen()">Загрузити фото</button>
-                <div>
-                    <button class="remove-photo" (click)="removePhoto()">Видалити фото</button>
-                </div>
+                <button class="btn btn-default button-download-photo" (click)="modalOpen()" [disabled]="statusView">Завантажити фото</button>
+                <button class="btn btn-danger remove-photo" (click)="removePhoto()" [disabled]="statusView">Видалити фото</button>
+
             </div>
             <div>
                 <div class="student-data1 col-xs-12 col-sm-12 col-md-4">
@@ -98,36 +97,6 @@
                     </div>
                 </div>
                 <div class="student-data2 col-xs-12 col-sm-12 col-md-5">
-                    <div><label for="userLogin">Логін:</label>
-                        <div *ngIf="!statusView" class="data-field-enter"><input id="userLogin" name="userLogin"
-                                                                                 class="input-student-data"
-                                                                                 [(ngModel)]="student.username" required
-                                                                                 minlength="4"
-                                                                                 maxlength="20" #userLogin="ngModel"
-                                                                                 [pattern]="loginPattern" ngModel>
-                            <div class="hint" [hidden]="!(userLogin.invalid && userLogin.dirty && userLogin.touched)">
-                                Дозволено літери анг. алфавіту і цифри, довжина логіна від 4 до 20 символів
-                            </div>
-                        </div>
-                        <div *ngIf="statusView" class="data-field" disabled="true">
-                            {{student?.username}}
-                        </div>
-                    </div>
-                    <div><label for="userPassword">Пароль:</label>
-                        <div *ngIf="!statusView" class="data-field-enter"><input id="userPassword" name="userPassword"
-                                                                                 class="input-student-data password-eye-input"
-                                                                                 [type]="passwordStatusText"
-                                                                                 [(ngModel)]="student.plain_password"
-                                                                                 required minlength="8" maxlength="20"
-                                                                                 #userPassword="ngModel" ngModel>
-                            <span class="glyphicon glyphicon-eye-open password-eye" (click)="showPassword()"></span>
-                            <div class="hint"
-                                 [hidden]="!(userPassword.invalid && userPassword.dirty && userPassword.touched)">
-                                Довжина пароля повинна бути від 8 до 20 символів
-                            </div>
-                        </div>
-                        <div *ngIf="statusView" class="data-field" disabled="true"></div>
-                    </div>
                     <div><label for="gradebook_id">№ залікової книжки:</label>
                         <div *ngIf="!statusView" class="data-field-enter"><input id="gradebook_id" name="gradebook"
                                                                                  class="input-student-data"
@@ -159,7 +128,38 @@
                             {{student?.email}}
                         </div>
                     </div>
+                    <div><label for="userLogin">Логін:</label>
+                        <div *ngIf="!statusView" class="data-field-enter"><input id="userLogin" name="userLogin"
+                                                                                 class="input-student-data"
+                                                                                 [(ngModel)]="student.username" required
+                                                                                 minlength="4"
+                                                                                 maxlength="20" #userLogin="ngModel"
+                                                                                 [pattern]="loginPattern" ngModel>
+                            <div class="hint" [hidden]="!(userLogin.invalid && userLogin.dirty && userLogin.touched)">
+                                Дозволено літери анг. алфавіту і цифри, довжина логіна від 4 до 20 символів
+                            </div>
+                        </div>
+                        <div *ngIf="statusView" class="data-field" disabled="true">
+                            {{student?.username}}
+                        </div>
+                    </div>
+                    <div *ngIf="!statusView"><label for="userPassword">Пароль:</label>
+                        <div  class="data-field-enter"><input id="userPassword" name="userPassword"
+                                                                                 class="input-student-data password-eye-input"
+                                                                                 [type]="passwordStatusText"
+                                                                                 [(ngModel)]="student.plain_password"
+                                                                                 required minlength="8" maxlength="20"
+                                                                                 #userPassword="ngModel" ngModel>
+                            <span class="glyphicon glyphicon-eye-open password-eye" (click)="showPassword()"></span>
+                            <div class="hint"
+                                 [hidden]="!(userPassword.invalid && userPassword.dirty && userPassword.touched)">
+                                Довжина пароля повинна бути від 8 до 20 символів
+                            </div>
+                        </div>
+                        <!--<div *ngIf="statusView" class="data-field" disabled="true"></div>-->
+                    </div>
                 </div>
+
 
             </div>
 

@@ -4,16 +4,17 @@
     </button>
     <h4 class="modal-title">Кадрування фотографії</h4>
 </div>
-<div class="modal-body modal-body-add-edit">
-    <div class="input-photo-file">
-        <div class="file-upload">
-            <span class="text">Загрузити фото</span>
+<div class="modal-body modal-body-cropping">
+    <div>
+        <div>
+            <span class="text">Завантажити фото</span>
             <input id="custom-input" type="file" (change)="fileChangeListener($event)">
         </div>
-            <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
-            <div class="output-photo" *ngIf="data.image">
-                <img #croppedPhoto [src]="data.image" [width]="cropperSettings.croppedWidth"
-                     [height]="cropperSettings.croppedHeight"></div>
+        <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+        <div class="output-photo" *ngIf="data.image">
+            <img #croppedPhoto [src]="data.image" [width]="cropperSettings.croppedWidth"
+                 [height]="cropperSettings.croppedHeight">
+        </div>
     </div>
 </div>
 <div class="modal-footer">

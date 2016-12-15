@@ -17,7 +17,6 @@ import {
 } from "../shared/constant";
 
 @Component({
-    encapsulation: ViewEncapsulation.Emulated,
     templateUrl: "student-profile.component.html",
     styleUrls: ["student.component.scss"],
 })
@@ -39,7 +38,6 @@ export class StudentProfileComponent implements OnInit {
 
     public modalInfoConfig: any = modalInfoConfig;
     public successEventModal = successEventModal;
-    public maxFileSize: number = 2000000;
 
     public statusView: boolean = true;
     public action: Boolean;
@@ -108,39 +106,6 @@ export class StudentProfileComponent implements OnInit {
             this.newStudent();
         }
     }
-
-    cropped(bounds:Bounds) {
-        console.log(bounds);
-    }
-
-    // fileChangeListener($event) {
-    //     let image:any = new Image();
-    //     let file:File = $event.target.files[0];
-    //     let myReader:FileReader = new FileReader();
-    //     let that = this;
-    //     myReader.onloadend = function (loadEvent:any) {
-    //         image.src = loadEvent.target.result;
-    //         that.cropper.setImage(image);
-    //
-    //     };
-    //
-    //     myReader.readAsDataURL(file);
-    // }
-
-
-    /*fileChangeListener($event) {
-        let image:any = new Image();
-        let file:File = $event.target.files[0];
-        let myReader:FileReader = new FileReader();
-        let that = this;
-        myReader.onloadend = function (loadEvent:any) {
-            image.src = loadEvent.target.result;
-            that.cropper.setImage(image);
-
-        };
-
-        myReader.readAsDataURL(file);
-    }*/
 
     goBack(): void {
         this.location.back();
@@ -307,22 +272,6 @@ export class StudentProfileComponent implements OnInit {
             );
     }
 
-    // changeFile(event) {
-    //     let input = event.target;
-    //     if (input.files[0].size > this.maxFileSize) {
-    //         this.modalInfoConfig.infoString = `Розмір фотографії повинен бути не більше ${this.maxFileSize / 1000000} Мб`;
-    //         this.successEventModal();
-    //         return;
-    //     }
-    //     let reader = new FileReader();
-    //
-    //     reader.onload = function () {
-    //         let mysrc = <HTMLInputElement>document.getElementById("output");
-    //         mysrc.src = reader.result;
-    //     };
-    //     reader.readAsDataURL(input.files[0]);
-    // }
-
     showPassword() {
         if (this.passwordStatusText === "password") {
             this.passwordStatusText = "text";
@@ -379,19 +328,9 @@ export class StudentProfileComponent implements OnInit {
         let modalRef = this.modalService.open(ModalImageCropperComponent);
         modalRef.result
             .then((data: any) => {
-                console.log("data", data);
-                console.log("croppedPhotoOut", this.croppedPhotoOut);
-            }, (reason: any) => {
-                console.log("reason: ", reason);
+                this.studentPhoto.nativeElement.src = data;
+            }, () => {
+                return;
             });
-        // const modalPhoto = this.modalService.open(ModalImageCropperComponent);
-        // modalPhoto.result
-        //     .then((data: any) => {
-        //         console.log("data", data);
-        //         console.log("croppedPhotoOut", this.croppedPhotoOut);
-        //         // console.log("croppedPhotoOut", croppedPhotoOut);
-        //     }, (reason) => {
-        //         console.log("reason", reason);
-        //     });
     }
 }

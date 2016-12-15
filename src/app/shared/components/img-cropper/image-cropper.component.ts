@@ -10,7 +10,6 @@ import {ImageCropperComponent, CropperSettings, Bounds} from 'ng2-img-cropper';
 })
 export class ModalImageCropperComponent implements OnInit {
 
-    @Output() croppedPhotoOut = new EventEmitter();
     public maxFileSize: number = 3000000;
     public modalInfoConfig: any = modalInfoConfig;
     public successEventModal: any = successEventModal;
@@ -28,6 +27,8 @@ export class ModalImageCropperComponent implements OnInit {
         this.cropperSettings.noFileInput = true;
         this.cropperSettings.croppedWidth = 200;
         this.cropperSettings.croppedHeight = 200;
+        this.cropperSettings.width = 1;
+        this.cropperSettings.height = 1;
         this.data = {};
     }
 
@@ -52,7 +53,6 @@ export class ModalImageCropperComponent implements OnInit {
     }
 
     savePhoto(data:any){
-        this.croppedPhotoOut = data.nativeElement.src;
         this.activeModal.close(data.nativeElement.src);
     }
 }
