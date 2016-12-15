@@ -130,6 +130,9 @@ export class GroupTestResultComponent implements OnInit {
                 }
             }
         }
+        this.entityDataWithNames.sort((a, b) => {
+            return a.student_name.localeCompare(b.student_name);
+        });
         this.createChartData();
         this.createTableConfig(this.entityDataWithNames);
     };
