@@ -33,7 +33,7 @@ export const configAddAnswer = {
     ],
     action: "create",
     labelBtn: "Додати",
-    img: {imgName: "Вкладення", value: "", title: "attachment", type: "file"}
+    img: {imgName: "Вкладення", value: "", title: "attachment", type: "button", label: "Завантажити картинку"}
 };
 
 export const configEditAnswer = {
@@ -48,5 +48,5 @@ export const configEditAnswer = {
     action: "edit",
     labelBtn: "Редагувати",
     id: "",
-    img: {imgName: "Вкладення", value: "", title: "attachment", type: "file"}
+    img: {imgName: "Вкладення", value: "", title: "attachment", type: "button", label: "Завантажити картинку"}
 };
