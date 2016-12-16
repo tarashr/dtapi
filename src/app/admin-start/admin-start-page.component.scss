@@ -4,11 +4,14 @@
   max-width: 1024px;
   margin: 0px auto 10px auto;
   padding: 10px;
-  min-width: 420px;
+  //min-width: 320px;
   font-size: 12px;
   nav.main-menu-navbar {
     margin-bottom: 0;
-    min-width: 420px;
+    //min-width: 320px;
+    .navbar-header{
+      //min-width: 290px;
+    }
     //background-color: $main-menu-bkg-color;
     //.navbar-nav {
     //  .active {

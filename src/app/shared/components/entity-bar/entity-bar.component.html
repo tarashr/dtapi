@@ -3,7 +3,7 @@
         <div class="navbar-text">{{entityTitle}}</div>
         <form class="navbar-form navbar-left">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="пошук" name="inputSearch"
+                <input type="text" class="form-control search" placeholder="пошук" name="inputSearch"
                        #inputSearch
                        [title]="searchTitle"
                        (input)="find(inputSearch.value)">
