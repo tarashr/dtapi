@@ -164,8 +164,8 @@
             </div>
 
             <div [hidden]="studentForm.valid" class="emergy-text"> * Всі поля є обов'язковими!!!</div>
-            <div [hidden]="(group.value>0 && studentForm.valid) || studentForm.invalid" class="emergy-text"> * Поле
-                група є обов'язковими!!!
+            <div [hidden]="(group.value>0 && studentForm.valid) || studentForm.invalid" class="emergy-text"><span>*Поле
+                група є обов'язковими!!!</span>
             </div>
             <div class="button-create-edit">
                 <button *ngIf="!action" class="btn btn-default" type="submit" (click)="editSaveStudentProfile()"
