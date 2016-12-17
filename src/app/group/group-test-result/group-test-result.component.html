@@ -30,11 +30,12 @@
     </div>
     <div *ngIf="!showGraph" class="container-fluid print">
         <ul class="list-group entity-list">
-            <li class="list-group-item row">
+            <li class="list-group-item row custom-hidden-xs">
                 <div *ngFor="let item of headers" [ngClass]="item.className">{{item.name}}</div>
             </li>
             <li class="list-group-item row" *ngFor="let entity of entityData; let i=index">
                 <div *ngFor="let item of entity.entityColumns; let j=index" [ngClass]="headers[j].className">
+                    <span class="custom-visible-xs">{{headers[j].name+": "}}</span>
                     <span class="">{{item}}</span>
                 </div>
             </li>
@@ -48,5 +49,5 @@
         Немає результатів тестування для даної групи
     </div>
     <pie-chart *ngIf="showGraph" [chartData]="pieChartData"></pie-chart>
-    <bar-chart *ngIf="showGraph" [chartData]="barChartData" [maxResult]="maxResult"></bar-chart>
+    <bar-chart *ngIf="showGraph" [chartData]="barChartData"></bar-chart>
 </div>

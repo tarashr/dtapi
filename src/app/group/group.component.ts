@@ -302,17 +302,15 @@ export class GroupComponent implements OnInit, OnDestroy {
         });
     }
 
-    createCase(groupToChange?: Group) {
+    createCase() {
         this.configAdd.list[0].value = "";
         this.configAdd.select[0].selected = "";
-        this.configAdd.select[0].selectItem = [];
-        this.facultiesNamesIDs.forEach(item => {
-            this.configAdd.select[0].selectItem.push(item.name);
+        this.configAdd.select[0].selectItem = this.facultiesNamesIDs.map(item => {
+                return item.name;
         });
         this.configAdd.select[1].selected = "";
-        this.configAdd.select[1].selectItem = [];
-        this.specialitiesNamesIDs.forEach(item => {
-            this.configAdd.select[1].selectItem.push(item.name);
+        this.configAdd.select[1].selectItem = this.specialitiesNamesIDs.map(item => {
+            return item.name;
         });
         const modalRefAdd = this.modalService.open(ModalAddEditComponent);
         modalRefAdd.componentInstance.config = this.configAdd;
@@ -339,14 +337,12 @@ export class GroupComponent implements OnInit, OnDestroy {
         this.configEdit.list[0].value = data.entityColumns[1];
         this.configEdit.select[0].selected = data.entityColumns[2];
         this.configEdit.id = data.entity_id;
-        this.configEdit.select[0].selectItem = [];
-        this.facultiesNamesIDs.forEach(item => {
-            this.configEdit.select[0].selectItem.push(item.name);
+        this.configEdit.select[0].selectItem = this.facultiesNamesIDs.map(item => {
+            return item.name;
         });
         this.configEdit.select[1].selected = data.entityColumns[3];
-        this.configEdit.select[1].selectItem = [];
-        this.specialitiesNamesIDs.forEach(item => {
-            this.configEdit.select[1].selectItem.push(item.name);
+        this.configEdit.select[1].selectItem = this.specialitiesNamesIDs.map(item => {
+            return item.name;
         });
         const modalRefEdit = this.modalService.open(ModalAddEditComponent);
         modalRefEdit.componentInstance.config = this.configEdit;

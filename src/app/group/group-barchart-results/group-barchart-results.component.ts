@@ -14,7 +14,6 @@ import {Component, OnInit, Input} from "@angular/core";
 export class GroupBarChartResultsComponent implements OnInit {
 
     @Input() chartData;
-    @Input() maxResult;
     options: Object;
 
     constructor() {}
@@ -22,7 +21,7 @@ export class GroupBarChartResultsComponent implements OnInit {
     ngOnInit() {
         this.options = {
             chart: {
-                height: this.chartData.names.length * 70,
+                height: this.chartData.names.length * 50 + 120,
                 type: "bar"
             },
             title: {

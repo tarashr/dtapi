@@ -5,7 +5,7 @@
     <h4 class="modal-title">{{config.title}}</h4>
 </div>
 <div class="modal-body modal-body-add-edit">
-    <div *ngIf="config.select">
+    <div *ngIf="config.select" >
         <div class="input-group input-group-add-edit" *ngFor="let item of config.select">
             <span class="input-group-addon modal-span">{{item.selectName}}:</span>
             <select class="form-control"
@@ -35,7 +35,8 @@
                  addEditForm.controls[item.formControlName].touched">
             {{item.hint}}
         </div>
-        <div class="hint" *ngIf="item.formControlName ==='oldPassword' && !isTruePassword">
+        <div class="hint" *ngIf="item.formControlName ==='oldPassword' &&
+        !isTruePassword && addEditForm.controls[item.formControlName].value !== ''">
             Невірний пароль
         </div>
         <div class="passwords-hint" *ngIf="item.formControlName ==='cpassword' && !isSamePasswords">
