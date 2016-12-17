@@ -38,7 +38,7 @@ export class GroupBarChartResultsComponent implements OnInit {
                 min: 0,
                 max: 100,
                 title: {
-                    text: "Набрані бали у відсотках, %",
+                    text: "Резульат здачі тесту, %",
                     align: "high"
                 },
                 labels: {
