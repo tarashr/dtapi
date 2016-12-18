@@ -6,6 +6,10 @@
     display: inherit;
 }
 
+.custom-visible-xs {
+    display: none;
+}
+
 @media print {
     .print-show {
         display: inherit;
@@ -61,6 +65,42 @@
             }
             &:nth-child(6){
                 width: 14%;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 767px)  {
+    .custom-hidden-xs {
+        display: none;
+    }
+
+    .entity-list {
+        .col-xs-12{
+            text-align: left;
+            padding: 0;
+        }
+        .align-xs{
+            display: inline-block;
+            float: right;
+            width:60%;
+        }
+        .custom-visible-xs {
+            display: inline;
+            width: 40%;
+            font-weight: bold;
+            float: left;
+            margin-bottom: 10px;
+        }
+        .list-group-item{
+            padding: 10px 7px;
+        }
+        .row {
+            div {
+                &:last-child {
+                    text-align: center;
+                    margin-top: 15px;
+                }
             }
         }
     }

@@ -130,6 +130,9 @@ export class GroupTestResultComponent implements OnInit {
                 }
             }
         }
+        this.entityDataWithNames.sort((a, b) => {
+            return a.student_name.localeCompare(b.student_name);
+        });
         this.createChartData();
         this.createTableConfig(this.entityDataWithNames);
     };
@@ -156,19 +159,24 @@ export class GroupTestResultComponent implements OnInit {
     };
 
     createChartData() {
-        this.barChartData = this.entityDataWithNames.map(item => {
-            const data: any = [];
-            data[0] = item.student_nameWithInitials;
-            data[1] = +item.result;
-            return data;
+        // Data for barChart
+        const data: any = {};
+        data.series = this.entityDataWithNames.map(item => {
+            return +item.resultInPercentage.toFixed(1);
         });
+        data.names = this.entityDataWithNames.map(item => {
+            return item.student_nameWithInitials;
+        });
+        this.barChartData = data;
+
+        // Data for pieChart
         this.pieChartData = this.entityDataWithNames.map(item => {
             return item.resultNational;
         });
     }
 
     changeGraphLable(): string {
-        return (this.showGraph) ? "Список" : "На графіках";
+        return (this.showGraph) ? "Список" : "Графіки";
     }
 
     Print(): void {

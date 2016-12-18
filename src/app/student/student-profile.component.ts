@@ -321,7 +321,21 @@ export class StudentProfileComponent implements OnInit {
     }
 
     removePhoto(){
-        this.studentPhoto.nativeElement.src = "assets/profile.png";
+
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати дане фото`;
+        this.modalInfoConfig.action = "confirm";
+        this.modalInfoConfig.title = "Видалення";
+        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
+        modalRefDel.componentInstance.config = this.modalInfoConfig;
+        modalRefDel.result
+            .then(() => {
+                this.studentPhoto.nativeElement.src = "assets/profile.png";
+            }, () => {
+                return;
+            });
+
+        // this.studentPhoto.nativeElement.src = "assets/profile.png";
+
     }
 
     modalOpen(){

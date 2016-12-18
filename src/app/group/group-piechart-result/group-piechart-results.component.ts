@@ -6,7 +6,11 @@ import {GroupService} from "../../shared/services/group.service";
     template: `
         <chart [options]="options"></chart>
     `,
-    styleUrls: ["gruop-piechart-results.component.scss"]
+    styles: [`
+        chart {
+         display: block;
+        }
+    `]
 })
 export class GroupPieChartResultsComponent implements OnInit {
 

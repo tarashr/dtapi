@@ -86,7 +86,7 @@ export class AdminUserComponent implements OnInit {
             case "delete":
                 this.deleteCase(data);
                 break;
-        };
+        }
     };
 
     createCase(userToChange?: User) {
