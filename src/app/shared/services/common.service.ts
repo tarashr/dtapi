@@ -2,6 +2,7 @@ import {Injectable}      from "@angular/core";
 import {ConfigModalInfo} from "../classes/configs/config-modal-info";
 import {InfoModalComponent} from "../components/info-modal/info-modal.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ModalAddEditComponent} from "../components/addeditmodal/modal-add-edit.component";
 const md5 = require("crypto-js/md5");
 
 @Injectable()
@@ -77,6 +78,12 @@ export class CommonService {
         let modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
         modalRef.componentInstance.config = config;
         return modalRef.result;
+    }
+
+    openModalAddEdit(configAddEdit: Object): Promise <any> {
+        const modalRefEdit = this.modalService.open(ModalAddEditComponent);
+        modalRefEdit.componentInstance.config = configAddEdit;
+        return modalRefEdit.result;
     }
 }
 

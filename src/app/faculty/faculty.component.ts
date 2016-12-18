@@ -9,7 +9,6 @@ import {
     ConfigModalInfo
 } from "../shared/classes";
 
-import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add-edit.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {CRUDService} from "../shared/services/crud.service.ts";
 import {
@@ -54,7 +53,6 @@ export class FacultyComponent implements OnInit {
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
-                private modalService: NgbModal,
                 private commonService: CommonService) {
     };
 
@@ -102,18 +100,14 @@ export class FacultyComponent implements OnInit {
         this.configAdd.list.forEach((item) => {
             item.value = "";
         });
-        const modalRefAdd = this.modalService.open(ModalAddEditComponent);
-        modalRefAdd.componentInstance.config = this.configAdd;
-        modalRefAdd.result
+        this.commonService.openModalAddEdit(this.configAdd)
             .then((data: ConfigModalAddEdit) => {
                     let newFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
                     this.crudService.insertData(this.entity, newFaculty)
                         .subscribe(() => {
                             this.commonService.openModalInfo(`${data.list[0].value} успішно створено`);
                             this.refreshData(data.action);
-                        }, () => {
-                            this.commonService.openModalInfo(`Факультет з такою назвою вже існує`);
-                        });
+                        }, this.errorAddEdit);
                 },
                 this.handleReject);
     };
@@ -123,18 +117,14 @@ export class FacultyComponent implements OnInit {
             item.value = data.entityColumns[i + 1];
         });
         this.configEdit.id = data.entity_id;
-        const modalRefEdit = this.modalService.open(ModalAddEditComponent);
-        modalRefEdit.componentInstance.config = this.configEdit;
-        modalRefEdit.result
+        this.commonService.openModalAddEdit(this.configEdit)
             .then((data: ConfigModalAddEdit) => {
                     let editedFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
                     this.crudService.updateData(this.entity, +data.id, editedFaculty)
                         .subscribe(() => {
                             this.commonService.openModalInfo(`Редагування пройшло успішно`);
                             this.refreshData(data.action);
-                        }, () => {
-                            this.commonService.openModalInfo(`Факультет з такою назвою вже існує`);
-                        });
+                        }, this.errorAddEdit);
                 },
                 this.handleReject);
     };
@@ -146,6 +136,16 @@ export class FacultyComponent implements OnInit {
                     this.delRecord(this.entity, +data.entity_id);
                 },
                 this.handleReject);
+    };
+
+    errorAddEdit = (error) => {
+        let message: string;
+        if (error === "400 - Bad Request") {
+            message = `Факультет з такою назвою вже існує`;
+        } else {
+            message = "Невідома помилка! Зверніться до адміністратора."
+        }
+        this.commonService.openModalInfo(message)
     };
 
     handleReject = () => {
