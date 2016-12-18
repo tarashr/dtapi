@@ -2,20 +2,23 @@
     <button type="button" class="close" (click)="activeModal.dismiss()">
         <span>&times;</span>
     </button>
-    <h4 class="modal-title">Кадрування фотографії</h4>
+    <h4 class="modal-title">Кадрування зображення</h4>
 </div>
 <div class="modal-body modal-body-cropping">
-    <div>
-        <div>
-            <span class="text">Завантажити фото</span>
-            <input id="custom-input" type="file" (change)="fileChangeListener($event)">
-        </div>
+    <div class="photo-input">
+    <div >
         <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+    </div>
+        <div class="myLabel">
+            <input id="custom-input" type="file" (change)="fileChangeListener($event)">
+            <span>Завантажити зображення</span>
+        </div>
+    </div>
+
         <div class="output-photo" *ngIf="data.image">
             <img #croppedPhoto [src]="data.image" [width]="cropperSettings.croppedWidth"
                  [height]="cropperSettings.croppedHeight">
         </div>
-    </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="savePhoto(croppedPhoto)">

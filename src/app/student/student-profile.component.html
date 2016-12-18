@@ -6,7 +6,7 @@
     </div>
     <form #studentForm="ngForm" novalidate>
         <div class="student-datas row">
-            <div class="input-foto student-foto col-xs-12 col-sm-12 col-md-3">
+            <div class="input-foto student-foto col-xs-12 col-sm-3 col-md-3">
 
                 <img class="img-responsive img-rounded" #studentPhoto alt="Фото студента" id="output"/>
                 <button class="btn btn-default button-download-photo" (click)="modalOpen()" [disabled]="statusView">Завантажити фото</button>
@@ -14,7 +14,7 @@
 
             </div>
             <div>
-                <div class="student-data1 col-xs-12 col-sm-12 col-md-4">
+                <div class="student-data1 col-xs-12 col-sm-4 col-md-4">
                     <div><label for="surname">Прізвище:</label>
                         <div *ngIf="!statusView" class="data-field-enter">
                             <input id="surname" name="surname" class="input-student-data"
@@ -96,71 +96,68 @@
                         </div>
                     </div>
                 </div>
-                <div class="student-data2 col-xs-12 col-sm-12 col-md-5">
+                <div class="student-data2 col-xs-12 col-sm-5 col-md-5">
                     <div><label for="gradebook_id">№ залікової книжки:</label>
                         <div *ngIf="!statusView" class="data-field-enter"><input id="gradebook_id" name="gradebook"
-                                                                                 class="input-student-data"
+                                                                                 class="input-student-data data-field-enter-right"
                                                                                  [(ngModel)]="student.gradebook_id"
                                                                                  required minlength="5"
                                                                                  maxlength="20"
                                                                                  #gradebook="ngModel" ngModel
                                                                                  [pattern]="gradebookPattern">
-                            <div class="hint" [hidden]="!(gradebook.invalid && gradebook.dirty && gradebook.touched)">
+                            <div class="hint data-field-enter-right" [hidden]="!(gradebook.invalid && gradebook.dirty && gradebook.touched)">
                                 Дозволено літери укр. або анг. алфавітів і цифри, довжина поля від 8 до 20 символів
                             </div>
                         </div>
-                        <div *ngIf="statusView" class="data-field" disabled="true">
+                        <div *ngIf="statusView" class="data-field data-field-enter-right" disabled="true">
                             {{student?.gradebook_id}}
                         </div>
                     </div>
                     <div><label for="email">Поштова скринька:</label>
                         <div *ngIf="!statusView" class="data-field-enter"><input id="email" name="email"
-                                                                                 class="input-student-data"
+                                                                                 class="input-student-data data-field-enter-right"
                                                                                  [(ngModel)]="student.email" required
                                                                                  maxlength="30" #email="ngModel" ngModel
                                                                                  [pattern]="emailPattern">
-                            <div class="hint" [hidden]="!(email.invalid && email.dirty && email.touched)">
+                            <div class="hint data-field-enter-right" [hidden]="!(email.invalid && email.dirty && email.touched)">
                                 Поштова скринька повинна бути формату логін@домен
                             </div>
                         </div>
 
-                        <div *ngIf="statusView" class="data-field" disabled="true">
+                        <div *ngIf="statusView" class="data-field data-field-enter-right" disabled="true">
                             {{student?.email}}
                         </div>
                     </div>
                     <div><label for="userLogin">Логін:</label>
                         <div *ngIf="!statusView" class="data-field-enter"><input id="userLogin" name="userLogin"
-                                                                                 class="input-student-data"
+                                                                                 class="input-student-data data-field-enter-right"
                                                                                  [(ngModel)]="student.username" required
                                                                                  minlength="4"
                                                                                  maxlength="20" #userLogin="ngModel"
                                                                                  [pattern]="loginPattern" ngModel>
-                            <div class="hint" [hidden]="!(userLogin.invalid && userLogin.dirty && userLogin.touched)">
+                            <div class="hint data-field-enter-right" [hidden]="!(userLogin.invalid && userLogin.dirty && userLogin.touched)">
                                 Дозволено літери анг. алфавіту і цифри, довжина логіна від 4 до 20 символів
                             </div>
                         </div>
-                        <div *ngIf="statusView" class="data-field" disabled="true">
+                        <div *ngIf="statusView" class="data-field data-field-enter-right" disabled="true">
                             {{student?.username}}
                         </div>
                     </div>
                     <div *ngIf="!statusView"><label for="userPassword">Пароль:</label>
-                        <div  class="data-field-enter"><input id="userPassword" name="userPassword"
+                        <div  class="data-field-enter data-field-enter-right"><input id="userPassword" name="userPassword"
                                                                                  class="input-student-data password-eye-input"
                                                                                  [type]="passwordStatusText"
                                                                                  [(ngModel)]="student.plain_password"
                                                                                  required minlength="8" maxlength="20"
                                                                                  #userPassword="ngModel" ngModel>
                             <span class="glyphicon glyphicon-eye-open password-eye" (click)="showPassword()"></span>
-                            <div class="hint"
+                            <div class="hint data-field-enter-righ"
                                  [hidden]="!(userPassword.invalid && userPassword.dirty && userPassword.touched)">
                                 Довжина пароля повинна бути від 8 до 20 символів
                             </div>
                         </div>
-                        <!--<div *ngIf="statusView" class="data-field" disabled="true"></div>-->
                     </div>
                 </div>
-
-
             </div>
 
             <div [hidden]="studentForm.valid" class="emergy-text"> * Всі поля є обов'язковими!!!</div>
