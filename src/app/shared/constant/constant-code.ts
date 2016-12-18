@@ -84,12 +84,5 @@ export const refreshData = function (action: string) {
         this.offset = (this.page - 1) * this.limit;
     }
 
-    this.crudService.getCountRecords(this.entity)
-        .subscribe(
-            data => {
-                this.entityDataLength = +data.numberOfRecords;
-                this.getRecordsRange();
-            },
-            error => console.log(error)
-        );
+    this.getCountRecords();
 };

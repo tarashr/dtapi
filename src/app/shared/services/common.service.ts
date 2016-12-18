@@ -45,7 +45,7 @@ export class CommonService {
                 return this.leftPad(date.getSeconds());
             }
         };
-        let arr: string[] = format.split(/-|:|,| /);
+        let arr: string[] = format.split(/-|:|,|\.| /);
         for (let i = 0; i < arr.length; i++) {
             if (arr[i] === "") {
                 arr.splice(i, 1);
