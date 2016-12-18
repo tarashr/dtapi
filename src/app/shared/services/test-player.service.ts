@@ -551,7 +551,7 @@ export class TestPlayerService {
             .then(this.handleReject,
                 () => {
                     localStorage.removeItem("dTester");
-                    this.router.navigate(["/student"]);
+                    this.returnToStudent();
                 });
     };
 

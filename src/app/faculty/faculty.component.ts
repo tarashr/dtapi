@@ -111,7 +111,7 @@ export class FacultyComponent implements OnInit {
                         .subscribe(() => {
                             this.commonService.openModalInfo(`${data.list[0].value} успішно створено`);
                             this.refreshData(data.action);
-                        }, error => {
+                        }, () => {
                             this.commonService.openModalInfo(`Факультет з такою назвою вже існує`);
                         });
                 },
@@ -132,7 +132,7 @@ export class FacultyComponent implements OnInit {
                         .subscribe(() => {
                             this.commonService.openModalInfo(`Редагування пройшло успішно`);
                             this.refreshData(data.action);
-                        }, error => {
+                        }, () => {
                             this.commonService.openModalInfo(`Факультет з такою назвою вже існує`);
                         });
                 },
