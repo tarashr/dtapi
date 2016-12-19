@@ -23,6 +23,7 @@
             </span>
         <input *ngIf="item.name !=='Дата початку' && item.name !== 'Дата кінця'"
                [type]="item.type"
+               [name]="item.title"
                [formControlName]="item.formControlName"
                class="form-control modalInput"
                [placeholder]="item.placeholder||''"

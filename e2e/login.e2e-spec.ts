@@ -45,8 +45,8 @@ describe("Login page", function () {
     it("should redirect to student/profile page", () => {
         login.clear();
         password.clear();
-        login.sendKeys("ivan");
-        password.sendKeys("1111");
+        login.sendKeys("student7");
+        password.sendKeys("00000000");
         btn.click().then(() => {
             browser.getCurrentUrl().then((url) => {
                 expect(url.split("#")[1]).toBe("/student/profile");
@@ -77,8 +77,8 @@ describe("Login page", function () {
     it("should redirect to student/profile page", () => {
         login.clear();
         password.clear();
-        login.sendKeys("ivan");
-        password.sendKeys("1111");
+        login.sendKeys("student7");
+        password.sendKeys("00000000");
         btn.click().then(() => {
             browser.getCurrentUrl().then((url) => {
                 expect(url.split("#")[1]).toBe("/student/profile");
