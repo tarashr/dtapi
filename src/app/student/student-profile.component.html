@@ -1,5 +1,5 @@
 <div class="entity-container">
-    <div class="student-profile-title">ПРОФІЛЬ СТУДЕНТА
+    <div class="student-profile-title"><span>ПРОФІЛЬ СТУДЕНТА</span>
         <button type="button" class="btn btn-default position-left"
                 (click)="goBack()">Назад
         </button>
@@ -7,7 +7,6 @@
     <form #studentForm="ngForm" novalidate>
         <div class="student-datas row">
             <div class="input-foto student-foto col-xs-12 col-sm-3 col-md-3">
-
                 <img class="img-responsive img-rounded" #studentPhoto alt="Фото студента" id="output"/>
                 <button class="btn btn-default button-download-photo" (click)="modalOpen()" [disabled]="statusView">Завантажити фото</button>
                 <button class="btn btn-danger remove-photo" (click)="removePhoto()" [disabled]="statusView">Видалити фото</button>
@@ -159,10 +158,11 @@
                     </div>
                 </div>
             </div>
-
-            <div [hidden]="studentForm.valid" class="emergy-text"> * Всі поля є обов'язковими!!!</div>
-            <div [hidden]="(group.value>0 && studentForm.valid) || studentForm.invalid" class="emergy-text"><span>*Поле
-                група є обов'язковими!!!</span>
+            <div class="warning-message">
+                <div [hidden]="studentForm.valid" class="emergy-text"> * Всі поля є обов'язковими!!!</div>
+                <div [hidden]="(group.value>0 && studentForm.valid) || studentForm.invalid" class="emergy-text"><span>*Поле
+                    група є обов'язковими!!!</span>
+                </div>
             </div>
             <div class="button-create-edit">
                 <button *ngIf="!action" class="btn btn-default" type="submit" (click)="editSaveStudentProfile()"

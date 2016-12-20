@@ -2,23 +2,11 @@ describe("Student registraiting", function () {
 
     let login, password, btn, okBtn, exitAdminBtn, studentTab, studentNew, studentSurname, studentName,
         studentFname, studentFaculty, studentGroup, studentGradebook_id, studentEmail, studentUserLogin,
-        studentUserPassword, studentRegisred;
+        studentUserPassword, studentRegisred, lastPagination, deletedButton, message;
     browser.get("/~pupkin/DTester/dist");
     login = element(by.css("input[type=text]"));
     password = element(by.css("input[type=password]"));
     btn = element(by.css("button"));
-
-    // it("should redirect to admin/statistic page", () => {
-    //     login.sendKeys("admin");
-    //     browser.sleep(1000);
-    //     password.sendKeys("dtapi_admin");
-    //     browser.sleep(1000);
-    //     btn.click().then(() => {
-    //         browser.getCurrentUrl().then((url) => {
-    //             expect(url.split("#")[1]).toBe("/admin/statistic");
-    //         });
-    //     });
-    // });
 
     it("should redirect to admin/student page", () => {
         login.sendKeys("admin");
@@ -73,12 +61,37 @@ describe("Student registraiting", function () {
         studentUserPassword.sendKeys("00000000");
         browser.sleep(2000);
         studentRegisred.click().then(() => {
-            const message = element(by.css(".modal-body-info-confirm")).getText();
+            message = element(by.css(".modal-body-info-confirm")).getText();
             expect(message).toBe("Створено профіль студента Янкіна Олена Анатоліївна");
             okBtn = element(by.css(".modal-footer button"));
             browser.sleep(2000);
             okBtn.click();
         });
+        browser.sleep(2000);
+    });
+
+    it("should redirect last student pagination page", () => {
+        studentTab.click();
+        browser.sleep(2000);
+        lastPagination =  element(by.cssContainingText(".page-link","»»"));
+        lastPagination.click();
+        browser.sleep(2000);
+    });
+
+    it("should deleted created student", () => {
+        deletedButton = element(by.css('a[title="Видалити профіль студента: Янкіна Олена Анатоліївна"]'));
+        deletedButton.click();
+        browser.sleep(2000);
+        message = element(by.css(".modal-body-info-confirm")).getText();
+        expect(message).toBe("Ви дійсно хочете видати профіль студента: Янкіна Олена Анатоліївна?");
+        browser.sleep(2000);
+        okBtn = element(by.cssContainingText(".btn","ТАК"));
+        okBtn.click();
+        browser.sleep(2000);
+        message = element(by.css(".modal-body-info-confirm")).getText();
+        expect(message).toBe("Видалення пройшло успішно.");
+        okBtn = element(by.cssContainingText(".btn","OK"));
+        okBtn.click();
         browser.sleep(2000);
     });
 
