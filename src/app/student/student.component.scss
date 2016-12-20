@@ -1,10 +1,11 @@
 @import "../../assets/style/variables";
-@import "../../assets/style/constant";
 
 $light-grey-border: 1px solid #e7e7e7;
 $standard-offset: 10px 0;
 $standard-btn-radius: 4px;
 $student-field-offset: 10px;
+$black: #000000;
+$grey50: #f8f8f8;
 
 .student-container {
     max-width: 1024px;

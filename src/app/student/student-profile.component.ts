@@ -5,7 +5,6 @@ import {Group, Faculty, Student, EntityManagerBody} from "../shared/classes";
 import {CRUDService} from "../shared/services/crud.service";
 import {Observable} from "rxjs/Rx";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {FormsModule, Form} from "@angular/forms";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
 import {ImageCropperComponent, CropperSettings} from 'ng2-img-cropper';
 import {ModalImageCropperComponent} from "../shared/components/img-cropper/image-cropper.component";
@@ -35,6 +34,10 @@ export class StudentProfileComponent implements OnInit {
     public groups: Array <any> = [];
     public facultyEntity: string = "Faculty";
     public facultys: Array <any> = [];
+    private errorMessageCreateStudent: string = "Помилка при створенні профілю. Перевірте правильність введених даних";
+    private errorMessageUpdateData: string = "Помилка обновлення. Перевірте правильність введених даних";
+    private errorMessageGroupAbsence: string = "Для даного факультету не зареєстровано жодної групи!";
+    private studentInfo: string;
 
     public modalInfoConfig: any = modalInfoConfig;
     public successEventModal = successEventModal;
@@ -56,7 +59,6 @@ export class StudentProfileComponent implements OnInit {
 
     @ViewChild("studentForm") studentForm: any;
     @ViewChild("studentPhoto") studentPhoto: ElementRef;
-
     @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
     @ViewChild('croppedPhotoOut') croppedPhotoOut: string;
 
@@ -112,18 +114,19 @@ export class StudentProfileComponent implements OnInit {
         this._commonService.insertData(this.entity, dataForRequest)
             .subscribe(data => {
                     if (data.response === "ok") {
-                        this.modalInfoConfig.infoString = `Створено профіль студента ${dataForRequest.student_surname} ${dataForRequest.student_name} ${dataForRequest.student_fname}`;
+                        this.studentInfo = `${dataForRequest.student_surname} ${dataForRequest.student_name} ${dataForRequest.student_fname}`;
+                        this.modalInfoConfig.infoString = `Створено профіль студента ${this.studentInfo}`;
                         this.successEventModal();
                         this.newStudent();
                         this.studentForm.reset();
                     } else {
-                        this.modalInfoConfig.infoString = "Помилка при створенні профілю. Перевірте правильність введених даних";
+                        this.modalInfoConfig.infoString = this.errorMessageCreateStudent;
                         this.successEventModal();
                     }
                 },
                 error => {
                     console.log("error: ", error);
-                    this.modalInfoConfig.infoString = "Помилка при створенні профілю. Перевірте правильність введених даних";
+                    this.modalInfoConfig.infoString = this.errorMessageCreateStudent;
                     this.successEventModal();
                 }
             );
@@ -143,7 +146,7 @@ export class StudentProfileComponent implements OnInit {
         this._commonService.getGroupsByFaculty(value)
             .subscribe(groupData => {
                     if (groupData.response === "no records") {
-                        this.groups.splice(0, this.groups.length, {group_name: "Для даного факультету не зареєстровано жодної групи!", group_id: 0} );
+                        this.groups.splice(0, this.groups.length, {group_name: this.errorMessageGroupAbsence, group_id: 0});
                     } else {
                         this.groups = groupData;
                     }
@@ -232,19 +235,20 @@ export class StudentProfileComponent implements OnInit {
         this._commonService.updateData(this.entity, this.student.user_id, dataForUpdateStudent)
             .subscribe(data => {
                     if (data.response === "ok") {
-                        this.modalInfoConfig.infoString = `Дані студента ${dataForUpdateStudent.student_surname} ${dataForUpdateStudent.student_name} ${dataForUpdateStudent.student_fname} обновленно`;
+                        this.studentInfo = `${dataForUpdateStudent.student_surname} ${dataForUpdateStudent.student_name} ${dataForUpdateStudent.student_fname}`;
+                        this.modalInfoConfig.infoString = `Дані студента ${this.studentInfo} обновленно`;
                         this.successEventModal();
                         this.editSaveButtonName = "Редагувати дані";
                         this.statusView = !this.statusView;
                     }
                     else {
-                        this.modalInfoConfig.infoString = `Помилка обновлення. Перевірте правильність введених даних`;
+                        this.modalInfoConfig.infoString = this.errorMessageUpdateData;
                         this.successEventModal();
                     }
                 },
                 error => {
                     console.log("error: ", error);
-                    this.modalInfoConfig.infoString = "Помилка обновлення. Перевірте правильність введених даних";
+                    this.modalInfoConfig.infoString = this.errorMessageUpdateData;
                     this.successEventModal();
                     this.editSaveButtonName = "Зберегти дані";
                 }
@@ -285,8 +289,8 @@ export class StudentProfileComponent implements OnInit {
                     });
                 });
         };
-
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати профіль студента: ${this.student.student_surname} ${this.student.student_name} ${this.student.student_fname}?`;
+        this.studentInfo = `${this.student.student_surname} ${this.student.student_name} ${this.student.student_fname}`;
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати профіль студента: ${this.studentInfo}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
@@ -300,7 +304,6 @@ export class StudentProfileComponent implements OnInit {
     }
 
     removePhoto(){
-
         this.modalInfoConfig.infoString = `Ви дійсно хочете видати дане фото`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
