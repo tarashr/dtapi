@@ -31,7 +31,7 @@ export const configAddAdminUser = {
             hint: "Поштова скринька повинна бути формату логін@домен"},
         {name: "Пароль", value: "", title: "password", type: "password", formControlName: "password",
             hint: "Пароль повинен складатись мінімум з 8-ми символів"},
-        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password", formControlName: "cpassword",
+        {name: "Підтвердіть пароль", value: "", title: "cpassword", type: "password", formControlName: "cpassword",
             hint: "Пароль повинен складатись мінімум з 8-ми символів"}
     ],
     action: "create",
@@ -48,7 +48,7 @@ export const configEditAdminUser = {
         {name: "Старий пароль", value: "", title: "password", type: "password", formControlName: "oldPassword"},
         {name: "Новий пароль", value: "", title: "password", type: "password", formControlName: "password",
             hint: "Пароль повинен складатись мінімум з 8-ми символів"},
-        {name: "Підтвердіть пароль", value: "", title: "passwordConfirm", type: "password", formControlName: "cpassword",
+        {name: "Підтвердіть пароль", value: "", title: "cpassword", type: "password", formControlName: "cpassword",
             hint: "Пароль повинен складатись мінімум з 8-ми символів"}
     ],
     action: "edit",

@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
-import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add-edit.component";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {Speciality} from '../shared/classes/speciality';
@@ -23,11 +21,12 @@ import {
     actionsSpeciality,
     modalInfoConfig
 } from "../shared/constant";
+import {ConfigTableData} from "../shared/classes/configs/config-table-data";
 
 @Component({
-    templateUrl:"speciality.component.html"
+    templateUrl: "speciality.component.html"
 })
-export class SpecialityComponent implements OnInit{
+export class SpecialityComponent implements OnInit {
 
     public modalInfoConfig: any = modalInfoConfig;
     public configAdd = configAddSpeciality;
@@ -63,7 +62,7 @@ export class SpecialityComponent implements OnInit{
 
     ngOnInit() {
         this.getCountRecords();
-    }
+    };
 
     private createTableConfig = (data: any ) => {
         let numberOfOrder: number;
@@ -76,7 +75,7 @@ export class SpecialityComponent implements OnInit{
         });
     };
 
-    activate(data: any) {
+    activate(data: ConfigTableData) {
         switch (data.action) {
             case "viewGroup":
                 this._router.navigate(
@@ -93,16 +92,14 @@ export class SpecialityComponent implements OnInit{
                 this.deleteCase(data);
                 break;
         }
-    }
+    };
 
 
     createCase() {
         this.configAdd.list.forEach((item) => {
             item.value = "";
         });
-        const modalRefAdd = this.modalService.open(ModalAddEditComponent);
-        modalRefAdd.componentInstance.config = this.configAdd;
-        modalRefAdd.result
+        this.commonService.openModalAddEdit(this.configAdd)
             .then((data: any) => {
                 const newSpeciality: Speciality = new Speciality(data.list[0].value, data.list[1].value);
                 this.crudService.insertData(this.entity, newSpeciality)
@@ -117,14 +114,12 @@ export class SpecialityComponent implements OnInit{
             });
     };
 
-    editCase(data: any) {
+    editCase(data: ConfigTableData) {
         this.configEdit.list.forEach((item, i) => {
             item.value = data.entityColumns[i + 1];
         });
         this.configEdit.id = data.entity_id;
-        const modalRefEdit = this.modalService.open(ModalAddEditComponent);
-        modalRefEdit.componentInstance.config = this.configEdit;
-        modalRefEdit.result
+        this.commonService.openModalAddEdit(this.configEdit)
             .then((data: any) => {
                 const editedSpeciality: Speciality = new Speciality(data.list[0].value, data.list[1].value);
                 this.crudService.updateData(this.entity, data.id, editedSpeciality)
@@ -132,25 +127,26 @@ export class SpecialityComponent implements OnInit{
                         this.commonService.openModalInfo(`Редагування пройшло успішно`);
                         this.refreshData(data.action);
                     }, error => {
-                        this.commonService.openModalInfo(`Спеціальність з такою назвою або кодом вже існує`);
+                        let message: string;
+                        if (error === "400 - Bad Request") {
+                            message = "Спеціальність з такою назвою або кодом вже існує";
+                        } else {
+                            message = "Невідома помилка! Зверніться до адміністратора.";
+                        }
+                        this.commonService.openModalInfo(message);
                     });
             }, () => {
                 return;
             });
-    }
+    };
 
-    deleteCase(data: any) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[0]}?`;
-        this.modalInfoConfig.action = "confirm";
-        this.modalInfoConfig.title = "Видалення";
-        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
-        modalRefDel.componentInstance.config = this.modalInfoConfig;
-        modalRefDel.result
+    deleteCase(data: ConfigTableData) {
+        let message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[2]}?`, "confirm", "Видалення"];
+        this.commonService.openModalInfo(...message)
             .then(() => {
-                this.delRecord(this.entity, data.entity_id);
+                this.delRecord(this.entity, +data.entity_id);
             }, () => {
                 return;
             });
-    }
-
+    };
 }

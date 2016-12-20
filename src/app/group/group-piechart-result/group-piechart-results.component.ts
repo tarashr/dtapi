@@ -57,5 +57,5 @@ export class GroupPieChartResultsComponent implements OnInit {
                 data: pieChartData
             }]
         };
-    }
+    };
 }

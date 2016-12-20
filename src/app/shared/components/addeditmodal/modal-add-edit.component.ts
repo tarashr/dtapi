@@ -40,7 +40,7 @@ export class ModalAddEditComponent implements OnInit {
                 Validators.pattern(patterns.code)
             ]),
             "name": new FormControl("", [
-                Validators.pattern(patterns.entityName)
+                Validators.pattern(patterns.entityName),
             ]),
             "count": new FormControl("", [
                 Validators.pattern(patterns.number)
