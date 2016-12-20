@@ -1,26 +1,44 @@
 @import "../../../../assets/style/constant";
 
-nav.entity-bar {
-  //background-color: $entity-bar-bkg-color;
-  .container-fluid {
-    form.navbar-left {
-      select {
-        width: 200px;
-        margin: 0 15px;
+
+
+form.navbar-left {
+  select {
+    width: 200px;
+    &:first-child {
+      margin-right: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 948px) {
+  form.navbar-left {
+    select {
+      width: 48%;
+      &:first-child {
+        margin-right: 3%;
       }
     }
   }
 }
 
+
 @media screen and (max-width: 767px) {
   .entity-bar {
+    .form-select {
+      margin: 0;
+      padding: 0 0 5px 0;
+      select {
+        width: 99%;
+        margin: 5px;
+      }
+    }
     .navbar-text, form.navbar-left {
       display: inline-block;
     }
     .form-control {
       width: auto;
       display: inline-block;
-      //border-radius: $btn-radius;
     }
     form.navbar-right {
       display: inline-block;

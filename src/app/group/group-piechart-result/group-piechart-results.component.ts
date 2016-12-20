@@ -20,10 +20,8 @@ export class GroupPieChartResultsComponent implements OnInit {
     constructor(private groupService: GroupService) {}
 
     ngOnInit() {
-        console.log(this.chartData);
         const pieChartData = this.groupService.formPieChartData(this.chartData);
         this.createPieChart(pieChartData);
-        console.log(pieChartData);
     }
 
     createPieChart(pieChartData) {
