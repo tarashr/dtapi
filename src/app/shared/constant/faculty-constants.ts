@@ -5,7 +5,8 @@ export const addTitle: string = "Створити новий факультет"
 export const searchTitle: string = "Введіть дані для пошуку";
 export const entityTitle: string = "Факультети";
 export const selectLimitTitle: string = "Виберіть кількість факультетів на сторінці";
-// Constants for table.component
+export const nothingWasChange: string[] = [`Ви не внесли жодних змін для редагування. Чи бажаєте повторити редагування?`, "confirm"]
+ // Constants for table.component
 export const headersFaculty: ConfigTableHeader[] = [
     {name: "№", className: "col-xs-12 col-sm-1"},
     {name: "Назва факультету", className: "col-xs-12 col-sm-4"},

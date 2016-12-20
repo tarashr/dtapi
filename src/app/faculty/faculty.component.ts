@@ -16,7 +16,7 @@ import {
     changeLimit, pageChange, getCountRecords, getRecordsRange,
     delRecord, findEntity, refreshData,
     headersFaculty, actionsFaculty,
-    addTitle, searchTitle, entityTitle, selectLimitTitle
+    addTitle, searchTitle, entityTitle, selectLimitTitle, nothingWasChange
 } from "../shared/constant";
 import {ConfigTableData} from "../shared/classes/configs/config-table-data";
 import {CommonService} from "../shared/services/common.service";
@@ -46,6 +46,7 @@ export class FacultyComponent implements OnInit {
     public page: number = 1;
     public offset: number = 0;
     public loader: boolean = true;
+    public nothingWasChange: string[] = nothingWasChange;
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
@@ -115,16 +116,19 @@ export class FacultyComponent implements OnInit {
         this.configEdit.id = data.entity_id;
         let list = JSON.stringify(this.configEdit.list);
         this.commonService.openModalAddEdit(this.configEdit)
-            .then((data: ConfigModalAddEdit) => {
-                    let newList = JSON.stringify(data.list);
+            .then((configData: ConfigModalAddEdit) => {
+                    let newList = JSON.stringify(configData.list);
                     if (list === newList) {
-                        this.commonService.openModalInfo(`Ви не внесли жодних змін для редагування.`);
+                        this.commonService.openModalInfo(...nothingWasChange)
+                            .then(()=> {
+                                this.editCase(data);
+                            }, this.handleReject);
                     } else {
-                        let editedFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
-                        this.crudService.updateData(this.entity, +data.id, editedFaculty)
+                        let editedFaculty: Faculty = new Faculty(configData.list[0].value, configData.list[1].value);
+                        this.crudService.updateData(this.entity, +configData.id, editedFaculty)
                             .subscribe(() => {
                                 this.commonService.openModalInfo(`Редагування пройшло успішно`);
-                                this.refreshData(data.action);
+                                this.refreshData(configData.action);
                             }, this.errorAddEdit);
                     }
                 },
