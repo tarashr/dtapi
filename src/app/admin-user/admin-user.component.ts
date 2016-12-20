@@ -1,6 +1,4 @@
 import {Component, OnInit} from "@angular/core";
-import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
-import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add-edit.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 import {User} from "../shared/classes/user";
@@ -21,7 +19,7 @@ import {
     actionsAdminUser,
     modalInfoConfig
 } from "../shared/constant";
-
+import {CommonService} from "../shared/services/common.service";
 
 @Component({
     templateUrl: "admin-user.component.html"
@@ -56,7 +54,8 @@ export class AdminUserComponent implements OnInit {
     public findEntity = findEntity;
 
     constructor(private crudService: CRUDService,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private commonService: CommonService) {
     };
 
     ngOnInit(): void {
@@ -99,9 +98,7 @@ export class AdminUserComponent implements OnInit {
             this.configAdd.list[2].value = userToChange.password;
             this.configAdd.list[3].value = userToChange.password_confirm;
         }
-        const modalRefAdd = this.modalService.open(ModalAddEditComponent);
-        modalRefAdd.componentInstance.config = this.configAdd;
-        modalRefAdd.result
+        this.commonService.openModalAddEdit(this.configAdd)
             .then((data: any) => {
                 const newAdminUser: User = new User(
                     data.list[0].value,
@@ -134,9 +131,7 @@ export class AdminUserComponent implements OnInit {
         });
         this.configEdit.oldPassword = data.oldPassword;
         this.configEdit.id = data.entity_id;
-        const modalRefEdit = this.modalService.open(ModalAddEditComponent);
-        modalRefEdit.componentInstance.config = this.configEdit;
-        modalRefEdit.result
+        this.commonService.openModalAddEdit(this.configEdit)
             .then((data: any) => {
                 let editedAdminUser: User = new User(
                     data.list[0].value,
@@ -160,17 +155,12 @@ export class AdminUserComponent implements OnInit {
     };
 
     deleteCase(data: any) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видалити ${data.entityColumns[1]}?`;
-        this.modalInfoConfig.action = "confirm";
-        this.modalInfoConfig.title = "Видалення";
-        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
-        modalRefDel.componentInstance.config = this.modalInfoConfig;
-        modalRefDel.result
+        let message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[1]}?`, "confirm", "Попередження!"];
+        this.commonService.openModalInfo(...message)
             .then(() => {
                 this.delRecord(this.entity, data.entity_id);
             }, () => {
                 return;
             });
     };
-
-};
+}
