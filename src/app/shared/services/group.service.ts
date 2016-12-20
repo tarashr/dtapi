@@ -45,12 +45,12 @@ export class GroupService {
             .catch(this.handleError);
     }
 
-    toNationalRate(resultInPercentage): string {
+    toNationalRate(resultInPercentage: number): string {
         if (resultInPercentage >= 0 && resultInPercentage < 60) {
             return "Незадовільно";
-        } else if (resultInPercentage >= 60 && resultInPercentage < 74) {
+        } else if (resultInPercentage >= 60 && resultInPercentage < 75) {
             return "Задовільно";
-        } else if (resultInPercentage >= 74 && resultInPercentage < 90) {
+        } else if (resultInPercentage >= 75 && resultInPercentage < 90) {
             return "Добре";
         } else if (resultInPercentage >= 90 && resultInPercentage <= 100) {
             return "Відмінно";
@@ -59,16 +59,16 @@ export class GroupService {
         }
     }
 
-    toECTSRate(resultInPercentage ): string {
-        if (resultInPercentage >= 0 && resultInPercentage < 40) {
+    toECTSRate(resultInPercentage: number ): string {
+        if (resultInPercentage >= 0 && resultInPercentage < 35) {
             return "F";
-        } else if (resultInPercentage >= 40 && resultInPercentage < 60) {
+        } else if (resultInPercentage >= 35 && resultInPercentage < 60) {
             return "FX";
-        } else if (resultInPercentage >= 60 && resultInPercentage < 64) {
+        } else if (resultInPercentage >= 60 && resultInPercentage < 67) {
             return "E";
-        } else if (resultInPercentage >= 64 && resultInPercentage < 74) {
+        } else if (resultInPercentage >= 67 && resultInPercentage < 75) {
             return "D";
-        } else if (resultInPercentage >= 74 && resultInPercentage < 82) {
+        } else if (resultInPercentage >= 75 && resultInPercentage < 82) {
             return "C";
         } else if (resultInPercentage >= 82 && resultInPercentage < 90) {
             return "B";
