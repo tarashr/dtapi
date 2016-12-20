@@ -113,14 +113,20 @@ export class FacultyComponent implements OnInit {
             item.value = data.entityColumns[i + 1];
         });
         this.configEdit.id = data.entity_id;
+        let list = JSON.stringify(this.configEdit.list);
         this.commonService.openModalAddEdit(this.configEdit)
             .then((data: ConfigModalAddEdit) => {
-                    let editedFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
-                    this.crudService.updateData(this.entity, +data.id, editedFaculty)
-                        .subscribe(() => {
-                            this.commonService.openModalInfo(`Редагування пройшло успішно`);
-                            this.refreshData(data.action);
-                        }, this.errorAddEdit);
+                    let newList = JSON.stringify(data.list);
+                    if (list === newList) {
+                        this.commonService.openModalInfo(`Ви не внесли жодних змін для редагування.`);
+                    } else {
+                        let editedFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
+                        this.crudService.updateData(this.entity, +data.id, editedFaculty)
+                            .subscribe(() => {
+                                this.commonService.openModalInfo(`Редагування пройшло успішно`);
+                                this.refreshData(data.action);
+                            }, this.errorAddEdit);
+                    }
                 },
                 this.handleReject);
     };
