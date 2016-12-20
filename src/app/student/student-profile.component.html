@@ -173,8 +173,7 @@
                     Видалити студента
                 </button>
                 <button *ngIf="action" class="btn btn-default" type="submit" (click)="createNewStudent()" role="button"
-                        [disabled]="!(studentForm.valid && (group.value>0))">Зберегти дані
-                </button>
+                        [disabled]="!(studentForm.valid && (group.value>0))">Зберегти дані</button>
                 <button *ngIf="action" class="btn btn-default" type="submit" (click)="newStudent(); studentForm.reset()"
                         role="button">
                     Очистити форму
