@@ -115,14 +115,10 @@ export class GroupResultComponent implements OnInit {
     };
 
     activate(data: any): void {
-        switch (data.action) {
-            case "viewTestResult":
-                this._router.navigate(
-                    ["/admin/group/groupTestResult"],
-                    {queryParams: {testId: data.entity_id, groupId: this.groupId, subjectId: data.subject_id}}
-                );
-                break;
-        }
+        this._router.navigate(
+            ["/admin/group/groupTestResult"],
+            {queryParams: {testId: data.entity_id, groupId: this.groupId, subjectId: data.subject_id}}
+        );
     };
 
     private createTableConfig = (data: any) => {

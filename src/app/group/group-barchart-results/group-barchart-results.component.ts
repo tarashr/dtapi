@@ -63,5 +63,5 @@ export class GroupBarChartResultsComponent implements OnInit {
 
             }]
         };
-    }
+    };
 }

@@ -9,7 +9,22 @@
                        (input)="find(inputSearch.value)">
             </div>
         </form>
-        <form *ngIf="listOfOptions1 && listOfOptions2" class="navbar-form navbar-left">
+        <form class="navbar-form navbar-right">
+            <div class="form-group">
+                <a class="btn btn-default" (click)="modal(config)">Додати </a>
+                <select class="form-control" name="count"
+                        #select
+                        [title]="selectLimit"
+                        (input)="changeLimit(select.value)"
+                        [disabled]="inputSearch.value.length">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option [value]="entityDataLength">Всі</option>
+                </select>
+            </div>
+        </form>
+        <form *ngIf="listOfOptions1 || listOfOptions2" class="navbar-form form-select navbar-left">
             <div class="form-group">
                 <select *ngIf="listOfOptions1"
                         #select1
@@ -26,21 +41,6 @@
                         (input)="onSelect2(select2.value)">>
                     <option value="default">{{defaultOption2}}</option>
                     <option *ngFor="let item of listOfOptions2" [value]="item.id">{{item.name}}</option>
-                </select>
-            </div>
-        </form>
-        <form class="navbar-form navbar-right">
-            <div class="form-group">
-                <a class="btn btn-default" (click)="modal(config)">Додати </a>
-                <select class="form-control" name="count"
-                        #select
-                        [title]="selectLimit"
-                        (input)="changeLimit(select.value)"
-                        [disabled]="inputSearch.value.length">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option [value]="entityDataLength">Всі</option>
                 </select>
             </div>
         </form>

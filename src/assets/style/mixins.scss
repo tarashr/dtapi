@@ -9,3 +9,22 @@
   border-radius: 3px;
   background: $hint-bg-color;
 }
+
+@mixin transition($transition-options) {
+  -moz-transition: $transition-options;
+  -o-transition: $transition-options;
+  -webkit-transition: $transition-options;
+  transition: $transition-options;
+}
+
+@mixin placeholder($color) {
+  &:-moz-placeholder {
+    color: $color;
+  }
+  &:-ms-input-placeholder {
+    color: $color;
+  }
+  &::-webkit-input-placeholder {
+    color: $color;
+  }
+}

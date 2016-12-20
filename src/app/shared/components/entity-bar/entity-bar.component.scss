@@ -1,16 +1,38 @@
-nav.entity-bar {
-  .container-fluid {
-    form.navbar-left {
-      select {
-        width: 200px;
-        margin: 0 15px;
+@import "../../../../assets/style/constant";
+
+
+
+form.navbar-left {
+  select {
+    width: 200px;
+    &:first-child {
+      margin-right: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 948px) {
+  form.navbar-left {
+    select {
+      width: 48%;
+      &:first-child {
+        margin-right: 3%;
       }
     }
   }
 }
 
+
 @media screen and (max-width: 767px) {
   .entity-bar {
+    .form-select {
+      margin: 0;
+      padding: 0 0 5px 0;
+      select {
+        width: 99%;
+        margin: 5px;
+      }
+    }
     .navbar-text, form.navbar-left {
       display: inline-block;
     }

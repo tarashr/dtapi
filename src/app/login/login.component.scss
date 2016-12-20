@@ -1,3 +1,5 @@
+@import "../../assets/style/mixins.scss";
+
 .login-container {
     width: 100%;
     height: 100%;
@@ -10,7 +12,7 @@
     background: url("./assets/bg.jpg") center no-repeat;
     background-size: cover;
     h1 {
-        font-size: 450%;
+        font-size: 400%;
     }
     h3 {
         font-size: x-large;
@@ -32,22 +34,10 @@
     color: #212d3f;
     border-bottom: 1px dotted rgba(250, 250, 250, 0.4);
     box-sizing: border-box;
-    -moz-transition: background-color 0.5s ease-in-out;
-    -o-transition: background-color 0.5s ease-in-out;
-    -webkit-transition: background-color 0.5s ease-in-out;
-    transition: background-color 0.5s ease-in-out;
-    &:-moz-placeholder {
-        color: #407678;
-    }
-    &:-ms-input-placeholder {
-        color: #407678;
-    }
-    &::-webkit-input-placeholder {
-        color: #407678;
-    }
+    @include transition(background-color 0.5s ease-in-out);
+    @include placeholder(#407678);
     &:focus {
         background-color: #b2dfdb;
-        border: none;
     }
 }
 
@@ -59,5 +49,15 @@
     font-size: 1.5em;
     &:hover {
         background: #407678;
+    }
+    &:active {
+        background: #306668;
+        outline: none;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    h3 {
+        display: none;
     }
 }

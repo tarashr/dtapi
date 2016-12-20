@@ -7,8 +7,6 @@ import {Subscription} from "rxjs";
 import {CRUDService} from "../../shared/services/crud.service";
 import {GroupService} from "../../shared/services/group.service";
 import {TimeTable} from "../../shared/classes/timetable";
-import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
-import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {CommonService} from "../../shared/services/common.service";
 import {
     headersGroupTimeTable,
@@ -150,9 +148,7 @@ export class GroupTimetableComponent implements OnInit {
         this.subjects.forEach(item => {
             this.configAdd.select[0].selectItem.push(item.subject_name);
         });
-        const modalRefAdd = this.modalService.open(ModalAddEditComponent);
-        modalRefAdd.componentInstance.config = this.configAdd;
-        modalRefAdd.result
+        this.commonService.openModalAddEdit(this.configAdd)
             .then((data: any) => {
                 this.substituteSubjectsNamesWithId(data);
                 const newGroupTimeTable: TimeTable = new TimeTable(
@@ -201,9 +197,7 @@ export class GroupTimetableComponent implements OnInit {
         this.subjects.forEach(item => {
             this.configEdit.select[0].selectItem.push(item.subject_name);
         });
-        const modalRefEdit = this.modalService.open(ModalAddEditComponent);
-        modalRefEdit.componentInstance.config = this.configEdit;
-        modalRefEdit.result
+        this.commonService.openModalAddEdit(this.configEdit)
             .then((data: any) => {
                 this.substituteSubjectsNamesWithId(data);
                 const editedGroupTimeTable: TimeTable = new TimeTable(
@@ -227,12 +221,8 @@ export class GroupTimetableComponent implements OnInit {
     }
 
     deleteCase(data) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
-        this.modalInfoConfig.action = "confirm";
-        this.modalInfoConfig.title = "Видалення";
-        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
-        modalRefDel.componentInstance.config = this.modalInfoConfig;
-        modalRefDel.result
+        let message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[1]}?`, "confirm", "Видалення"];
+        this.commonService.openModalInfo(...message)
             .then(() => {
                 this.deleteGroupTimeTable(this.entity, data.entity_id);
             }, () => {
