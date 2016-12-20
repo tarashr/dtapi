@@ -18,6 +18,7 @@ import {
     actionsStudentAdmin,
     modalInfoConfig
 } from "../shared/constant";
+import {CommonService} from "../shared/services/common.service";
 
 @Component({
     templateUrl: "student.component.html",
@@ -57,7 +58,8 @@ export class StudentComponent implements OnInit {
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
                 private _router: Router,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private commonService: CommonService) {
         this.subscription = route.queryParams.subscribe(
             data => {
                 this.groupId = data["groupId"];

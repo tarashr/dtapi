@@ -85,5 +85,7 @@ export class CommonService {
         modalRefEdit.componentInstance.config = configAddEdit;
         return modalRefEdit.result;
     }
+
+
 }
 

@@ -21,6 +21,7 @@ import {
     actionsAdminUser,
     modalInfoConfig
 } from "../shared/constant";
+import {CommonService} from "../shared/services/common.service";
 
 
 @Component({
@@ -56,7 +57,8 @@ export class AdminUserComponent implements OnInit {
     public findEntity = findEntity;
 
     constructor(private crudService: CRUDService,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private commonService: CommonService) {
     };
 
     ngOnInit(): void {

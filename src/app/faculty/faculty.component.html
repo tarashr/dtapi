@@ -9,6 +9,10 @@
             (searchRun)="findEntity($event)"
             (selectRun)="changeLimit($event)">
     </entity-bar>
+    <div *ngIf="!loader && !entityData.length" class="text-center">
+        За даними критеріями факультетів не знайдено
+    </div>
+    <dt-loader *ngIf="loader"></dt-loader>
     <dt-table *ngIf="entityData.length"
               [page]="page"
               [limit]="limit"

@@ -9,7 +9,6 @@ import {
     ConfigModalInfo
 } from "../shared/classes";
 
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {CRUDService} from "../shared/services/crud.service.ts";
 import {
     configAddFaculty, configEditFaculty, modalInfoConfig,
@@ -35,21 +34,18 @@ export class FacultyComponent implements OnInit {
     public paginationSize: number = maxSize;
     public headers: ConfigTableHeader[] = headersFaculty;
     public actions: ConfigTableAction[] = actionsFaculty;
-
-    // constants for view
     public addTitle: string = addTitle;
     public searchTitle: string = searchTitle;
     public entityTitle: string = entityTitle;
     public selectLimitTitle: string = selectLimitTitle;
-    //
-
-    public entityData: any[] = [];
+    public entityData: ConfigTableData[] = [];
     public entityDataLength: number;
     public entity: string = "faculty";
     public limit: number = 5;
     public search: string = "";
     public page: number = 1;
     public offset: number = 0;
+    public loader: boolean = true;
 
     constructor(private crudService: CRUDService,
                 private _router: Router,

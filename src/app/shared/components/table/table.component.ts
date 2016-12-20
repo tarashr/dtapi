@@ -1,11 +1,11 @@
-import {Component, Input, Output, EventEmitter, OnInit} from "@angular/core";
+import {Component, Input, Output, EventEmitter} from "@angular/core";
 
 @Component({
     selector: "dt-table",
     templateUrl: "table.component.html",
     styleUrls: ["table.component.scss"]
 })
-export class TableComponent implements OnInit {
+export class TableComponent {
 
     @Input() tableData: any;
     @Input() headers: any;
@@ -13,12 +13,8 @@ export class TableComponent implements OnInit {
     @Input() page: number;
     @Input() limit: number;
     @Output() activate = new EventEmitter();
-    public isImage: boolean = false;
 
     constructor() {
-    }
-
-    ngOnInit() {
     }
 
     run(entityData: any, action: string) {
