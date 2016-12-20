@@ -139,9 +139,9 @@ export class FacultyComponent implements OnInit {
         if (error === "400 - Bad Request") {
             message = `Факультет з такою назвою вже існує`;
         } else {
-            message = "Невідома помилка! Зверніться до адміністратора."
+            message = "Невідома помилка! Зверніться до адміністратора.";
         }
-        this.commonService.openModalInfo(message)
+        this.commonService.openModalInfo(message);
     };
 
     handleReject = () => {

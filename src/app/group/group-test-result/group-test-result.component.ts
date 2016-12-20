@@ -177,7 +177,7 @@ export class GroupTestResultComponent implements OnInit {
 
     changeGraphLable(): string {
         return (this.showGraph) ? "Список" : "Графіки";
-    }
+    };
 
     Print(): void {
         window.print();

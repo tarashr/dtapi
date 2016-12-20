@@ -6,8 +6,6 @@ import {Subscription} from "rxjs";
 import {Group} from "../shared/classes/group";
 import {Faculty} from "../shared/classes/faculty";
 import {Speciality} from "../shared/classes/speciality";
-import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
-import {ModalAddEditComponent} from "../shared/components/addeditmodal/modal-add-edit.component";
 import {CRUDService} from "../shared/services/crud.service.ts";
 import {CommonService} from "../shared/services/common.service";
 import {
@@ -85,7 +83,7 @@ export class GroupComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.getFacultiesList();
-    }
+    };
 
     getFacultiesList() {
         this.crudService.getRecords(this.facultyEntity)
@@ -127,7 +125,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         } else {
             this.getCountRecords();
         }
-    }
+    };
 
     getRecordsRange() {
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
@@ -195,7 +193,7 @@ export class GroupComponent implements OnInit, OnDestroy {
             }
         }
         this.getSpecialityName();
-    }
+    };
 
     getSpecialityName(): void {
         for (let i in this.entityDataWithNames) {
@@ -206,7 +204,7 @@ export class GroupComponent implements OnInit, OnDestroy {
             }
         }
         this.createTableConfig(this.entityDataWithNames);
-    }
+    };
 
 
     findEntity(searchTerm: string) {
@@ -284,7 +282,7 @@ export class GroupComponent implements OnInit, OnDestroy {
                 this.deleteCase(data);
                 break;
         }
-    }
+    };
 
     substituteFacultiesNamesWithId(data) {
         this.facultiesNamesIDs.forEach((item) => {
@@ -292,7 +290,7 @@ export class GroupComponent implements OnInit, OnDestroy {
                 data.select[0].selected = item.id;
             }
         });
-    }
+    };
 
     substituteSpecialitiesNamesWithId(data) {
         this.specialitiesNamesIDs.forEach((item) => {
@@ -300,7 +298,7 @@ export class GroupComponent implements OnInit, OnDestroy {
                 data.select[1].selected = item.id;
             }
         });
-    }
+    };
 
     createCase() {
         this.configAdd.list[0].value = "";
@@ -312,9 +310,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         this.configAdd.select[1].selectItem = this.specialitiesNamesIDs.map(item => {
             return item.name;
         });
-        const modalRefAdd = this.modalService.open(ModalAddEditComponent);
-        modalRefAdd.componentInstance.config = this.configAdd;
-        modalRefAdd.result
+        this.commonService.openModalAddEdit(this.configAdd)
             .then((data: any) => {
                 this.substituteSpecialitiesNamesWithId(data);
                 this.substituteFacultiesNamesWithId(data);
@@ -344,9 +340,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         this.configEdit.select[1].selectItem = this.specialitiesNamesIDs.map(item => {
             return item.name;
         });
-        const modalRefEdit = this.modalService.open(ModalAddEditComponent);
-        modalRefEdit.componentInstance.config = this.configEdit;
-        modalRefEdit.result
+        this.commonService.openModalAddEdit(this.configEdit)
             .then((data: any) => {
                 this.substituteSpecialitiesNamesWithId(data);
                 this.substituteFacultiesNamesWithId(data);
@@ -363,21 +357,17 @@ export class GroupComponent implements OnInit, OnDestroy {
             }, () => {
                 return;
             });
-    }
+    };
 
     deleteCase(data: any) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${data.entityColumns[1]}?`;
-        this.modalInfoConfig.action = "confirm";
-        this.modalInfoConfig.title = "Видалення";
-        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
-        modalRefDel.componentInstance.config = this.modalInfoConfig;
-        modalRefDel.result
+        let message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[1]}?`, "confirm", "Видалення"];
+        this.commonService.openModalInfo(...message)
             .then(() => {
                 this.delRecord(this.entity, data.entity_id);
             }, () => {
                 return;
             });
-    }
+    };
 
     refreshData(action: string) {
         if (this.specialityId) {
@@ -409,6 +399,6 @@ export class GroupComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
-    }
+    };
 }
 

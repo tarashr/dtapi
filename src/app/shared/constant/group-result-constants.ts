@@ -9,7 +9,6 @@ export const headersGroupResult = [
 export const actionsGroupResult = [
     {
         title: "Переглянути результати тесту",
-        action: "viewTestResult",
         glyphicon: "glyphicon glyphicon-eye-open",
         btnClassName: "btn btn-default btn-sm"
     }
