@@ -1,13 +1,13 @@
-import {Component, ViewChild, OnInit, ElementRef, ViewEncapsulation, Output, EventEmitter,} from "@angular/core";
+import {Component, ViewChild, OnInit, ElementRef, Output, EventEmitter} from "@angular/core";
 import {Location} from "@angular/common";
 import {ActivatedRoute, Params} from "@angular/router";
 import {Group, Faculty, Student, EntityManagerBody} from "../shared/classes";
 import {CRUDService} from "../shared/services/crud.service";
-import {Observable, Subscription} from "rxjs/Rx";
+import {Observable} from "rxjs/Rx";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule, Form} from "@angular/forms";
 import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
-import {ImageCropperComponent, CropperSettings, Bounds} from 'ng2-img-cropper';
+import {ImageCropperComponent, CropperSettings} from 'ng2-img-cropper';
 import {ModalImageCropperComponent} from "../shared/components/img-cropper/image-cropper.component";
 
 import {
@@ -68,27 +68,6 @@ export class StudentProfileComponent implements OnInit {
         this.cropperSettings = new CropperSettings();
         this.cropperSettings.noFileInput = true;
         this.data = {};
-
-        /*this.name = 'Angular2';
-        this.cropperSettings1 = new CropperSettings();
-        this.cropperSettings1.width = 200;
-        this.cropperSettings1.height = 200;
-
-        this.cropperSettings1.croppedWidth = 200;
-        this.cropperSettings1.croppedHeight = 200;
-
-        // this.cropperSettings1.canvasWidth = 500;
-        // this.cropperSettings1.canvasHeight = 300;
-
-        this.cropperSettings1.minWidth = 100;
-        this.cropperSettings1.minHeight = 100;
-
-        this.cropperSettings1.rounded = false;
-
-        this.cropperSettings1.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
-        this.cropperSettings1.cropperDrawSettings.strokeWidth = 2;
-
-        this.data1 = {};*/
     }
 
     ngOnInit() {
@@ -307,7 +286,7 @@ export class StudentProfileComponent implements OnInit {
                 });
         };
 
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати ${this.student.student_surname} ${this.student.student_name} ${this.student.student_fname}?`;
+        this.modalInfoConfig.infoString = `Ви дійсно хочете видати профіль студента: ${this.student.student_surname} ${this.student.student_name} ${this.student.student_fname}?`;
         this.modalInfoConfig.action = "confirm";
         this.modalInfoConfig.title = "Видалення";
         const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
@@ -333,9 +312,6 @@ export class StudentProfileComponent implements OnInit {
             }, () => {
                 return;
             });
-
-        // this.studentPhoto.nativeElement.src = "assets/profile.png";
-
     }
 
     modalOpen(){

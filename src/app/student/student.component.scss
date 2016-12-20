@@ -1,28 +1,34 @@
+@import "../../assets/style/variables";
+@import "../../assets/style/constant";
+
+$light-grey-border: 1px solid #e7e7e7;
+$standard-offset: 10px 0;
+$standard-btn-radius: 4px;
+$student-field-offset: 10px;
+
 .student-container {
     max-width: 1024px;
-    margin: 0 auto 0 auto;
-    padding: 10px 10px 0 10px;
-    min-width: 412px;
+    margin: 0 auto;
+    padding: $student-field-offset;
 }
 
 .student-profile-title{
     font-size: 150%;
-    padding: 10px 0 10px 0;
-    border: 1px solid #e7e7e7;
-    border-radius: 4px;
+    padding: $student-field-offset;
+    border: $light-grey-border;
+    border-radius: $standard-btn-radius;
     margin-bottom: 15px;
-    background-color: #F8F8F8;
+    background-color: $grey50;
     text-align: center;
 }
 
 .student-datas{
-    border: 1px solid #e7e7e7;
-    border-radius: 4px;
-    margin: 15px 0 15px 0;
-    padding: 10px 0 10px 0;
-    background-color: #F8F8F8;
+    border: $light-grey-border;
+    border-radius: $standard-btn-radius;
+    margin: 15px 0;
+    padding: $standard-offset;
+    background-color: $grey50;
     display: inline-block;
-    width: 100%;
 }
 
 .student-foto{
@@ -34,40 +40,38 @@
     display: inline-block;
     float:	left;
     text-align:right;
-    padding: 10px;
+    padding: $student-field-offset;
 }
 
 .student-data2{
     display: inline-block;
     float:	left;
     text-align:right;
-    padding: 10px;
+    padding: $student-field-offset;
 }
 
 .input-student-data {
-    margin: 10px 0 10px 0;
+    margin: $standard-offset;
 }
 
 .button-create-edit {
     margin: auto;
     text-align: center;
-    width: 100%;
-    clear:both;
+    clear: both;
 }
 
 .position-left {
     float: right;
-    margin-right: 10px;
+    margin-right: $student-field-offset;
 }
 
 .select-group {
-    clear:both;
+    clear: both;
     padding: 2px;
     height: 24px;
-    width: 50%;
 }
 
-div.student-datas input{
+div.student-datas input, .select-group, .data-field{
     width: 50%;
 }
 
@@ -76,11 +80,10 @@ div.input-foto input{
 }
 
 .data-field{
-    width: 50%;
     display: inline-block;
     float: right;
     text-align: left;
-    margin: 10px 0 10px 0;
+    margin: $standard-offset;
     min-height: 22px;
 }
 
@@ -94,15 +97,15 @@ div.input-foto input{
     width: 20px;
     position: relative;
     right: 5px;
-    color: #000000;
-    margin: 10px 0 10px 0;
+    color: $black;
+    margin: $standard-offset;
 }
 
 label {
     display: block;
-    float:left;
+    float: left;
     clear: right;
-    margin: 10px 0 10px 0;
+    margin: $standard-offset;
 }
 
 .hint {
@@ -113,26 +116,26 @@ label {
     min-width: 131px;
     z-index: 10;
     padding: 5px;
-    color: #777;;
-    border: 1px solid #e77e7e;
+    color: $main-bg-color;
+    border: $hint-border;
     border-radius: 3px;
-    background: #ffeff2;
+    background: #ffeffe;
 }
 
 .hint::after {
     content: "";
     position: absolute;
     top: 100%;
-    left: 50px;
+    left: 40%;
     margin-left: -5px;
     border-width: 7px;
     border-style: solid;
-    border-color: #777 transparent transparent transparent;
+    border-color: $main-bg-color transparent transparent transparent;
 }
 
 .data-field-enter {
     position: relative;
-    margin: 10px 0;
+    margin: $standard-offset;
 }
 
 .emergy-text {
@@ -140,26 +143,23 @@ label {
 }
 
 .student-ability{
-    padding: 10px 0 10px 0;
-    border: 1px solid #e7e7e7;
-    border-radius: 4px;
+    padding: $standard-offset;
+    border: $light-grey-border;
+    border-radius: $standard-btn-radius;
     margin-bottom: 15px;
-    background-color: #F8F8F8;
+    background-color: $grey50;
 }
 
-.img-responsive{
-    width:100%;
-}
-
-.remove-photo {
+.img-responsive, .remove-photo, .button-download-photo, .button-create-edit, .student-datas  {
     width: 100%;
 }
 
 .button-download-photo{
-     width: 100%;
-     margin: 10px 0;
+     margin: $standard-offset;
  }
 
-//.data-field-enter-right{
-//    margin-right: 0;
-//}
+.warning-message{
+    display: block;
+    margin: $student-field-offset;
+    text-align: right;
+}
