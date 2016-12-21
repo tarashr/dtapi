@@ -56,23 +56,11 @@ export class AdminUserComponent implements OnInit {
                 private commonService: CommonService) {
     };
 
-    ngOnInit(): void {
+    ngOnInit() {
         this.getCountRecords();
     };
 
-    private createTableConfig = (data: any) => {
-        let numberOfOrder: number;
-        this.entityData = data.map((item, i ) => {
-                numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-                const adminUser: any = {};
-                adminUser.entity_id = item.id;
-                adminUser.oldPassword = item.password;
-                adminUser.entityColumns = [numberOfOrder, item.username, item.email];
-                return adminUser;
-        });
-    };
-
-    activate(data: any) {
+    activate(data: any): void {
         switch (data.action) {
             case "create":
                 this.createCase();
@@ -86,7 +74,7 @@ export class AdminUserComponent implements OnInit {
         }
     };
 
-    createCase(userToChange?: User) {
+    createCase(userToChange?: User): void {
         this.configAdd.list.forEach((item) => {
             item.value = "";
         });
@@ -125,7 +113,7 @@ export class AdminUserComponent implements OnInit {
             });
     };
 
-    editCase(data: any) {
+    editCase(data: any): void {
         const editData = data;
         this.configEdit.list.forEach((item, i) => {
             item.value = data.entityColumns[i + 1];
@@ -158,7 +146,7 @@ export class AdminUserComponent implements OnInit {
             });
     };
 
-    deleteCase(data: any) {
+    deleteCase(data: any): void {
         let message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[1]}?`, "confirm", "Попередження!"];
         this.commonService.openModalInfo(...message)
             .then(() => {
@@ -166,5 +154,17 @@ export class AdminUserComponent implements OnInit {
             }, () => {
                 return;
             });
+    };
+
+    private createTableConfig = (data: any) => {
+        let numberOfOrder: number;
+        this.entityData = data.map((item, i ) => {
+            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
+            const adminUser: any = {};
+            adminUser.entity_id = item.id;
+            adminUser.oldPassword = item.password;
+            adminUser.entityColumns = [numberOfOrder, item.username, item.email];
+            return adminUser;
+        });
     };
 }

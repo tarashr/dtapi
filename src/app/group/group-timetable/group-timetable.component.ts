@@ -18,8 +18,6 @@ import {
     successEventModal
 } from "../../shared/constant";
 
-
-
 @Component({
     templateUrl: "group-timetable.component.html"
 })
@@ -65,7 +63,7 @@ export class GroupTimetableComponent implements OnInit {
         this.getRecords();
     };
 
-    createTitle() {
+    createTitle(): void {
         this.crudService.getRecordById(this.groupEntity, this.groupId)
             .subscribe(
                 data => {
@@ -76,7 +74,7 @@ export class GroupTimetableComponent implements OnInit {
             );
     };
 
-    getRecords() {
+    getRecords(): void {
         this.crudService.getRecords(this.subjectEntity)
             .subscribe(
                 data => {
@@ -87,7 +85,7 @@ export class GroupTimetableComponent implements OnInit {
             );
     };
 
-    getGroupTimeTables() {
+    getGroupTimeTables(): void {
         this.groupService.getTimeTablesForGroup(this.groupId)
             .subscribe(
                 data => {
@@ -118,7 +116,7 @@ export class GroupTimetableComponent implements OnInit {
             );
     };
 
-    activate(data: any) {
+    activate(data: any): void {
         switch (data.action) {
             case "edit":
                 this.editCase(data);
@@ -132,7 +130,7 @@ export class GroupTimetableComponent implements OnInit {
         }
     };
 
-    substituteSubjectsNamesWithId(data) {
+    substituteSubjectsNamesWithId(data: any): void {
         this.subjects.forEach((item) => {
             if (item.subject_name === data.select[0].selected) {
                 data.select[0].selected = item.subject_id;
@@ -140,7 +138,7 @@ export class GroupTimetableComponent implements OnInit {
         });
     };
 
-    createCase() {
+    createCase(): void {
         this.configAdd.list.forEach((item) => {
             item.value = "";
         });
@@ -170,7 +168,7 @@ export class GroupTimetableComponent implements OnInit {
             });
     };
 
-    editCase(data) {
+    editCase(data: any): void {
         let nDate = new Date(data.entityColumns[2]);
         const startDate = {
             "year": nDate.getFullYear(),
@@ -227,7 +225,7 @@ export class GroupTimetableComponent implements OnInit {
             });
     }
 
-    deleteCase(data) {
+    deleteCase(data: any): void {
         let message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[1]}?`, "confirm", "Видалення"];
         this.commonService.openModalInfo(...message)
             .then(() => {

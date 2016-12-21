@@ -24,7 +24,7 @@ export class GroupPieChartResultsComponent implements OnInit {
         this.createPieChart(pieChartData);
     }
 
-    createPieChart(pieChartData) {
+    createPieChart(pieChartData): void {
         this.options = {
             chart: {
                 plotBackgroundColor: null,

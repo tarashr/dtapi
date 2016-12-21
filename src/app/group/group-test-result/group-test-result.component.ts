@@ -56,7 +56,7 @@ export class GroupTestResultComponent implements OnInit {
         this.getSubjectName();
     };
 
-    getGroupName() {
+    getGroupName(): void {
         this.crudService.getRecordById(this.groupEntity, this.groupId)
             .subscribe(
                 data => {
@@ -66,7 +66,7 @@ export class GroupTestResultComponent implements OnInit {
             );
     };
 
-    getTestName() {
+    getTestName(): void {
         this.crudService.getRecordById(this.testEntity, this.testId)
             .subscribe(
                 data => {
@@ -76,7 +76,7 @@ export class GroupTestResultComponent implements OnInit {
             );
     };
 
-    getSubjectName() {
+    getSubjectName(): void {
         this.crudService.getRecordById(this.subjectEntity, this.subjectId)
             .subscribe(
                 data => {
@@ -158,7 +158,7 @@ export class GroupTestResultComponent implements OnInit {
         }
     };
 
-    createChartData() {
+    createChartData(): void {
         // Data for barChart
         const data: any = {};
         data.series = this.entityDataWithNames.map(item => {
@@ -173,7 +173,7 @@ export class GroupTestResultComponent implements OnInit {
         this.pieChartData = this.entityDataWithNames.map(item => {
             return item.resultNational;
         });
-    }
+    };
 
     changeGraphLable(): string {
         return (this.showGraph) ? "Список" : "Графіки";

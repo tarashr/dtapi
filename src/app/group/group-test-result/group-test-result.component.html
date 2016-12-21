@@ -6,12 +6,10 @@
             </div>
             <form class="navbar-form navbar-right">
                 <button *ngIf="!showGraph" type="button" class="btn btn-default" (click)="Print()">Друк</button>
-                <button type="button" class="btn btn-default"
-                        (click)="showGraph = !showGraph">{{changeGraphLable()}}
+                <button type="button" class="btn btn-default" (click)="showGraph = !showGraph">
+                    {{changeGraphLable()}}
                 </button>
-                <button type="button" class="btn btn-secondary"
-                        (click)="goBack()">Назад
-                </button>
+                <button type="button" class="btn btn-secondary" (click)="goBack()">Назад</button>
             </form>
         </div>
     </nav>

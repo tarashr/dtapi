@@ -2,6 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 
 import {Speciality} from "../shared/classes/speciality";
+import {ConfigTableData} from "../shared/classes/configs/config-table-data";
 import {CRUDService} from "../shared/services/crud.service";
 import {CommonService} from "../shared/services/common.service";
 import {
@@ -20,7 +21,6 @@ import {
     actionsSpeciality,
     modalInfoConfig
 } from "../shared/constant";
-import {ConfigTableData} from "../shared/classes/configs/config-table-data";
 
 @Component({
     templateUrl: "speciality.component.html"
@@ -63,18 +63,7 @@ export class SpecialityComponent implements OnInit {
         this.getCountRecords();
     };
 
-    private createTableConfig = (data: any ) => {
-        let numberOfOrder: number;
-        this.entityData = data.map((item, i) => {
-            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-            const speciality: any = {};
-            speciality.entity_id = item.speciality_id;
-            speciality.entityColumns = [numberOfOrder, item.speciality_code, item.speciality_name];
-            return speciality;
-        });
-    };
-
-    activate(data: ConfigTableData) {
+    activate(data: ConfigTableData): void {
         switch (data.action) {
             case "viewGroup":
                 this._router.navigate(
@@ -94,7 +83,7 @@ export class SpecialityComponent implements OnInit {
     };
 
 
-    createCase() {
+    createCase(): void {
         this.configAdd.list.forEach((item) => {
             item.value = "";
         });
@@ -111,7 +100,7 @@ export class SpecialityComponent implements OnInit {
             });
     };
 
-    editCase(data: ConfigTableData) {
+    editCase(data: ConfigTableData): void {
         this.configEdit.list.forEach((item, i) => {
             item.value = data.entityColumns[i + 1];
         });
@@ -140,7 +129,7 @@ export class SpecialityComponent implements OnInit {
             });
     };
 
-    deleteCase(data: ConfigTableData) {
+    deleteCase(data: ConfigTableData): void {
         const message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[2]}?`, "confirm", "Видалення"];
         this.commonService.openModalInfo(...message)
             .then(() => {
@@ -148,6 +137,17 @@ export class SpecialityComponent implements OnInit {
             }, () => {
                 return;
             });
+    };
+
+    private createTableConfig = (data: any ) => {
+        let numberOfOrder: number;
+        this.entityData = data.map((item, i) => {
+            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
+            const speciality: any = {};
+            speciality.entity_id = item.speciality_id;
+            speciality.entityColumns = [numberOfOrder, item.speciality_code, item.speciality_name];
+            return speciality;
+        });
     };
 
     errorAddEdit = (error) => {

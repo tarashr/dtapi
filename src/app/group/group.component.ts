@@ -83,7 +83,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         this.getFacultiesList();
     };
 
-    getFacultiesList() {
+    getFacultiesList(): void {
         this.crudService.getRecords(this.facultyEntity)
             .subscribe(
                 data => {
@@ -97,7 +97,7 @@ export class GroupComponent implements OnInit, OnDestroy {
                 error => console.log("error: ", error));
     };
 
-    getSpecialityList() {
+    getSpecialityList(): void {
         this.crudService.getRecords(this.specialityEntity)
             .subscribe(
                 data => {
@@ -111,7 +111,7 @@ export class GroupComponent implements OnInit, OnDestroy {
                 error => console.log("error: ", error));
     };
 
-    formTable() {
+    formTable(): void {
         if (this.specialityId) {
             this.isSelectedBy = true;
             this.entityTitle = `Групи спеціальності: ${this.specialityName}`;
@@ -125,7 +125,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         }
     };
 
-    getRecordsRange() {
+    getRecordsRange(): void {
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                 data => {
@@ -140,7 +140,7 @@ export class GroupComponent implements OnInit, OnDestroy {
                 error => console.log("error: ", error));
     };
 
-    getGroupsByFaculty(data: any) {
+    getGroupsByFaculty(data: any): void {
         if (data === "default") {
             this.sortHide = false;
             this.getRecordsRange();
@@ -161,7 +161,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         }
     };
 
-    getGroupsBySpeciality(data: any) {
+    getGroupsBySpeciality(data: any): void {
         if (data === "default") {
             this.sortHide = false;
             this.getRecordsRange();
@@ -205,7 +205,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     };
 
 
-    findEntity(searchTerm: string) {
+    findEntity(searchTerm: string): void {
         this.search = searchTerm;
 
         if (this.search.length === 0) {
@@ -250,7 +250,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         });
     };
 
-    activate(data: any) {
+    activate(data: any): void {
         switch (data.action) {
             case "viewResult":
                 this._router.navigate(
@@ -282,23 +282,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         }
     };
 
-    substituteFacultiesNamesWithId(data) {
-        this.facultiesNamesIDs.forEach((item) => {
-            if (item.name === data.select[0].selected) {
-                data.select[0].selected = item.id;
-            }
-        });
-    };
-
-    substituteSpecialitiesNamesWithId(data) {
-        this.specialitiesNamesIDs.forEach((item) => {
-            if (item.name === data.select[1].selected) {
-                data.select[1].selected = item.id;
-            }
-        });
-    };
-
-    createCase() {
+    createCase(): void {
         this.configAdd.list[0].value = "";
         this.configAdd.select[0].selected = "";
         this.configAdd.select[0].selectItem = this.facultiesNamesIDs.map(item => {
@@ -325,7 +309,7 @@ export class GroupComponent implements OnInit, OnDestroy {
             });
     };
 
-    editCase(data: any) {
+    editCase(data: any): void {
         this.configEdit.list[0].value = data.entityColumns[1];
         this.configEdit.select[0].selected = data.entityColumns[2];
         this.configEdit.id = data.entity_id;
@@ -366,7 +350,7 @@ export class GroupComponent implements OnInit, OnDestroy {
             });
     };
 
-    deleteCase(data: any) {
+    deleteCase(data: any): void {
         let message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[1]}?`, "confirm", "Видалення"];
         this.commonService.openModalInfo(...message)
             .then(() => {
@@ -374,6 +358,22 @@ export class GroupComponent implements OnInit, OnDestroy {
             }, () => {
                 return;
             });
+    };
+
+    substituteFacultiesNamesWithId(data: any): void {
+        this.facultiesNamesIDs.forEach((item) => {
+            if (item.name === data.select[0].selected) {
+                data.select[0].selected = item.id;
+            }
+        });
+    };
+
+    substituteSpecialitiesNamesWithId(data: any): void {
+        this.specialitiesNamesIDs.forEach((item) => {
+            if (item.name === data.select[1].selected) {
+                data.select[1].selected = item.id;
+            }
+        });
     };
 
     refreshData(action: string) {
