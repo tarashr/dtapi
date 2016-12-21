@@ -199,8 +199,8 @@ export class TestPlayerComponent implements OnInit, OnDestroy, ComponentCanDeact
 
     getNewTestError = (error) => {
         let message: string = "Невідома помилка!";
-        let mistake: string = error.message ? error.message : error;
-        let resolve = {
+        const mistake: string = error.message ? error.message : error;
+        const resolve = {
             "test data are absent": () => {
                 message = "Відсутні дані для тесту";
             },

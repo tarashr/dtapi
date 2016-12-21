@@ -34,7 +34,7 @@ export class LoginService {
 
     private successRequest = (response: Response) => response.json();
 
-    private successLogin = (response: any) => {
+    private successLogin = (response: any): void => {
         const dTester: any = JSON.parse(localStorage.getItem("dTester"));
         if (dTester) {
             const userIdHash: string = this.commonService.cryptData(+response.id);
@@ -51,17 +51,17 @@ export class LoginService {
             sessionStorage.setItem("userRole", response.roles[1]);
             this._router.navigate(["/admin"]);
         }
-    }
+    };
 
-    private errorLogin = (error) => {
+    private errorLogin = (error): void => {
         if (error.json().response === "Invalid login or password") {
             this.commonService.openModalInfo(this.badLoginOrPasswordMessage);
         } else {
             this.commonService.openModalInfo(this.serverErrorMessage);
         }
-    }
+    };
 
-    private successLogout = (response: Response) => {
+    private successLogout = (response: Response): void => {
         if (response.status === 200) {
             sessionStorage.removeItem("userRole");
             sessionStorage.removeItem("userId");
@@ -69,7 +69,7 @@ export class LoginService {
         }
     };
 
-    private errorLogout = () => {
+    private errorLogout = (): void => {
         this.commonService.openModalInfo(...this.badLogoutMessage)
             .then(() => {
             }, () => {
@@ -77,9 +77,9 @@ export class LoginService {
                 sessionStorage.removeItem("userId");
                 this._router.navigate(["/login"]);
             });
-    }
+    };
 
-    login(user: User) {
+    login(user: User): void {
         this._http
             .post(this.loginUrl, JSON.stringify(user), {headers: this._headers})
             .map(this.successRequest)

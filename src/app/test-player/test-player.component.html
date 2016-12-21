@@ -42,17 +42,15 @@
                         </li>
                     </ul>
                     <p class="text-left">
-                        <button type="button" class="btn btn-primary" (click)="skipQuestion()"
-                                [disabled]="disableSkip">
-                            Пропустити
+                        <button type="button" class="btn btn-primary"
+                                (click)="skipQuestion()"
+                                [disabled]="disableSkip">Пропустити
                         </button>
-                        <button type="button" class="btn btn-success" (click)="answerQuestion()">
-                            Відповісти
+                        <button type="button" class="btn btn-success" (click)="answerQuestion()">Відповісти
                         </button>
                     </p>
                     <p class="text-right">
-                        <button type="button" class="btn btn-danger" (click)="finishTest()">
-                            Завершити тест
+                        <button type="button" class="btn btn-danger" (click)="finishTest()">Завершити тест
                         </button>
                     </p>
                 </div>

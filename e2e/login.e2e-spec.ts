@@ -13,10 +13,12 @@ describe("Login page", function () {
     it("should show modal window with wrong login or password message", () => {
         login.sendKeys("adm");
         password.sendKeys("dtapi_admin");
+        browser.sleep(1000);
         btn.click().then(() => {
             const message = element(by.css(".modal-body-info-confirm")).getText();
             expect(message).toBe("Неправильний логін або пароль");
             okBtn = element(by.css(".modal-footer button"));
+            browser.sleep(1000);
             okBtn.click();
         });
     });
@@ -26,6 +28,7 @@ describe("Login page", function () {
         login.sendKeys("admin");
         password.clear();
         password.sendKeys("dtapi_admin");
+        browser.sleep(1000);
         btn.click().then(() => {
             browser.getCurrentUrl().then((url) => {
                 expect(url.split("#")[1]).toBe("/admin/statistic");
@@ -35,6 +38,7 @@ describe("Login page", function () {
 
     it("should redirect to login page", () => {
         exitAdminBtn = element(by.css(".main-menu .navbar-right a"));
+        browser.sleep(1000);
         exitAdminBtn.click().then(() => {
             browser.getCurrentUrl().then((url) => {
                 expect(url.split("#")[1]).toBe("/login");
@@ -47,6 +51,7 @@ describe("Login page", function () {
         password.clear();
         login.sendKeys("student7");
         password.sendKeys("00000000");
+        browser.sleep(1000);
         btn.click().then(() => {
             browser.getCurrentUrl().then((url) => {
                 expect(url.split("#")[1]).toBe("/student/profile");
@@ -54,22 +59,21 @@ describe("Login page", function () {
         });
     });
 
-    it("should redirect to not found page", (done) => {
+    it("should redirect to not found page", () => {
         browser.get("/~pupkin/DTester/dist/#/admin").then(() => {
             browser.getCurrentUrl().then((url) => {
                 expect(url.split("#")[1]).toBe("/notfound");
-                done();
             });
         });
     });
 
 
-    it("should redirect to login page", (done) => {
+    it("should redirect to login page", () => {
+        browser.sleep(1000);
         backNotFoundBtn = element(by.css(".go-login"));
         backNotFoundBtn.click().then(() => {
             browser.getCurrentUrl().then((url) => {
                 expect(url.split("#")[1]).toBe("/login");
-                done();
             });
         });
     });
@@ -79,6 +83,7 @@ describe("Login page", function () {
         password.clear();
         login.sendKeys("student7");
         password.sendKeys("00000000");
+        browser.sleep(1000);
         btn.click().then(() => {
             browser.getCurrentUrl().then((url) => {
                 expect(url.split("#")[1]).toBe("/student/profile");
@@ -87,6 +92,7 @@ describe("Login page", function () {
     });
 
     it("should redirect to login page", () => {
+        browser.sleep(1000);
         exitStudentBtn = element(by.css(".text-center button"));
         exitStudentBtn.click().then(() => {
             browser.getCurrentUrl().then((url) => {
