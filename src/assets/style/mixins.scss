@@ -28,3 +28,8 @@
     color: $color;
   }
 }
+
+@mixin studentDataParts {
+  display: inline-block;
+  float: left;
+}

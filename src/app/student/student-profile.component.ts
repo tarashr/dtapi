@@ -20,7 +20,6 @@ import {patterns, delRecord} from "../shared/constant";
 
 export class StudentProfileComponent implements OnInit {
 
-    // name: string;
     public cropperData: any;
     public cropperSettings: CropperSettings;
 
@@ -48,12 +47,9 @@ export class StudentProfileComponent implements OnInit {
     public gradebookPattern: string = patterns.studentGradebook;
     public emailPattern: string = patterns.studentEmail;
 
-    // @Output() activate = new EventEmitter();
-
     @ViewChild("studentForm") studentForm: any;
     @ViewChild("studentPhoto") studentPhoto: ElementRef;
     @ViewChild('cropper', undefined) cropper: ImageCropperComponent;
-    // @ViewChild('croppedPhotoOut') croppedPhotoOut: string;
 
     constructor(private route: ActivatedRoute,
                 private crudService: CRUDService,
@@ -70,13 +66,13 @@ export class StudentProfileComponent implements OnInit {
             this.user_id = Number(params["id"]);
         });
         if (this.user_id) {
-            this.action = false;
+            this.action = false; // state: view/edit profile
             this.getData();
             this.getFacultyName();
         }
         else {
             this.statusView = false;
-            this.action = true;
+            this.action = true; // state: create new profile
             this.newStudent();
         }
     }
@@ -86,7 +82,7 @@ export class StudentProfileComponent implements OnInit {
     }
 
     newStudent() {
-        this.student = new Student();
+        this.student = new Student;
         this.studentPhoto.nativeElement.src = "assets/profile.png";
         this.getFacultyName();
     }
@@ -244,12 +240,7 @@ export class StudentProfileComponent implements OnInit {
     }
 
     showPassword() {
-        if (this.passwordStatusText === "password") {
-            this.passwordStatusText = "text";
-        }
-        else {
-            this.passwordStatusText = "password";
-        }
+        this.passwordStatusText === "password" ? this.passwordStatusText = "text" : this.passwordStatusText = "password";
     }
 
     editSaveStudentProfile() {

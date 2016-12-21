@@ -1,11 +1,5 @@
 @import "../../assets/style/variables";
-
-$light-grey-border: 1px solid #e7e7e7;
-$standard-offset: 10px 0;
-$standard-btn-radius: 4px;
-$student-field-offset: 10px;
-$black: #000000;
-$grey50: #f8f8f8;
+@import "../../assets/style/mixins";
 
 .student-container {
     max-width: 1024px;
@@ -33,21 +27,18 @@ $grey50: #f8f8f8;
 }
 
 .student-foto{
-    display: inline-block;
-    float: left;
+    @include studentDataParts;
 }
 
 .student-data1{
-    display: inline-block;
-    float:	left;
-    text-align:right;
+    @include studentDataParts;
+    text-align: right;
     padding: $student-field-offset;
 }
 
 .student-data2{
-    display: inline-block;
-    float:	left;
-    text-align:right;
+    @include studentDataParts;
+    text-align: right;
     padding: $student-field-offset;
 }
 
@@ -110,18 +101,13 @@ label {
 }
 
 .hint {
-    position: absolute;
+    @include base-hint;
     bottom: 40px;
     left: 40%;
     text-align: left;
     min-width: 131px;
-    z-index: 10;
-    padding: 5px;
-    color: $main-bg-color;
-    border: $hint-border;
-    border-radius: 3px;
-    background: #ffeffe;
 }
+
 
 .hint::after {
     content: "";
@@ -151,7 +137,7 @@ label {
     background-color: $grey50;
 }
 
-.img-responsive, .remove-photo, .button-download-photo, .button-create-edit, .student-datas  {
+.img-responsive, .remove-photo, .button-download-photo, .button-create-edit, .student-datas {
     width: 100%;
 }
 
