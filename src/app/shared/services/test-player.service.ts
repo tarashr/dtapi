@@ -37,7 +37,7 @@ export class TestPlayerService {
     private resetSessionDataUrl: string = resetSessionDataUrl;
     private countTestPassesByStudentUrl: string = countTestPassesByStudentUrl;
     private navButtonConstClassName: string = navButtonConstClassName;
-    private headersCheckSAnswer = new Headers({"content-type": "application/json"});
+    private headers = new Headers({"content-type": "application/json"});
     private modalParams: any = modalInfoParams;
 
     private testId: number;
@@ -79,7 +79,7 @@ export class TestPlayerService {
 
     checkSAnswer(body: any) {
         return this.http
-            .post(this.checkSAnswerUrl, JSON.stringify(body), {headers: this.headersCheckSAnswer})
+            .post(this.checkSAnswerUrl, JSON.stringify(body), {headers: this.headers})
             .map(this.successResponse)
             .catch(this.handleError);
     }
@@ -380,7 +380,7 @@ export class TestPlayerService {
 
     saveEndTime = (body: any) => {
         return this.http
-            .post(this.saveEndTimeUrl, JSON.stringify(body), {headers: this.headersCheckSAnswer})
+            .post(this.saveEndTimeUrl, JSON.stringify(body), {headers: this.headers})
             .map(this.successResponse)
             .catch(this.handleError);
     };

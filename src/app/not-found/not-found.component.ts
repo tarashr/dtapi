@@ -2,8 +2,7 @@ import {Component} from "@angular/core";
 import {Location} from "@angular/common";
 
 @Component({
-    templateUrl: "not-found.component.html",
-    styleUrls: ["not-found.component.scss"]
+    templateUrl: "not-found.component.html"
 })
 
 export class NotFoundComponent {

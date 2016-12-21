@@ -23,8 +23,7 @@ import {CommonService} from "../shared/services/common.service";
 
 
 @Component({
-    templateUrl: "faculty.component.html",
-    styleUrls: ["faculty.component.scss"]
+    templateUrl: "faculty.component.html"
 })
 export class FacultyComponent implements OnInit {
 
@@ -77,7 +76,7 @@ export class FacultyComponent implements OnInit {
     };
 
     activate(data: ConfigTableData) {
-        let run = {
+        const run = {
             group: this.groupCase,
             create: this.createCase,
             edit: this.editCase,
@@ -93,13 +92,13 @@ export class FacultyComponent implements OnInit {
             {queryParams: {facultyId: data.entity_id}});
     };
 
-    createCase = (data: ConfigTableData) => {
+    createCase = (data?: ConfigTableData) => {
         this.configAdd.list.forEach((item) => {
             item.value = "";
         });
         this.commonService.openModalAddEdit(this.configAdd)
             .then((data: ConfigModalAddEdit) => {
-                    let newFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
+                    const newFaculty: Faculty = new Faculty(data.list[0].value, data.list[1].value);
                     this.crudService.insertData(this.entity, newFaculty)
                         .subscribe(() => {
                             this.commonService.openModalInfo(`${data.list[0].value} успішно створено`);
@@ -114,17 +113,17 @@ export class FacultyComponent implements OnInit {
             item.value = data.entityColumns[i + 1];
         });
         this.configEdit.id = data.entity_id;
-        let list = JSON.stringify(this.configEdit.list);
+        const list = JSON.stringify(this.configEdit.list);
         this.commonService.openModalAddEdit(this.configEdit)
             .then((configData: ConfigModalAddEdit) => {
-                    let newList = JSON.stringify(configData.list);
+                    const newList = JSON.stringify(configData.list);
                     if (list === newList) {
                         this.commonService.openModalInfo(...nothingWasChange)
                             .then(()=> {
                                 this.editCase(data);
                             }, this.handleReject);
                     } else {
-                        let editedFaculty: Faculty = new Faculty(configData.list[0].value, configData.list[1].value);
+                        const editedFaculty: Faculty = new Faculty(configData.list[0].value, configData.list[1].value);
                         this.crudService.updateData(this.entity, +configData.id, editedFaculty)
                             .subscribe(() => {
                                 this.commonService.openModalInfo(`Редагування пройшло успішно`);
@@ -136,7 +135,7 @@ export class FacultyComponent implements OnInit {
     };
 
     deleteCase = (data: ConfigTableData) => {
-        let message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[1]}?`, "confirm", "Попередження!"];
+        const message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[1]}?`, "confirm", "Попередження!"];
         this.commonService.openModalInfo(...message)
             .then(() => {
                     this.delRecord(this.entity, +data.entity_id);

@@ -46,27 +46,27 @@ export class CommonService {
                 return this.leftPad(date.getSeconds());
             }
         };
-        let arr: string[] = format.split(/-|:|,|\.| /);
-        for (let i = 0; i < arr.length; i++) {
-            if (arr[i] === "") {
-                arr.splice(i, 1);
+        const timeElements: string[] = format.split(/-|:|,|\.| /);
+        for (let i = 0; i < timeElements.length; i++) {
+            if (timeElements[i] === "") {
+                timeElements.splice(i, 1);
                 i--;
             }
         }
-        const rightFormat: boolean = arr.every(elem => {
+        const rightFormat: boolean = timeElements.every(elem => {
             return !!createPartsOFTime[elem];
         });
         if (!rightFormat) {
             return "wrong format";
         }
-        let separators: string[] = [];
-        for (let i = 0; i < arr.length - 1; i++) {
-            let start = format.indexOf(arr[i]) + arr[i].length;
-            let end = format.indexOf(arr[i + 1]);
+        const separators: string[] = [];
+        for (let i = 0; i < timeElements.length - 1; i++) {
+            let start = format.indexOf(timeElements[i]) + timeElements[i].length;
+            let end = format.indexOf(timeElements[i + 1]);
             separators.push(format.slice(start, end));
         }
         let result: string = "";
-        arr.forEach((elem, i) => {
+        timeElements.forEach((elem, i) => {
             result += separators[i] ? createPartsOFTime[elem](date) + separators[i] : createPartsOFTime[elem](date);
         });
 

@@ -1,4 +1,4 @@
-import {CommonService} from "./common.service";
+import {CommonService} from "../app/shared/services/common.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 describe("CommonService isolated test", () => {
