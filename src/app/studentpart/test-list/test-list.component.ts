@@ -67,29 +67,54 @@ export class TestListComponent implements OnChanges {
                                 endDate: this.activeTimeTable[i].end_date,
                                 endTime: this.activeTimeTable[i].end_time
                             };
-                            if ((this.dateNow.date >= eventDateTime.startDate) &&
-                                (this.dateNow.date <= eventDateTime.endDate) &&
-                                (this.dateNow.time >= eventDateTime.startTime) &&
+                            if (
+								(
+								(this.dateNow.date === eventDateTime.startDate) &&
+								(this.dateNow.date === eventDateTime.endDate) &&
+								(this.dateNow.time >= eventDateTime.startTime) &&
                                 (this.dateNow.time <= eventDateTime.endTime)
+								)
+								||
+								(
+								(this.dateNow.date === eventDateTime.startDate) &&
+								(this.dateNow.date < eventDateTime.endDate) &&
+								(this.dateNow.time >= eventDateTime.startTime)
+								)
+								||
+								(
+								(this.dateNow.date > eventDateTime.startDate) &&
+								(this.dateNow.date === eventDateTime.endDate) &&
+                                (this.dateNow.time <= eventDateTime.endTime)
+								)
+								||
+								(
+								(this.dateNow.date > eventDateTime.startDate) &&
+								(this.dateNow.date < eventDateTime.endDate)
+								)
                             ) {
+								this._commonService.getRecordById("subject", this.activeTimeTable[i].subject_id)
+						.subscribe(subject => {
+						let newSubjectName = subject[0].subject_name;
+						
                                 this.getTestsForNow(
                                     this.activeTimeTable[i].subject_id,
-                                    eventDateTime
+                                    eventDateTime,
+									newSubjectName
                                 );
+						});
                             }
                         }
                     });
             });
     }
 
-    getTestsForNow(subId, eventDateTime) {
+    getTestsForNow(subId, eventDateTime, SubjectName) {
        
-        this._commonService.getRecordById("subject", subId)
-            .subscribe(subject => {
-                let newSubjectName = subject[0].subject_name;
+        
                 this._subjectService.getTestsBySubjectId("subject", +subId)
                     .subscribe(dataTests => {
                         this.activeTests = dataTests;
+					
                         for (let j = 0; j < this.activeTests.length; j++) {
 
                           if (this.activeTests[j].enabled === "1") {
@@ -99,11 +124,10 @@ export class TestListComponent implements OnChanges {
                                 .subscribe(dataTestPassed => {
                                     userAttepts = dataTestPassed.numberOfRecords;
                                        if (this.activeTests[j].attempts > userAttepts)
-									   {
-
+									  {
                                         this.entityData.push({
                                             entityColumns: [
-                                                newSubjectName + ": " +
+                                                SubjectName + ": " +
                                                 this.activeTests[j].test_name,
                                                 eventDateTime.startDate.replace(/(\d+)-(\d+)-(\d+)/, '$3-$2-$1') + " / " +
                                                 eventDateTime.startTime.substr(0, eventDateTime.startTime.length -3),
@@ -119,7 +143,7 @@ export class TestListComponent implements OnChanges {
                                     }
                                 
                         }
-                    });
+                   
             });
     }
 
