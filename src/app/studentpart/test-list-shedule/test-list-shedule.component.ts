@@ -37,10 +37,17 @@ export class TestListSheduleComponent implements OnInit {
             .subscribe(data => {
                     this.activeTimeTable = data;
                     for (let i = 0; i < this.activeTimeTable.length; i++) {
-                        if ((this.activeTimeTable[i].start_date >= startDay) &&
-                            (this.activeTimeTable[i].start_date <= endDay) && !(startDay === this.dateNow.date &&
-                            (this.activeTimeTable[i].start_time <= this.dateNow.time &&
-                            this.activeTimeTable[i].end_time >= this.dateNow.time))
+                        if (
+							(
+							(this.activeTimeTable[i].start_date >= startDay) &&
+                            (this.activeTimeTable[i].start_date <= endDay)
+							)
+							&& 
+							!(
+							(startDay === this.dateNow.date) &&
+                            (this.activeTimeTable[i].start_time <= this.dateNow.time) &&
+                            (this.activeTimeTable[i].end_time >= this.dateNow.time)
+							)
                         ) {
                             this._commonService.getRecordById("subject", this.activeTimeTable[i].subject_id)
                                 .subscribe(subject => {
