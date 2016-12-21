@@ -1,5 +1,4 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router, ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
 
@@ -37,7 +36,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     public searchTitle: string = "Введіть дані для пошуку";
     public entityTitle: string = "Групи";
     public selectLimit: string = "Виберіть кількість записів на сторінці";
-
+    public nothingWasChange: string[] = [`Ви не внесли жодних змін. Чи бажаєте повторити редагування?`, "confirm"];
     public entityData: any[] = [];
     private entityDataLength: number;
     public entityDataWithNames: Group[];
@@ -72,7 +71,6 @@ export class GroupComponent implements OnInit, OnDestroy {
     constructor(private crudService: CRUDService,
                 private _router: Router,
                 private route: ActivatedRoute,
-                private modalService: NgbModal,
                 private commonService: CommonService) {
         this.subscription = route.queryParams.subscribe(
             data => {
@@ -85,7 +83,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         this.getFacultiesList();
     };
 
-    getFacultiesList() {
+    getFacultiesList(): void {
         this.crudService.getRecords(this.facultyEntity)
             .subscribe(
                 data => {
@@ -99,7 +97,7 @@ export class GroupComponent implements OnInit, OnDestroy {
                 error => console.log("error: ", error));
     };
 
-    getSpecialityList() {
+    getSpecialityList(): void {
         this.crudService.getRecords(this.specialityEntity)
             .subscribe(
                 data => {
@@ -113,7 +111,7 @@ export class GroupComponent implements OnInit, OnDestroy {
                 error => console.log("error: ", error));
     };
 
-    formTable() {
+    formTable(): void {
         if (this.specialityId) {
             this.isSelectedBy = true;
             this.entityTitle = `Групи спеціальності: ${this.specialityName}`;
@@ -127,7 +125,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         }
     };
 
-    getRecordsRange() {
+    getRecordsRange(): void {
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
                 data => {
@@ -142,7 +140,7 @@ export class GroupComponent implements OnInit, OnDestroy {
                 error => console.log("error: ", error));
     };
 
-    getGroupsByFaculty(data: any) {
+    getGroupsByFaculty(data: any): void {
         if (data === "default") {
             this.sortHide = false;
             this.getRecordsRange();
@@ -163,7 +161,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         }
     };
 
-    getGroupsBySpeciality(data: any) {
+    getGroupsBySpeciality(data: any): void {
         if (data === "default") {
             this.sortHide = false;
             this.getRecordsRange();
@@ -207,7 +205,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     };
 
 
-    findEntity(searchTerm: string) {
+    findEntity(searchTerm: string): void {
         this.search = searchTerm;
 
         if (this.search.length === 0) {
@@ -252,7 +250,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         });
     };
 
-    activate(data: any) {
+    activate(data: any): void {
         switch (data.action) {
             case "viewResult":
                 this._router.navigate(
@@ -284,23 +282,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         }
     };
 
-    substituteFacultiesNamesWithId(data) {
-        this.facultiesNamesIDs.forEach((item) => {
-            if (item.name === data.select[0].selected) {
-                data.select[0].selected = item.id;
-            }
-        });
-    };
-
-    substituteSpecialitiesNamesWithId(data) {
-        this.specialitiesNamesIDs.forEach((item) => {
-            if (item.name === data.select[1].selected) {
-                data.select[1].selected = item.id;
-            }
-        });
-    };
-
-    createCase() {
+    createCase(): void {
         this.configAdd.list[0].value = "";
         this.configAdd.select[0].selected = "";
         this.configAdd.select[0].selectItem = this.facultiesNamesIDs.map(item => {
@@ -321,15 +303,13 @@ export class GroupComponent implements OnInit, OnDestroy {
                     .subscribe(response => {
                         this.commonService.openModalInfo(`${data.list[0].value} успішно створено`);
                         this.refreshData(data.action);
-                    }, error => {
-                        this.commonService.openModalInfo("Група з такою назвою вже існує");
-                    });
+                    }, this.errorAddEdit);
             }, () => {
                 return;
             });
     };
 
-    editCase(data: any) {
+    editCase(data: any): void {
         this.configEdit.list[0].value = data.entityColumns[1];
         this.configEdit.select[0].selected = data.entityColumns[2];
         this.configEdit.id = data.entity_id;
@@ -340,26 +320,37 @@ export class GroupComponent implements OnInit, OnDestroy {
         this.configEdit.select[1].selectItem = this.specialitiesNamesIDs.map(item => {
             return item.name;
         });
+        const list = JSON.stringify(this.configEdit);
         this.commonService.openModalAddEdit(this.configEdit)
-            .then((data: any) => {
-                this.substituteSpecialitiesNamesWithId(data);
-                this.substituteFacultiesNamesWithId(data);
-                let newGroup: Group = new Group(data.list[0].value,
-                                                data.select[0].selected,
-                                                data.select[1].selected);
-                this.crudService.updateData(this.entity, data.id, newGroup)
-                    .subscribe(response => {
-                        this.commonService.openModalInfo("Редагування пройшло успішно");
-                        this.refreshData(data.action);
-                    }, error => {
-                        this.commonService.openModalInfo("Група з такою назвою вже існує");
-                    });
+            .then((configData: any) => {
+                const newList = JSON.stringify(configData);
+                if (list === newList) {
+                    this.commonService.openModalInfo(...this.nothingWasChange)
+                        .then(() => {
+                            this.editCase(data);
+                        }, () => {
+                            return;
+                        });
+                } else {
+                    console.log(configData);
+                    this.substituteSpecialitiesNamesWithId(configData);
+                    this.substituteFacultiesNamesWithId(configData);
+                    console.log(configData);
+                    const newGroup: Group = new Group(configData.list[0].value,
+                        configData.select[0].selected,
+                        configData.select[1].selected);
+                    this.crudService.updateData(this.entity, configData.id, newGroup)
+                        .subscribe(response => {
+                            this.commonService.openModalInfo("Редагування пройшло успішно");
+                            this.refreshData(data.action);
+                        }, this.errorAddEdit);
+                }
             }, () => {
                 return;
             });
     };
 
-    deleteCase(data: any) {
+    deleteCase(data: any): void {
         let message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[1]}?`, "confirm", "Видалення"];
         this.commonService.openModalInfo(...message)
             .then(() => {
@@ -367,6 +358,22 @@ export class GroupComponent implements OnInit, OnDestroy {
             }, () => {
                 return;
             });
+    };
+
+    substituteFacultiesNamesWithId(data: any): void {
+        this.facultiesNamesIDs.forEach((item) => {
+            if (item.name === data.select[0].selected) {
+                data.select[0].selected = item.id;
+            }
+        });
+    };
+
+    substituteSpecialitiesNamesWithId(data: any): void {
+        this.specialitiesNamesIDs.forEach((item) => {
+            if (item.name === data.select[1].selected) {
+                data.select[1].selected = item.id;
+            }
+        });
     };
 
     refreshData(action: string) {
@@ -395,6 +402,16 @@ export class GroupComponent implements OnInit, OnDestroy {
                     error => console.log(error)
                 );
         }
+    };
+
+    errorAddEdit = (error) => {
+        let message: string;
+        if (error === "400 - Bad Request") {
+            message = "Група з такою назвою вже існує";
+        } else {
+            message = "Невідома помилка! Зверніться до адміністратора.";
+        }
+        this.commonService.openModalInfo(message);
     };
 
     ngOnDestroy() {

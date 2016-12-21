@@ -1,5 +1,4 @@
 import {Component, OnInit} from "@angular/core";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 import {User} from "../shared/classes/user";
 import {CRUDService} from "../shared/services/crud.service.ts";
@@ -54,27 +53,14 @@ export class AdminUserComponent implements OnInit {
     public findEntity = findEntity;
 
     constructor(private crudService: CRUDService,
-                private modalService: NgbModal,
                 private commonService: CommonService) {
     };
 
-    ngOnInit(): void {
+    ngOnInit() {
         this.getCountRecords();
     };
 
-    private createTableConfig = (data: any) => {
-        let numberOfOrder: number;
-        this.entityData = data.map((item, i ) => {
-                numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-                const adminUser: any = {};
-                adminUser.entity_id = item.id;
-                adminUser.oldPassword = item.password;
-                adminUser.entityColumns = [numberOfOrder, item.username, item.email];
-                return adminUser;
-        });
-    };
-
-    activate(data: any) {
+    activate(data: any): void {
         switch (data.action) {
             case "create":
                 this.createCase();
@@ -88,7 +74,7 @@ export class AdminUserComponent implements OnInit {
         }
     };
 
-    createCase(userToChange?: User) {
+    createCase(userToChange?: User): void {
         this.configAdd.list.forEach((item) => {
             item.value = "";
         });
@@ -114,17 +100,20 @@ export class AdminUserComponent implements OnInit {
                             this.successEventModal();
                             this.refreshData(data.action);
                     }, error => {
-                            this.modalInfoConfig.infoString = `Пароль та логін повинні бути унікальними`;
+                        if (error === "400 - Bad Request") {
+                            this.modalInfoConfig.infoString = "Даний логін або пошта вже використовуються іншим користувачем";
                             this.createCase(newAdminUser);
-                            this.successEventModal();
+                        } else {
+                            this.modalInfoConfig.infoString = "Невідома помилка! Зверніться до адміністратора.";
                         }
-                    );
+                        this.successEventModal();
+                    });
             }, () => {
                 return;
             });
     };
 
-    editCase(data: any) {
+    editCase(data: any): void {
         const editData = data;
         this.configEdit.list.forEach((item, i) => {
             item.value = data.entityColumns[i + 1];
@@ -144,17 +133,20 @@ export class AdminUserComponent implements OnInit {
                             this.successEventModal();
                             this.refreshData(data.action);
                     }, error => {
-                            this.modalInfoConfig.infoString = `Пароль та логін повинні бути унікальними`;
+                        if (error === "400 - Bad Request") {
+                            this.modalInfoConfig.infoString = "Даний логін або пошта вже використовуються іншим користувачем";
                             this.editCase(editData);
-                            this.successEventModal();
-                    }
-                    );
+                        } else {
+                            this.modalInfoConfig.infoString = "Невідома помилка! Зверніться до адміністратора.";
+                        }
+                        this.successEventModal();
+                    });
             }, () => {
                 return;
             });
     };
 
-    deleteCase(data: any) {
+    deleteCase(data: any): void {
         let message: string[] = [`Ви дійсно хочете видалити ${data.entityColumns[1]}?`, "confirm", "Попередження!"];
         this.commonService.openModalInfo(...message)
             .then(() => {
@@ -162,5 +154,17 @@ export class AdminUserComponent implements OnInit {
             }, () => {
                 return;
             });
+    };
+
+    private createTableConfig = (data: any) => {
+        let numberOfOrder: number;
+        this.entityData = data.map((item, i ) => {
+            numberOfOrder = i + 1 + (this.page - 1) * this.limit;
+            const adminUser: any = {};
+            adminUser.entity_id = item.id;
+            adminUser.oldPassword = item.password;
+            adminUser.entityColumns = [numberOfOrder, item.username, item.email];
+            return adminUser;
+        });
     };
 }

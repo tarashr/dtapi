@@ -119,7 +119,7 @@ export class FacultyComponent implements OnInit {
                     const newList = JSON.stringify(configData.list);
                     if (list === newList) {
                         this.commonService.openModalInfo(...nothingWasChange)
-                            .then(()=> {
+                            .then(() => {
                                 this.editCase(data);
                             }, this.handleReject);
                     } else {

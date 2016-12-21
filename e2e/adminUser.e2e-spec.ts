@@ -8,6 +8,7 @@ describe("Admin user page", function () {
         const LoginBtn = $("button");
         login.sendKeys("admin");
         password.sendKeys("dtapi_admin");
+        browser.sleep(1000);
         LoginBtn.click().then(() => {
             browser.getCurrentUrl().then((url) => {
                 expect(url.split("#")[1]).toBe("/admin/statistic");
@@ -17,6 +18,7 @@ describe("Admin user page", function () {
 
     it("should redirect to admin/adminUser page", () => {
         const adminUserBtn = $("a[routerLink='adminUser']");
+        browser.sleep(1000);
         adminUserBtn.click().then(() => {
             browser.getCurrentUrl().then((url) => {
                 expect(url.split("#")[1]).toBe("/admin/adminUser");
@@ -26,6 +28,7 @@ describe("Admin user page", function () {
 
     it("should open add modal window", () => {
         const openAddModalBtn = $(".navbar-right div.form-group a.btn");
+        browser.sleep(1000);
         openAddModalBtn.click().then(() => {
             const addTitle = $("h4").getText();
             expect(addTitle).toEqual("Додати адміністратора");
@@ -42,6 +45,7 @@ describe("Admin user page", function () {
         email.sendKeys("adminUserForTesting@gmail.com");
         password.sendKeys("adminUserForTestingPassword");
         cpassword.sendKeys("adminUserForTestingPassword");
+        browser.sleep(1000);
         addBtn.click().then(() => {
             const message = $(".modal-body-info-confirm").getText();
             expect(message).toEqual("adminUserForTesting успішно створено");
@@ -54,6 +58,7 @@ describe("Admin user page", function () {
         $$("li.page-item").count().then((amount) => {
             const lastPageNumber = amount - 3;
             const page = $$("li.page-item").get(lastPageNumber).$("a");
+            browser.sleep(1000);
             page.click().then(() => {
                 const lastPagBtnClass = $$("li.page-item").get(lastPageNumber).getAttribute("class");
                 expect(lastPagBtnClass).toEqual("page-item active");
@@ -63,10 +68,12 @@ describe("Admin user page", function () {
 
     it("should delete adminUser", () => {
         const delBtn = $("li.list-group-item:last-child").$("a:last-child");
+        browser.sleep(1000);
         delBtn.click().then(() => {
             const message = $(".modal-body-info-confirm").getText();
             expect(message).toEqual("Ви дійсно хочете видалити adminUserForTesting?");
             const okBtn = $(".modal-footer button:first-child");
+            browser.sleep(1000);
             okBtn.click().then(() => {
                 const message = $(".modal-body-info-confirm").getText();
                 expect(message).toEqual("Видалення пройшло успішно.");
@@ -78,6 +85,7 @@ describe("Admin user page", function () {
 
     it("should open add modal window", () => {
         const openAddModalBtn = $(".navbar-right div.form-group a.btn");
+        browser.sleep(1000);
         openAddModalBtn.click().then(() => {
             const addTitle = $("h4").getText();
             expect(addTitle).toEqual("Додати адміністратора");
@@ -86,6 +94,7 @@ describe("Admin user page", function () {
 
     it("should close add modal window", () => {
         const closeAddModalBtn = $(".modal-header .close");
+        browser.sleep(1000);
         closeAddModalBtn.click().then(() => {
             const bodyClass = $("body").getAttribute("class");
             expect(bodyClass).toEqual("");
@@ -94,6 +103,7 @@ describe("Admin user page", function () {
 
     it("should redirect to login page", () => {
         const exitBtn = $(".glyphicon-log-out");
+        browser.sleep(1000);
         exitBtn.click().then(() => {
             browser.getCurrentUrl().then((url) => {
                 expect(url.split("#")[1]).toBe("/login");

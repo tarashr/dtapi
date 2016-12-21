@@ -43,7 +43,7 @@ export const getRecordsRange = function () {
             },
             () => {
                 this.commonService.openModalInfo(badDownloadDataMessage);
-            })
+            });
 };
 
 export const successEventModal = function () {

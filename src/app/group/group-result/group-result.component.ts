@@ -14,17 +14,14 @@ import {EntityManagerBody} from "../../shared/classes/entity-manager-body";
 export class GroupResultComponent implements OnInit {
 
     public pageTitle: string;
-
     public page: number = 1;
     public limit: number = 0;
     public noRecords: boolean = false;
-
     public subjectEntity: string = "Subject";
     public testEntity: string = "Test";
     public groupEntity: string = "Group";
     public groupId: number;
     public groupName: string;
-
     public entityData: any[] = [];
     public entityDataWithNames: any ;
     public headers: any = headersGroupResult;
@@ -47,7 +44,7 @@ export class GroupResultComponent implements OnInit {
         this.getRecords();
     }
 
-    createTitle() {
+    createTitle(): void {
         this.crudService.getRecordById(this.groupEntity, this.groupId)
             .subscribe(
                 data => {
