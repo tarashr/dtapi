@@ -1,24 +1,17 @@
 import {Component, OnInit} from "@angular/core";
 import {Router, ActivatedRoute} from "@angular/router";
-import {Subscription} from "rxjs";
-import {Student} from "../shared/classes/student";
-import {Group} from "../shared/classes/group";
-import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {CRUDService} from "../shared/services/crud.service";
-import {EntityManagerBody} from "../shared/classes/entity-manager-body";
-import "../shared/rxjs-operators";
-import {
-    maxSize,
-    changeLimit,
-    pageChange,
-    delRecord,
-    getCountRecords,
-    headersStudentAdmin,
-    actionsStudentAdmin,
-    modalInfoConfig
-} from "../shared/constant";
 import {CommonService} from "../shared/services/common.service";
+import {Group, Student, EntityManagerBody} from "../shared/classes";
+import {Subscription} from "rxjs";
+// import "../shared/rxjs-operators";
+// import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+// import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
+
+import {
+    maxSize, headersStudentAdmin, actionsStudentAdmin, modalInfoConfig,
+    changeLimit, pageChange, delRecord, getCountRecords
+} from "../shared/constant";
 
 @Component({
     templateUrl: "student.component.html",
@@ -28,7 +21,7 @@ import {CommonService} from "../shared/services/common.service";
 export class StudentComponent implements OnInit {
 
     public modalInfoConfig: any = modalInfoConfig;
-    public paginationSize = maxSize;
+    public paginationSize: number = maxSize;
     public headers: any = headersStudentAdmin;
     public actions: any = actionsStudentAdmin;
 
@@ -46,7 +39,6 @@ export class StudentComponent implements OnInit {
     public search: string = "";
     public page: number = 1;
     public offset: number = 0;
-
     public groupId: number;
     public groupName: string;
     private subscription: Subscription;
@@ -58,7 +50,7 @@ export class StudentComponent implements OnInit {
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
                 private _router: Router,
-                private modalService: NgbModal,
+                // private modalService: NgbModal,
                 private commonService: CommonService) {
         this.subscription = route.queryParams.subscribe(
             data => {
@@ -92,24 +84,23 @@ export class StudentComponent implements OnInit {
     }
 
     private createTableConfig = (data: any) => {
-        let tempArr: any[] = [];
         let numberOfOrder: number;
-        data.forEach((item, i) => {
+        this.entityData = data.map((item, i) => {
             numberOfOrder = i + 1 + (this.page - 1) * this.limit;
-            let student: any = {};
+            const student: any = {};
             student.entity_id = item.user_id;
-            student.entityColumns = [numberOfOrder, (item.student_surname + " " + item.student_name + " " + item.student_fname), item.gradebook_id, item.group_name];
-            tempArr.push(student);
+            student.entityColumns = [numberOfOrder, (item.student_surname + " " + item.student_name + " " +
+            item.student_fname), item.gradebook_id, item.group_name];
+            return student;
         });
-        this.entityData = tempArr;
     };
 
     getRecordsRange() {
         this.noRecords = false;
         this.crudService.getRecordsRange(this.entity, this.limit, this.offset)
             .subscribe(
-                    data => {
-                    this.studentDataForView =  data;
+                data => {
+                    this.studentDataForView = data;
                     this.getGroupName();
                 },
                 error => console.log("error: ", error));
@@ -126,15 +117,14 @@ export class StudentComponent implements OnInit {
                 this.page = 1;
                 this.studentDataForView = data;
                 this.getGroupName();
-
             }, error => console.log("error: ", error));
     }
 
     getGroupName(): void {
         let groupId: number[] = [];
-        let data2 = this.studentDataForView;
-        for (let i in data2) {
-            groupId.push(data2[i].group_id);
+        let data = this.studentDataForView;
+        for (let i in data) {
+            groupId.push(data[i].group_id);
         }
         let dataEnt = new EntityManagerBody(this.groupEntity, groupId);
         this.crudService.getEntityValues(dataEnt)
@@ -191,12 +181,8 @@ export class StudentComponent implements OnInit {
     }
 
     deleteCase(data: any) {
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати профіль студента: ${data.entityColumns[1]}?`;
-        this.modalInfoConfig.action = "confirm";
-        this.modalInfoConfig.title = "Видалення";
-        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
-        modalRefDel.componentInstance.config = this.modalInfoConfig;
-        modalRefDel.result
+        let message: string[] = [`Ви дійсно хочете видалити профіль студента: ${data.entityColumns[1]}?`, "confirm", "Попередження!"];
+        this.commonService.openModalInfo(...message)
             .then(() => {
                 this.delRecord(this.entity, data.entity_id);
             }, () => {

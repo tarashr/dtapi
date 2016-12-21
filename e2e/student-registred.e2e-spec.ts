@@ -19,7 +19,7 @@ describe("Student registraiting", function () {
             });
         });
         browser.sleep(1000);
-        studentTab = element(by.cssContainingText('.student', 'Студенти'));
+        studentTab = element(by.css("a[routerLink='student']"));
         studentTab.click().then(() => {
             browser.getCurrentUrl().then((url) => {
                 expect(url.split("#")[1]).toBe("/admin/student");
@@ -83,7 +83,7 @@ describe("Student registraiting", function () {
         deletedButton.click();
         browser.sleep(2000);
         message = element(by.css(".modal-body-info-confirm")).getText();
-        expect(message).toBe("Ви дійсно хочете видати профіль студента: Янкіна Олена Анатоліївна?");
+        expect(message).toBe("Ви дійсно хочете видалити профіль студента: Янкіна Олена Анатоліївна?");
         browser.sleep(2000);
         okBtn = element(by.cssContainingText(".btn","ТАК"));
         okBtn.click();

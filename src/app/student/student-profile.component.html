@@ -68,7 +68,7 @@
                             <select id="faculty" class="input-student-data select-group" name="faculty"
                                     required [disabled]="statusView" [(ngModel)]="student.faculty_id" #faculty
                                     (change)="getGroupByFaculty(faculty.value)" ngModel>
-                                <option *ngFor="let item of facultys" class="input-student-data"
+                                <option *ngFor="let item of faculties" class="input-student-data"
                                         [value]="item.faculty_id"
                                         [selected]="item.faculty_id === student.faculty_id">
                                     {{item.faculty_name}}

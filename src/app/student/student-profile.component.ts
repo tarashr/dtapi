@@ -3,17 +3,15 @@ import {Location} from "@angular/common";
 import {ActivatedRoute, Params} from "@angular/router";
 import {Group, Faculty, Student, EntityManagerBody} from "../shared/classes";
 import {CRUDService} from "../shared/services/crud.service";
+import {CommonService} from "../shared/services/common.service";
+import {ModalImageCropperComponent} from "../shared/components/img-cropper/image-cropper.component";
 import {Observable} from "rxjs/Rx";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
+// import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
 import {ImageCropperComponent, CropperSettings} from 'ng2-img-cropper';
-import {ModalImageCropperComponent} from "../shared/components/img-cropper/image-cropper.component";
 
-import {
-    modalInfoConfig,
-    successEventModal,
-    patterns
-} from "../shared/constant";
+
+import {patterns, delRecord} from "../shared/constant";
 
 @Component({
     templateUrl: "student-profile.component.html",
@@ -22,32 +20,27 @@ import {
 
 export class StudentProfileComponent implements OnInit {
 
-    name:string;
-    data:any;  // cropper data
-    cropperSettings: CropperSettings; // cropper data
+    // name: string;
+    public cropperData: any;
+    public cropperSettings: CropperSettings;
 
     public user_id: number;
     public entity: string = "student";
     public student: Student;
     public entityUser: string = "AdminUser";
     public groupEntity: string = "Group";
-    public groups: Array <any> = [];
+    public groups: any[] = [];
     public facultyEntity: string = "Faculty";
-    public facultys: Array <any> = [];
+    public faculties: any[] = [];
+    private studentInfo: string;
+    public delRecord = delRecord;
     private errorMessageCreateStudent: string = "Помилка при створенні профілю. Перевірте правильність введених даних";
     private errorMessageUpdateData: string = "Помилка обновлення. Перевірте правильність введених даних";
     private errorMessageGroupAbsence: string = "Для даного факультету не зареєстровано жодної групи!";
-    private studentInfo: string;
-
-    public modalInfoConfig: any = modalInfoConfig;
-    public successEventModal = successEventModal;
-
     public statusView: boolean = true;
-    public action: Boolean;
-
+    public action: boolean;
     public passwordStatusText: string = "password";
     public editSaveButtonName: string = "Редагувати дані";
-
     public surnamePattern: string = patterns.studentSurname;
     public namePattern: string = patterns.studentName;
     public fnamePattern: string = patterns.studentFname;
@@ -55,21 +48,21 @@ export class StudentProfileComponent implements OnInit {
     public gradebookPattern: string = patterns.studentGradebook;
     public emailPattern: string = patterns.studentEmail;
 
-    @Output() activate = new EventEmitter();
+    // @Output() activate = new EventEmitter();
 
     @ViewChild("studentForm") studentForm: any;
     @ViewChild("studentPhoto") studentPhoto: ElementRef;
-    @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
-    @ViewChild('croppedPhotoOut') croppedPhotoOut: string;
+    @ViewChild('cropper', undefined) cropper: ImageCropperComponent;
+    // @ViewChild('croppedPhotoOut') croppedPhotoOut: string;
 
     constructor(private route: ActivatedRoute,
-                private _commonService: CRUDService,
+                private crudService: CRUDService,
                 private location: Location,
-                private modalService: NgbModal) {
-
+                private modalService: NgbModal,
+                private commonService: CommonService) {
         this.cropperSettings = new CropperSettings();
         this.cropperSettings.noFileInput = true;
-        this.data = {};
+        this.cropperData = {};
     }
 
     ngOnInit() {
@@ -81,7 +74,7 @@ export class StudentProfileComponent implements OnInit {
             this.getData();
             this.getFacultyName();
         }
-        else  {
+        else {
             this.statusView = false;
             this.action = true;
             this.newStudent();
@@ -93,7 +86,7 @@ export class StudentProfileComponent implements OnInit {
     }
 
     newStudent() {
-        this.student = new Student;
+        this.student = new Student();
         this.studentPhoto.nativeElement.src = "assets/profile.png";
         this.getFacultyName();
     }
@@ -111,31 +104,28 @@ export class StudentProfileComponent implements OnInit {
         dataForRequest.group_id = this.student.group_id;
         dataForRequest.plain_password = this.student.plain_password;
         dataForRequest.photo = this.studentPhoto.nativeElement.src;
-        this._commonService.insertData(this.entity, dataForRequest)
+        this.crudService.insertData(this.entity, dataForRequest)
             .subscribe(data => {
                     if (data.response === "ok") {
                         this.studentInfo = `${dataForRequest.student_surname} ${dataForRequest.student_name} ${dataForRequest.student_fname}`;
-                        this.modalInfoConfig.infoString = `Створено профіль студента ${this.studentInfo}`;
-                        this.successEventModal();
+                        this.commonService.openModalInfo(`Створено профіль студента ${this.studentInfo}`);
                         this.newStudent();
                         this.studentForm.reset();
                     } else {
-                        this.modalInfoConfig.infoString = this.errorMessageCreateStudent;
-                        this.successEventModal();
+                        this.commonService.openModalInfo(`${this.errorMessageCreateStudent}`);
                     }
                 },
                 error => {
                     console.log("error: ", error);
-                    this.modalInfoConfig.infoString = this.errorMessageCreateStudent;
-                    this.successEventModal();
+                    this.commonService.openModalInfo(`${this.errorMessageCreateStudent}`);
                 }
             );
-        }
+    }
 
     getFacultyName() {
-        this._commonService.getRecords(this.facultyEntity)
+        this.crudService.getRecords(this.facultyEntity)
             .subscribe(facultyData => {
-                    this.facultys = facultyData;
+                    this.faculties = facultyData;
                 },
                 error => console.log("error: ", error)
             );
@@ -143,7 +133,7 @@ export class StudentProfileComponent implements OnInit {
 
     getGroupByFaculty(value: number) {
         this.groups = [];
-        this._commonService.getGroupsByFaculty(value)
+        this.crudService.getGroupsByFaculty(value)
             .subscribe(groupData => {
                     if (groupData.response === "no records") {
                         this.groups.splice(0, this.groups.length, {group_name: this.errorMessageGroupAbsence, group_id: 0});
@@ -157,15 +147,15 @@ export class StudentProfileComponent implements OnInit {
 
     studGroupId(data: number) {
         this.student.group_id = data;
-        if (+data !== 0) {
-        let studGroupId: Array <number> = [];
-        studGroupId.push(this.student.group_id);
-        let dataEnt = new EntityManagerBody(this.groupEntity, studGroupId);
-        this._commonService.getEntityValues(dataEnt)
-            .subscribe(data => {
-                this.student.group_name = data[0].group_name;
-            },
-                error => console.log("error: ", error)
+        if (data) {
+            let studGroupId: Array <number> = [];
+            studGroupId.push(this.student.group_id);
+            let dataEnt = new EntityManagerBody(this.groupEntity, studGroupId);
+            this.crudService.getEntityValues(dataEnt)
+                .subscribe(data => {
+                        this.student.group_name = data[0].group_name;
+                    },
+                    error => console.log("error: ", error)
                 );
         }
     }
@@ -173,8 +163,8 @@ export class StudentProfileComponent implements OnInit {
     getData() {
         this.student = new Student();
         Observable.forkJoin(
-            this._commonService.getRecordById(this.entity, this.user_id),
-            this._commonService.getRecordById(this.entityUser, this.user_id)
+            this.crudService.getRecordById(this.entity, this.user_id),
+            this.crudService.getRecordById(this.entityUser, this.user_id)
         ).subscribe(data => {
                 this.student.user_id = this.user_id;
                 this.student.username = data[1][0].username;
@@ -192,17 +182,17 @@ export class StudentProfileComponent implements OnInit {
                 let studGroupId: Array <number> = [];
                 studGroupId.push(this.student.group_id);
                 let dataEnt = new EntityManagerBody(this.groupEntity, studGroupId);
-                this._commonService.getEntityValues(dataEnt)
+                this.crudService.getEntityValues(dataEnt)
                     .subscribe(data => {
                             this.student.group_name = data[0].group_name;
                             let studFacultyId: Array <number> = [];
                             studFacultyId.push(data[0].faculty_id);
                             let dataEnt = new EntityManagerBody(this.facultyEntity, studFacultyId);
-                            this._commonService.getEntityValues(dataEnt)
+                            this.crudService.getEntityValues(dataEnt)
                                 .subscribe(data => {
                                         this.student.faculty_id = data[0].faculty_id;
                                         this.student.faculty_name = data[0].faculty_name;
-                                        this._commonService.getGroupsByFaculty(this.student.faculty_id)
+                                        this.crudService.getGroupsByFaculty(this.student.faculty_id)
                                             .subscribe(groupData => {
                                                     this.groups = groupData;
                                                 },
@@ -232,24 +222,22 @@ export class StudentProfileComponent implements OnInit {
         dataForUpdateStudent.group_id = this.student.group_id;
         dataForUpdateStudent.plain_password = this.student.plain_password;
         dataForUpdateStudent.photo = this.studentPhoto.nativeElement.src;
-        this._commonService.updateData(this.entity, this.student.user_id, dataForUpdateStudent)
+        this.crudService.updateData(this.entity, this.student.user_id, dataForUpdateStudent)
             .subscribe(data => {
                     if (data.response === "ok") {
                         this.studentInfo = `${dataForUpdateStudent.student_surname} ${dataForUpdateStudent.student_name} ${dataForUpdateStudent.student_fname}`;
-                        this.modalInfoConfig.infoString = `Дані студента ${this.studentInfo} обновленно`;
-                        this.successEventModal();
+                        this.commonService.openModalInfo(`Дані студента ${this.studentInfo} обновленно`);
                         this.editSaveButtonName = "Редагувати дані";
                         this.statusView = !this.statusView;
                     }
                     else {
-                        this.modalInfoConfig.infoString = this.errorMessageUpdateData;
-                        this.successEventModal();
+                        this.commonService.openModalInfo(`${this.errorMessageUpdateData}`);
+
                     }
                 },
                 error => {
                     console.log("error: ", error);
-                    this.modalInfoConfig.infoString = this.errorMessageUpdateData;
-                    this.successEventModal();
+                    this.commonService.openModalInfo(`${this.errorMessageUpdateData}`);
                     this.editSaveButtonName = "Зберегти дані";
                 }
             );
@@ -275,41 +263,19 @@ export class StudentProfileComponent implements OnInit {
     }
 
     deleteStudent() {
-        let delRecord = (entity: string, id: number) => {
-            this._commonService.delRecord(entity, id)
-                .subscribe(() => {
-                    this.modalInfoConfig.infoString = `Видалення пройшло успішно.`;
-                    this.modalInfoConfig.action = "info";
-                    const modalRef = this.modalService.open(InfoModalComponent, {size: "sm"});
-                    modalRef.componentInstance.config = this.modalInfoConfig;
-                    modalRef.result.then(() => {
-                        return;
-                    }, () => {
-                        this.goBack();
-                    });
-                });
-        };
         this.studentInfo = `${this.student.student_surname} ${this.student.student_name} ${this.student.student_fname}`;
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати профіль студента: ${this.studentInfo}?`;
-        this.modalInfoConfig.action = "confirm";
-        this.modalInfoConfig.title = "Видалення";
-        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
-        modalRefDel.componentInstance.config = this.modalInfoConfig;
-        modalRefDel.result
+        let message: string[] = [`Ви дійсно хочете видалити профіль студента: ${this.studentInfo}?`, "confirm", "Попередження!"];
+        this.commonService.openModalInfo(...message)
             .then(() => {
-                delRecord(this.entity, this.student.user_id);
+                this.delRecord(this.entity, this.student.user_id);
             }, () => {
                 return;
             });
     }
 
-    removePhoto(){
-        this.modalInfoConfig.infoString = `Ви дійсно хочете видати дане фото`;
-        this.modalInfoConfig.action = "confirm";
-        this.modalInfoConfig.title = "Видалення";
-        const modalRefDel = this.modalService.open(InfoModalComponent, {size: "sm"});
-        modalRefDel.componentInstance.config = this.modalInfoConfig;
-        modalRefDel.result
+    removePhoto() {
+        let message: string[] = [`Ви дійсно хочете видалити дане фото?`, "confirm", "Попередження!"];
+        this.commonService.openModalInfo(...message)
             .then(() => {
                 this.studentPhoto.nativeElement.src = "assets/profile.png";
             }, () => {
@@ -317,9 +283,9 @@ export class StudentProfileComponent implements OnInit {
             });
     }
 
-    modalOpen(){
-        let modalRef = this.modalService.open(ModalImageCropperComponent);
-        modalRef.result
+    modalOpen() {
+        this.modalService.open(ModalImageCropperComponent)
+            .result
             .then((data: any) => {
                 this.studentPhoto.nativeElement.src = data;
             }, () => {
