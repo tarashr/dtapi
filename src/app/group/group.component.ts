@@ -1,5 +1,4 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router, ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
 
@@ -37,7 +36,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     public searchTitle: string = "Введіть дані для пошуку";
     public entityTitle: string = "Групи";
     public selectLimit: string = "Виберіть кількість записів на сторінці";
-
+    public nothingWasChange: string[] = [`Ви не внесли жодних змін. Чи бажаєте повторити редагування?`, "confirm"];
     public entityData: any[] = [];
     private entityDataLength: number;
     public entityDataWithNames: Group[];
@@ -72,7 +71,6 @@ export class GroupComponent implements OnInit, OnDestroy {
     constructor(private crudService: CRUDService,
                 private _router: Router,
                 private route: ActivatedRoute,
-                private modalService: NgbModal,
                 private commonService: CommonService) {
         this.subscription = route.queryParams.subscribe(
             data => {
@@ -321,9 +319,7 @@ export class GroupComponent implements OnInit, OnDestroy {
                     .subscribe(response => {
                         this.commonService.openModalInfo(`${data.list[0].value} успішно створено`);
                         this.refreshData(data.action);
-                    }, error => {
-                        this.commonService.openModalInfo("Група з такою назвою вже існує");
-                    });
+                    }, this.errorAddEdit);
             }, () => {
                 return;
             });
@@ -340,20 +336,31 @@ export class GroupComponent implements OnInit, OnDestroy {
         this.configEdit.select[1].selectItem = this.specialitiesNamesIDs.map(item => {
             return item.name;
         });
+        const list = JSON.stringify(this.configEdit);
         this.commonService.openModalAddEdit(this.configEdit)
-            .then((data: any) => {
-                this.substituteSpecialitiesNamesWithId(data);
-                this.substituteFacultiesNamesWithId(data);
-                let newGroup: Group = new Group(data.list[0].value,
-                                                data.select[0].selected,
-                                                data.select[1].selected);
-                this.crudService.updateData(this.entity, data.id, newGroup)
-                    .subscribe(response => {
-                        this.commonService.openModalInfo("Редагування пройшло успішно");
-                        this.refreshData(data.action);
-                    }, error => {
-                        this.commonService.openModalInfo("Група з такою назвою вже існує");
-                    });
+            .then((configData: any) => {
+                const newList = JSON.stringify(configData);
+                if (list === newList) {
+                    this.commonService.openModalInfo(...this.nothingWasChange)
+                        .then(() => {
+                            this.editCase(data);
+                        }, () => {
+                            return;
+                        });
+                } else {
+                    console.log(configData);
+                    this.substituteSpecialitiesNamesWithId(configData);
+                    this.substituteFacultiesNamesWithId(configData);
+                    console.log(configData);
+                    const newGroup: Group = new Group(configData.list[0].value,
+                        configData.select[0].selected,
+                        configData.select[1].selected);
+                    this.crudService.updateData(this.entity, configData.id, newGroup)
+                        .subscribe(response => {
+                            this.commonService.openModalInfo("Редагування пройшло успішно");
+                            this.refreshData(data.action);
+                        }, this.errorAddEdit);
+                }
             }, () => {
                 return;
             });
@@ -395,6 +402,16 @@ export class GroupComponent implements OnInit, OnDestroy {
                     error => console.log(error)
                 );
         }
+    };
+
+    errorAddEdit = (error) => {
+        let message: string;
+        if (error === "400 - Bad Request") {
+            message = "Група з такою назвою вже існує";
+        } else {
+            message = "Невідома помилка! Зверніться до адміністратора.";
+        }
+        this.commonService.openModalInfo(message);
     };
 
     ngOnDestroy() {

@@ -1,5 +1,4 @@
 import {Component, OnInit} from "@angular/core";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 import {User} from "../shared/classes/user";
 import {CRUDService} from "../shared/services/crud.service.ts";
@@ -54,7 +53,6 @@ export class AdminUserComponent implements OnInit {
     public findEntity = findEntity;
 
     constructor(private crudService: CRUDService,
-                private modalService: NgbModal,
                 private commonService: CommonService) {
     };
 
@@ -114,11 +112,14 @@ export class AdminUserComponent implements OnInit {
                             this.successEventModal();
                             this.refreshData(data.action);
                     }, error => {
-                            this.modalInfoConfig.infoString = `Пароль та логін повинні бути унікальними`;
+                        if (error === "400 - Bad Request") {
+                            this.modalInfoConfig.infoString = "Даний логін або пошта вже використовуються іншим користувачем";
                             this.createCase(newAdminUser);
-                            this.successEventModal();
+                        } else {
+                            this.modalInfoConfig.infoString = "Невідома помилка! Зверніться до адміністратора.";
                         }
-                    );
+                        this.successEventModal();
+                    });
             }, () => {
                 return;
             });
@@ -144,11 +145,14 @@ export class AdminUserComponent implements OnInit {
                             this.successEventModal();
                             this.refreshData(data.action);
                     }, error => {
-                            this.modalInfoConfig.infoString = `Пароль та логін повинні бути унікальними`;
+                        if (error === "400 - Bad Request") {
+                            this.modalInfoConfig.infoString = "Даний логін або пошта вже використовуються іншим користувачем";
                             this.editCase(editData);
-                            this.successEventModal();
-                    }
-                    );
+                        } else {
+                            this.modalInfoConfig.infoString = "Невідома помилка! Зверніться до адміністратора.";
+                        }
+                        this.successEventModal();
+                    });
             }, () => {
                 return;
             });

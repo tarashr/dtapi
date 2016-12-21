@@ -33,6 +33,7 @@ export class GroupTimetableComponent implements OnInit {
     public groupName: string;
     public groupEntity: string = "Group";
     public subjectEntity: string = "subject";
+    public nothingWasChange: string[] = [`Ви не внесли жодних змін. Чи бажаєте повторити редагування?`, "confirm"];
     public subjects: any;
     public page: number = 1;
     public limit: number = 0;
@@ -163,9 +164,7 @@ export class GroupTimetableComponent implements OnInit {
                     .subscribe(response => {
                         this.commonService.openModalInfo("Тестування назначено");
                         this.getGroupTimeTables();
-                    }, error => {
-                        this.commonService.openModalInfo("Для даної групи вже назначено тестування з даного предмету");
-                    });
+                    }, this.errorAddEdit);
             }, () => {
                 return;
             });
@@ -190,31 +189,39 @@ export class GroupTimetableComponent implements OnInit {
         this.configEdit.list[1].value = data.entityColumns[3];
         this.configEdit.list[2].value = endDate;
         this.configEdit.list[3].value = data.entityColumns[5];
-
         this.configEdit.select[0].selected = data.entityColumns[1];
         this.configEdit.id = data.entity_id;
         this.configEdit.select[0].selectItem = [];
         this.subjects.forEach(item => {
             this.configEdit.select[0].selectItem.push(item.subject_name);
         });
+        const list = JSON.stringify(this.configEdit.list);
         this.commonService.openModalAddEdit(this.configEdit)
-            .then((data: any) => {
-                this.substituteSubjectsNamesWithId(data);
-                const editedGroupTimeTable: TimeTable = new TimeTable(
-                    this.groupId,
-                    `${data.list[0].value.year}-${data.list[0].value.month}-${data.list[0].value.day}`,
-                    data.list[1].value,
-                    `${data.list[2].value.year}-${data.list[2].value.month}-${data.list[2].value.day}`,
-                    data.list[3].value,
-                    data.select[0].selected
-                );
-                this.crudService.updateData(this.entity, data.id, editedGroupTimeTable)
-                    .subscribe(() => {
-                        this.commonService.openModalInfo("Редагування пройшло успішно");
-                        this.getGroupTimeTables();
-                    }, error => {
-                        this.commonService.openModalInfo("Для даної групи вже назначено тестування з даного предмету");
-                    });
+            .then((configData: any) => {
+                const newList = JSON.stringify(configData.list);
+                if (list === newList) {
+                    this.commonService.openModalInfo(...this.nothingWasChange)
+                        .then(() => {
+                            this.editCase(data);
+                        }, () => {
+                            return;
+                        });
+                } else {
+                    this.substituteSubjectsNamesWithId(configData);
+                    const editedGroupTimeTable: TimeTable = new TimeTable(
+                        this.groupId,
+                        `${configData.list[0].value.year}-${configData.list[0].value.month}-${configData.list[0].value.day}`,
+                        configData.list[1].value,
+                        `${configData.list[2].value.year}-${configData.list[2].value.month}-${configData.list[2].value.day}`,
+                        configData.list[3].value,
+                        configData.select[0].selected
+                    );
+                    this.crudService.updateData(this.entity, configData.id, editedGroupTimeTable)
+                        .subscribe(() => {
+                            this.commonService.openModalInfo("Редагування пройшло успішно");
+                            this.getGroupTimeTables();
+                        }, this.errorAddEdit);
+                }
             }, () => {
                 return;
             });
@@ -251,6 +258,16 @@ export class GroupTimetableComponent implements OnInit {
         }
     };
 
+    errorAddEdit = (error) => {
+        let message: string;
+        if (error === "400 - Bad Request") {
+            message = "Для даної групи вже назначено тестування з даного предмету";
+        } else {
+            message = "Невідома помилка! Зверніться до адміністратора.";
+        }
+        this.commonService.openModalInfo(message);
+    };
+
     goBack(): void {
         this.location.back();
     };
@@ -258,4 +275,4 @@ export class GroupTimetableComponent implements OnInit {
     ngOnDestroy() {
         this.subscription.unsubscribe();
     };
-};
+}
