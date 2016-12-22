@@ -93,20 +93,17 @@ export class AdminUserComponent implements OnInit {
                     data.list[3].value);
                 this.crudService.insertData(this.entity, newAdminUser)
                     .subscribe(response => {
-                            this.modalInfoConfig.infoString = `${data.list[0].value} успішно створено`;
-                            this.configAdd.list.forEach((item) => {
-                                item.value = "";
-                            });
-                            this.successEventModal();
+                            this.commonService.openModalInfo(`${data.list[0].value} успішно створено`);
                             this.refreshData(data.action);
                     }, error => {
+                        let message: string;
                         if (error === "400 - Bad Request") {
-                            this.modalInfoConfig.infoString = "Даний логін або пошта вже використовуються іншим користувачем";
+                            message = "Даний логін або пошта вже використовуються іншим користувачем";
                             this.createCase(newAdminUser);
                         } else {
-                            this.modalInfoConfig.infoString = "Невідома помилка! Зверніться до адміністратора.";
+                            message = "Невідома помилка! Зверніться до адміністратора.";
                         }
-                        this.successEventModal();
+                        this.commonService.openModalInfo(message);
                     });
             }, () => {
                 return;
@@ -129,17 +126,17 @@ export class AdminUserComponent implements OnInit {
                     data.list[4].value);
                 this.crudService.updateData(this.entity, data.id, editedAdminUser)
                     .subscribe(response => {
-                            this.modalInfoConfig.infoString = `Редагування пройшло успішно`;
-                            this.successEventModal();
+                            this.commonService.openModalInfo(`Редагування пройшло успішно`);
                             this.refreshData(data.action);
                     }, error => {
+                        let message: string;
                         if (error === "400 - Bad Request") {
-                            this.modalInfoConfig.infoString = "Даний логін або пошта вже використовуються іншим користувачем";
+                            message = "Даний логін або пошта вже використовуються іншим користувачем";
                             this.editCase(editData);
                         } else {
-                            this.modalInfoConfig.infoString = "Невідома помилка! Зверніться до адміністратора.";
+                            message = "Невідома помилка! Зверніться до адміністратора.";
                         }
-                        this.successEventModal();
+                        this.commonService.openModalInfo(message);
                     });
             }, () => {
                 return;

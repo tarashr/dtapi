@@ -59,40 +59,40 @@ describe("Student registration", function () {
         studentEmail.sendKeys("student22@gmail.com");
         studentUserLogin.sendKeys("student22");
         studentUserPassword.sendKeys("00000000");
-        browser.sleep(2000);
+        browser.sleep(1000);
         studentRegisred.click().then(() => {
             message = element(by.css(".modal-body-info-confirm")).getText();
             expect(message).toBe("Створено профіль студента Янкіна Олена Анатоліївна");
             okBtn = element(by.css(".modal-footer button"));
-            browser.sleep(2000);
+            browser.sleep(1000);
             okBtn.click();
         });
-        browser.sleep(2000);
+        browser.sleep(1000);
     });
 
     it("should redirect last student pagination page", () => {
         studentTab.click();
-        browser.sleep(2000);
+        browser.sleep(1000);
         lastPagination =  element(by.cssContainingText(".page-link","»»"));
         lastPagination.click();
-        browser.sleep(2000);
+        browser.sleep(1000);
     });
 
     it("should delete created student", () => {
         deletedButton = element(by.css('a[title="Видалити профіль студента: Янкіна Олена Анатоліївна"]'));
         deletedButton.click();
-        browser.sleep(2000);
+        browser.sleep(1000);
         message = element(by.css(".modal-body-info-confirm")).getText();
         expect(message).toBe("Ви дійсно хочете видалити профіль студента: Янкіна Олена Анатоліївна?");
-        browser.sleep(2000);
+        browser.sleep(1000);
         okBtn = element(by.cssContainingText(".btn","ТАК"));
         okBtn.click();
-        browser.sleep(2000);
+        browser.sleep(1000);
         message = element(by.css(".modal-body-info-confirm")).getText();
         expect(message).toBe("Видалення пройшло успішно.");
         okBtn = element(by.cssContainingText(".btn","OK"));
         okBtn.click();
-        browser.sleep(2000);
+        browser.sleep(1000);
     });
 
     it("should redirect to login page", () => {
@@ -102,6 +102,6 @@ describe("Student registration", function () {
                 expect(url.split("#")[1]).toBe("/login");
             });
         });
-        browser.sleep(2000);
+        browser.sleep(1000);
     });
 });

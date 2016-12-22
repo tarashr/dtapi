@@ -35,7 +35,7 @@ describe("Admin user page", function () {
         });
     });
 
-    it("should add new user", () => {
+    it("should add new admin user", () => {
         const username = $(".modal-body input[name='username']");
         const email = $(".modal-body input[name='email']");
         const password = $("input[name='password']");

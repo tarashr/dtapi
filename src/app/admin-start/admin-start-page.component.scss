@@ -1,3 +1,5 @@
+@import "../../assets/style/variables";
+
 .main-menu {
   max-width: 1024px;
   margin: 0px auto 10px auto;
@@ -5,6 +7,9 @@
   font-size: 12px;
   nav.main-menu-navbar {
     margin-bottom: 0;
+    .active {
+      background-color: $background-color-hover;
+    }
   }
 }
 @media screen and (max-width: 767px){
