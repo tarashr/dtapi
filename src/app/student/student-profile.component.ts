@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit, ElementRef, Output, EventEmitter} from "@angular/core";
+import {Component, ViewChild, OnInit, ElementRef} from "@angular/core";
 import {Location} from "@angular/common";
 import {ActivatedRoute, Params} from "@angular/router";
 import {Group, Faculty, Student, EntityManagerBody} from "../shared/classes";
@@ -7,8 +7,7 @@ import {CommonService} from "../shared/services/common.service";
 import {ModalImageCropperComponent} from "../shared/components/img-cropper/image-cropper.component";
 import {Observable} from "rxjs/Rx";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-// import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
-import {ImageCropperComponent, CropperSettings} from 'ng2-img-cropper';
+import {ImageCropperComponent, CropperSettings} from "ng2-img-cropper";
 
 
 import {patterns, delRecord} from "../shared/constant";
@@ -49,7 +48,7 @@ export class StudentProfileComponent implements OnInit {
 
     @ViewChild("studentForm") studentForm: any;
     @ViewChild("studentPhoto") studentPhoto: ElementRef;
-    @ViewChild('cropper', undefined) cropper: ImageCropperComponent;
+    @ViewChild("cropper", undefined) cropper: ImageCropperComponent;
 
     constructor(private route: ActivatedRoute,
                 private crudService: CRUDService,

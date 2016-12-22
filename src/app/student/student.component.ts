@@ -4,10 +4,6 @@ import {CRUDService} from "../shared/services/crud.service";
 import {CommonService} from "../shared/services/common.service";
 import {Group, Student, EntityManagerBody} from "../shared/classes";
 import {Subscription} from "rxjs";
-// import "../shared/rxjs-operators";
-// import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-// import {InfoModalComponent} from "../shared/components/info-modal/info-modal.component";
-
 import {
     maxSize, headersStudentAdmin, actionsStudentAdmin, modalInfoConfig,
     changeLimit, pageChange, delRecord, getCountRecords
@@ -32,8 +28,9 @@ export class StudentComponent implements OnInit {
     //
 
     public entityData: any[] = [];
-    private entityDataLength: number;
     public studentDataForView: Student[];
+    public groupEntity: string = "Group";
+    public groups: Group[] = [];
     public entity: string = "student";
     public limit: number = 5;
     public search: string = "";
@@ -41,16 +38,13 @@ export class StudentComponent implements OnInit {
     public offset: number = 0;
     public groupId: number;
     public groupName: string;
-    private subscription: Subscription;
     public noRecords: boolean = false;
-
-    public groupEntity: string = "Group";
-    public groups: Group[] = [];
+    private subscription: Subscription;
+    private entityDataLength: number;
 
     constructor(private crudService: CRUDService,
                 private route: ActivatedRoute,
                 private _router: Router,
-                // private modalService: NgbModal,
                 private commonService: CommonService) {
         this.subscription = route.queryParams.subscribe(
             data => {

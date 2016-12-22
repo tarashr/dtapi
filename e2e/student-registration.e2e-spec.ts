@@ -1,4 +1,4 @@
-describe("Student registraiting", function () {
+describe("Student registration", function () {
 
     let login, password, btn, okBtn, exitAdminBtn, studentTab, studentNew, studentSurname, studentName,
         studentFname, studentFaculty, studentGroup, studentGradebook_id, studentEmail, studentUserLogin,
@@ -37,7 +37,7 @@ describe("Student registraiting", function () {
         });
     });
 
-    it("should registred new student", () => {
+    it("should register new student", () => {
         browser.sleep(1000);
         studentSurname = element(by.id("surname"));
         studentName = element(by.id("name"));
@@ -78,7 +78,7 @@ describe("Student registraiting", function () {
         browser.sleep(2000);
     });
 
-    it("should deleted created student", () => {
+    it("should delete created student", () => {
         deletedButton = element(by.css('a[title="Видалити профіль студента: Янкіна Олена Анатоліївна"]'));
         deletedButton.click();
         browser.sleep(2000);
