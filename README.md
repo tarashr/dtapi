@@ -21,67 +21,105 @@ In this file, we describe a variant of our structure.
 We also tried to give some explanation of the reasons for building such a structure
 
 <ul>
-    <li>config</li>
-    <li>dist</li>
-    <li>src
-        <ul>
-        <li>сomponents</li>
-        <li>app  
-                <ul>
-                   <li>faculty
-                                <ul>
-                                    <li>faculty.component.ts|html|sass|spec.ts</li>
-                                </ul>
-                            </li>
-                            <li>subject
-                                <ul>
-                                    <li>subject.component.ts|html|sass|spec.ts</li>
-                                </ul>
-                            </li>
-                            <li>student</li>
-                            <li> ... other</li>
-                    <li>shared 
+   <li>config</li>
+   <li>e2e</li>
+   <li>dist</li>
+   <li>
+      src
+      <ul>
+         <li>
+            app
+            <ul>
+               <li>
+                  faculty
+                  <ul>
+                     <li>faculty.component.ts|html|scss</li>
+                  </ul>
+               </li>
+               <li>
+                  subject
+                  <ul>
+                     <li>subject.component.ts|html|scss</li>
+                  </ul>
+               </li>
+               <li>student</li>
+               <li> ... other</li>
+               <li>
+                  shared
+                  <ul>
+                     <li>
+                        services
                         <ul>
-                            <li>services
-                        <ul>
-                            <li>login.service.ts</li>
-                            <li> ... other</li>
+                           <li>login.service.ts</li>
+                           <li> ... other</li>
                         </ul>
-                    </li>
-                    <li>classes  
+                     </li>
+                     <li>
+                        classes
                         <ul>
-                            <li>subject.ts</li>
-                            <li>faculty.ts</li>
-                            <li>student.ts</li>
+                           <li>subject.ts</li>
+                           <li>faculty.ts</li>
+                           <li>student.ts</li>
+                           <li>... other</li>
+                        </ul>
+                     </li>
+                     <li>
+                        components
+                        <ul>
+                           <li>
+                              table
+                              <ul>
+                                 <li>table.component.ts|html|scss</li>
+                              </ul>
+                           </li>
+                           <li>entity-bar</li>
+                           <li>... other</li>
+                        </ul>
+                     </li>
+                     <li>
+                         constasts
+                         <ul>
+                            <li>
+                            answer.component.ts
+                            </li>
                             <li>... other</li>
-                        </ul>
-                    </li>
-                        </ul>
-                    </li>
-                    <li>app.component.ts 
-                    <li>app.component.html</li>
-                    <li>app.component.sass</li>
-                </ul>
-            </li>
-            <li>assets
-                <ul>
-                    <li>img </li>
-                    <li>fonts</li>
-                    <li>libs</li>
-                    <li>sass</li>
-                </ul>
-            </li>
-            <li>app.module.ts</li>
-            <li>vendor.ts</li>
-            <li>app-routing.module.ts</li>
-            <li>main.ts </li>
-            <li>index.html </li>   
-        </ul>
-    </li>
-    <li>README.md</li>
-    <li>package.json</li>
-    <li>tsconfig.json</li>
-    <li>typings.json</li>
+                         </ul>
+                      </li>
+                  </ul>
+               </li>
+               <li>app.component.ts
+               <li>app.component.html</li>
+               <li>app.component.scss</li>
+            </ul>
+         </li>
+         <li>
+            assets
+            <ul>
+               <li>img</li>
+               <li>libs</li>
+               <li>style</li>
+            </ul>
+         </li>
+         <li>
+             tests
+             <ul>
+                <li>common.service.spec.ts</li>
+                <li>...other</li>
+             </ul>
+          </li>
+         <li>app.module.ts</li>
+         <li>vendor.ts</li>
+         <li>app-routing.module.ts</li>
+         <li>main.ts </li>
+         <li>index.html </li>
+      </ul>
+   </li>
+   <li>README.md</li>
+   <li>package.json</li>
+   <li>tsconfig.json</li>
+   <li>webpack.config.js</li>
+   <li>karma.conf.js</li>
+   <li>protractor.conf.js</li>
 </ul>
 
 Explanation
