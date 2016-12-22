@@ -1,17 +1,14 @@
 <h3 *ngIf="entityData.length">Cписок доступних тестувань для Вас</h3>
-<h3 *ngIf="!entityData.length">Зараз немає доступних тестувань для Вас</h3>
-
+<h3 *ngIf="!entityData.length">Зараз немає доступних тестувань для Вас, подивіться в запланованих</h3>
 <dt-table *ngIf="entityData.length && userRole ==='student'"
-		  [headers]="headers"
-		  [actions]="actions"
-		  [tableData]="entityData"
-		  (activate)="activate($event)">
+          [headers]="headers"
+          [actions]="actions"
+          [tableData]="entityData"
+          (activate)="activate($event)">
 </dt-table>
-
 <dt-table *ngIf="entityData.length && userRole ==='admin'"
-		  [headers]="headers"
-		  [tableData]="entityData">
+          [headers]="headers"
+          [tableData]="entityData">
 </dt-table>
-
 <template ngbModalContainer></template>
 

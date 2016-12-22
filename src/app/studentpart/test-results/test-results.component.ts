@@ -1,15 +1,7 @@
 import {Component, OnInit, Input} from "@angular/core";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {Router} from "@angular/router";
 import {CRUDService} from "../../shared/services/crud.service";
 import {StudentPageService} from "../../shared/services/student-page.service";
-
-import {
-    headersStudentTestResults,
-    activeTests,
-    activeTimeTable
-} from "../../shared/constant/student-test-list";
-
+import {headersStudentTestResults} from "../../shared/constant/student-test-list";
 
 @Component({
     selector: "test-results",
@@ -20,15 +12,9 @@ import {
 export class StudentTestResultsComponent implements OnInit {
   
 	@Input() userId;
-	
-    public activeTests: any = activeTests;
-    public activeTimeTable: any = activeTimeTable;
+
     public headers: any = headersStudentTestResults;
     public entityData = [];
-    public dateNow;
-    public dateUser = "";
-
-    public testResults;
 
     constructor(private _commonService: CRUDService,
                 private _studentService: StudentPageService) {
@@ -45,7 +31,6 @@ export class StudentTestResultsComponent implements OnInit {
                 for (let i = 0; i < testResult.length; i++) {
                     this._commonService.getRecordById("Test", testResult[i].test_id)
                         .subscribe(dataTests => {
-
                             const testResults = dataTests[0];
                             this.entityData.push({
                                 entityColumns: [
@@ -57,7 +42,6 @@ export class StudentTestResultsComponent implements OnInit {
                                     testResult[i].result + " з " +
                                     testResult[i].answers + ")"]
                             });
-
                         });
                 }
             });

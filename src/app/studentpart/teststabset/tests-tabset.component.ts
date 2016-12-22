@@ -1,17 +1,14 @@
-import {Component, OnInit, Input} from "@angular/core";
+import {Component, Input} from "@angular/core";
 
 @Component({
     selector: "ngbd-tabset-tests",
     templateUrl: "./tests-tabset.component.html"
 })
 
-export class TestsTabsetComponent implements OnInit {
+export class TestsTabsetComponent {
     @Input() groupName;
     @Input() groupId;
-	@Input() userId;
-	
-    ngOnInit() {
-    }
+    @Input() userId;
 }
 
 

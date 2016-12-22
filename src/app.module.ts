@@ -48,7 +48,6 @@ import {TestPlayerService}        from "./app/shared/services/test-player.servic
 import {TestListComponent}        from "./app/studentpart/test-list/test-list.component";
 import {TestListSheduleComponent} from "./app/studentpart/test-list-shedule/test-list-shedule.component";
 import {TestBarComponent}         from "./app/shared/components/test-bar/test-bar.component";
-import {NgbdAlertSelfclosing}     from "./app/studentpart/alerts/alert.component";
 import {CommonService}            from "./app/shared/services/common.service";
 import {StudentTestResultsComponent} from "./app/studentpart/test-results/test-results.component";
 import {NotFoundComponent}        from "./app/not-found/not-found.component";
@@ -98,7 +97,6 @@ import {LoaderComponent}          from "./app/shared/components/loader/loader.co
         TestListComponent,
         TestListSheduleComponent,
         TestBarComponent,
-        NgbdAlertSelfclosing,
         StudentTestResultsComponent,
         NotFoundComponent,
         LoaderComponent,
