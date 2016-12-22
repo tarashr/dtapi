@@ -100,9 +100,14 @@ export class ModalAddEditComponent implements OnInit {
     }
 
     compareDates(startDate, endDate): number {
-        const newStartDate = new Date(startDate.year, startDate.month, startDate.day);
-        const newEndDate = new Date(endDate.year, endDate.month, endDate.day);
-        return (newStartDate < newEndDate) ? 1 : (newStartDate > newEndDate) ? 0 : 2;
+        const newStartDate = new Date(startDate.year, startDate.month - 1 , startDate.day);
+        const dateNow = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        if (newStartDate < dateNow) {
+            return 0;
+        } else {
+            const newEndDate = new Date(endDate.year, endDate.month - 1, endDate.day);
+            return (newStartDate < newEndDate) ? 1 : (newStartDate > newEndDate) ? 0 : 2;
+        }
     }
 
     compareTimes(startTime: string, endTime: string): boolean {
