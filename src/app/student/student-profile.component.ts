@@ -258,6 +258,7 @@ export class StudentProfileComponent implements OnInit {
         this.commonService.openModalInfo(...message)
             .then(() => {
                 this.delRecord(this.entity, this.student.user_id);
+                this.location.back();
             }, () => {
                 return;
             });
