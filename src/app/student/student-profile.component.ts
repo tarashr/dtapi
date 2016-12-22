@@ -7,9 +7,6 @@ import {CommonService} from "../shared/services/common.service";
 import {ModalImageCropperComponent} from "../shared/components/img-cropper/image-cropper.component";
 import {Observable} from "rxjs/Rx";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {ImageCropperComponent, CropperSettings} from "ng2-img-cropper";
-
-
 import {patterns, delRecord} from "../shared/constant";
 
 @Component({
@@ -18,9 +15,6 @@ import {patterns, delRecord} from "../shared/constant";
 })
 
 export class StudentProfileComponent implements OnInit {
-
-    public cropperData: any;
-    public cropperSettings: CropperSettings;
 
     public user_id: number;
     public entity: string = "student";
@@ -48,16 +42,12 @@ export class StudentProfileComponent implements OnInit {
 
     @ViewChild("studentForm") studentForm: any;
     @ViewChild("studentPhoto") studentPhoto: ElementRef;
-    @ViewChild("cropper", undefined) cropper: ImageCropperComponent;
 
     constructor(private route: ActivatedRoute,
                 private crudService: CRUDService,
                 private location: Location,
                 private modalService: NgbModal,
                 private commonService: CommonService) {
-        this.cropperSettings = new CropperSettings();
-        this.cropperSettings.noFileInput = true;
-        this.cropperData = {};
     }
 
     ngOnInit() {
@@ -223,8 +213,7 @@ export class StudentProfileComponent implements OnInit {
                         this.commonService.openModalInfo(`Дані студента ${this.studentInfo} обновленно`);
                         this.editSaveButtonName = "Редагувати дані";
                         this.statusView = !this.statusView;
-                    }
-                    else {
+                    } else {
                         this.commonService.openModalInfo(`${this.errorMessageUpdateData}`);
 
                     }
@@ -245,8 +234,7 @@ export class StudentProfileComponent implements OnInit {
         if (this.statusView) {
             this.editSaveButtonName = "Зберегти дані";
             this.statusView = !this.statusView;
-        }
-        else {
+        } else {
             this.updateStudent();
         }
     }
