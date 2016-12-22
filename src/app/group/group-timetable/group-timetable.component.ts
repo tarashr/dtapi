@@ -194,10 +194,10 @@ export class GroupTimetableComponent implements OnInit {
         this.subjects.forEach(item => {
             this.configEdit.select[0].selectItem.push(item.subject_name);
         });
-        const list = JSON.stringify(this.configEdit.list);
+        const list = JSON.stringify(this.configEdit);
         this.commonService.openModalAddEdit(this.configEdit)
             .then((configData: any) => {
-                const newList = JSON.stringify(configData.list);
+                const newList = JSON.stringify(configData);
                 if (list === newList) {
                     this.commonService.openModalInfo(...this.nothingWasChange)
                         .then(() => {

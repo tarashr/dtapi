@@ -113,10 +113,22 @@ export class ModalAddEditComponent implements OnInit {
     compareTimes(startTime: string, endTime: string): boolean {
         const startTimeArr = startTime.split(":");
         const endTimeArr = endTime.split(":");
-        if (+startTimeArr[0] >= +endTimeArr[0]) {
-            return +startTimeArr[1] < +endTimeArr[1];
+        const dateNow = new Date();
+        const hoursNow = dateNow.getHours();
+        const minutesNow = dateNow.getMinutes();
+        if (+startTimeArr[0] < hoursNow) {
+            return false;
+        } else if (+startTimeArr[0] === hoursNow) {
+            if ((+startTimeArr[1] >= minutesNow) && (+startTimeArr[0] <= +endTimeArr[0])) {
+                return (+startTimeArr[0] < +endTimeArr[0]) ? true : (+startTimeArr[1] < +endTimeArr[1]);
+            }
+            return false;
+        } else {
+            if (+startTimeArr[0] <= +endTimeArr[0]) {
+                return (+startTimeArr[0] < +endTimeArr[0]) ? true : (+startTimeArr[1] < +endTimeArr[1]);
+            }
+            return false;
         }
-        return true;
     }
 
     activateForm() {
