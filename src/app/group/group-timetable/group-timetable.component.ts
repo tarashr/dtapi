@@ -70,7 +70,7 @@ export class GroupTimetableComponent implements OnInit {
                     this.groupName = data[0].group_name;
                     this.pageTitle = `Розклад тестування для групи ${this.groupName}`;
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     };
 
@@ -81,7 +81,7 @@ export class GroupTimetableComponent implements OnInit {
                     this.subjects = data;
                     this.getGroupTimeTables();
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     };
 
@@ -103,7 +103,8 @@ export class GroupTimetableComponent implements OnInit {
                         this.createTableConfig(data);
                     }
                 },
-                error => console.log("error: ", error));
+                error => this.commonService.handleError(error)
+            );
     };
 
     deleteGroupTimeTable(entity: string, id: number): void {
@@ -112,7 +113,7 @@ export class GroupTimetableComponent implements OnInit {
                 () => {
                     this.getGroupTimeTables();
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     };
 

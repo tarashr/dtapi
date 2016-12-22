@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
 import {Subscription} from "rxjs";
@@ -7,12 +7,13 @@ import {GroupService} from "../../shared/services/group.service";
 import {EntityManagerBody} from "../../shared/classes/entity-manager-body";
 import {headersGroupTestResult} from "../../shared/constant";
 import {CRUDService} from "../../shared/services/crud.service";
+import {CommonService} from "../../shared/services/common.service";
 
 @Component({
     templateUrl: "group-test-result.component.html",
     styleUrls: ["group-test-result.component.scss"]
 })
-export class GroupTestResultComponent implements OnInit {
+export class GroupTestResultComponent implements OnInit, OnDestroy {
 
     public page: number = 1;
     public limit: number = 0;
@@ -40,7 +41,8 @@ export class GroupTestResultComponent implements OnInit {
     constructor(private location: Location,
                 private route: ActivatedRoute,
                 private groupService: GroupService,
-                private crudService: CRUDService) {
+                private crudService: CRUDService,
+                private commonService: CommonService) {
         this.subscription = route.queryParams.subscribe(
             data => {
                 this.groupId = data["groupId"];
@@ -62,7 +64,7 @@ export class GroupTestResultComponent implements OnInit {
                 data => {
                     this.groupName = data[0].group_name;
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     };
 
@@ -72,7 +74,7 @@ export class GroupTestResultComponent implements OnInit {
                 data => {
                     this.testName = data[0].test_name;
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     };
 
@@ -82,7 +84,7 @@ export class GroupTestResultComponent implements OnInit {
                 data => {
                     this.subjectName = data[0].subject_name;
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     };
 
@@ -106,7 +108,7 @@ export class GroupTestResultComponent implements OnInit {
                         this.getStudentName(entityManagerStudent);
                     }
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     };
 
@@ -179,7 +181,7 @@ export class GroupTestResultComponent implements OnInit {
         return (this.showGraph) ? "Список" : "Графіки";
     };
 
-    Print(): void {
+    print(): void {
         window.print();
     };
 

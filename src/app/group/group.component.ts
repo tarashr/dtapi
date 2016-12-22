@@ -94,7 +94,8 @@ export class GroupComponent implements OnInit, OnDestroy {
                     }
                     this.getSpecialityList();
                 },
-                error => console.log("error: ", error));
+                error => this.commonService.handleError(error)
+            );
     };
 
     getSpecialityList(): void {
@@ -108,7 +109,8 @@ export class GroupComponent implements OnInit, OnDestroy {
                     }
                     this.formTable();
                 },
-                error => console.log("error: ", error));
+                error => this.commonService.handleError(error)
+            );
     };
 
     formTable(): void {
@@ -137,7 +139,8 @@ export class GroupComponent implements OnInit, OnDestroy {
                         this.getFacultyName();
                     }
                 },
-                error => console.log("error: ", error));
+                error => this.commonService.handleError(error)
+            );
     };
 
     getGroupsByFaculty(data: any): void {
@@ -157,7 +160,8 @@ export class GroupComponent implements OnInit, OnDestroy {
                             this.getFacultyName();
                         }
                     },
-                    error => console.log("error: ", error));
+                    error => this.commonService.handleError(error)
+                );
         }
     };
 
@@ -178,7 +182,8 @@ export class GroupComponent implements OnInit, OnDestroy {
                             this.getFacultyName();
                         }
                     },
-                    error => console.log("error: ", error));
+                    error => this.commonService.handleError(error)
+                );
         }
     };
 
@@ -235,7 +240,7 @@ export class GroupComponent implements OnInit, OnDestroy {
                         }
                     }
                     this.createTableConfig(data);
-                }, error => console.log("error: ", error));
+                }, error => this.commonService.handleError(error));
         }
     };
 
@@ -332,10 +337,8 @@ export class GroupComponent implements OnInit, OnDestroy {
                             return;
                         });
                 } else {
-                    console.log(configData);
                     this.substituteSpecialitiesNamesWithId(configData);
                     this.substituteFacultiesNamesWithId(configData);
-                    console.log(configData);
                     const newGroup: Group = new Group(configData.list[0].value,
                         configData.select[0].selected,
                         configData.select[1].selected);
@@ -399,7 +402,7 @@ export class GroupComponent implements OnInit, OnDestroy {
                         this.entityDataLength = +data.numberOfRecords;
                         this.getRecordsRange();
                     },
-                    error => console.log(error)
+                    error => this.commonService.handleError(error)
                 );
         }
     };

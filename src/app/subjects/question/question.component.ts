@@ -112,7 +112,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     });
                     this.nameOfTest = testArr[0].test_name;
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     }
 

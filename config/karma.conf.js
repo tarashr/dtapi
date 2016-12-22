@@ -28,7 +28,6 @@ module.exports = function (config) {
 
         htmlReporter: {
             outputFile: 'tests/units.html',
-            // Optional
             pageTitle: 'Unit Tests',
             subPageTitle: 'DTester',
             groupSuites: true,
@@ -41,7 +40,7 @@ module.exports = function (config) {
         logLevel: config.LOG_INFO,
         autoWatch: true,
         browsers: ['Chrome'],
-        singleRun: false
+        singleRun: true
     };
 
     config.set(_config);

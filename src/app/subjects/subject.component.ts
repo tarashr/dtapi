@@ -14,6 +14,7 @@ import {
     headersSubject,
     actionsSubject,
     modalInfoConfig} from "../shared/constant";
+import {CommonService} from "../shared/services/common.service";
 
 @Component({
     selector: "subject-container",
@@ -54,7 +55,8 @@ export class SubjectComponent implements OnInit {
 
     constructor(private crudService: CRUDService,
                 private _router: Router,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private commonService: CommonService) {
     }
 
     ngOnInit() {
@@ -141,7 +143,7 @@ export class SubjectComponent implements OnInit {
                     });
                     this.entityData = tempArr;
                 },
-                error => console.log("error: ", error));
+                error => this.commonService.handleError(error));
     };
 
     findEntity(searchTerm: string) {
@@ -169,7 +171,7 @@ export class SubjectComponent implements OnInit {
                     this.entityDataLength = +data.numberOfRecords;
                     this.getSubjectsRange();
                 },
-                error => console.log(error)
+                error => this.commonService.handleError(error)
             );
     }
 

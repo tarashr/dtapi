@@ -16,6 +16,7 @@ import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Subscription} from "rxjs";
+import {CommonService} from "../../shared/services/common.service";
 
 @Component({
     selector: "test-detail-container",
@@ -62,7 +63,8 @@ export class TestDetailComponent implements OnInit, OnDestroy {
                 private router: Router,
                 private subjectService: SubjectService,
                 private location: Location,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private commonService: CommonService) {
         this.subscription = route.queryParams.subscribe(
             data => {
                 this.subject_id = data["token"];
@@ -95,7 +97,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
                         });
                     }
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     }
 
@@ -113,7 +115,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
                     });
                     this.nameOfTest = testArr[0].test_name;
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     }
 
@@ -149,7 +151,7 @@ export class TestDetailComponent implements OnInit, OnDestroy {
                     }
                     this.createTableConfig(data);
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     }
 

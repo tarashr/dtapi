@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 
 import {User} from "../shared/classes/user";
-import {CRUDService} from "../shared/services/crud.service.ts";
+import {CRUDService} from "../shared/services/crud.service";
 import {
     configAddAdminUser,
     configEditAdminUser,

@@ -7,6 +7,7 @@ import {CRUDService} from "../../shared/services/crud.service";
 import {GroupService} from "../../shared/services/group.service";
 import {headersGroupResult, actionsGroupResult} from "../../shared/constant";
 import {EntityManagerBody} from "../../shared/classes/entity-manager-body";
+import {CommonService} from "../../shared/services/common.service";
 
 @Component({
     templateUrl: "group-result.component.html"
@@ -32,7 +33,8 @@ export class GroupResultComponent implements OnInit {
                 private route: ActivatedRoute,
                 private location: Location,
                 private groupService: GroupService,
-                private crudService: CRUDService) {
+                private crudService: CRUDService,
+                private commonService: CommonService) {
         this.subscription = route.queryParams.subscribe(
             data => {
                 this.groupId = data["groupId"];
@@ -51,7 +53,7 @@ export class GroupResultComponent implements OnInit {
                     this.groupName = data[0].group_name;
                     this.pageTitle = `Перелік тестів зданих групою ${this.groupName}`;
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     }
 
@@ -70,7 +72,7 @@ export class GroupResultComponent implements OnInit {
                         this.getTestsDetails(entityManagerTests);
                     }
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     }
 
@@ -86,7 +88,7 @@ export class GroupResultComponent implements OnInit {
                     const entityManagerSubjects = new EntityManagerBody(this.subjectEntity, ids);
                     this.getSubjectNames(entityManagerSubjects);
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     }
 
@@ -96,7 +98,7 @@ export class GroupResultComponent implements OnInit {
                 data => {
                     this.getNamesByIds(data);
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     }
 

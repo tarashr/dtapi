@@ -86,6 +86,9 @@ export class CommonService {
         return modalRefEdit.result;
     }
 
-
+    handleError(error: any): void {
+        this.openModalInfo("Виникла помилка. Зверніться до адміністратора.");
+        console.log(error);
+    }
 }
 

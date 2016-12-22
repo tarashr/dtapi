@@ -15,6 +15,7 @@ import {TimeTable} from "../../shared/classes/timetable";
 import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-add-edit.component";
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {CommonService} from "../../shared/services/common.service";
 
 @Component({
     selector: "timetable-container",
@@ -54,7 +55,8 @@ export class TimeTableComponent implements OnInit {
                 private router: Router,
                 private subjectService: SubjectService,
                 private location: Location,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private commonService: CommonService) {
     }
 
     ngOnInit() {
@@ -78,7 +80,7 @@ export class TimeTableComponent implements OnInit {
                     });
                     this.nameOfSubject = subjectArr[0].subject_name;
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     }
 
@@ -101,7 +103,7 @@ export class TimeTableComponent implements OnInit {
                         this.createTableConfig(data);
                     }
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     }
 
@@ -135,7 +137,7 @@ export class TimeTableComponent implements OnInit {
                     this.groups = data;
                     this.getTimeTableForSubject();
                 },
-                error => console.log("error: ", error),
+                error => this.commonService.handleError(error)
             );
     }
 

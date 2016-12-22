@@ -72,7 +72,7 @@ export class StudentComponent implements OnInit {
                     this.groupName = res[0].group_name;
                     this.entityTitle = `Студенти групи: ${this.groupName}`;
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
         this.getStudentsByGroup();
     }
@@ -97,7 +97,8 @@ export class StudentComponent implements OnInit {
                     this.studentDataForView = data;
                     this.getGroupName();
                 },
-                error => console.log("error: ", error));
+                error => this.commonService.handleError(error)
+            );
     }
 
     getStudentsByGroup() {
@@ -111,7 +112,8 @@ export class StudentComponent implements OnInit {
                 this.page = 1;
                 this.studentDataForView = data;
                 this.getGroupName();
-            }, error => console.log("error: ", error));
+            }, error => this.commonService.handleError(error)
+            );
     }
 
     getGroupName(): void {
@@ -134,7 +136,7 @@ export class StudentComponent implements OnInit {
                     }
                     this.createTableConfig(this.studentDataForView);
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     }
 
@@ -157,7 +159,8 @@ export class StudentComponent implements OnInit {
                 this.studentDataForView = data;
                 this.getGroupName();
 
-            }, error => console.log("error: ", error));
+            }, error => this.commonService.handleError(error)
+            );
     };
 
     activate(data: any) {
@@ -202,7 +205,7 @@ export class StudentComponent implements OnInit {
                         this.entityDataLength = +data.numberOfRecords;
                         this.getRecordsRange();
                     },
-                    error => console.log(error)
+                    error => this.commonService.handleError(error)
                 );
         }
     };

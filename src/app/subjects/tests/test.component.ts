@@ -16,6 +16,7 @@ import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Subscription} from "rxjs";
+import {CommonService} from "../../shared/services/common.service";
 
 @Component({
     selector: "test-container",
@@ -55,7 +56,8 @@ export class TestComponent implements OnInit {
                 private router: Router,
                 private subjectService: SubjectService,
                 private location: Location,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private commonService: CommonService) {
     }
 
     ngOnInit() {
@@ -79,7 +81,8 @@ export class TestComponent implements OnInit {
                     });
                     this.nameOfSubject = subjectArr[0].subject_name;
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
+
             );
     }
 
@@ -121,7 +124,8 @@ export class TestComponent implements OnInit {
                     }
                     this.createTableConfig(data);
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
+
             );
     }
 

@@ -17,6 +17,7 @@ import {ModalAddEditComponent} from "../../shared/components/addeditmodal/modal-
 import {InfoModalComponent} from "../../shared/components/info-modal/info-modal.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Subscription} from "rxjs";
+import {CommonService} from "../../shared/services/common.service";
 
 @Component({
     selector: "answer-container",
@@ -64,7 +65,8 @@ export class AnswerComponent implements OnInit, OnDestroy {
                 private router: Router,
                 private subjectService: SubjectService,
                 private location: Location,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private commonService: CommonService) {
         this.subscription = route.queryParams.subscribe(
             data => {
                 this.test_id = data["test_id"];
@@ -144,7 +146,7 @@ export class AnswerComponent implements OnInit, OnDestroy {
                         this.noRecords = false;
                     }
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     }
 

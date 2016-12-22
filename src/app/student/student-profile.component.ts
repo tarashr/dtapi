@@ -68,8 +68,7 @@ export class StudentProfileComponent implements OnInit {
             this.action = false; // state: view/edit profile
             this.getData();
             this.getFacultyName();
-        }
-        else {
+        } else {
             this.statusView = false;
             this.action = true; // state: create new profile
             this.newStudent();
@@ -122,7 +121,7 @@ export class StudentProfileComponent implements OnInit {
             .subscribe(facultyData => {
                     this.faculties = facultyData;
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     }
 
@@ -136,7 +135,7 @@ export class StudentProfileComponent implements OnInit {
                         this.groups = groupData;
                     }
                 },
-                error => console.log("error: ", error)
+                error => this.commonService.handleError(error)
             );
     }
 
@@ -150,7 +149,7 @@ export class StudentProfileComponent implements OnInit {
                 .subscribe(data => {
                         this.student.group_name = data[0].group_name;
                     },
-                    error => console.log("error: ", error)
+                    error => this.commonService.handleError(error)
                 );
         }
     }
@@ -191,16 +190,16 @@ export class StudentProfileComponent implements OnInit {
                                             .subscribe(groupData => {
                                                     this.groups = groupData;
                                                 },
-                                                error => console.log("error: ", error)
+                                                error => this.commonService.handleError(error)
                                             );
                                     },
-                                    error => console.log("error: ", error)
+                                    error => this.commonService.handleError(error)
                                 );
                         },
-                        error => console.log("error: ", error)
+                        error => this.commonService.handleError(error)
                     );
             },
-            error => console.log("error: ", error)
+            error => this.commonService.handleError(error)
         );
     }
 

@@ -5,7 +5,7 @@
                 Група:&nbsp;{{groupName}}&nbsp; &nbsp;Предмет:&nbsp;"{{subjectName}}"&nbsp; &nbsp;Тест:&nbsp;"{{testName}}"
             </div>
             <form class="navbar-form navbar-right">
-                <button *ngIf="!showGraph" type="button" class="btn btn-default" (click)="Print()">Друк</button>
+                <button *ngIf="!showGraph" type="button" class="btn btn-default" (click)="print()">Друк</button>
                 <button type="button" class="btn btn-default" (click)="showGraph = !showGraph">
                     {{changeGraphLable()}}
                 </button>
@@ -49,3 +49,4 @@
     <pie-chart *ngIf="showGraph" [chartData]="pieChartData"></pie-chart>
     <bar-chart *ngIf="showGraph" [chartData]="barChartData"></bar-chart>
 </div>
+<template ngbModalContainer></template>
