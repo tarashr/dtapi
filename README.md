@@ -4,6 +4,16 @@ Description
 -------------
 Front-end part of the DTestrer. The main purpose of the system is to check students knowledge. It consists of two parts: admin part and student part. Functionality for admin part allows to perform CRUD operations on fuculties, specialities, subjects, tests, groups, students and admin users. It also allows to assign a test for particular group and view the results. On the student part user is able to pass the assigned tests, view test results, view tests which are availiable now, planned or already passed .
 
+Installation process
+-------------
+In order to successfully install and build application you need to:
+- install globally nodejs(v6.x.x), npm (v3.x.x), typeScript (v2.0.10);
+- run "npm install" (to install required packages);
+- run "npm run build" (for production mode);
+- run "npm start" (for development mode);
+Additionally, in case if you want to run end-to-end and unit tests you need to:
+- for end-to-end tests install protractor globally ("npm install -g protractor") run "protractor";
+- for unit tests run "npm test";
 
 Structure
 -------------
